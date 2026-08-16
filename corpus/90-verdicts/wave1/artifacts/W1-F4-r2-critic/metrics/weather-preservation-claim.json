@@ -1,0 +1,196 @@
+{
+ "what": "THE ROUND'S PRESERVATION CLAIM, MEASURED. The shipped source comment in `game/src/render/sky.js` says `overcast-flat` and `storm` \"ARE UNTOUCHED AT THEIR OWN WEATHER ... Both are checked as null controls rather than argued\" \u2014 on the arithmetic that `hor.lerp(neutral, overcast)` erases the edit AT FULL OVERCAST. The status file says plainly \"I captured nothing in overcast or storm\", so the null control the comment asserts was never run.",
+ "why_hemi_color_is_the_right_thing_to_read": "`sky.js:889` does `this.hemi.color.copy(hor).lerp(regionNight, night*0.85)` and at 13:00 `night = 0`, so THE HEMISPHERE'S LIVE COLOUR IS `hor` AFTER THE OVERCAST LERP, EXACTLY. Reading it back off the running scene measures the surviving weight of the edit directly, from output rather than from source.",
+ "the_control_that_validates_the_arithmetic": "At `storm` (overcast 1.00) the measured hemisphere colour is [0.43, 0.44, 0.46] \u2014 the neutral, EXACTLY, and independent of that state's tint. So the lerp does what the round says it does at overcast 1.0, and the formula `delta = (1 - overcast) * day * tint * (new_day_end - old_day_end)` is validated at its endpoint. At `clear` the measured colour is [0.677, 0.790, 0.944] \u2014 the new day-end triple exactly. Both endpoints check out.",
+ "THE_FINDING": "`recipeForConditions()` (lighting-recipes.js:346-352) selects `overcast-flat` at `overcast >= 0.50`, NOT at 1.00. So `1 - overcast` of the edit SURVIVES in every state that selects it. MEASURED: at the `overcast` state (0.80) the hemisphere reads [0.4604, 0.4910, 0.5417] against a neutral of [0.43, 0.44, 0.46] \u2014 the blue channel is 0.0817 ABOVE the neutral, and 0.0449 of that is this round's edit. At `fog` (0.70) it is 0.0886 above. At `rain` (0.92), 0.0266. ONLY overcast 1.00 (`storm`, `sea_squall`) is genuinely erased. THE ROUND-1 CRITIC COSTED `overcast-flat` + `storm` AT 59.1% OF DAYLIGHT, so this round changed the recipe that carries most of the daytime while asserting it could not have.",
+ "surviving_fraction_by_state_from_sky_js_WEATHER": {
+  "dry_thunder (0.55)": "45%",
+  "sea_fog (0.62)": "38%",
+  "fog (0.70)": "30%",
+  "fever_fog (0.75)": "25%",
+  "overcast (0.80)": "20%",
+  "warm_rain (0.82)": "18%",
+  "salt_storm (0.88)": "12%",
+  "cold_rain (0.90)": "10%",
+  "rain (0.92)": "8%",
+  "heavy_rain (0.94, selects `storm`)": "6%",
+  "storm / sea_squall (1.00)": "0% \u2014 genuinely erased"
+ },
+ "what_this_does_NOT_say": "It does not say the change made those recipes worse. Nobody has measured M6 or S60 in overcast or storm on EITHER build, which is the round's own point and its own recommendation for round 3. It says the claim that they are untouched is false, and that a preservation clause was argued instead of captured \u2014 which is the S59/S60/S63 pattern this project keeps finding.",
+ "served": {
+  "game_dir": "/home/user/elder-souls-claude/game",
+  "sha256_16": {
+   "src/render/lib/lighting-recipes.js": "241690686dca41ac",
+   "src/render/sky.js": "5fd64d937c3c06df"
+  }
+ },
+ "renderer": "SOFTWARE",
+ "hour": 13,
+ "rows": [
+  {
+   "weather": "clear",
+   "overcast": 0.0,
+   "weather_tint": [
+    1,
+    1,
+    1
+   ],
+   "hemi_color_MEASURED_on_the_shipped_build": [
+    0.677,
+    0.79,
+    0.944
+   ],
+   "the_neutral_this_lerps_toward_at_day_1": [
+    0.43,
+    0.44,
+    0.46
+   ],
+   "is_it_the_neutral": false,
+   "surviving_weight_of_the_edit_1_minus_overcast": 1.0,
+   "delta_this_round_put_into_hemi_color": [
+    -0.083,
+    0.0,
+    0.244
+   ],
+   "hemi_color_the_PREVIOUS_build_would_have_shown": [
+    0.76,
+    0.79,
+    0.7
+   ],
+   "recipe_selected_by_recipeForConditions": "noon-marsh",
+   "liveness": "LIVE"
+  },
+  {
+   "weather": "overcast",
+   "overcast": 0.8,
+   "weather_tint": [
+    0.86,
+    0.88,
+    0.92
+   ],
+   "hemi_color_MEASURED_on_the_shipped_build": [
+    0.4604,
+    0.491,
+    0.5417
+   ],
+   "the_neutral_this_lerps_toward_at_day_1": [
+    0.43,
+    0.44,
+    0.46
+   ],
+   "is_it_the_neutral": false,
+   "surviving_weight_of_the_edit_1_minus_overcast": 0.2,
+   "delta_this_round_put_into_hemi_color": [
+    -0.01428,
+    0.0,
+    0.0449
+   ],
+   "hemi_color_the_PREVIOUS_build_would_have_shown": [
+    0.47468,
+    0.491,
+    0.4968
+   ],
+   "recipe_selected_by_recipeForConditions": "overcast-flat",
+   "liveness": "LIVE"
+  },
+  {
+   "weather": "rain",
+   "overcast": 0.92,
+   "weather_tint": [
+    0.72,
+    0.78,
+    0.84
+   ],
+   "hemi_color_MEASURED_on_the_shipped_build": [
+    0.4346,
+    0.4541,
+    0.4866
+   ],
+   "the_neutral_this_lerps_toward_at_day_1": [
+    0.43,
+    0.44,
+    0.46
+   ],
+   "is_it_the_neutral": false,
+   "surviving_weight_of_the_edit_1_minus_overcast": 0.08,
+   "delta_this_round_put_into_hemi_color": [
+    -0.00478,
+    0.0,
+    0.0164
+   ],
+   "hemi_color_the_PREVIOUS_build_would_have_shown": [
+    0.43938,
+    0.4541,
+    0.4702
+   ],
+   "recipe_selected_by_recipeForConditions": "overcast-flat",
+   "liveness": "LIVE"
+  },
+  {
+   "weather": "storm",
+   "overcast": 1.0,
+   "weather_tint": [
+    0.55,
+    0.62,
+    0.72
+   ],
+   "hemi_color_MEASURED_on_the_shipped_build": [
+    0.43,
+    0.44,
+    0.46
+   ],
+   "the_neutral_this_lerps_toward_at_day_1": [
+    0.43,
+    0.44,
+    0.46
+   ],
+   "is_it_the_neutral": true,
+   "surviving_weight_of_the_edit_1_minus_overcast": 0.0,
+   "delta_this_round_put_into_hemi_color": [
+    -0.0,
+    0.0,
+    0.0
+   ],
+   "hemi_color_the_PREVIOUS_build_would_have_shown": [
+    0.43,
+    0.44,
+    0.46
+   ],
+   "recipe_selected_by_recipeForConditions": "storm",
+   "liveness": "LIVE"
+  },
+  {
+   "weather": "fog",
+   "overcast": 0.7,
+   "weather_tint": [
+    0.8,
+    0.82,
+    0.8
+   ],
+   "hemi_color_MEASURED_on_the_shipped_build": [
+    0.4635,
+    0.5023,
+    0.5486
+   ],
+   "the_neutral_this_lerps_toward_at_day_1": [
+    0.43,
+    0.44,
+    0.46
+   ],
+   "is_it_the_neutral": false,
+   "surviving_weight_of_the_edit_1_minus_overcast": 0.3,
+   "delta_this_round_put_into_hemi_color": [
+    -0.01992,
+    0.0,
+    0.05856
+   ],
+   "hemi_color_the_PREVIOUS_build_would_have_shown": [
+    0.48342,
+    0.5023,
+    0.49004
+   ],
+   "recipe_selected_by_recipeForConditions": "overcast-flat",
+   "liveness": "LIVE"
+  }
+ ]
+}
