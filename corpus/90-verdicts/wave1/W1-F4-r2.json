@@ -197,7 +197,8 @@
         }
       ],
       "hard_fails": [
-        "VIS04-\u00a72-DETECT (M6 hue_offset)"
+        "VIS04-\u00a72-DETECT (M6 hue_offset)",
+        "VIS04-\u00a72-DETECT (M6 hue_offset) \u2014 RE-IMPLEMENTED INDEPENDENTLY"
       ],
       "how_we_lose_hits": [
         "A screening instrument that cannot express the lever. Both candidate sets warm only the key and cool only the ambient, so the direction that measures 17.11 deg was unreachable by construction and the lever class was declared exhausted from a battery that could not test it.",
@@ -331,35 +332,50 @@
       "kind": "screenshot",
       "produced_by": "f4r2c-capture.mjs",
       "seed": 20260814,
-      "note": "the matched key-hue arm, 17.11 deg, luminance within 2%"
+      "note": "the matched key-hue arm, 17.11 deg, luminance within 2%",
+      "resolution": "1920x1080",
+      "camera_pose": "deck-protocol-a char-player, yaw 35, pitch -6, distance 2.6 m, hour 08:00, weather clear, seed 20260814; sealed judged crop [300,150,512,512]. Key recoloured to 0x8ca9d8 with intensity x1.4479 (Rec.709-compensated)."
     },
     {
       "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/weather-overcast-hemi-NOT-neutral.png",
       "kind": "screenshot",
       "produced_by": "f4r2c-capture.mjs",
       "seed": 20260814,
-      "note": "weather `overcast`: the hemisphere is NOT the neutral, so the edit is not erased"
+      "note": "weather `overcast`: the hemisphere is NOT the neutral, so the edit is not erased",
+      "resolution": "1280x720",
+      "camera_pose": "deck-protocol-a char-player place, hour 13:00, weather `overcast` (overcast 0.80), seed 20260814. Shipped build, no page-side arm."
     },
     {
       "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/weather-storm-hemi-IS-neutral.png",
       "kind": "screenshot",
       "produced_by": "f4r2c-capture.mjs",
       "seed": 20260814,
-      "note": "weather `storm`: the hemisphere IS the neutral exactly, so the edit is erased there"
+      "note": "weather `storm`: the hemisphere IS the neutral exactly, so the edit is erased there",
+      "resolution": "1280x720",
+      "camera_pose": "deck-protocol-a char-player place, hour 13:00, weather `storm` (overcast 1.00), seed 20260814. Shipped build, no page-side arm."
     },
     {
       "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/frames/walk-t8-f05-driven-3.04m.png",
       "kind": "screenshot",
       "produced_by": "f4r2c-capture.mjs",
       "seed": 20260814,
-      "note": "last frame of the 08:00 driven walk, 3.04 m from the start"
+      "note": "last frame of the 08:00 driven walk, 3.04 m from the start",
+      "resolution": "1280x720",
+      "camera_pose": "trailing camera at yaw 180, pitch -10, distance 5.0 m, look height 1.2 m; hour 08:00, weather clear, seed 20260814; sixth frame of the driven walk, 3.040 m from the start."
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2/metrics/M6-across-orbit-12-angles.json",
+      "kind": "report",
+      "produced_by": "the round under judgement (tools/visual/f4-r2-light.mjs --mode angles + f4c-analyse.mjs --vis03)",
+      "note": "THE ROUND'S OWN banked orbit metrics, cited here because I re-derived every tally in it rather than inheriting them: 12 of 12 below the 15 deg minimum, 4 of 12 below the 6 deg hard fail, 5 of 12 retention below 0.60 with 1 below 0.30, 2 of 12 cast-shadow area below the \u00a73-D2 floor. All correct."
     }
   ],
   "blind_comparisons": [
     {
       "ref_item": "RI-VIS04",
-      "status": "not_required",
-      "not_possible_reason": "RI-VIS04 declares `blind_pair: no` in its own front matter (line 9), so no blind pack is owed on the item this piece is scored against. RECORDED RATHER THAN OMITTED, and it is not a free pass: F4 exists BECAUSE Protocol A ranked us last of five, twice, and the judgement this round is trying to move is a blind one. A critic cannot spawn a fresh judge \u2014 `create_session` is approval-gated and CLAUDE.md rule 0 forbids it; rule 0e places this with the ORCHESTRATOR and says an unrun gate is a live blocker, not a footnote. MEASURED THIS TURN RATHER THAN INHERITED FROM MY BRIEF, WHICH SAID 100 AND IS STALE: `grep -rl \"blind_pair: yes\" corpus/ --include=*.md | wc -l` returns 102, and `grep -rln \"blind_status: *run\" corpus/90-verdicts/ | wc -l` returns 1 \u2014 whose single hit is `W1-F7-WATER-r2.md:209` QUOTING THIS COMMAND, not recording a run. So the true count of verdicts that have ever run a blind pair is still ZERO, the population has grown by four since rule 0e was written, and the number run has not moved. THE ORCHESTRATOR OWES THIS ONE."
+      "status": "not_possible",
+      "not_possible_reason": "RI-VIS04 declares `blind_pair: no` in its own front matter (line 9), so no blind pack is owed on the item this piece is scored against. RECORDED RATHER THAN OMITTED, and it is not a free pass: F4 exists BECAUSE Protocol A ranked us last of five, twice, and the judgement this round is trying to move is a blind one. A critic cannot spawn a fresh judge \u2014 `create_session` is approval-gated and CLAUDE.md rule 0 forbids it; rule 0e places this with the ORCHESTRATOR and says an unrun gate is a live blocker, not a footnote. MEASURED THIS TURN RATHER THAN INHERITED FROM MY BRIEF, WHICH SAID 100 AND IS STALE: `grep -rl \"blind_pair: yes\" corpus/ --include=*.md | wc -l` returns 102, and `grep -rln \"blind_status: *run\" corpus/90-verdicts/ | wc -l` returns 1 \u2014 whose single hit is `W1-F7-WATER-r2.md:209` QUOTING THIS COMMAND, not recording a run. So the true count of verdicts that have ever run a blind pair is still ZERO, the population has grown by four since rule 0e was written, and the number run has not moved. THE ORCHESTRATOR OWES THIS ONE.",
+      "question": "RI-VIS04 declares `blind_pair: no`, so no gate is owed on the item this piece is scored against. Recorded `not_possible` rather than `done` because the PROJECT-level gate that F4 exists to move \u2014 Protocol A, which ranked us last of five twice \u2014 is unrun and a critic cannot spawn a fresh judge."
     }
   ],
   "arbitration": {
@@ -492,7 +508,7 @@
   "gap_closure": [
     {
       "gap_id": "GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour",
-      "status": "not_closed",
+      "status": "open",
       "measured_value": "hue_offset, sealed judged crop: 7.16 -> 7.32 (the round's figures; mine 7.18 -> 7.34), against the r1 remedy's own interim target of >= 6.0 deg in every daylight window and the item's 15 deg minimum. Full frame 3.75 -> 6.38, which DOES clear the interim 6.0 target and which the round did not report. `retention` 0.6901 -> 0.6926 and `C_shadow` 14.146 -> 12.377 at the judged window, both above their minima; across twelve orbit angles `retention` is below its minimum at 5 and below the hard fail at 1.",
       "acceptance_restated": "The r1 remedy asked for three things at THE SAME FIVE JUDGED WINDOWS, paired per S59: hue_offset >= 6.0 everywhere, retention >= 0.60 and C_shadow >= 6 in every window whose cast-shadow area rose, and S60 clause (a) not falling at any window that already passed. It was measured at ONE window. The half that was measured passes there; the other four windows are unmeasured, so the gap is not closed.",
       "closed_by_builder_of_fix": false,
