@@ -58,6 +58,23 @@
       "2_the_r4_CRITIC_was_right_that_1.20_m_is_DOMINATED": "**At the same pose, 0.10 m returns 17.0 percentage points of presence over 1.20 m (100.35% vs 83.35%) for identical width.** That is the whole ruling, now measured at the pose that actually fails rather than inferred from the pose that does not. `presence` falls monotonically with the band constant across all seven arms — 100.4, 100.4, 100.3, 100.1, 99.6, 96.6, 83.3 — while width never moves. A constant that buys nothing and costs seventeen points is dominated.",
       "and_it_cross_validates_the_r4_critic": "My interleaved `fixed` reads 83.3% where the r4 critic's drift-carrying protocol read 82.3% at the same pose. About one point apart, in the direction drift correction predicts."
     },
+    "AND_THE_VERIFICATION_AT_edge-b135_WHICH_IS_THE_POSE_THAT_CARRIES_THE_POSITIVE_RESULT": {
+      "why_this_run_exists": "The brief says: *'Verify it yourself before shipping it.'* The r4 critic's dominance finding was measured on a 14-line copy of the r4 build's instrument. This is my own run, my own tool, interleaved baseline, at the threshold I have SHOWN to be stable.",
+      "run": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b135-verify/ — 6 interleaved baseline captures, drift band at threshold 16: own_mask **0.54%**, width **0 px**, presence **96.25–100%**.",
+      "table_at_threshold_16": {
+        "r3 (band -> 1e-4, i.e. no band at all)": { "presence_pct": 60.67, "width_closed_px": 1, "width_raw_px": 30 },
+        "band-0.10 (SHIPPED)": { "presence_pct": 51.38, "width_closed_px": 32, "width_raw_px": 30 },
+        "band-0.30": { "presence_pct": 48.37, "width_closed_px": 31, "width_raw_px": 29 },
+        "fixed = 1.20 m (ROUND 4)": { "presence_pct": 41.99, "width_closed_px": 31, "width_raw_px": 25 },
+        "no-shorefade (depth COLOUR alone)": { "presence_pct": 91.34, "width_closed_px": 1, "width_raw_px": 1 }
+      },
+      "THE_DOMINANCE_CONFIRMED_IN_MY_OWN_INSTRUMENT": "**0.10 m returns width 32 where 1.20 m returns 31 — a 1 px difference against a measured width drift band of 0 px on the unchanged arm, i.e. nothing — and it returns 9.39 percentage points of presence.** Same waterline, materially more water. The r4 critic's ruling is upheld on evidence I generated, not on evidence I inherited.",
+      "and_the_step_function_is_real": "The width goes **1 -> 32** between `r3` (no band) and `band-0.10`, and then does not move again out to 1.20 m. So the critic's formulation is confirmed: **the width is a step function of whether a band exists at all, not a function of its size**, and beyond the step the constant buys nothing but absence.",
+      "BUT_THE_ACCEPTANCE_STILL_FAILS_AND_I_AM_NOT_CLAIMING_IT": "The r4 verdict's paired acceptance is `gradient_width_px >= 12` at the worst pose AND **`presence >= 90%` at every pose in both regions**. At `edge-b135` the shipped arm reads **51.38%**. That is nowhere near 90% and it is the pose the whole positive result comes from. **The presence half of the acceptance FAILS at 0.10 m.** It fails less badly than at 1.20 m (41.99%), which is an improvement and is not a pass.",
+      "and_the_cost_is_NOT_mostly_the_constant_which_is_the_finding_under_the_finding": "`no-shorefade` — the depth colour with the shore alpha term switched off entirely — reads **91.34%**. `r3`, which is the transmittance-gated fade with no metre band at all, reads **60.67%**. `band-0.10` reads 51.38%. **So at this pose round 3's own transmittance fade costs ~30 points before the metre band costs its further ~9.** Fixing the constant was the right call and it does not reach the bulk of the cost: the alpha multiplier of 0.42x is doing that, and it is round 3's, not round 4's. A sixth round that only tunes the band will not clear a 90% presence bar.",
+      "one_disagreement_i_must_flag": "At this pose and threshold the CLOSED width and the RAW width disagree sharply on `r3` — closed **1**, raw **30** — while they agree on every other arm (32/30, 31/29, 31/25). The r4 critic attacked the closing and found it the reliable half; here it is the raw figure that is anomalous, on exactly the arm that is supposed to have no band. I do not have an explanation and I am not choosing between them."
+    },
+
     "WHAT_I_SHIPPED": {
       "file": "game/src/render/water.js",
       "change": "`uWaterShoreBandM` default 1.20 -> 0.10. `customProgramCacheKey` v18-f7r4-shore-band-m -> v19-f7r5-shore-band-0p10 so no cached program can outlive it. **The mechanism is round 4's and is byte-identical — only the constant moves**, which is why this is one number and exactly as reversible as round 4's own.",

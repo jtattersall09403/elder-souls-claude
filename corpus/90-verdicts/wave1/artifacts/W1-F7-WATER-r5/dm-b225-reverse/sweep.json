@@ -1,0 +1,744 @@
+{
+  "tool": "f7-r5-sweep",
+  "roadmap_item": "F7",
+  "generated": "2026-08-16T03:47:43.195Z",
+  "commit": "df9ec7b4c3e68b6b88f1ede178cba95bb5e11b58",
+  "seed": 20260814,
+  "site": "vista-deep-marshes",
+  "region_from_census": "deep-marshes",
+  "region_k": 4.5,
+  "stand_verification": {
+    "deck_asked_for": [
+      3123.5,
+      3715
+    ],
+    "player_pos_after_teleport": [
+      3123.5,
+      1.16,
+      3715
+    ],
+    "teleport_offset_m": 0,
+    "running_field_region_at_deck_point": "deep-marshes",
+    "running_field_region_at_player": "deep-marshes",
+    "note": "The DRAWN HUD label is stale — confirmed by the r4 critic at 4 of 4 poses. Read this block, never the label in the frame."
+  },
+  "time_of_day": 13,
+  "canvas": [
+    960,
+    540
+  ],
+  "mode": "arms",
+  "frozen_phase": 11,
+  "interleaved": true,
+  "arm_order": "reverse",
+  "mask_policy": {
+    "pinned": true,
+    "mask_arm": "prefix",
+    "thresholds": [
+      6,
+      10,
+      16
+    ],
+    "why": "HAZARDS §25 / RI-VIS03 M12a closing paragraph — one mask per pose, from the named baseline arm, every arm scored through it.",
+    "and_the_drift": "HAZARDS §25a — the baseline is ALSO re-captured before and after every arm, so each arm is read against flanking baselines one interval away instead of one baseline eight intervals away. The baseline's own spread across its repeated captures is the drift band published beside every number."
+  },
+  "declared_pose_set": {
+    "rule": "RI-VIS03 M12a: >= 4 poses >= 90 deg apart, declared before measuring, every pose on its own line, NO MEAN OVER POSES, a band met only at the WORST pose, >= 1 water_edge pose with a real boundary.",
+    "bearings_deg": [
+      45,
+      135,
+      225,
+      315
+    ],
+    "targets_from": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/shoreline-census.json",
+    "targets": [
+      {
+        "bearing_deg": 45,
+        "cell_centre": [
+          3143.75,
+          3731.25
+        ],
+        "distance_m": 26,
+        "bearing_offset_deg": 6.3,
+        "dry_corners": 1,
+        "wet_corner_depths_m": [
+          1.453,
+          null,
+          1.492,
+          1.433
+        ],
+        "deepest_wet_corner_m": 1.492,
+        "water_y": null,
+        "ground_y": 2.263
+      },
+      {
+        "bearing_deg": 135,
+        "cell_centre": [
+          3143.75,
+          3693.75
+        ],
+        "distance_m": 29.4,
+        "bearing_offset_deg": 1.4,
+        "dry_corners": 2,
+        "wet_corner_depths_m": [
+          null,
+          0.704,
+          null,
+          0.027
+        ],
+        "deepest_wet_corner_m": 0.704,
+        "water_y": 1.88,
+        "ground_y": 1.675
+      },
+      {
+        "bearing_deg": 225,
+        "cell_centre": [
+          3106.25,
+          3706.25
+        ],
+        "distance_m": 19.3,
+        "bearing_offset_deg": 18.1,
+        "dry_corners": 1,
+        "wet_corner_depths_m": [
+          0.231,
+          1.084,
+          1.053,
+          null
+        ],
+        "deepest_wet_corner_m": 1.084,
+        "water_y": 1.88,
+        "ground_y": 1.142
+      },
+      {
+        "bearing_deg": 315,
+        "cell_centre": [
+          3093.75,
+          3731.25
+        ],
+        "distance_m": 33.9,
+        "bearing_offset_deg": -16.4,
+        "dry_corners": 1,
+        "wet_corner_depths_m": [
+          0.391,
+          1.063,
+          0.714,
+          null
+        ],
+        "deepest_wet_corner_m": 1.063,
+        "water_y": 1.88,
+        "ground_y": 1.457
+      }
+    ]
+  },
+  "head_expression_asserted": {
+    "r3_depth_block": true,
+    "r4_shore_band_block": true,
+    "r2_schlick_weight": true,
+    "shore_band_uniform_default": "0.10",
+    "region_k_uniform": true,
+    "critic_grep_still_zero": true,
+    "backtick_count_in_file": 128
+  },
+  "refuses_to_measure_if": "the r4 shore-band block is not verbatim in game/src/render/water.js",
+  "gpu_state_before": {
+    "water_materials": 56,
+    "distinct": [
+      {
+        "mesh": "water",
+        "region_resolved": null,
+        "uWaterK": 2,
+        "uWaterShoreFade": 1,
+        "uWaterShoreBandM": 0.1,
+        "phase_frozen": true,
+        "transparent": true,
+        "opacity": 0.86,
+        "depthWrite": false,
+        "depthTest": true,
+        "renderOrder": 0
+      },
+      {
+        "mesh": "water:eastern-rootlands",
+        "region_resolved": "eastern-rootlands",
+        "uWaterK": 3.2,
+        "uWaterShoreFade": 1,
+        "uWaterShoreBandM": 0.1,
+        "phase_frozen": true,
+        "transparent": true,
+        "opacity": 0.876,
+        "depthWrite": false,
+        "depthTest": true,
+        "renderOrder": 0
+      },
+      {
+        "mesh": "water:western-rootlands",
+        "region_resolved": "western-rootlands",
+        "uWaterK": 1.9,
+        "uWaterShoreFade": 1,
+        "uWaterShoreBandM": 0.1,
+        "phase_frozen": true,
+        "transparent": true,
+        "opacity": 0.772,
+        "depthWrite": false,
+        "depthTest": true,
+        "renderOrder": 0
+      },
+      {
+        "mesh": "water:deep-marshes",
+        "region_resolved": "deep-marshes",
+        "uWaterK": 4.5,
+        "uWaterShoreFade": 1,
+        "uWaterShoreBandM": 0.1,
+        "phase_frozen": true,
+        "transparent": true,
+        "opacity": 0.96,
+        "depthWrite": false,
+        "depthTest": true,
+        "renderOrder": 0
+      }
+    ]
+  },
+  "phase_freeze": {
+    "materials": 11,
+    "frozen_at": 11
+  },
+  "poses": {
+    "edge-b225": {
+      "pose": "edge-b225",
+      "ok": true,
+      "target": {
+        "bearing_deg": 225,
+        "cell_centre": [
+          3106.25,
+          3706.25
+        ],
+        "distance_m": 19.3,
+        "bearing_offset_deg": 18.1,
+        "dry_corners": 1,
+        "wet_corner_depths_m": [
+          0.231,
+          1.084,
+          1.053,
+          null
+        ],
+        "deepest_wet_corner_m": 1.084,
+        "water_y": 1.88,
+        "ground_y": 1.142
+      },
+      "kind": "water_edge",
+      "bearing_deg": 225,
+      "water_edge_verified": {
+        "projectPoint": {
+          "ndc": [
+            1.879353573264232e-16,
+            3.9595419524422797e-8
+          ],
+          "z": 11.401754806223797,
+          "in_front": true,
+          "on_screen": true
+        },
+        "on_screen": true
+      },
+      "meshes_hidden": 93,
+      "pinned_mask_px": {
+        "6": 302526,
+        "10": 298721,
+        "16": 294475
+      },
+      "hidden_frame_luma": {
+        "6": 27.871,
+        "10": 27.557,
+        "16": 27.307
+      },
+      "mask_closing": {
+        "6": {
+          "radius_px": 4,
+          "pixels_moved": 18635,
+          "pct_of_mask": 6.16
+        },
+        "10": {
+          "radius_px": 4,
+          "pixels_moved": 16304,
+          "pct_of_mask": 5.46
+        },
+        "16": {
+          "radius_px": 4,
+          "pixels_moved": 15370,
+          "pct_of_mask": 5.22
+        }
+      },
+      "arms": {},
+      "baseline_captures": [
+        {
+          "ordinal": 0,
+          "frame": "frames/edge-b225--BASE-o0.png",
+          "by_threshold": {
+            "6": {
+              "pinned_mask_px": 302526,
+              "own_mask_px": 306449,
+              "own_mask_delta_pct": 1.3,
+              "px": 302526,
+              "mean_luma": 68.623,
+              "L_hidden": 27.871,
+              "L_baseline_local": 68.623,
+              "presence_pct": 100,
+              "m12": {
+                "water_px": 302526,
+                "water_frac": 0.58358,
+                "FresnelDelta": 0.07194,
+                "NormalEnergy": 0.23147,
+                "normalReason": null,
+                "ShoreDelta": 0.00797,
+                "ReflCorr": null,
+                "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+                "TemporalVar": null,
+                "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+                "grazing_rows": [
+                  0,
+                  134
+                ],
+                "downward_rows": [
+                  405,
+                  539
+                ],
+                "normal_window": {
+                  "x": 640,
+                  "y": 256,
+                  "k": 128
+                }
+              },
+              "shore": {
+                "profile": [
+                  51.069,
+                  60.428,
+                  69.87,
+                  71.924,
+                  73.436,
+                  75.251,
+                  75.992,
+                  76.319,
+                  75.68,
+                  75.947,
+                  77.101,
+                  77.546,
+                  78.091,
+                  79.051,
+                  78.343,
+                  76.989,
+                  76.637,
+                  76.474,
+                  76.657,
+                  76.614,
+                  76.661,
+                  76.225,
+                  75.608,
+                  75.942,
+                  76.319,
+                  76.336,
+                  76.053,
+                  75.915,
+                  75.353,
+                  75.021,
+                  75.225,
+                  73.789,
+                  73.657,
+                  74.371,
+                  74.364,
+                  73.737,
+                  73.036,
+                  72.96,
+                  72.982,
+                  72.498,
+                  72.488,
+                  73.413,
+                  73.351,
+                  72.395,
+                  72.166,
+                  71.866,
+                  71.446,
+                  71.585
+                ],
+                "near_shore_luma": 55.748,
+                "open_water_luma": 73.657,
+                "span": 17.908,
+                "d10_px": 2,
+                "d90_px": 4,
+                "gradient_width_px": 2
+              },
+              "shore_raw": {
+                "profile": [
+                  57.632,
+                  70.397,
+                  76.51,
+                  77.816,
+                  77.662,
+                  78.103,
+                  77.575,
+                  76.153,
+                  75.159,
+                  75.71,
+                  74.667,
+                  73.181,
+                  72.56,
+                  72.225,
+                  71.87,
+                  71.517,
+                  71.519,
+                  71.97,
+                  71.372,
+                  70.246,
+                  69.738,
+                  69.585,
+                  69.404,
+                  68.735,
+                  68.493,
+                  68.384,
+                  68.328,
+                  67.945,
+                  68.012,
+                  68.136,
+                  68.146,
+                  67.804,
+                  67.63,
+                  67.47,
+                  66.95,
+                  67.051,
+                  66.792,
+                  67.081,
+                  67.112,
+                  66.962,
+                  66.246,
+                  65.699,
+                  65.39,
+                  65.231,
+                  65.111,
+                  65.366,
+                  65.569,
+                  65.599
+                ],
+                "near_shore_luma": 64.014,
+                "open_water_luma": 67.081,
+                "span": 3.067,
+                "d10_px": 2,
+                "d90_px": 2,
+                "gradient_width_px": 1
+              },
+              "close_radius_px": 4,
+              "close_moved_px": 18635
+            },
+            "10": {
+              "pinned_mask_px": 298721,
+              "own_mask_px": 297122,
+              "own_mask_delta_pct": -0.54,
+              "px": 298721,
+              "mean_luma": 68.818,
+              "L_hidden": 27.557,
+              "L_baseline_local": 68.818,
+              "presence_pct": 100,
+              "m12": {
+                "water_px": 298721,
+                "water_frac": 0.57624,
+                "FresnelDelta": 0.08057,
+                "NormalEnergy": 0.23147,
+                "normalReason": null,
+                "ShoreDelta": 0.013,
+                "ReflCorr": null,
+                "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+                "TemporalVar": null,
+                "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+                "grazing_rows": [
+                  0,
+                  134
+                ],
+                "downward_rows": [
+                  405,
+                  539
+                ],
+                "normal_window": {
+                  "x": 640,
+                  "y": 256,
+                  "k": 128
+                }
+              },
+              "shore": {
+                "profile": [
+                  52.646,
+                  65.698,
+                  72.345,
+                  73.819,
+                  75.787,
+                  78.092,
+                  77.59,
+                  77.856,
+                  76.718,
+                  77.429,
+                  78.929,
+                  78.597,
+                  78.363,
+                  79.332,
+                  78.652,
+                  77.591,
+                  76.553,
+                  77.152,
+                  77.055,
+                  76.844,
+                  76.376,
+                  76.191,
+                  76.671,
+                  75.479,
+                  75.694,
+                  76.646,
+                  76.275,
+                  75.592,
+                  74.793,
+                  75.133,
+                  74.837,
+                  73.867,
+                  74.495,
+                  74.35,
+                  74.885,
+                  73.9,
+                  72.834,
+                  73.097,
+                  73.002,
+                  71.978,
+                  72.266,
+                  72.773,
+                  72.828,
+                  72.709,
+                  72.42,
+                  72.081,
+                  71.864,
+                  70.634
+                ],
+                "near_shore_luma": 59.172,
+                "open_water_luma": 73.867,
+                "span": 14.695,
+                "d10_px": 2,
+                "d90_px": 4,
+                "gradient_width_px": 2
+              },
+              "shore_raw": {
+                "profile": [
+                  59.55,
+                  72.201,
+                  77.414,
+                  78.141,
+                  77.852,
+                  77.829,
+                  76.672,
+                  75.183,
+                  74.497,
+                  74.565,
+                  73.591,
+                  72.193,
+                  71.667,
+                  71.353,
+                  71.362,
+                  71.268,
+                  71.353,
+                  71.59,
+                  71.185,
+                  70.265,
+                  69.594,
+                  69.955,
+                  69.611,
+                  68.9,
+                  68.523,
+                  68.229,
+                  68.245,
+                  68.12,
+                  68.026,
+                  68.397,
+                  68.108,
+                  67.619,
+                  67.541,
+                  67.45,
+                  67.15,
+                  67.233,
+                  67.014,
+                  67.111,
+                  67.089,
+                  67.068,
+                  66.232,
+                  65.662,
+                  65.545,
+                  65.249,
+                  65.222,
+                  65.143,
+                  65.186,
+                  65.421
+                ],
+                "near_shore_luma": 65.875,
+                "open_water_luma": 67.15,
+                "span": 1.275,
+                "d10_px": 2,
+                "d90_px": 2,
+                "gradient_width_px": 1
+              },
+              "close_radius_px": 4,
+              "close_moved_px": 16304
+            },
+            "16": {
+              "pinned_mask_px": 294475,
+              "own_mask_px": 293296,
+              "own_mask_delta_pct": -0.4,
+              "px": 294475,
+              "mean_luma": 69.126,
+              "L_hidden": 27.307,
+              "L_baseline_local": 69.126,
+              "presence_pct": 100,
+              "m12": {
+                "water_px": 294475,
+                "water_frac": 0.56805,
+                "FresnelDelta": 0.08818,
+                "NormalEnergy": 0.23147,
+                "normalReason": null,
+                "ShoreDelta": 0.0205,
+                "ReflCorr": null,
+                "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+                "TemporalVar": null,
+                "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+                "grazing_rows": [
+                  0,
+                  134
+                ],
+                "downward_rows": [
+                  405,
+                  539
+                ],
+                "normal_window": {
+                  "x": 640,
+                  "y": 256,
+                  "k": 128
+                }
+              },
+              "shore": {
+                "profile": [
+                  55.678,
+                  70.271,
+                  75.016,
+                  76.495,
+                  77.532,
+                  79.327,
+                  78.375,
+                  77.379,
+                  76.511,
+                  77.28,
+                  77.608,
+                  77.179,
+                  77.41,
+                  77.954,
+                  77.155,
+                  76.678,
+                  75.114,
+                  75.615,
+                  75.833,
+                  75.531,
+                  75.513,
+                  74.957,
+                  74.829,
+                  74.688,
+                  75.139,
+                  75.309,
+                  74.693,
+                  73.323,
+                  72.596,
+                  72.743,
+                  71.828,
+                  71.41,
+                  72.099,
+                  72.188,
+                  72.038,
+                  71.145,
+                  69.988,
+                  70.315,
+                  70.315,
+                  69.818,
+                  69.964,
+                  70.082,
+                  70.09,
+                  70.21,
+                  69.345,
+                  69.025,
+                  68.816,
+                  68.19
+                ],
+                "near_shore_luma": 62.974,
+                "open_water_luma": 71.145,
+                "span": 8.17,
+                "d10_px": 2,
+                "d90_px": 3,
+                "gradient_width_px": 1
+              },
+              "shore_raw": {
+                "profile": [
+                  62.737,
+                  75.402,
+                  79.226,
+                  79.015,
+                  77.691,
+                  77.286,
+                  75.606,
+                  74.559,
+                  74.092,
+                  73.925,
+                  72.916,
+                  71.879,
+                  71.333,
+                  71.229,
+                  71.262,
+                  71.588,
+                  71.542,
+                  71.638,
+                  71.315,
+                  70.568,
+                  69.931,
+                  70.209,
+                  69.957,
+                  69.268,
+                  68.778,
+                  68.628,
+                  68.613,
+                  68.425,
+                  68.149,
+                  68.137,
+                  68.067,
+                  67.763,
+                  67.631,
+                  67.442,
+                  67.054,
+                  66.852,
+                  66.51,
+                  66.824,
+                  66.433,
+                  66.034,
+                  65.518,
+                  65.096,
+                  65.357,
+                  65.157,
+                  65.06,
+                  64.936,
+                  65.083,
+                  65.232
+                ],
+                "near_shore_luma": 69.07,
+                "open_water_luma": 66.852,
+                "span": -2.218,
+                "d10_px": 1,
+                "d90_px": 1,
+                "gradient_width_px": 1
+              },
+              "close_radius_px": 4,
+              "close_moved_px": 15370
+            }
+          }
+        }
+      ],
+      "baseline_drift": null
+    }
+  },
+  "motion": {},
+  "supersample": {},
+  "null_calibration": null,
+  "pageErrors": []
+}

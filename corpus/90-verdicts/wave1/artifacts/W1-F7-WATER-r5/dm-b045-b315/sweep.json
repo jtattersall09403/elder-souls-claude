@@ -1,0 +1,208 @@
+{
+  "tool": "f7-r5-sweep",
+  "roadmap_item": "F7",
+  "generated": "2026-08-16T03:51:27.656Z",
+  "commit": "2d994147929465dba7a24db18309b933feb4fdbb",
+  "seed": 20260814,
+  "site": "vista-deep-marshes",
+  "region_from_census": "deep-marshes",
+  "region_k": 4.5,
+  "stand_verification": {
+    "deck_asked_for": [
+      3123.5,
+      3715
+    ],
+    "player_pos_after_teleport": [
+      3123.5,
+      1.16,
+      3715
+    ],
+    "teleport_offset_m": 0,
+    "running_field_region_at_deck_point": "deep-marshes",
+    "running_field_region_at_player": "deep-marshes",
+    "note": "The DRAWN HUD label is stale — confirmed by the r4 critic at 4 of 4 poses. Read this block, never the label in the frame."
+  },
+  "time_of_day": 13,
+  "canvas": [
+    960,
+    540
+  ],
+  "mode": "arms",
+  "frozen_phase": 11,
+  "interleaved": true,
+  "arm_order": "forward",
+  "mask_policy": {
+    "pinned": true,
+    "mask_arm": "prefix",
+    "thresholds": [
+      10,
+      16
+    ],
+    "why": "HAZARDS §25 / RI-VIS03 M12a closing paragraph — one mask per pose, from the named baseline arm, every arm scored through it.",
+    "and_the_drift": "HAZARDS §25a — the baseline is ALSO re-captured before and after every arm, so each arm is read against flanking baselines one interval away instead of one baseline eight intervals away. The baseline's own spread across its repeated captures is the drift band published beside every number."
+  },
+  "declared_pose_set": {
+    "rule": "RI-VIS03 M12a: >= 4 poses >= 90 deg apart, declared before measuring, every pose on its own line, NO MEAN OVER POSES, a band met only at the WORST pose, >= 1 water_edge pose with a real boundary.",
+    "bearings_deg": [
+      45,
+      135,
+      225,
+      315
+    ],
+    "targets_from": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/shoreline-census.json",
+    "targets": [
+      {
+        "bearing_deg": 45,
+        "cell_centre": [
+          3143.75,
+          3731.25
+        ],
+        "distance_m": 26,
+        "bearing_offset_deg": 6.3,
+        "dry_corners": 1,
+        "wet_corner_depths_m": [
+          1.453,
+          null,
+          1.492,
+          1.433
+        ],
+        "deepest_wet_corner_m": 1.492,
+        "water_y": null,
+        "ground_y": 2.263
+      },
+      {
+        "bearing_deg": 135,
+        "cell_centre": [
+          3143.75,
+          3693.75
+        ],
+        "distance_m": 29.4,
+        "bearing_offset_deg": 1.4,
+        "dry_corners": 2,
+        "wet_corner_depths_m": [
+          null,
+          0.704,
+          null,
+          0.027
+        ],
+        "deepest_wet_corner_m": 0.704,
+        "water_y": 1.88,
+        "ground_y": 1.675
+      },
+      {
+        "bearing_deg": 225,
+        "cell_centre": [
+          3106.25,
+          3706.25
+        ],
+        "distance_m": 19.3,
+        "bearing_offset_deg": 18.1,
+        "dry_corners": 1,
+        "wet_corner_depths_m": [
+          0.231,
+          1.084,
+          1.053,
+          null
+        ],
+        "deepest_wet_corner_m": 1.084,
+        "water_y": 1.88,
+        "ground_y": 1.142
+      },
+      {
+        "bearing_deg": 315,
+        "cell_centre": [
+          3093.75,
+          3731.25
+        ],
+        "distance_m": 33.9,
+        "bearing_offset_deg": -16.4,
+        "dry_corners": 1,
+        "wet_corner_depths_m": [
+          0.391,
+          1.063,
+          0.714,
+          null
+        ],
+        "deepest_wet_corner_m": 1.063,
+        "water_y": 1.88,
+        "ground_y": 1.457
+      }
+    ]
+  },
+  "head_expression_asserted": {
+    "r3_depth_block": true,
+    "r4_shore_band_block": true,
+    "r2_schlick_weight": true,
+    "shore_band_uniform_default": "0.10",
+    "region_k_uniform": true,
+    "critic_grep_still_zero": true,
+    "backtick_count_in_file": 128
+  },
+  "refuses_to_measure_if": "the r4 shore-band block is not verbatim in game/src/render/water.js",
+  "gpu_state_before": {
+    "water_materials": 56,
+    "distinct": [
+      {
+        "mesh": "water",
+        "region_resolved": null,
+        "uWaterK": 2,
+        "uWaterShoreFade": 1,
+        "uWaterShoreBandM": 0.1,
+        "phase_frozen": true,
+        "transparent": true,
+        "opacity": 0.86,
+        "depthWrite": false,
+        "depthTest": true,
+        "renderOrder": 0
+      },
+      {
+        "mesh": "water:eastern-rootlands",
+        "region_resolved": "eastern-rootlands",
+        "uWaterK": 3.2,
+        "uWaterShoreFade": 1,
+        "uWaterShoreBandM": 0.1,
+        "phase_frozen": true,
+        "transparent": true,
+        "opacity": 0.876,
+        "depthWrite": false,
+        "depthTest": true,
+        "renderOrder": 0
+      },
+      {
+        "mesh": "water:western-rootlands",
+        "region_resolved": "western-rootlands",
+        "uWaterK": 1.9,
+        "uWaterShoreFade": 1,
+        "uWaterShoreBandM": 0.1,
+        "phase_frozen": true,
+        "transparent": true,
+        "opacity": 0.772,
+        "depthWrite": false,
+        "depthTest": true,
+        "renderOrder": 0
+      },
+      {
+        "mesh": "water:deep-marshes",
+        "region_resolved": "deep-marshes",
+        "uWaterK": 4.5,
+        "uWaterShoreFade": 1,
+        "uWaterShoreBandM": 0.1,
+        "phase_frozen": true,
+        "transparent": true,
+        "opacity": 0.96,
+        "depthWrite": false,
+        "depthTest": true,
+        "renderOrder": 0
+      }
+    ]
+  },
+  "phase_freeze": {
+    "materials": 11,
+    "frozen_at": 11
+  },
+  "poses": {},
+  "motion": {},
+  "supersample": {},
+  "null_calibration": null,
+  "pageErrors": []
+}
