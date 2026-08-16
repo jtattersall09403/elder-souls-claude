@@ -15,8 +15,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
   sessions, with the motion visible in pixels rather than only in numbers.
 - **The water, round five** — the fade's setting is twelve times too big, and every number this work
   has ever published was measured on an unstable setting.
-- **Judging the dialogue and books fix** — the authoring leak and the `undefined` book bodies are
-  closed; a critic is checking them.
+- **The dialogue and books guards** — both fixes are real; the *checks* protecting them turned out to
+  be able to delete their own evidence.
 
 ## If you play right now, expect this
 
@@ -37,7 +37,12 @@ conversation window that *"reads like an authoring instruction to the writer"* �
 (**5 lines from a single source**; the larger count I first quoted was legitimate authored text,
 checked by hand across 43 matches). And **books were printing the literal word `undefined`**: I said
 four, the true blast radius is **24** — a title-only catalogue of 162 entries loads fifth of twenty-six
-and was overwriting every real book before it. Both carry checks proven to fail on the old build.
+and was overwriting every real book before it. **But the checks guarding them failed their own audit** — one of them **imports a generator that
+rewrites the very file it then scans**, so hand-authoring the defect back in makes it *vanish* and the
+check reports all clear. Two others test the fixed function while never checking anything still calls
+it. Being repaired now; the fixes themselves survived independent re-derivation, and the books one was
+**understated** — across 500 shuffled load orders the old code broke anywhere from 0 to 162 books
+depending purely on file order, and the new code is invariant in all 500.
 
 **It is a slice, not a game.** You can walk around, look at things, open the map and journal, talk to people, and fight. It will not look good yet.
 
@@ -110,8 +115,7 @@ and was overwriting every real book before it. Both carry checks proven to fail 
 - **Armoured helmets were erasing people's eyes** — **69 of 96 camera bearings** lost the eye entirely,
   two armour sets from *every* angle, because the head was shrunk without shrinking what sits on it.
   Now 0 of 96.
-- **The player's own eye was the worst in the game** — 2.16× the brightness of their face, on the
-  player and **260 of 408** NPC records. Now 0.847×.
+
 - **The body is photographed on real hardware and the change is visible.** Eight angles, before and
   after, on an RTX A4500 — the picture the last four judgements were written against. The waist reads
   at player distance.
@@ -140,10 +144,6 @@ and was overwriting every real book before it. Both carry checks proven to fail 
   **the snout was in front of it.** Moved 6 mm out and 12 mm forward, then photographed on hardware:
   at talking distance you now see a dark pupil with a catchlight. At third-person distance it is still
   two amber smudges.
-- **The hover is fixed and photographed** — both feet back within a millimetre of where they sat, cross-
-  checked by two independently written capture tools.
-- **Some good news:** the character bar now has **12 of its 18 checks published** for the first time,
-  and the head-count proportion check went from hard fail to pass — 0 of 41 figures in band, to 41/41.
 
 
 - **Dialogue: the topic links work, and were preferred — the first real quality judgement this project
