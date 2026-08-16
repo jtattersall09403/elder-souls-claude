@@ -1,0 +1,671 @@
+{
+ "at": "2026-08-15T23:46:00.916Z",
+ "what": "THE CANDIDATE BATTERY THE ROUND'S OWN TOOL CONTAINS AND NEVER FIRED (d1-d6 = f4-r2-light.mjs's `hard` set), PLUS THE DIRECTION NOBODY TESTED (x1-x3, the key recoloured toward sky.js:644's own night blue). pair01, 08:00 clear, sealed judged crop [300,150,512,512] (S64's domain). Arms are page-side and per-frame; every arm's live readback is in `readback` and every arm is LIVE with cfgError null.",
+ "instrument": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs \u2014 M6/M2/M7 re-implemented from RI-VIS03 \u00a70 pseudocode by this critic WITHOUT reading f4c-analyse.mjs, and reproducing the round's control (7.16 -> my 7.18) and the vendored plates (96.08/16.06/12.49 -> my 96.10/16.99/12.38).",
+ "UPPER_BOUND_WARNING": "Every KEY-HUE arm (x1,x2,x3) OVERSTATES what the same change does in source: bakeEnvironmentProbe consumes the uSunColour UNIFORM, which a page-side light recolour does not touch, so in source a bluer key would also blue the probe's sun lobe and pull the shadow quartile back toward the lit one. Read these as an UPPER BOUND, which is why this verdict reports the round's ruling as UNSUPPORTED BY ITS OWN EVIDENCE rather than as OVERTURNED.",
+ "bar": "RI-VIS03 exterior_daylight: hue_offset >= 15 (HARD FAIL < 6); retention >= 0.60 (hard fail < 0.30); C_shadow >= 6; C_local_med >= 0.045 (fail < 0.025)",
+ "METRIC_NOISE_FLOOR_MEASURED_IN_THIS_RUN": {
+  "x0-control": 7.35,
+  "x0b-control-recheck": 7.57,
+  "spread_deg": 0.22,
+  "why_it_matters": "THE SAME CONFIGURATION, RE-CAPTURED IN THE SAME PROCESS AT THE SAME POSE, MOVES hue_offset BY 0.22 deg. The round's shipped gain on this crop is +0.16 deg (7.16 -> 7.32). By ruling S61 a reading inside the measure's demonstrated instability is `unresolved` and fails closed, so THE CROP GAIN IS UNRESOLVED AND IS NOT A GAIN. (The round's FULL-FRAME gain, 3.75 -> 6.38, is 12x this floor and is real \u2014 and the round never reported it.)"
+ },
+ "rows": [
+  {
+   "arm": "x0-control",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.94,
+     0.82
+    ],
+    "sunDirUnit": [
+     0.7203,
+     0.5549,
+     0.4162
+    ],
+    "sunElevationDeg": 33.704,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 7.35,
+    "hue_shadow_deg": 109.46,
+    "hue_lit_deg": 102.11,
+    "retention": 0.6805,
+    "C_shadow": 12.379,
+    "C_local_med": 0.0245,
+    "shadow_mask_frac": 0.2488,
+    "mean_Yp_shadow": 0.1714,
+    "mean_Yp_lit": 0.394
+   },
+   "sha256": "37d7838de3026a24d43d2ab0279f5f2a455f789f863b9f99caaf9484a26553b9"
+  },
+  {
+   "arm": "d1-coolhard100",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.94,
+     0.82
+    ],
+    "sunDirUnit": [
+     0.7202,
+     0.555,
+     0.4162
+    ],
+    "sunElevationDeg": 33.711,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.48,
+     0.68,
+     1
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.48,
+     0.68,
+     1
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 7.3,
+    "hue_shadow_deg": 109.8,
+    "hue_lit_deg": 102.5,
+    "retention": 0.6593,
+    "C_shadow": 12.272,
+    "C_local_med": 0.0245,
+    "shadow_mask_frac": 0.2482,
+    "mean_Yp_shadow": 0.1684,
+    "mean_Yp_lit": 0.3916
+   },
+   "sha256": "c1d41faab8d6e36cd82cbc1b232afa7cb3fd5cdf721d7cef133cb9272a9b2bae"
+  },
+  {
+   "arm": "d2-warmhard100",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.76,
+     0.48
+    ],
+    "sunDirUnit": [
+     0.7202,
+     0.555,
+     0.4163
+    ],
+    "sunElevationDeg": 33.711,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 3.34,
+    "hue_shadow_deg": 97.49,
+    "hue_lit_deg": 94.15,
+    "retention": 0.6386,
+    "C_shadow": 14.15,
+    "C_local_med": 0.023,
+    "shadow_mask_frac": 0.2498,
+    "mean_Yp_shadow": 0.1522,
+    "mean_Yp_lit": 0.3785
+   },
+   "sha256": "aeeaef1181271eebeaffacc38b23f4673f995cc5edf962df0a7c55e8f2f1a5ec"
+  },
+  {
+   "arm": "d3-both100",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.76,
+     0.48
+    ],
+    "sunDirUnit": [
+     0.7201,
+     0.5551,
+     0.4163
+    ],
+    "sunElevationDeg": 33.718,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.48,
+     0.68,
+     1
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.48,
+     0.68,
+     1
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 3.31,
+    "hue_shadow_deg": 97.7,
+    "hue_lit_deg": 94.39,
+    "retention": 0.6392,
+    "C_shadow": 14.028,
+    "C_local_med": 0.0228,
+    "shadow_mask_frac": 0.2462,
+    "mean_Yp_shadow": 0.1493,
+    "mean_Yp_lit": 0.3766
+   },
+   "sha256": "f780296164c44df9db13b1ee1d7d44ba976b3d3813c7d2eecc4d1cb3e98eb424"
+  },
+  {
+   "arm": "d4-both100-amb250",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.76,
+     0.48
+    ],
+    "sunDirUnit": [
+     0.7201,
+     0.5551,
+     0.4164
+    ],
+    "sunElevationDeg": 33.718,
+    "hemiTotalSceneWide": 5.5577,
+    "hemiSceneRoot": 0.92767,
+    "hemiRootColour": [
+     0.48,
+     0.68,
+     1
+    ],
+    "ambientTotalSceneWide": 0.7473,
+    "ambientRootColour": [
+     0.48,
+     0.68,
+     1
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 4.22,
+    "hue_shadow_deg": 99.98,
+    "hue_lit_deg": 95.76,
+    "retention": 0.676,
+    "C_shadow": 14.476,
+    "C_local_med": 0.024,
+    "shadow_mask_frac": 0.25,
+    "mean_Yp_shadow": 0.1571,
+    "mean_Yp_lit": 0.3862
+   },
+   "sha256": "bbb46b4165035ccc34704cafb5a5c5bad17042b317dacb5a2287434681948c2e"
+  },
+  {
+   "arm": "d5-both100-amb250-env50",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.76,
+     0.48
+    ],
+    "sunDirUnit": [
+     0.72,
+     0.5552,
+     0.4164
+    ],
+    "sunElevationDeg": 33.724,
+    "hemiTotalSceneWide": 5.5577,
+    "hemiSceneRoot": 0.92767,
+    "hemiRootColour": [
+     0.48,
+     0.68,
+     1
+    ],
+    "ambientTotalSceneWide": 0.7473,
+    "ambientRootColour": [
+     0.48,
+     0.68,
+     1
+    ],
+    "environmentIntensity": 0.175,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 4.36,
+    "hue_shadow_deg": 99.02,
+    "hue_lit_deg": 94.66,
+    "retention": 0.6622,
+    "C_shadow": 14.167,
+    "C_local_med": 0.0233,
+    "shadow_mask_frac": 0.2477,
+    "mean_Yp_shadow": 0.145,
+    "mean_Yp_lit": 0.3627
+   },
+   "sha256": "b80c0e2554099c5ed49226df95d6c02adfd392445d7dfb506809311d92955662"
+  },
+  {
+   "arm": "d6-both60-amb180",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.832,
+     0.616
+    ],
+    "sunDirUnit": [
+     0.7199,
+     0.5552,
+     0.4164
+    ],
+    "sunElevationDeg": 33.724,
+    "hemiTotalSceneWide": 5.2979,
+    "hemiSceneRoot": 0.66793,
+    "hemiRootColour": [
+     0.5588,
+     0.724,
+     0.9776
+    ],
+    "ambientTotalSceneWide": 0.6165,
+    "ambientRootColour": [
+     0.5588,
+     0.724,
+     0.9776
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 5.49,
+    "hue_shadow_deg": 103.32,
+    "hue_lit_deg": 97.84,
+    "retention": 0.6811,
+    "C_shadow": 13.793,
+    "C_local_med": 0.0244,
+    "shadow_mask_frac": 0.2477,
+    "mean_Yp_shadow": 0.1587,
+    "mean_Yp_lit": 0.3869
+   },
+   "sha256": "f85ffabc6cb1ccb0b8a355e2f4f2ca1ca4f17f53c863a60a7ab05c47abc4018e"
+  },
+  {
+   "arm": "x1-moonkey",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     0.549,
+     0.663,
+     0.847
+    ],
+    "sunDirUnit": [
+     0.7199,
+     0.5553,
+     0.4165
+    ],
+    "sunElevationDeg": 33.731,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 17.07,
+    "hue_shadow_deg": 131.49,
+    "hue_lit_deg": 114.41,
+    "retention": 0.6037,
+    "C_shadow": 8.533,
+    "C_local_med": 0.0214,
+    "shadow_mask_frac": 0.2498,
+    "mean_Yp_shadow": 0.1303,
+    "mean_Yp_lit": 0.3597
+   },
+   "sha256": "b4a61136abaaa21247bb48070ef075317207668b88488a36b4f1ab5b9ad92c79"
+  },
+  {
+   "arm": "x2-moonkey-warmamb",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     0.549,
+     0.663,
+     0.847
+    ],
+    "sunDirUnit": [
+     0.7198,
+     0.5553,
+     0.4165
+    ],
+    "sunElevationDeg": 33.731,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     1,
+     0.7,
+     0.4
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     1,
+     0.7,
+     0.4
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 16.51,
+    "hue_shadow_deg": 127.97,
+    "hue_lit_deg": 111.46,
+    "retention": 0.6076,
+    "C_shadow": 8.524,
+    "C_local_med": 0.0213,
+    "shadow_mask_frac": 0.2451,
+    "mean_Yp_shadow": 0.1293,
+    "mean_Yp_lit": 0.3595
+   },
+   "sha256": "6ce1998b8ad3fc3290e5e55cfa28f592121f902aeb9dd6df9a8837775fe65cea"
+  },
+  {
+   "arm": "x3-moonkey-warmamb-amb400",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     0.549,
+     0.663,
+     0.847
+    ],
+    "sunDirUnit": [
+     0.7198,
+     0.5554,
+     0.4165
+    ],
+    "sunElevationDeg": 33.738,
+    "hemiTotalSceneWide": 6.1143,
+    "hemiSceneRoot": 1.48428,
+    "hemiRootColour": [
+     1,
+     0.7,
+     0.4
+    ],
+    "ambientTotalSceneWide": 1.0277,
+    "ambientRootColour": [
+     1,
+     0.7,
+     0.4
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 16.15,
+    "hue_shadow_deg": 119.47,
+    "hue_lit_deg": 103.32,
+    "retention": 0.7132,
+    "C_shadow": 10.371,
+    "C_local_med": 0.0239,
+    "shadow_mask_frac": 0.249,
+    "mean_Yp_shadow": 0.1495,
+    "mean_Yp_lit": 0.3847
+   },
+   "sha256": "72184daec13990947db5c64737b939310a68c9a11da80cf51b78d29b6636ae82"
+  },
+  {
+   "arm": "x4-amb400-only",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.94,
+     0.82
+    ],
+    "sunDirUnit": [
+     0.7197,
+     0.5554,
+     0.4166
+    ],
+    "sunElevationDeg": 33.738,
+    "hemiTotalSceneWide": 6.1143,
+    "hemiSceneRoot": 1.48428,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 1.0277,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 8.87,
+    "hue_shadow_deg": 111.18,
+    "hue_lit_deg": 102.31,
+    "retention": 0.753,
+    "C_shadow": 13.995,
+    "C_local_med": 0.0271,
+    "shadow_mask_frac": 0.2496,
+    "mean_Yp_shadow": 0.1806,
+    "mean_Yp_lit": 0.4121
+   },
+   "sha256": "edf62502e9197d21be93d57730593881e93d9e5e25c178e55607a13ee9c73a74"
+  },
+  {
+   "arm": "x5-env300-only",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.94,
+     0.82
+    ],
+    "sunDirUnit": [
+     0.7196,
+     0.5555,
+     0.4166
+    ],
+    "sunElevationDeg": 33.745,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 1.05,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 6.22,
+    "hue_shadow_deg": 110.95,
+    "hue_lit_deg": 104.73,
+    "retention": 0.718,
+    "C_shadow": 13.78,
+    "C_local_med": 0.0282,
+    "shadow_mask_frac": 0.2468,
+    "mean_Yp_shadow": 0.2028,
+    "mean_Yp_lit": 0.4623
+   },
+   "sha256": "d302fa815ac57f92d3341e32203b44e4a43bb761a4c4207e192da982af467f73"
+  },
+  {
+   "arm": "x6-warmamb-only",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.94,
+     0.82
+    ],
+    "sunDirUnit": [
+     0.7196,
+     0.5555,
+     0.4166
+    ],
+    "sunElevationDeg": 33.745,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     1,
+     0.7,
+     0.4
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     1,
+     0.7,
+     0.4
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 7.37,
+    "hue_shadow_deg": 107.22,
+    "hue_lit_deg": 99.85,
+    "retention": 0.6639,
+    "C_shadow": 12.981,
+    "C_local_med": 0.025,
+    "shadow_mask_frac": 0.2498,
+    "mean_Yp_shadow": 0.1615,
+    "mean_Yp_lit": 0.3884
+   },
+   "sha256": "2a7ce46a488712479c82c085c31dae6900169997642eda5a5ced33375384675c"
+  },
+  {
+   "arm": "x0b-control-recheck",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.94,
+     0.82
+    ],
+    "sunDirUnit": [
+     0.7195,
+     0.5556,
+     0.4167
+    ],
+    "sunElevationDeg": 33.752,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "M6": {
+    "hue_offset_deg": 7.57,
+    "hue_shadow_deg": 109.28,
+    "hue_lit_deg": 101.71,
+    "retention": 0.6646,
+    "C_shadow": 12.785,
+    "C_local_med": 0.025,
+    "shadow_mask_frac": 0.2471,
+    "mean_Yp_shadow": 0.1611,
+    "mean_Yp_lit": 0.3881
+   },
+   "sha256": "ef8cb875e314a28112d07f81710249e8f9cda20d53910d68e739d0bf2243f020"
+  }
+ ],
+ "served": {
+  "game_dir": "/home/user/elder-souls-claude/game",
+  "sha256_16": {
+   "src/render/lib/lighting-recipes.js": "241690686dca41ac",
+   "src/render/sky.js": "5fd64d937c3c06df"
+  }
+ },
+ "renderer": "SOFTWARE",
+ "resolution": [
+  1920,
+  1080
+ ]
+}
