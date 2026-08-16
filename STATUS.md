@@ -9,8 +9,8 @@
 Four agents, on ring 1. (The container restarted overnight and killed a full fleet mid-round; their
 work was quarantined on a side branch and every round restarted from it, so nothing was lost.)
 
-- **The sun, round four** — a judge found the real hard fail, sitting unrecorded in the evidence since
-  round one, and proved the metric we tuned against reads the wrong pixels.
+- **Judging the sun, round four** — the hard fail that sat unrecorded since round one is closed, and
+  storm weather has been photographed for the first time.
 - **Judging the crowd, which went from 14 different bodies to 72** — and four more people who were
   standing 6 km out to sea are back in their towns.
 - **The water, round six** — chasing the thing that actually costs the water, now that the measurement
@@ -159,62 +159,33 @@ file order; the new code is invariant in all 500.
 
 ## Why the game doesn't look better — answered today, and it's one number
 
-Two independent blind comparisons against real reference photographs, and **we lost 5 of 5 both
-times** — the second one *after* three correct fixes landed. Every judge named the same two absences:
-no material differentiation, and no contact shadow. Those are exactly the two things the fixes
-delivered and measured as delivered.
+**The diagnosis: the fixes work, and they were being applied to 19% of the picture.** Turning off every
+shadow in the game changed the judged pixels **less than photographing the same frame twice** — because
+**46% of the light was indirect and none of it could be shadowed**.
 
-**The diagnosis: the fixes work, and they were being applied to 19% of the picture.** Measured on the
-exact window the judges looked at — **turning off every shadow in the game changed the judged pixels
-less than photographing the same frame twice did**, while the sky's ambient dome moved them **28 times
-as much as the entire shadow map**. The reason is that **46% of the light in a frame was indirect and
-none of it could be shadowed**: the sky's contribution is a dome that, in the renderer's own comment,
-contains *"no terrain, no settlement and no canopy"*, so it lights every surface as if nothing were in
-the way.
+**The rebalance landed** — daytime key ×3, sky ×0.75, fill ×0.75, ambient dome cut to a third, and a
+moon lever that never existed. **Judged and failed at 2 of 10**, with one real win: at midday the
+settlement casts large readable shadows in 8 of 12 camera angles.
 
-**The rebalance landed, and it is four numbers.** Daytime key light ×3, sky ×0.75, fill ×0.75, ambient
-dome cut to a third; night got its own moon lever. **Judged and failed at 2 of 10** — with one real
-win: **at midday the settlement casts large readable shadows in 8 of 12 camera angles**.
+**Three rounds tried to fix it, and a judge showed we were measuring the wrong thing.** The check that
+drove all three splits the picture into "lit" and "shadow" — and had them **backwards**: what it called
+*lit* was the sky and a pale wall, what it called *shadow* was speckle on sunlit ground. Run it with
+the sun switched off entirely and it scores *higher*. The number was a property of **where the camera
+was pointed**, not of the light — which is why three rounds of tuning could not move it. Two things I
+told you are withdrawn: "our sunlight has no colour" was the wrong diagnosis, and the rule I wrote to
+replace it was half wrong too.
 
-**And the judge found the thing the numbers were missing: our sunlight has no colour.** The corpus's
-own detector was sitting unused — our daylight key reads **7.2°** against a minimum of 15, where six
-real photographs read 16–143°.
+**The real hard failure was sitting in the evidence the whole time and nobody wrote it down** — a
+shadow-detail measure below its floor **since round one**, in the first round's own saved picture,
+unrecorded by all three judgements. **It is now closed, by one line**: shadows keep four times as much
+detail as they did, contrast inside them passes for the first time, and it comes with the project's
+first hue reading that is both passing *and* proven to be measuring the right pixels. **Shadowed areas
+having detail in them is the thing you would actually see.**
 
-**Three rounds tried to fix it. A judge has now shown we were measuring the wrong thing.**
-
-The check that has driven all three rounds splits the picture into "lit" and "shadow" — and it has
-them **backwards**. Painted back onto the frame, what it calls *lit* is **the sky and a pale wall**,
-and what it calls *shadow* is **speckle on open sunlit ground**. Worse: **run it with the sun switched
-off entirely and it scores higher** at seven of eight test shots. And the same shipped build **passes
-it outright** when the camera is walking at midday and fails it at every angle at 8 a.m. — so the
-number was a property of *where the camera was pointed*, not of the light.
-
-**Meanwhile the real hard failure was sitting in the evidence the whole time and nobody wrote it
-down** — a shadow-detail measure that has been below its floor **since round one**, in the first
-round's own saved picture, unrecorded by all three judgements. And the shadow system itself was never
-built to spec: **one shadow map where the standard asks for three**. That is round four's work.
-
-**Two things I told you are withdrawn.** "Our sunlight has no colour" was the wrong diagnosis. And the
-rule I wrote to replace it was half wrong too — I claimed the four test shots sorted perfectly by how
-much shadow they contained; they don't, and the fix I proposed would have passed shots carrying a
-building's shadow across sunlit stone.
-
-**The builder's conclusion, which a judge is now testing, would change the order of the work:** colour
-in a picture is the surface times the light, and **when every surface in the world is the same olive,
-the light barely matters**. That is exactly what all five blind judges wrote in words. If it holds,
-the thing blocking us is giving surfaces different materials, not tuning the sun — and I also have to
-withdraw "13:00 good, 08:00 empty": shadow area swings **fivefold across a camera orbit at a fixed
-sun**, so that claim was an artefact of looking from one angle.
-
-**That is because the acceptance number I wrote was wrong, and I have ruled it void.** It asked how
-much the picture changes when you switch the sun off — but *a pixel in shadow does not change when you
-switch the sun off*, so the measure shrinks exactly as the fix succeeds and the build is penalised for
-casting shadows. Replaced with the same test taken **only on the lit parts of the frame**, plus a
-clause that the shadowed area must not shrink. **This is the fourth metric in two days that got better
-when the game got worse, or worse when it got better, and three of the four were mine.**
-
-**The coverage hole:** only **2 of the 5** outdoor lighting recipes were rebalanced, and **overcast and
-storm weather cover 59% of daylight** — neither touched, and storm has never been photographed at all.
+**And storm weather has been photographed for the first time by anyone.** It fails on every count —
+no cast shadow at all, flat and milky, **no rain visible**, and it renders **brighter than clear
+noon**. Together with overcast that is **30 of the game's 43 weather states**, so most of the time you
+spend outdoors is still lit by something nobody has looked at until tonight.
 
 ## The honest standard
 
