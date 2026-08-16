@@ -224,6 +224,10 @@ const RI_MAP = {
   // 70-visual
   'RI-VIS01': ['I3'], 'RI-VIS02': ['I5'], 'RI-VIS03': ['I3', 'F2', 'F3'], 'RI-VIS04': ['F5', 'F2', 'F3', 'F4'],
   'RI-VIS05': ['F13'], 'RI-VIS06': ['I3'], 'RI-VIS07': ['F13'], 'RI-VIS08': ['F10', 'F11'], 'RI-VIS10': ['F10', 'I5'], 'RI-VIS09': ['I5'],
+  // RI-VIS11 (water surface micro-detail) homes in BOTH: F7 owns the water shader whose procedural
+  // ripple frequencies are the measured source of the energy, and F5 owns antialiasing, which is
+  // the class the defect turns out to belong to once the "ordered dither" reading is falsified.
+  'RI-VIS11': ['F7', 'F5'],
   // 80-methods  (METHOD bucket — but each has a build-side owner too)
   'RI-MTH01': ['I1'], 'RI-MTH02': ['I1'], 'RI-MTH03': ['I3'], 'RI-MTH04': ['I2'],
   'RI-MTH05': ['I5'], 'RI-MTH06': ['I2', 'I5'], 'RI-MTH07': ['I4'],
