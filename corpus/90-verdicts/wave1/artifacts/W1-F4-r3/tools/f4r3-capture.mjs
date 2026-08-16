@@ -244,6 +244,31 @@ const call = async (m, ...a) => {
   return { ok: true, v: res ? res.__ok : undefined };
 };
 
+/**
+ * The subject a deck setup names. `char-npc` resolves through `listEntities`, exactly as
+ * `tools/visual/f4c-critic.mjs:175-186` does, and THROWS when there is no NPC.
+ *
+ * WRITTEN AFTER GETTING IT WRONG. My first version fell back to the player when `snapshot()` had no
+ * `npcs` field — which it does not — so `pair03` and `pair04` silently captured the SAME FRAME as
+ * `pair02` and `pair01`, differing only in which 512x512 rectangle was cropped out of it. The tell
+ * was that pair02 and pair03 reported full-frame metrics identical to four decimals. A fallback that
+ * quietly measures the wrong subject is worse than a crash, and both are worse than a fallback that
+ * makes the substitution visible in the manifest.
+ */
+async function subjectPos(subject) {
+  const s = await call('snapshot');
+  if (!s.ok) throw new Error(`snapshot failed: ${s.e}`);
+  let [px, py, pz] = s.v.player.pos;
+  if (subject === 'npc') {
+    const ents = await call('listEntities');
+    const npcs = (ents.ok ? ents.v : []).filter((e) => e.kind === 'npc' || e.kind === 'NPC');
+    if (!npcs.length) throw new Error('char-npc setup: no NPC in range — refusing to photograph the player and call it an NPC');
+    npcs.sort((a, b) => Math.hypot(a.pos[0] - px, a.pos[2] - pz) - Math.hypot(b.pos[0] - px, b.pos[2] - pz));
+    [px, py, pz] = npcs[0].pos;
+  }
+  return [px, py, pz];
+}
+
 async function poseAt([px, py, pz], { yaw_deg, pitch_deg, distance_m, lookHeight = 1.1 }) {
   const yaw = (yaw_deg || 0) * Math.PI / 180, pitch = (pitch_deg || 0) * Math.PI / 180;
   const d = distance_m || 0;
@@ -431,8 +456,7 @@ try {
     for (const win of WINDOWS.filter((w) => !args.pair || String(args.pair).split(',').includes(w.pair))) {
       const st = await place(win.setup);
       await call('setTimeOfDay', win.hour);
-      const s = await call('snapshot');
-      const subject = win.setup === 'char-npc' ? (s.v.npcs && s.v.npcs[0] ? s.v.npcs[0].pos : s.v.player.pos) : s.v.player.pos;
+      const subject = await subjectPos(st.camera.subject);
       await poseAt(subject, st.camera);
       await call('stepFrames', SETTLE);
       for (const [id, cfg] of WINDOW_ARMS) {
