@@ -385,6 +385,13 @@ const GAP_MAP = {
   // with it. Mapped here rather than left red, because I turned the gate red. F10's owner should
   // overwrite this line freely if they want different targets.
   'GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins': ['F10'],
+  // F10 r11's gap (the frozen crowd) and F10 r12's (fourteen rendered bodies for 408 records).
+  // The r11 one is recorded CLOSED in `W1-F10-r12-CRITIC` and is mapped anyway, because the ledger
+  // reads the gap record's own status and a closed gap costs nothing to carry here.
+  // r12's is a MODELLING gap, not an animation one: E1 wants >= 34 distinct rendered bodies and the
+  // reachable pool is 14, so no amount of stance work reaches it. F10 owns the bodies.
+  'GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves': ['F10'],
+  'GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it': ['F10'],
   'GAP-W1-platform-prng-never-drawn': ['I1'],
   'GAP-W1-platform-save-drops-entity-prev-state': ['T1'],
   'GAP-W1-population-save-reload-repays-every-corpse': ['T1', 'G5'],
