@@ -1,0 +1,31 @@
+=== Job 4: re-derived by this critic from the SHIPPED file, nothing inherited ===
+file: 300 cells, 1500 lines, 1400 distinct
+
+/\bwrit\b/i                  25 lines  {"RG-LEDGER":25}
+/writ/i (substring)          71 lines  {"RG-LEDGER":37,"RG-EMPIRE":29,"RG-COURT":5}
+/Leyawiin/                    5 lines  {"RG-BWC":5}
+/\bCompany\b/ (capital)      35 lines  {"RG-BWC":35}
+/\bcompany\b/i (any case)    40 lines  {"RG-NAGA":5,"RG-BWC":35}
+
+=== the exact shipped RG-BWC/cold[3] lines ===
+  saxhleel       "Company time, and Leyawiin bought it. Local. Useful."
+  naga           "Company time, and Leyawiin bought it. That is not a local. Keep clear of it."
+  dunmer         "Company time, and Leyawiin bought it. Contract or coin. Either's fine."
+  imperial       "Company time, and Leyawiin bought it. You can read a contract. Sit down."
+  other-foreign  "Company time, and Leyawiin bought it. You look like you can carry things."
+
+=== "Local. Useful." — the surviving two-thirds of the string the blind judge flagged ===
+  25 shipped lines still end in "Local. Useful.", all RG-BWC/saxhleel
+  the flagged string was: "Say it in one line. Local. Useful."
+  the shipped string now: "Local. Useful. The Company's got your description. It is not flattering."
+  source: ADDRESS['RG-BWC'].saxhleel in gen-greetings.mjs — UNCHANGED by round 1 or round 2.
+
+=== transplant test, mechanised: which other groups could say the new line? ===
+  "company"    used by: RG-BWC, RG-NAGA
+  "leyawiin"   used by: RG-BWC
+  "bought"     used by: RG-BWC
+  "time"       used by: RG-BWC, RG-COURT, RG-OUTLAW, RG-ROOT
+  "contract"   used by: RG-BWC
+  "writ"       used by: RG-LEDGER
+  "coin"       used by: RG-BWC
+  "factor"     used by: RG-BWC, RG-DRES

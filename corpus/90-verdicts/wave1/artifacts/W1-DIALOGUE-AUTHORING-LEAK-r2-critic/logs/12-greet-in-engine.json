@@ -1,0 +1,750 @@
+{
+  "what": "RI-MTH07 §C3 hand-feed audit — greetings driven through Engine.talkTo(), no world fact supplied",
+  "state": "town-lilmoth",
+  "n_world_npcs": 60,
+  "reaction_groups_present": [
+    "RG-BWC",
+    "RG-COMMON",
+    "RG-DEEP",
+    "RG-IMP",
+    "RG-LEDGER",
+    "RG-LUKIUL",
+    "RG-ROOT",
+    "RG-TOWN",
+    "RG-VAKH"
+  ],
+  "npcs_probed": 60,
+  "npcs_with_error": 0,
+  "total_distinct_lines": 102,
+  "npcs_speaking_a_leak": [],
+  "npcs_reaching_the_corrected_line": [
+    "blackwood-company-factor"
+  ],
+  "rows": [
+    {
+      "eid": "blackwood-company-factor",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": true,
+      "lines": [
+        "Company time, and Leyawiin bought it. Local. Useful.",
+        "Local. Useful. We are working.",
+        "Local. Useful. Contract business only.",
+        "The Company is not recruiting today. Local. Useful.",
+        "Local. Useful. Take it to the factor."
+      ]
+    },
+    {
+      "eid": "dockmaster-weeja-sen",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Prices are on the board. You're from here, or near enough.",
+        "You're from here, or near enough. Ask. If I know it, you can have it.",
+        "It's a small place. There isn't much to tell. You're from here, or near enough.",
+        "You're from here, or near enough. Mind the wagons.",
+        "You're from here, or near enough. Something you need?"
+      ]
+    },
+    {
+      "eid": "harbourmistress-tesh",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Name and hatch-name, if you have both. Yes. What.",
+        "If it is an amendment it is a fee. If it is anything else it is a wait. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. I can look it up. It'll take as long as it takes.",
+        "Say the whole thing once rather than half of it three times. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. Papers on the desk, please."
+      ]
+    },
+    {
+      "eid": "lilmoth-apothecary-12",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-archivist-ledger",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Say the whole thing once rather than half of it three times. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. Papers on the desk, please.",
+        "Name and hatch-name, if you have both. Yes. What.",
+        "If it is an amendment it is a fee. If it is anything else it is a wait. Name and hatch-name, if you have both.",
+        "Name and hatch-name, if you have both. I can look it up. It'll take as long as it takes."
+      ]
+    },
+    {
+      "eid": "lilmoth-cook-1",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-cook-1-partner0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-cook-5",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-cook-5-sibling0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-factor-0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-factor-0-child0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-factor-0-partner1",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-factor-4",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-factor-4-elder0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-factor-4-sibling1",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-apothecary",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-customs",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-healer",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Root-kin. What.",
+        "Root-kin. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. Root-kin.",
+        "Root-kin. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. Root-kin."
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-inn-drowned",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-inn-stilt",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-ledger-house",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-market",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-pawn",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-rootpost",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Root-kin. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. Root-kin.",
+        "Root-kin. What.",
+        "Root-kin. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. Root-kin."
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-scribe",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-shrine",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Root-kin. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. Root-kin.",
+        "Root-kin. What.",
+        "Root-kin. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. Root-kin."
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-smithy",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-keeper-yard",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-legionary-10",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-legionary-10-partner0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-legionary-11",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-legionary-13",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-mudborn-shrine",
+      "group": null,
+      "disp": null,
+      "n_distinct": 1,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Mind the boards on the low side, dry-one."
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-6",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Root-kin. You are standing in it. Say what you want.",
+        "We are not unfriendly. We are busy. Root-kin.",
+        "Root-kin. Ask, and if it is not root-business you may get an answer.",
+        "The water is high. Keep to the boards. Root-kin.",
+        "Root-kin. What."
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-6-apprentice1",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-priest-6-lodger0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-priest-8",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Root-kin. The village knows you came in. You are welcome to stay.",
+        "Root-kin. There is dry floor by the fire.",
+        "Eat something before you talk. It goes better. Root-kin.",
+        "Root-kin. Ask. This one will answer if it can.",
+        "You have been walking. Sit. Root-kin."
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-8-apprentice1",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-priest-8-lodger0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-rootkeepers",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Nothing is sold at a sapwell. Egg-brother.",
+        "Egg-brother. Ask a short question.",
+        "Egg-brother. This one keeps the tree. Ask the village for anything else.",
+        "State it and go; the tree is listening and it is tiring. Egg-brother.",
+        "Egg-brother. You may stand there. Not further."
+      ]
+    },
+    {
+      "eid": "lilmoth-scribe-2",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-scribe-2-elder0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-scribe-2-sibling1",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-smith-9",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-smith-9-sibling0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-weaver-3",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-weaver-3-sibling0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-weaver-7",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-weaver-7-sibling0",
+      "group": null,
+      "disp": null,
+      "n_distinct": 0,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": []
+    },
+    {
+      "eid": "lilmoth-wharf-cutters",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "One of the drowned ones, then. We do not hold conversations. We hold grudges.",
+        "One of the drowned ones, then. Speak. The drowned are listening and they are not kind.",
+        "You are not welcome and you are not stopped. One of the drowned ones, then.",
+        "One of the drowned ones, then. Stand where the water can reach you.",
+        "Say it and let it sink. One of the drowned ones, then."
+      ]
+    },
+    {
+      "eid": "lilmoth-yard-brothers",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "You are not welcome and you are not stopped. One of the drowned ones, then.",
+        "One of the drowned ones, then. Stand where the water can reach you.",
+        "Say it and let it sink. One of the drowned ones, then.",
+        "One of the drowned ones, then. We do not hold conversations. We hold grudges.",
+        "One of the drowned ones, then. Speak. The drowned are listening and they are not kind."
+      ]
+    },
+    {
+      "eid": "miredancer-omu-ei",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "This one will speak with you. The tree does not mind. Egg-brother.",
+        "Egg-brother. You may drink. Once, and not deeply.",
+        "Ask about the sap and this one will not stop talking. Egg-brother.",
+        "Egg-brother. You have the smell of a long road. Sit.",
+        "Egg-brother. Sit at the root. It is warm on that side."
+      ]
+    },
+    {
+      "eid": "miredancer-sap-speaker",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Egg-brother. The tree is well. Was that your question?",
+        "You may rest here. Rest is not the same as staying. Egg-brother.",
+        "Egg-brother. Speak. This one has time and the tree has more.",
+        "Keep your voice down. It carries into the wood. Egg-brother.",
+        "Egg-brother. The grove is open. The heartwood is not."
+      ]
+    },
+    {
+      "eid": "npc-eleen",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Cousin. You've the accent of somewhere. Mind the boards. Third from the end's rotten.",
+        "Cousin. You've the accent of somewhere. You want something, don't you? They all do.",
+        "Say it once and I'll tell you who to ask. Cousin. You've the accent of somewhere.",
+        "Cousin. You've the accent of somewhere. Road's that way. Water's the other.",
+        "We trade. That's what this is. Cousin. You've the accent of somewhere."
+      ]
+    },
+    {
+      "eid": "npc-ineve-corrano",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Cousin. You've the accent of somewhere. Mind the boards. Third from the end's rotten.",
+        "Cousin. You've the accent of somewhere. You want something, don't you? They all do.",
+        "Say it once and I'll tell you who to ask. Cousin. You've the accent of somewhere.",
+        "Cousin. You've the accent of somewhere. Road's that way. Water's the other.",
+        "We trade. That's what this is. Cousin. You've the accent of somewhere."
+      ]
+    },
+    {
+      "eid": "npc-skara-hull-chalk",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Say it once and I'll tell you who to ask. Cousin. You've the accent of somewhere.",
+        "Cousin. You've the accent of somewhere. Road's that way. Water's the other.",
+        "We trade. That's what this is. Cousin. You've the accent of somewhere.",
+        "Cousin. You've the accent of somewhere. Mind the boards. Third from the end's rotten.",
+        "Cousin. You've the accent of somewhere. You want something, don't you? They all do."
+      ]
+    },
+    {
+      "eid": "npc-widow-tesla-vor",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "We trade. That's what this is. Cousin. You've the accent of somewhere.",
+        "Cousin. You've the accent of somewhere. Mind the boards. Third from the end's rotten.",
+        "Cousin. You've the accent of somewhere. You want something, don't you? They all do.",
+        "Say it once and I'll tell you who to ask. Cousin. You've the accent of somewhere.",
+        "Cousin. You've the accent of somewhere. Road's that way. Water's the other."
+      ]
+    },
+    {
+      "eid": "rootkeeper-under-the-temple",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Keep your voice down. It carries into the wood. Egg-brother.",
+        "Egg-brother. The grove is open. The heartwood is not.",
+        "Egg-brother. The tree is well. Was that your question?",
+        "You may rest here. Rest is not the same as staying. Egg-brother.",
+        "Egg-brother. Speak. This one has time and the tree has more."
+      ]
+    },
+    {
+      "eid": "shipwright-oleen",
+      "group": null,
+      "disp": null,
+      "n_distinct": 5,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "You're from here, or near enough. Ask. If I know it, you can have it.",
+        "It's a small place. There isn't much to tell. You're from here, or near enough.",
+        "You're from here, or near enough. Mind the wagons.",
+        "You're from here, or near enough. Something you need?",
+        "Prices are on the board. You're from here, or near enough."
+      ]
+    },
+    {
+      "eid": "spellwright-lilmoth",
+      "group": null,
+      "disp": null,
+      "n_distinct": 1,
+      "cells": [],
+      "leaks": [],
+      "has_fixed": false,
+      "lines": [
+        "Slate's wet, ink's wet, everything here is wet. Tell me what it should do and I will tell you what it costs."
+      ]
+    }
+  ],
+  "page_errors": []
+}

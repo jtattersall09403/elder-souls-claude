@@ -1,0 +1,34 @@
+=== RI-DLG03 step 7, run verbatim, over candidate scopes ===
+
+A. rumours.json          : 926 strings, 4 verbatim-regex hits, 1 of them on the word "question"
+B. game/data/dialogue/** : 14023 strings, 215 verbatim-regex hits, 131 of them on the word "question"
+
+rumours.json top-level keys: schema, note, w1_19_note, rumours, race_gated, w1_19_gen3_note, w1_17_successor_note, w1_14_r4_note
+rumours.json: 926 strings; 241 under a player-facing key (x/text/line/lines)
+  -> PLAYER-FACING rumour lines matching step 7: 1
+     .race_gated[11].x
+       "They will take your coin at the gate and your questions at the wall, and the wall does not answer."
+
+=== all 4 hits in rumours.json, with key paths ===
+  game/data/dialogue/rumours.json.w1_19_note
+    "W1-19 round 2 added the main-quest rumours and the `adds_topics` field. Round 1 measurement: **0 rumour lines anywhere in game/data/dialogue/** named a main-quest noun**, and this file had no code consumer at all — it w
+  game/data/dialogue/rumours.json.race_gated[11].x
+    "They will take your coin at the gate and your questions at the wall, and the wall does not answer."
+  game/data/dialogue/rumours.json.w1_19_gen3_note
+    "W1-19 round 2, gen 3 added 32 rumour rows, one per quest, for the 33 keywords that `tools/quests/topic-supply-audit.mjs` reported as demanded by a quest and spoken by nobody. Round 2 fixed this for the 32 main quests; t
+  game/data/dialogue/rumours.json.w1_17_successor_note
+    "RI-DLG03 §C top-up. Act gates (`requires.knows` / `forbids.knows`) are read by `RumourBook.for()` in game/src/sim/quest/topic-supply.js, which filtered on race and upbringing ONLY until this round — the flag set was alr
+
+word-anchored variant: rumours.json 3 · whole dialogue 70
+  ANCHORED game/data/dialogue/rumours.json.w1_19_note  "W1-19 round 2 added the main-quest rumours and the `adds_topics` field. Round 1 measurement: **0 rumour lines anywhere in game/data/dialogue/** named a main-qu
+  ANCHORED game/data/dialogue/rumours.json.w1_19_gen3_note  "W1-19 round 2, gen 3 added 32 rumour rows, one per quest, for the 33 keywords that `tools/quests/topic-supply-audit.mjs` reported as demanded by a quest and sp
+  ANCHORED game/data/dialogue/rumours.json.w1_17_successor_note  "RI-DLG03 §C top-up. Act gates (`requires.knows` / `forbids.knows`) are read by `RumourBook.for()` in game/src/sim/quest/topic-supply.js, which filtered on race
+
+=== hunting the round-1 figure "46 hits / 45 question" ===
+  rumours.json                    926 strings ->    4 hits,    1 on "question"
+  topics/** only                 6613 strings ->  126 hits,   65 on "question"
+  topic-graph.json               2027 strings ->   14 hits,   14 on "question"
+  greetings.json                 2421 strings ->   35 hits,   30 on "question"
+  greetings/ dir                  665 strings ->   14 hits,   10 on "question"
+  road-directions.json            273 strings ->    3 hits,    0 on "question"
+  rumours+topics+topic-graph     9566 strings ->  144 hits,   80 on "question"

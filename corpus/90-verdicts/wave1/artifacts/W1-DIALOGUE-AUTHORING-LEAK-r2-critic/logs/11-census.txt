@@ -1,0 +1,30 @@
+=== BLIND-PAIR CENSUS, derived this turn (the figure has drifted 80/81/82 across verdicts) ===
+$ grep -rl "blind_pair: yes" corpus/ --include=*.md | wc -l
+111
+$ grep -rlE "^blind_pair: *yes" corpus/ --include=RI-*.md | wc -l   # front-matter only, RI items only
+81
+$ ls corpus/*/RI-*.md | wc -l   # total reference items
+153
+$ grep -rln "blind_status: *run" corpus/90-verdicts/ | wc -l
+3
+-- which files does the loose grep add that the front-matter grep does not? --
+corpus/00-doctrine/ARBITRATION.md
+corpus/00-doctrine/BAR-CRITIQUE-01.md
+corpus/00-doctrine/CORPUS-CONTRACT.md
+corpus/00-doctrine/CRITIC-DOCTRINE.md
+corpus/00-doctrine/CRITIC-PROMPT-TEMPLATE.md
+corpus/00-doctrine/INTENT-AUDIT-01.md
+corpus/00-doctrine/INTENT-AUDIT-02.md
+corpus/00-doctrine/VERDICT-SCHEMA.md
+corpus/80-methods/RI-MTH03-blind-comparison-protocol.md
+corpus/88-journeys/JOURNEY-CRITIC-FLEET.md
+
+=== RI-DLG03 step 2: do our greetings name the settlement? (>=70% required) ===
+settlement/place names harvested from game/data/world/**: 152
+greeting lines naming any world place: 5 of 1500 = 0.3%  (RI-DLG03 step 2 requires >= 70%)
+distinct place names that appear in any greeting: Helstrom
+
+keying of greetings.json: {"by":["reaction_group","disposition_band","player_race_class"],"bands":[{"id":"hostile","range":[0,9]},{"id":"cold","range":[10,29]},{"id":"neutral","range":[30,49]},{"id":"warm","range":[50,69]},{"id":"friendly","range":[70,100]}],"player_race_classes":["saxhleel","naga","dunmer","imperial","other-foreign"],"cells":300,"lines_per_cell":5,"total_lines":1500}
+-> greetings are keyed by (reaction_group x disposition_band x player_race_class).
+   There is no settlement key at all, so RI-DLG03 §A fact 1 ("every band names the town")
+   and step 2 ("names-the-town >= 70%") are unsatisfiable by this architecture, not by this cell.
