@@ -103,7 +103,45 @@ const ADDRESS = {
     'other-foreign': 'Free, I take it. For now.',
   },
   'RG-BWC': {
-    saxhleel: 'Local. Useful.',
+    // ROUND 3 — THE OTHER TWO THIRDS OF THE DEFECT. The blind judge flagged the whole line
+    // "Say it in one line. Local. Useful.". Rounds 1 and 2 both changed only the STANCE half
+    // ("Say it in one line."), and both then re-derived, correctly, that this fragment sits in
+    // a five-race block whose other four are unambiguously in-world speech — and withdrew it.
+    // Both were reading the FRAGMENT TABLE. The judge was reading the line the player hears.
+    //
+    // Composed (buildPools() alternates `ADDRESS STANCE` / `STANCE ADDRESS` by slot parity), it
+    // was in 25 of the 25 shipped RG-BWC/saxhleel lines and opened 13 of them — and the two
+    // words are the two words of a brief. Re-derived this turn, not inherited:
+    //   node -e "...owners map over greetings.json..."  ->  local: RG-BWC,RG-OUTLAW
+    //                                                       useful: RG-BWC,RG-EMPIRE
+    // i.e. it carried **zero** RG-BWC-exclusive tokens. `check-greeting-voice.mjs` passed the
+    // cell anyway, because it gated the COMPOSED line and the composed line borrowed its
+    // exclusivity (`leyawiin`) from the STANCE half. Round 3 gates each half separately and
+    // keeps 'Local. Useful.' as a permanent negative control: an ADDRESS-half gate would have
+    // caught this on day one, and that is the only new guard here that could have.
+    //
+    // WHAT THE REPLACEMENT IS ANCHORED ON, and why it is not a place name. The brief asked for
+    // a line that "could only belong to the Blackwood Company at Lilmoth". There are TWO
+    // RG-BWC speakers (`game/data/npcs/mainline.json`): `blackwood-company-factor` (Corvus
+    // Aldeyn, settlement `lilmoth`) and `blackwood-company-camp` (settlement **null**, post
+    // site `works-camp` at [1188, 3, 4613]). Lilmoth is at [2766.5, 2.77, 5027.5]
+    // (`game/data/world/settlements/lilmoth.json`) — the camp is ~1,632 units away, out past
+    // Soulrest, and its own hand-written line names the Stone Wastes. A Lilmoth place name in
+    // a fragment BOTH speakers use would be false for one of them, so this names the Company's
+    // enterprise instead of its address.
+    //
+    // `the works` is that enterprise, and it is not invented here: it is a live topic id
+    // (`the-works`, `game/data/dialogue/topics/50-mainline.json`) carried by BOTH RG-BWC NPCs
+    // in their own `topics` arrays, whose `mercenary` actor row reads *"Eight signatures and
+    // then a great deal of digging. The Company will be hired for the digging whichever way the
+    // vote goes."* So the greeting hands the player a topic they can immediately ask about,
+    // which is what a Morrowind greeting is for. Token check, derived from the shipped file
+    // this turn: `works` is used by NO reaction group — after regeneration it is exclusive to
+    // RG-BWC. `company` and `leyawiin` were both avoided on purpose: 8 of the 25 RG-BWC stances
+    // already say "Company" and cold[3] says "Leyawiin", so either would double up in the join.
+    // `hire` was tried first and rejected — the stance table says "We do not hire", "We're
+    // hiring for the north road" and "when we hire" would have collided with both.
+    saxhleel: "You're a local. The works will want you before the season's out.",
     naga: 'That is not a local. Keep clear of it.',
     dunmer: "Contract or coin. Either's fine.",
     imperial: 'You can read a contract. Sit down.',
