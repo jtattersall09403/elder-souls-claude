@@ -1,0 +1,20 @@
+[harness] 
+=== 1920x1080 ===
+[harness]   canvas #view: 1920x1080 -> 1920x1080 (window 1920x1080)
+[harness]   [1920x1080/container] opening...
+[harness]   [1920x1080/container] overflow=0 truncation=0 overlap=0 collision=2 -> RED
+[harness]       'Carried' [container.mine.head] x 'Bark token  0.1  —' [container.mine.row.hist-bark-token] rect 190x20  ink-in-region 2482px/20 rows
+[harness]       'Reed Creel' [container.theirs.head] x 'Bog-iron maul  11.5  96' [container.theirs.row.bog-iron-maul] rect 190x20  ink-in-region 1873px/20 rows
+[harness] 
+=== 1280x720 ===
+[harness]   canvas #view: 1920x1080 -> 1280x720 (window 1280x720)
+[harness]   [1280x720/container] opening...
+[harness]   [1280x720/container] overflow=0 truncation=0 overlap=0 collision=2 -> RED
+[harness]       'Carried' [container.mine.head] x 'Bark token  0.1  —' [container.mine.row.hist-bark-token] rect 126.67x13.34  ink-in-region 1062px/13 rows
+[harness]       'Reed Creel' [container.theirs.head] x 'Bog-iron maul  11.5  96' [container.theirs.row.bog-iron-maul] rect 126.67x13.34  ink-in-region 797px/13 rows
+[harness] 
+-> /home/user/t4r8-critB/_critRED/t4-r5-legibility.json
+[harness] RED: at least one screen is not legible (or its pixel evidence is void).
+EXIT=0
+
+[exited with code 0]

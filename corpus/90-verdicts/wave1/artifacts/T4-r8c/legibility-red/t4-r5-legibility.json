@@ -1,0 +1,295 @@
+{
+  "schema": "elder-souls/t4-r5-legibility@1",
+  "at": "2026-08-16T01:23:47.901Z",
+  "state": "ui-journal",
+  "widths": [
+    {
+      "w": 1920,
+      "h": 1080
+    },
+    {
+      "w": 1280,
+      "h": 720
+    }
+  ],
+  "screens": {
+    "1920x1080/container_pairs_considered": {
+      "text_bearing": 17,
+      "intersecting_pairs": 2,
+      "contained_excluded": 0
+    },
+    "1920x1080/container": {
+      "mode": "container",
+      "capture": "_critRED/screens/1920x1080-container.png",
+      "panel_rect": [
+        720,
+        314,
+        480,
+        452
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 0,
+        "text_bearing": 17
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": [],
+        "collision": [
+          {
+            "a": {
+              "id": "container.mine.head",
+              "kind": "panel_header",
+              "text": "Carried",
+              "rect": [
+                742,
+                378,
+                206,
+                28
+              ]
+            },
+            "b": {
+              "id": "container.mine.row.hist-bark-token",
+              "kind": "list_row",
+              "text": "Bark token  0.1  —",
+              "rect": [
+                742,
+                386,
+                190,
+                34
+              ]
+            },
+            "intersection": [
+              190,
+              20
+            ],
+            "region": [
+              742,
+              386,
+              190,
+              20
+            ],
+            "area": 3800,
+            "contained": false,
+            "ink": {
+              "intersection_ink": {
+                "ink_px": 2482,
+                "ink_rows": 20,
+                "of_rows": 20
+              },
+              "a_rect_ink": {
+                "ink_px": 2697,
+                "ink_rows": 21,
+                "of_rows": 28
+              },
+              "b_rect_ink": {
+                "ink_px": 3970,
+                "ink_rows": 34,
+                "of_rows": 34
+              }
+            }
+          },
+          {
+            "a": {
+              "id": "container.theirs.head",
+              "kind": "panel_header",
+              "text": "Reed Creel",
+              "rect": [
+                972,
+                378,
+                206,
+                28
+              ]
+            },
+            "b": {
+              "id": "container.theirs.row.bog-iron-maul",
+              "kind": "list_row",
+              "text": "Bog-iron maul  11.5  96",
+              "rect": [
+                972,
+                386,
+                190,
+                34
+              ]
+            },
+            "intersection": [
+              190,
+              20
+            ],
+            "region": [
+              972,
+              386,
+              190,
+              20
+            ],
+            "area": 3800,
+            "contained": false,
+            "ink": {
+              "intersection_ink": {
+                "ink_px": 1873,
+                "ink_rows": 20,
+                "of_rows": 20
+              },
+              "a_rect_ink": {
+                "ink_px": 2587,
+                "ink_rows": 28,
+                "of_rows": 28
+              },
+              "b_rect_ink": {
+                "ink_px": 3196,
+                "ink_rows": 34,
+                "of_rows": 34
+              }
+            }
+          }
+        ]
+      },
+      "clean": false
+    },
+    "1280x720/container_pairs_considered": {
+      "text_bearing": 17,
+      "intersecting_pairs": 2,
+      "contained_excluded": 0
+    },
+    "1280x720/container": {
+      "mode": "container",
+      "capture": "_critRED/screens/1280x720-container.png",
+      "panel_rect": [
+        480,
+        209.33,
+        320,
+        301.33
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 0,
+        "text_bearing": 17
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": [],
+        "collision": [
+          {
+            "a": {
+              "id": "container.mine.head",
+              "kind": "panel_header",
+              "text": "Carried",
+              "rect": [
+                494.67,
+                252,
+                137.33,
+                18.67
+              ]
+            },
+            "b": {
+              "id": "container.mine.row.hist-bark-token",
+              "kind": "list_row",
+              "text": "Bark token  0.1  —",
+              "rect": [
+                494.67,
+                257.33,
+                126.67,
+                22.67
+              ]
+            },
+            "intersection": [
+              126.67,
+              13.34
+            ],
+            "region": [
+              494.67,
+              257.33,
+              126.67,
+              13.34
+            ],
+            "area": 1690,
+            "contained": false,
+            "ink": {
+              "intersection_ink": {
+                "ink_px": 1062,
+                "ink_rows": 13,
+                "of_rows": 13
+              },
+              "a_rect_ink": {
+                "ink_px": 1243,
+                "ink_rows": 15,
+                "of_rows": 19
+              },
+              "b_rect_ink": {
+                "ink_px": 1804,
+                "ink_rows": 23,
+                "of_rows": 23
+              }
+            }
+          },
+          {
+            "a": {
+              "id": "container.theirs.head",
+              "kind": "panel_header",
+              "text": "Reed Creel",
+              "rect": [
+                648,
+                252,
+                137.33,
+                18.67
+              ]
+            },
+            "b": {
+              "id": "container.theirs.row.bog-iron-maul",
+              "kind": "list_row",
+              "text": "Bog-iron maul  11.5  96",
+              "rect": [
+                648,
+                257.33,
+                126.67,
+                22.67
+              ]
+            },
+            "intersection": [
+              126.67,
+              13.34
+            ],
+            "region": [
+              648,
+              257.33,
+              126.67,
+              13.34
+            ],
+            "area": 1690,
+            "contained": false,
+            "ink": {
+              "intersection_ink": {
+                "ink_px": 797,
+                "ink_rows": 13,
+                "of_rows": 13
+              },
+              "a_rect_ink": {
+                "ink_px": 1172,
+                "ink_rows": 19,
+                "of_rows": 19
+              },
+              "b_rect_ink": {
+                "ink_px": 1435,
+                "ink_rows": 23,
+                "of_rows": 23
+              }
+            }
+          }
+        ]
+      },
+      "clean": false
+    }
+  },
+  "screens_requested": [
+    "container"
+  ],
+  "frame_liveness": {
+    "ran": true,
+    "ok": true,
+    "output": "LIVE                 1280x720-container.png                       span= 213 shadow=  0 lc=  0.0797 H=  3.829 subj=0.2673\nLIVE                 1920x1080-container.png                      span= 213 shadow=  0 lc=  0.0628 H= 3.8166 subj=0.2684\n\n2 frames: {\"LIVE\":2}\nNOTE: no manifest supplied projected subject rows, so every subject test used the centre-of-frame fallback box. That box is assumed, not measured.\n\nOK: every frame is a real image, and every frame contains a subject."
+  }
+}

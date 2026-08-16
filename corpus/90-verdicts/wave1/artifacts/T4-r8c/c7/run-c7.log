@@ -1,0 +1,17 @@
+[harness]   ok   X0a the real input listener is attached  engine.real.attached = true. Every negative below is void if this is false.
+[harness]   ok   X0b a real ArrowRight moves focus.container.side  side 0 -> 1
+[harness]   ok   X0c every read is of the record it names  45 of 45
+[harness]   ok   X1a one input (Tab = lock_on) opens the reading view on every record  45 of 45
+[harness]   ok   X1b the reading view DECLARES the whole description on every record  45 of 45 complete
+[harness]   ok   X1c the reading view REPLACES the lists, keeps both headers and DN5s depiction  45 of 45
+[harness]   ok   X1d a second lock_on returns the lists  45 of 45
+[harness]   ok   X4 the resting band on the SHIPPED fixture agrees with the one-item measurement  walked 44 distinct records with real ArrowDown presses; 20 complete, 24 short. One-item-container arm: 20 of 45 complete, needed-histogram {"1":2,"3":1,"4":17,"5":23,"6":2}
+[harness]   ok   X1e taking the item while reading it does not strand the reading flag  read true -> false; list_rows 0 -> 5; container side rows 0 -> 1
+[harness]   ok   X1f the item was actually transferred by that press (the control is not a no-op)  container-side rows 0 -> 1 -> 1
+[harness]   ok   X2a a real fight is running (gate)  archetype inf_trash, engine.inCombat() = true, census inCombat = false
+[harness]   ok   X2b lock_on does NOT open the reading view in a fight  with the container open in a live fight: read flag false -> false, container.read element drawn = false, list_rows 5
+[harness]   FAIL X2c the null control: lock_on reaches combat with no menu open  combat lock target: before null, after one Tab with no menu open null. If this is null the key never reached combat and X2d cannot be read.
+[harness]   FAIL X2d lock_on is NOT swallowed by the container in a fight (the lock survives the press)  after Tab with the container open in the same fight, combat lock target is null (was null before the screen opened)
+[harness]   ok   X3a the fight X2 started is over before the pictures are taken  engine.inCombat() = false at the start of the capture leg
+[harness]   ok   X3 the reading view DRAWS at least as many text bands as it declares lines shown  shell-scale-hauberk: declared 6/6, drawn bands 8; pilots-chart-book: declared 6/6, drawn bands 8; reed-cutter: declared 5/5, drawn bands 7
+[harness] CRITIC C7 DRIVE: 2 failure(s)

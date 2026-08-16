@@ -1,0 +1,13 @@
+[harness] 
+=== 1920x1080 ===
+[harness]   canvas #view: 1920x1080 -> 1920x1080 (window 1920x1080)
+[harness]   [1920x1080/container] opening...
+[harness]   [1920x1080/container] FAILED — step timed out after 90s
+[harness] 
+=== 1280x720 ===
+[harness]   canvas #view: 1920x1080 -> 1280x720 (window 1280x720)
+[harness]   [1280x720/container] opening...
+[harness]   [1280x720/container] overflow=0 truncation=0 overlap=0 collision=0 -> clean
+[harness] 
+-> /home/user/t4r8-critA/_critGREEN/t4-r5-legibility.json
+[harness] RED: at least one screen is not legible (or its pixel evidence is void).

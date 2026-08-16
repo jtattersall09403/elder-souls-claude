@@ -1,0 +1,15 @@
+[harness]   ok   X0a the real input listener is attached  engine.real.attached = true. Every negative below is void if this is false.
+[harness]   ok   X0b a real ArrowRight moves focus.container.side  side 0 -> 1
+[harness]   ok   X0c every read is of the record it names  45 of 45
+[harness]   ok   X1a one input (Tab = lock_on) opens the reading view on every record  45 of 45
+[harness]   ok   X1b the reading view DECLARES the whole description on every record  45 of 45 complete
+[harness]   ok   X1c the reading view REPLACES the lists, keeps both headers and DN5s depiction  45 of 45
+[harness]   ok   X1d a second lock_on returns the lists  45 of 45
+[harness]   ok   X4 the resting band on the SHIPPED fixture agrees with the one-item measurement  walked 44 distinct records with real ArrowDown presses; 0 complete, 44 short. One-item-container arm: 0 of 45 complete, needed-histogram {"1":2,"3":1,"4":17,"5":23,"6":2}
+[harness]   ok   X1e taking the item while reading it does not strand the reading flag  read true -> false; list_rows 0 -> 5; container side rows 0 -> 1
+[harness]   ok   X1f the item was actually transferred by that press (the control is not a no-op)  container-side rows 0 -> 1 -> 1
+[harness]   ok   X2a a real fight is running (gate)  archetype inf_trash, engine.inCombat() = true, census inCombat = false
+[harness]   ok   X2b lock_on does NOT open the reading view in a fight  with the container open in a live fight: read flag false -> false, container.read element drawn = false, list_rows 5
+[harness]   FAIL X2c lock_on is not swallowed by the UI in a fight (combat lock still moves)  combat lock: before null, after Tab with no menu null, after Tab with the container open null
+[harness]   FAIL X3 the reading view DRAWS at least as many text bands as it declares lines shown  shell-scale-hauberk: no container.read element; pilots-chart-book: no container.read element; reed-cutter: no container.read element
+[harness] CRITIC C7 DRIVE: 2 failure(s)

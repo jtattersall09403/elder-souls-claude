@@ -1,0 +1,471 @@
+{
+  "schema": "elder-souls/t4-r8-critic-overlap-ablation@1",
+  "at": "2026-08-16T01:56:08.098Z",
+  "source_report": "/home/user/t4r8-critA/_critALL/t4-r5-legibility.json",
+  "text_fraction_of_row": 0.5,
+  "constants": {
+    "FG": 24,
+    "GAP": 3,
+    "note": "copied from t4-r5-legibility.mjs, not imported"
+  },
+  "rows": [
+    {
+      "screen": "1920x1080/levelup",
+      "id": "levelup.attr.hist-bond",
+      "derived": false,
+      "text_declared": "HIST-BOND 10",
+      "rect": [
+        742,
+        632,
+        244.16,
+        26
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 1,
+        "runs": 2,
+        "span": 232,
+        "ink_cols": 224,
+        "of_cols": 244
+      },
+      "text_line_only": {
+        "separators": 5,
+        "runs": 6,
+        "span": 232,
+        "ink_cols": 127,
+        "of_cols": 244
+      },
+      "gauge_only": {
+        "separators": 1,
+        "runs": 2,
+        "span": 225,
+        "ink_cols": 217,
+        "of_cols": 244
+      },
+      "leg_says_overlap": true,
+      "text_line_separates": true,
+      "verdict": "FALSE POSITIVE — the label/value line separates cleanly; the FULL profile is collapsed by the gauge"
+    },
+    {
+      "screen": "1920x1080/levelup",
+      "id": "levelup.attr.personality",
+      "derived": false,
+      "text_declared": "PERSONALITY 10",
+      "rect": [
+        742,
+        662,
+        244.16,
+        26
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 1,
+        "runs": 2,
+        "span": 227,
+        "ink_cols": 210,
+        "of_cols": 244
+      },
+      "text_line_only": {
+        "separators": 7,
+        "runs": 8,
+        "span": 227,
+        "ink_cols": 119,
+        "of_cols": 244
+      },
+      "gauge_only": {
+        "separators": 1,
+        "runs": 2,
+        "span": 222,
+        "ink_cols": 203,
+        "of_cols": 244
+      },
+      "leg_says_overlap": true,
+      "text_line_separates": true,
+      "verdict": "FALSE POSITIVE — the label/value line separates cleanly; the FULL profile is collapsed by the gauge"
+    },
+    {
+      "screen": "1920x1080/levelup",
+      "id": "levelup.attr.hist-bond~above",
+      "derived": true,
+      "text_declared": null,
+      "rect": [
+        742,
+        602,
+        244.16,
+        26
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 3,
+        "runs": 4,
+        "span": 231,
+        "ink_cols": 192,
+        "of_cols": 244
+      },
+      "text_line_only": {
+        "separators": 5,
+        "runs": 6,
+        "span": 224,
+        "ink_cols": 22,
+        "of_cols": 244
+      },
+      "gauge_only": {
+        "separators": 2,
+        "runs": 3,
+        "span": 223,
+        "ink_cols": 189,
+        "of_cols": 244
+      },
+      "leg_says_overlap": false,
+      "text_line_separates": true,
+      "verdict": "clean, and the text line separates"
+    },
+    {
+      "screen": "1920x1080/levelup",
+      "id": "levelup.attr.personality~below",
+      "derived": true,
+      "text_declared": null,
+      "rect": [
+        742,
+        692,
+        244.16,
+        26
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 3,
+        "runs": 4,
+        "span": 228,
+        "ink_cols": 139,
+        "of_cols": 244
+      },
+      "text_line_only": {
+        "separators": 6,
+        "runs": 7,
+        "span": 220,
+        "ink_cols": 23,
+        "of_cols": 244
+      },
+      "gauge_only": {
+        "separators": 3,
+        "runs": 4,
+        "span": 228,
+        "ink_cols": 139,
+        "of_cols": 244
+      },
+      "leg_says_overlap": false,
+      "text_line_separates": true,
+      "verdict": "clean, and the text line separates"
+    },
+    {
+      "screen": "1920x1080/sheet",
+      "id": "sheet.attr.strength",
+      "derived": false,
+      "text_declared": "STRENGTH 12",
+      "rect": [
+        901.44,
+        359,
+        161.4,
+        32
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 1,
+        "runs": 2,
+        "span": 161,
+        "ink_cols": 155,
+        "of_cols": 161
+      },
+      "text_line_only": {
+        "separators": 4,
+        "runs": 5,
+        "span": 161,
+        "ink_cols": 129,
+        "of_cols": 161
+      },
+      "gauge_only": {
+        "separators": 2,
+        "runs": 3,
+        "span": 161,
+        "ink_cols": 148,
+        "of_cols": 161
+      },
+      "leg_says_overlap": true,
+      "text_line_separates": true,
+      "verdict": "FALSE POSITIVE — the label/value line separates cleanly; the FULL profile is collapsed by the gauge"
+    },
+    {
+      "screen": "1920x1080/sheet",
+      "id": "sheet.attr.willpower",
+      "derived": false,
+      "text_declared": "WILLPOWER 10",
+      "rect": [
+        901.44,
+        539,
+        161.4,
+        32
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 0,
+        "runs": 1,
+        "span": 158,
+        "ink_cols": 155,
+        "of_cols": 161
+      },
+      "text_line_only": {
+        "separators": 2,
+        "runs": 3,
+        "span": 152,
+        "ink_cols": 135,
+        "of_cols": 161
+      },
+      "gauge_only": {
+        "separators": 0,
+        "runs": 1,
+        "span": 152,
+        "ink_cols": 145,
+        "of_cols": 161
+      },
+      "leg_says_overlap": true,
+      "text_line_separates": true,
+      "verdict": "FALSE POSITIVE — the label/value line separates cleanly; the FULL profile is collapsed by the gauge"
+    },
+    {
+      "screen": "1920x1080/sheet",
+      "id": "sheet.attr.intellect",
+      "derived": false,
+      "text_declared": "INTELLECT 10",
+      "rect": [
+        901.44,
+        575,
+        161.4,
+        32
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 1,
+        "runs": 2,
+        "span": 158,
+        "ink_cols": 152,
+        "of_cols": 161
+      },
+      "text_line_only": {
+        "separators": 2,
+        "runs": 3,
+        "span": 156,
+        "ink_cols": 132,
+        "of_cols": 161
+      },
+      "gauge_only": {
+        "separators": 1,
+        "runs": 2,
+        "span": 158,
+        "ink_cols": 151,
+        "of_cols": 161
+      },
+      "leg_says_overlap": true,
+      "text_line_separates": true,
+      "verdict": "FALSE POSITIVE — the label/value line separates cleanly; the FULL profile is collapsed by the gauge"
+    },
+    {
+      "screen": "1920x1080/sheet",
+      "id": "sheet.attr.strength~above",
+      "derived": true,
+      "text_declared": null,
+      "rect": [
+        901.44,
+        323,
+        161.4,
+        32
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 0,
+        "runs": 1,
+        "span": 161,
+        "ink_cols": 161,
+        "of_cols": 161
+      },
+      "text_line_only": {
+        "separators": 8,
+        "runs": 9,
+        "span": 146,
+        "ink_cols": 76,
+        "of_cols": 161
+      },
+      "gauge_only": {
+        "separators": 0,
+        "runs": 1,
+        "span": 161,
+        "ink_cols": 161,
+        "of_cols": 161
+      },
+      "leg_says_overlap": false,
+      "text_line_separates": true,
+      "verdict": "clean, and the text line separates"
+    },
+    {
+      "screen": "1920x1080/sheet",
+      "id": "sheet.attr.strength~below",
+      "derived": true,
+      "text_declared": null,
+      "rect": [
+        901.44,
+        395,
+        161.4,
+        32
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 3,
+        "runs": 4,
+        "span": 161,
+        "ink_cols": 146,
+        "of_cols": 161
+      },
+      "text_line_only": {
+        "separators": 4,
+        "runs": 5,
+        "span": 150,
+        "ink_cols": 120,
+        "of_cols": 161
+      },
+      "gauge_only": {
+        "separators": 2,
+        "runs": 3,
+        "span": 161,
+        "ink_cols": 144,
+        "of_cols": 161
+      },
+      "leg_says_overlap": false,
+      "text_line_separates": true,
+      "verdict": "clean, and the text line separates"
+    },
+    {
+      "screen": "1920x1080/sheet",
+      "id": "sheet.attr.willpower~above",
+      "derived": true,
+      "text_declared": null,
+      "rect": [
+        901.44,
+        503,
+        161.4,
+        32
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 4,
+        "runs": 5,
+        "span": 158,
+        "ink_cols": 139,
+        "of_cols": 161
+      },
+      "text_line_only": {
+        "separators": 8,
+        "runs": 9,
+        "span": 148,
+        "ink_cols": 79,
+        "of_cols": 161
+      },
+      "gauge_only": {
+        "separators": 3,
+        "runs": 4,
+        "span": 152,
+        "ink_cols": 137,
+        "of_cols": 161
+      },
+      "leg_says_overlap": false,
+      "text_line_separates": true,
+      "verdict": "clean, and the text line separates"
+    },
+    {
+      "screen": "1920x1080/sheet",
+      "id": "sheet.attr.intellect~below",
+      "derived": true,
+      "text_declared": null,
+      "rect": [
+        901.44,
+        611,
+        161.4,
+        32
+      ],
+      "gap_threshold_px": 3,
+      "full": {
+        "separators": 2,
+        "runs": 3,
+        "span": 161,
+        "ink_cols": 153,
+        "of_cols": 161
+      },
+      "text_line_only": {
+        "separators": 2,
+        "runs": 3,
+        "span": 155,
+        "ink_cols": 132,
+        "of_cols": 161
+      },
+      "gauge_only": {
+        "separators": 2,
+        "runs": 3,
+        "span": 156,
+        "ink_cols": 145,
+        "of_cols": 161
+      },
+      "leg_says_overlap": false,
+      "text_line_separates": true,
+      "verdict": "clean, and the text line separates"
+    },
+    {
+      "screen": "1280x720/levelup",
+      "id": "levelup.attr.personality",
+      "derived": false,
+      "text_declared": "PERSONALITY 10",
+      "rect": [
+        494.67,
+        441.33,
+        162.77,
+        17.33
+      ],
+      "gap_threshold_px": 2,
+      "full": {
+        "separators": 1,
+        "runs": 2,
+        "span": 152,
+        "ink_cols": 142,
+        "of_cols": 163
+      },
+      "text_line_only": {
+        "separators": 6,
+        "runs": 7,
+        "span": 152,
+        "ink_cols": 84,
+        "of_cols": 163
+      },
+      "gauge_only": {
+        "separators": 2,
+        "runs": 3,
+        "span": 148,
+        "ink_cols": 134,
+        "of_cols": 163
+      },
+      "leg_says_overlap": true,
+      "text_line_separates": true,
+      "verdict": "FALSE POSITIVE — the label/value line separates cleanly; the FULL profile is collapsed by the gauge"
+    }
+  ],
+  "summary": {
+    "rows_examined": 12,
+    "rows_the_leg_calls_overlapping": 6,
+    "of_those_whose_text_line_separates_cleanly": 6,
+    "gauge_ink_column_coverage": [
+      "levelup.attr.hist-bond: gauge fills 217/244 columns",
+      "levelup.attr.personality: gauge fills 203/244 columns",
+      "sheet.attr.strength: gauge fills 148/161 columns",
+      "sheet.attr.willpower: gauge fills 145/161 columns",
+      "sheet.attr.intellect: gauge fills 151/161 columns",
+      "levelup.attr.personality: gauge fills 134/163 columns"
+    ],
+    "conclusion": "EVERY row the OVERLAP leg reports has a label/value line that separates cleanly. The leg is not measuring legibility on these screens."
+  }
+}

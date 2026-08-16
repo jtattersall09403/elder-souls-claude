@@ -1,0 +1,734 @@
+{
+  "schema": "elder-souls/t4-r8-critic-c7@1",
+  "at": "2026-08-16T01:35:28.215Z",
+  "state": "ui-journal",
+  "commit": "eb8ce30aaec2f45a2bb623e43c410d6afce6ea07",
+  "worktree": "/home/user/t4r8-critA",
+  "records_in_fixture": 45,
+  "checks": [
+    {
+      "id": "X0a the real input listener is attached",
+      "pass": true,
+      "detail": "engine.real.attached = true. Every negative below is void if this is false."
+    },
+    {
+      "id": "X0b a real ArrowRight moves focus.container.side",
+      "pass": true,
+      "detail": "side 0 -> 1"
+    },
+    {
+      "id": "X0c every read is of the record it names",
+      "pass": true,
+      "detail": "45 of 45"
+    },
+    {
+      "id": "X1a one input (Tab = lock_on) opens the reading view on every record",
+      "pass": true,
+      "detail": "45 of 45"
+    },
+    {
+      "id": "X1b the reading view DECLARES the whole description on every record",
+      "pass": true,
+      "detail": "45 of 45 complete"
+    },
+    {
+      "id": "X1c the reading view REPLACES the lists, keeps both headers and DN5s depiction",
+      "pass": true,
+      "detail": "45 of 45"
+    },
+    {
+      "id": "X1d a second lock_on returns the lists",
+      "pass": true,
+      "detail": "45 of 45"
+    },
+    {
+      "id": "X4 the resting band on the SHIPPED fixture agrees with the one-item measurement",
+      "pass": true,
+      "detail": "walked 44 distinct records with real ArrowDown presses; 20 complete, 24 short. One-item-container arm: 20 of 45 complete, needed-histogram {\"1\":2,\"3\":1,\"4\":17,\"5\":23,\"6\":2}"
+    },
+    {
+      "id": "X1e taking the item while reading it does not strand the reading flag",
+      "pass": true,
+      "detail": "read true -> false; list_rows 0 -> 5; container side rows 0 -> 1"
+    },
+    {
+      "id": "X1f the item was actually transferred by that press (the control is not a no-op)",
+      "pass": true,
+      "detail": "container-side rows 0 -> 1 -> 1"
+    },
+    {
+      "id": "X2a a real fight is running (gate)",
+      "pass": true,
+      "detail": "archetype inf_trash, engine.inCombat() = true, census inCombat = false"
+    },
+    {
+      "id": "X2b lock_on does NOT open the reading view in a fight",
+      "pass": true,
+      "detail": "with the container open in a live fight: read flag false -> false, container.read element drawn = false, list_rows 5"
+    },
+    {
+      "id": "X2c the null control: lock_on reaches combat with no menu open",
+      "pass": false,
+      "detail": "combat lock target: before null, after one Tab with no menu open null. If this is null the key never reached combat and X2d cannot be read."
+    },
+    {
+      "id": "X2d lock_on is NOT swallowed by the container in a fight (the lock survives the press)",
+      "pass": false,
+      "detail": "after Tab with the container open in the same fight, combat lock target is null (was null before the screen opened)"
+    },
+    {
+      "id": "X3a the fight X2 started is over before the pictures are taken",
+      "pass": true,
+      "detail": "engine.inCombat() = false at the start of the capture leg"
+    },
+    {
+      "id": "X3 the reading view DRAWS at least as many text bands as it declares lines shown",
+      "pass": true,
+      "detail": "shell-scale-hauberk: declared 6/6, drawn bands 8; pilots-chart-book: declared 6/6, drawn bands 8; reed-cutter: declared 5/5, drawn bands 7"
+    }
+  ],
+  "data": {
+    "attached": {
+      "real_attached": true,
+      "webdriver": true
+    },
+    "k0": {
+      "before": 0,
+      "after": 1,
+      "moved": true
+    },
+    "rest_histogram_one_item_container": {
+      "1": 2,
+      "3": 1,
+      "4": 17,
+      "5": 23,
+      "6": 2
+    },
+    "rest_complete_one_item_container": 20,
+    "walked_shipped_fixture": [
+      {
+        "item_id": "hist-bark-token",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "black-water-draught",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "bog-iron-maul",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "boiled-hide-jack",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "bone-picks",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "carved-egg",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "chitin-cuirass",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "coil-of-twine",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "resin-of-the-comb",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "counted-crate-tally",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "silt-strider-silk-sash",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "guar-jerky",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "factors-coat",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "weighing-stone",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "fever-cut",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "fire-drill",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "resin-lamp-oil",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "hackle-lo-leaf",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "hooked-gutting-knife",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "iron-gall-inkhorn",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "rotted-hall-key",
+        "shown": 1,
+        "needed": 1,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "kwama-cuttle",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "ledger-fragment",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "legion-greaves",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "marsh-marrow",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "moth-silk-robe",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "mud-slip-bowl",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "netting-needle",
+        "shown": 3,
+        "needed": 3,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "the-drowned-ford",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "pilots-chart-book",
+        "shown": 4,
+        "needed": 6,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "reed-lantern",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "stamped-writ",
+        "shown": 1,
+        "needed": 1,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "reed-cutter",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "rootweave-cowl",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "salt-brick",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "hist-sap-bow",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "sealed-letter-stormhold",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "cracked-shell-cup",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "shell-scale-hauberk",
+        "shown": 4,
+        "needed": 6,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "shore-compass",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "sleeper-draught",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "warden-whistle",
+        "shown": 4,
+        "needed": 4,
+        "complete": true,
+        "truncated": false,
+        "depiction": true
+      },
+      {
+        "item_id": "warden-issue-sabre",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      },
+      {
+        "item_id": "wet-season-boots",
+        "shown": 4,
+        "needed": 5,
+        "complete": false,
+        "truncated": true,
+        "depiction": true
+      }
+    ],
+    "take_while_reading": {
+      "before": {
+        "mode": "container",
+        "read_flag": true,
+        "list_rows": 0,
+        "read_el": true,
+        "theirs_rows": 0
+      },
+      "after": {
+        "mode": "container",
+        "read_flag": false,
+        "list_rows": 5,
+        "read_el": false,
+        "theirs_rows": 1
+      },
+      "settled": {
+        "mode": "container",
+        "read_flag": false,
+        "list_rows": 5,
+        "read_el": false,
+        "theirs_rows": 1
+      },
+      "afterBack": {
+        "mode": "world",
+        "read_flag": null,
+        "list_rows": 0,
+        "read_el": false,
+        "theirs_rows": 0
+      }
+    },
+    "in_combat": {
+      "entered": true,
+      "archetype": "inf_trash",
+      "inCombat": true,
+      "lock_before": {
+        "target": null,
+        "score": null
+      },
+      "lock_after_no_menu": {
+        "target": null,
+        "score": null
+      },
+      "lock_after_menu_press": {
+        "target": null,
+        "score": null
+      },
+      "menuBefore": {
+        "mode": "container",
+        "inCombat": false,
+        "read_flag": false,
+        "read_el": false,
+        "list_rows": 5
+      },
+      "menuAfter": {
+        "mode": "container",
+        "inCombat": false,
+        "read_flag": false,
+        "read_el": false,
+        "list_rows": 5
+      }
+    },
+    "x3_peace": {
+      "inCombat": false
+    },
+    "pixel_bands": [
+      {
+        "id": "shell-scale-hauberk",
+        "rect": [
+          902,
+          402,
+          276,
+          302
+        ],
+        "probe_rect": [
+          902,
+          468,
+          259.44,
+          236
+        ],
+        "declared_shown": 6,
+        "declared_needed": 6,
+        "declared_complete": true,
+        "drawn_bands": 8,
+        "band_geometry": [
+          {
+            "y0": 0,
+            "y1": 73,
+            "ink": 4702
+          },
+          {
+            "y0": 82,
+            "y1": 101,
+            "ink": 1568
+          },
+          {
+            "y0": 109,
+            "y1": 124,
+            "ink": 1408
+          },
+          {
+            "y0": 133,
+            "y1": 133,
+            "ink": 1
+          },
+          {
+            "y0": 136,
+            "y1": 151,
+            "ink": 214
+          },
+          {
+            "y0": 196,
+            "y1": 197,
+            "ink": 4
+          },
+          {
+            "y0": 202,
+            "y1": 203,
+            "ink": 3
+          },
+          {
+            "y0": 232,
+            "y1": 235,
+            "ink": 4
+          }
+        ],
+        "ink_rows": 134,
+        "shot": "shots/read-shell-scale-hauberk.png"
+      },
+      {
+        "id": "pilots-chart-book",
+        "rect": [
+          902,
+          402,
+          276,
+          302
+        ],
+        "probe_rect": [
+          902,
+          468,
+          259.44,
+          236
+        ],
+        "declared_shown": 6,
+        "declared_needed": 6,
+        "declared_complete": true,
+        "drawn_bands": 8,
+        "band_geometry": [
+          {
+            "y0": 0,
+            "y1": 73,
+            "ink": 4455
+          },
+          {
+            "y0": 82,
+            "y1": 101,
+            "ink": 1524
+          },
+          {
+            "y0": 109,
+            "y1": 128,
+            "ink": 1233
+          },
+          {
+            "y0": 133,
+            "y1": 133,
+            "ink": 1
+          },
+          {
+            "y0": 137,
+            "y1": 151,
+            "ink": 562
+          },
+          {
+            "y0": 196,
+            "y1": 197,
+            "ink": 4
+          },
+          {
+            "y0": 202,
+            "y1": 203,
+            "ink": 3
+          },
+          {
+            "y0": 232,
+            "y1": 235,
+            "ink": 4
+          }
+        ],
+        "ink_rows": 137,
+        "shot": "shots/read-pilots-chart-book.png"
+      },
+      {
+        "id": "reed-cutter",
+        "rect": [
+          902,
+          402,
+          276,
+          302
+        ],
+        "probe_rect": [
+          902,
+          468,
+          259.44,
+          236
+        ],
+        "declared_shown": 5,
+        "declared_needed": 5,
+        "declared_complete": true,
+        "drawn_bands": 7,
+        "band_geometry": [
+          {
+            "y0": 0,
+            "y1": 73,
+            "ink": 4513
+          },
+          {
+            "y0": 81,
+            "y1": 101,
+            "ink": 1362
+          },
+          {
+            "y0": 109,
+            "y1": 124,
+            "ink": 1207
+          },
+          {
+            "y0": 133,
+            "y1": 133,
+            "ink": 1
+          },
+          {
+            "y0": 196,
+            "y1": 197,
+            "ink": 4
+          },
+          {
+            "y0": 202,
+            "y1": 203,
+            "ink": 3
+          },
+          {
+            "y0": 232,
+            "y1": 235,
+            "ink": 4
+          }
+        ],
+        "ink_rows": 120,
+        "shot": "shots/read-reed-cutter.png"
+      }
+    ],
+    "worst_records": [
+      {
+        "id": "shell-scale-hauberk",
+        "name": "Shell-scale hauberk",
+        "description": "River-shell scales sewn onto reed cloth, nacreous where the light catches along the sewing line. Cool against the skin, loud in the rain, and worth more than the house it came from.",
+        "words": 32
+      },
+      {
+        "id": "pilots-chart-book",
+        "name": "Pilot's chart-book, Topal shore",
+        "description": "Not a map. A pilot's written directions for the shore run, in the order you meet the landmarks, with the wrong ones crossed out and the crossings-out argued with in a second hand.",
+        "words": 33
+      },
+      {
+        "id": "reed-cutter",
+        "name": "Reed-cutter",
+        "description": "A working blade with a bill-hook curve near the tip, made for standing water and used on people since. The grip is bound with the same twine the fish-weirs use.",
+        "words": 30
+      }
+    ]
+  },
+  "failures": 2
+}

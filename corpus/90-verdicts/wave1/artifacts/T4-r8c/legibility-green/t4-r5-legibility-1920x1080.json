@@ -1,0 +1,49 @@
+{
+  "schema": "elder-souls/t4-r5-legibility@1",
+  "at": "2026-08-16T01:44:01.930Z",
+  "state": "ui-journal",
+  "widths": [
+    {
+      "w": 1920,
+      "h": 1080
+    }
+  ],
+  "screens": {
+    "1920x1080/container_pairs_considered": {
+      "text_bearing": 17,
+      "intersecting_pairs": 0,
+      "contained_excluded": 0
+    },
+    "1920x1080/container": {
+      "mode": "container",
+      "capture": "_critGREEN1080/screens/1920x1080-container.png",
+      "panel_rect": [
+        720,
+        314,
+        480,
+        452
+      ],
+      "counts": {
+        "journal_entry": 0,
+        "hint": 1,
+        "attribute_row": 0,
+        "text_bearing": 17
+      },
+      "findings": {
+        "overflow": [],
+        "truncation": [],
+        "overlap": [],
+        "collision": []
+      },
+      "clean": true
+    }
+  },
+  "screens_requested": [
+    "container"
+  ],
+  "frame_liveness": {
+    "ran": true,
+    "ok": true,
+    "output": "LIVE                 1920x1080-container.png                      span= 213 shadow=  0 lc=  0.0632 H= 3.8205 subj=0.2684\n\n1 frames: {\"LIVE\":1}\nNOTE: no manifest supplied projected subject rows, so every subject test used the centre-of-frame fallback box. That box is assumed, not measured.\n\nOK: every frame is a real image, and every frame contains a subject."
+  }
+}
