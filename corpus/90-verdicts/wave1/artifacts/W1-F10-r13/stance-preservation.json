@@ -1,0 +1,128 @@
+{
+  "tool": "f10-r13-stance-preservation.mjs",
+  "generated": "2026-08-16T04:12:05.330Z",
+  "artifact": "corpus/90-verdicts/wave1/artifacts/W1-F10-r11/crowd-stance.json",
+  "method": "every row solved on ITS OWN body through the shipped poseStatic, as renderer.js:syncNPCs does — NOT on one reused probe actor per family",
+  "shipped_tree": {
+    "rows": 408,
+    "matched": 335,
+    "mismatched": 73,
+    "mismatched_that_carry_a_stoop": 73,
+    "mismatched_that_do_not": 0,
+    "identity_fields_matched": 408,
+    "identity_fields_mismatched": 0,
+    "reasons": [
+      {
+        "name": "npc:npc-wuleen-kus",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 0.85,
+        "characterId": "sax.reed-widow~wiry"
+      },
+      {
+        "name": "npc:ee-vashum",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 0.85,
+        "characterId": "sax.reed-widow~wiry"
+      },
+      {
+        "name": "npc:undersexton-aveline-rell",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 1.15,
+        "characterId": "hum.stooped-widow~wiry"
+      },
+      {
+        "name": "npc:soulrest-customs-clerk",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 1.15,
+        "characterId": "hum.stooped-widow~wiry"
+      },
+      {
+        "name": "npc:gideon-quay-porter",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 0.85,
+        "characterId": "sax.reed-widow~thickset"
+      },
+      {
+        "name": "npc:keeper-teeja-lun",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 1.25,
+        "characterId": "sax.stooped-elder~wiry"
+      },
+      {
+        "name": "npc:archon-crane-crew",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 0.85,
+        "characterId": "sax.reed-widow~thickset"
+      },
+      {
+        "name": "npc:helstrom-gallery-keepers",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 0.85,
+        "characterId": "sax.reed-widow"
+      },
+      {
+        "name": "npc:factor-ruvela-sath",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 1.15,
+        "characterId": "hum.stooped-widow~wiry"
+      },
+      {
+        "name": "npc:prefect-galvus-arn",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 1.15,
+        "characterId": "hum.stooped-widow"
+      },
+      {
+        "name": "npc:dockmaster-weeja-sen",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 0.85,
+        "characterId": "sax.reed-widow~wiry"
+      },
+      {
+        "name": "npc:lilmoth-yard-brothers",
+        "why": [
+          "shoulder"
+        ],
+        "stoop": 1.25,
+        "characterId": "sax.stooped-elder"
+      }
+    ]
+  },
+  "control_age_axis_neutralised": {
+    "rows": 408,
+    "matched": 408,
+    "mismatched": 0,
+    "mismatched_that_carry_a_stoop": 0,
+    "mismatched_that_do_not": 0,
+    "identity_fields_matched": 408,
+    "identity_fields_mismatched": 0,
+    "reasons": []
+  },
+  "control_is_required_to_disagree": {
+    "ok": true,
+    "reading": "the ENTIRE difference from round 11 is the age axis, and it is confined to the people who carry one"
+  },
+  "note_on_the_r12_self_test": "f10-r12-crowd-motion.mjs arm 2 reads every row on ONE reused probe actor per family (makeProbeActor at :165, readAt renaming it at :179). That was sound while the body could not reach the pose. It cannot be sound now, and its 268 is the probe body's stoop applied to every name rather than a measurement of 268 people. It is deliberately NOT edited here: a previous round's instrument going red on a later tree is evidence, and rewriting it would delete the evidence."
+}

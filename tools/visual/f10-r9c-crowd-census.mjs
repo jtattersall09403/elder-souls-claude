@@ -80,13 +80,22 @@ const body = { rig, pos: [0, 0, 0], state: 'IDLE', animFrame: 0, equipLoadPct: 2
 /** Build one NPC exactly as `renderer.syncNPCs` does and read back what was actually stamped. */
 function renderedOf(n) {
   const family = artFamilyForRace(n.race);
-  const g = actorMod.makeRiggedActor(mats, 0x8f9aa6, 0x8d9a72, family);
+  // ROUND 13, and it is not a cosmetic edit: `renderer.js:syncNPCs` now passes `n.race` as
+  // `makeRiggedActor`'s fifth argument so the archetype pool is scoped by race (RI-VIS10 E5). An
+  // instrument that omitted it would build every NPC from the family's whole pool and report a
+  // world the renderer does not draw — the mirror-that-no-check-can-keep-honest defect this
+  // file's own header complains about, arriving through an argument list instead of a predicate.
+  const g = actorMod.makeRiggedActor(mats, 0x8f9aa6, 0x8d9a72, family, n.race);
   g.name = `npc:${n.id}`;
   actorMod.poseFromRig(g, body);
   let characterId = g.userData.actor.characterId || null;
   g.traverse((o) => { if (o.isMesh && o.userData && o.userData.characterId) characterId = o.userData.characterId; });
   const spec = g.userData.actor.character || null;
-  return { family, characterId, morph: (spec && spec.morph) || {}, material: (spec && spec.material) || {} };
+  let variantKey = null;
+  g.traverse((o) => { if (o.isMesh && o.userData && o.userData.rigVariantKey) variantKey = o.userData.rigVariantKey; });
+  return { family, characterId, variantKey, archetype: g.userData.actor.characterArchetype || null,
+    cut: g.userData.actor.characterCut || null,
+    morph: (spec && spec.morph) || {}, material: (spec && spec.material) || {} };
 }
 
 if (args['self-test']) {
@@ -123,7 +132,31 @@ const E1 = {
   arm_2_bucket_ceiling: largestActor[1] <= Math.floor(N * 0.10) ? 'pass' : 'fail',
   census: sortDesc(byActor).map(([a, c]) => ({ actor: a, n: c, pct: +(100 * c / N).toFixed(1) })),
 };
-E1.verdict = (E1.arm_1_actors_per_12 === 'pass' && E1.arm_2_bucket_ceiling === 'pass') ? 'PASS' : 'FAIL';
+// ── E1's RENDERED arm — the r9 amendment's own requirement, which this tool never published ──
+// `RI-VIS10` E1 was amended by this tool's own round to *"publish BOTH arms"*: the `actor` arm
+// above and *"the same two ratios over `distinct(rendered characterId)` and `max(rendered
+// characterId bucket)`"*. The rendered numbers were reported inside E2/E3 and the ARM was never
+// computed here, so three verdicts quoted `14 bodies` from a hand count over the pool. It is
+// computed now, and the STRUCTURAL key is computed beside it: `rigVariantKey` hashes the morph
+// numbers, so two bodies with one key are one body under two names and cannot inflate the count.
+const byRendered = count(rendered, (x) => x.r.characterId || 'null');
+const byVariantKey = count(rendered, (x) => x.r.variantKey || 'null');
+const largestRendered = sortDesc(byRendered)[0];
+E1.rendered_arm = {
+  measured_by: 'building all ' + N + ' records through makeRiggedActor(+race) -> poseFromRig and reading userData.characterId off the built mesh',
+  distinct_rendered_bodies: byRendered.size,
+  distinct_structural_keys: byVariantKey.size,
+  npcs_per_rendered_body: +(N / byRendered.size).toFixed(2),
+  required_bodies_at_this_n: Math.ceil(N / 12),
+  largest_bucket: { body: largestRendered[0], n: largestRendered[1], pct: +(100 * largestRendered[1] / N).toFixed(1) },
+  ceiling_at_this_n: Math.floor(N * 0.10),
+  arm_1_bodies_per_12: byRendered.size >= Math.ceil(N / 12) ? 'pass' : 'fail',
+  arm_2_bucket_ceiling: largestRendered[1] <= Math.floor(N * 0.10) ? 'pass' : 'fail',
+  names_equal_structural_keys: byRendered.size === byVariantKey.size,
+  census: sortDesc(byRendered).map(([b, c]) => ({ rendered_body: b, n: c, pct: +(100 * c / N).toFixed(1) })),
+};
+E1.verdict = (E1.arm_1_actors_per_12 === 'pass' && E1.arm_2_bucket_ceiling === 'pass'
+  && E1.rendered_arm.arm_1_bodies_per_12 === 'pass' && E1.rendered_arm.arm_2_bucket_ceiling === 'pass') ? 'PASS' : 'FAIL';
 
 // ══ E2 — head/face variety INSIDE the largest actor bucket, as rendered ══════════════════════
 const bucket = rendered.filter((x) => (x.n.actor || 'none') === largestActor[0]);
@@ -143,9 +176,18 @@ E2.verdict = bucketHeads.size >= 4 ? 'PASS' : 'FAIL';
 
 // ══ E3 — age and build spread, as rendered ═══════════════════════════════════════════════════
 const builds = count(rendered, (x) => (x.r.morph && x.r.morph.build !== undefined ? x.r.morph.build : 'default(1.00)'));
-const BANDS = [['child', (b) => b < 0.7], ['slight', (b) => b >= 0.7 && b < 0.92], ['average', (b) => b >= 0.92 && b <= 1.08], ['heavy', (b) => b > 1.08], ['stooped-old', () => false]];
+// `stooped-old` was hard-coded `() => false` here with the note *"CHARACTER_SPECS carries no spine
+// curvature or age morph"*. Read this turn, `lib/rigs.js:MORPH_KEYS` now declares `stoop` with a
+// neutral of 0, and it has two consumers in `actor.js` — a dorsal mass in `buildSkeleton` and a
+// postural curvature in `addCharacterPosture`. So the band is reachable and the predicate reads
+// the morph instead of a constant. It still cannot be satisfied by a row that DECLARES a stoop
+// nobody renders: this census builds the body and reads the spec back off the built actor.
+const stoops = count(rendered, (x) => (x.r.morph && x.r.morph.stoop ? x.r.morph.stoop : 0));
+const anyStoop = [...stoops.keys()].some((s) => Number(s) > 0.01);
+const BANDS = [['child', (b) => b < 0.7], ['slight', (b) => b >= 0.7 && b < 0.92], ['average', (b) => b >= 0.92 && b <= 1.08], ['heavy', (b) => b > 1.08]];
 const bandsSeen = new Set();
 for (const [k] of builds) { const b = typeof k === 'number' ? k : 1.0; for (const [name, f] of BANDS) if (f(b)) bandsSeen.add(name); }
+if (anyStoop) bandsSeen.add('stooped-old');
 const E3 = {
   check: 'E3 — age and build spread',
   measured_by: 'distinct morph.build values across every rendered NPC body, banded',
@@ -155,7 +197,10 @@ const E3 = {
   n_bands: bandsSeen.size,
   bar: '>= 4 of {child, slight, average, heavy, stooped-old}; 1 caps the item at 3',
   no_child_axis: !bandsSeen.has('child'),
-  no_stoop_axis: 'CHARACTER_SPECS carries no spine curvature or age morph — stooped-old cannot be reached by any shipped row',
+  stoop_axis: anyStoop
+    ? `reachable: morph.stoop values in use = ${[...stoops.keys()].filter((s) => Number(s) > 0.01).sort().join(', ')} over ${[...stoops.entries()].filter(([s]) => Number(s) > 0.01).reduce((a, [, c]) => a + c, 0)} of ${N} records`
+    : 'CHARACTER_SPECS carries no spine curvature or age morph — stooped-old cannot be reached by any shipped row',
+  stoop_census: sortDesc(stoops).map(([s, c]) => ({ stoop: s, n_npcs: c })),
   census: sortDesc(builds).map(([k, c]) => ({ build: k, n_npcs: c })),
 };
 E3.verdict = bandsSeen.size >= 4 ? 'PASS' : 'FAIL';

@@ -1,0 +1,1219 @@
+{
+  "tool": "f10-r13-body-census.mjs",
+  "role": "builder, W1-F10-r13",
+  "generated": "2026-08-16T04:09:42.918Z",
+  "item": "RI-VIS10 E1/E3/E4 + C1/C2 preservation",
+  "enumeration": {
+    "command": "readdirSync(game/data/npcs).filter(.json), walk every record with an `id`",
+    "files": 18,
+    "records": 408
+  },
+  "pool_census": {
+    "archetypes": 29,
+    "cuts": [
+      "wiry",
+      "asbuilt",
+      "thickset"
+    ],
+    "family_pools": {
+      "saxhleel": 13,
+      "humanoid": 11,
+      "undead": 1,
+      "beast": 2
+    },
+    "race_scoped_pools": {
+      "naga": 2,
+      "imperial": 6,
+      "dunmer": 6,
+      "nord": 4,
+      "breton": 4,
+      "khajiit": 3
+    },
+    "reachable_bodies_upper_bound": 81,
+    "unknown_ids": [],
+    "pass": true
+  },
+  "shipped": {
+    "records": 408,
+    "distinct_bodies": 72,
+    "distinct_structural_keys": 72,
+    "names_beyond_keys": 0,
+    "npcs_per_body": 5.667,
+    "required_at_this_n": 34,
+    "largest_bucket": {
+      "body": "sax.stooped-elder~wiry",
+      "n": 13,
+      "pct": 3.19
+    },
+    "ceiling_at_this_n": 40,
+    "E1_rendered_arm": "pass",
+    "E3_bands": [
+      "average",
+      "heavy",
+      "slight",
+      "stooped-old"
+    ],
+    "E3": "pass",
+    "E4_identical_pairs_within_15m": 28,
+    "E4": "fail",
+    "E4_per_settlement": [
+      {
+        "settlement": "blackrose",
+        "placed": 35,
+        "identical_pairs_within_15m": 7
+      },
+      {
+        "settlement": "gideon",
+        "placed": 43,
+        "identical_pairs_within_15m": 5
+      },
+      {
+        "settlement": "stormhold",
+        "placed": 48,
+        "identical_pairs_within_15m": 4
+      },
+      {
+        "settlement": "lilmoth",
+        "placed": 49,
+        "identical_pairs_within_15m": 4
+      },
+      {
+        "settlement": "soulrest",
+        "placed": 26,
+        "identical_pairs_within_15m": 3
+      },
+      {
+        "settlement": "archon",
+        "placed": 37,
+        "identical_pairs_within_15m": 2
+      },
+      {
+        "settlement": "thorn",
+        "placed": 22,
+        "identical_pairs_within_15m": 2
+      },
+      {
+        "settlement": "helstrom",
+        "placed": 61,
+        "identical_pairs_within_15m": 1
+      },
+      {
+        "settlement": "none",
+        "placed": 10,
+        "identical_pairs_within_15m": 0
+      }
+    ],
+    "body_census": [
+      {
+        "body": "sax.stooped-elder~wiry",
+        "n": 13
+      },
+      {
+        "body": "sax.helstrom-guard~thickset",
+        "n": 12
+      },
+      {
+        "body": "hum.dock-porter~thickset",
+        "n": 12
+      },
+      {
+        "body": "sax.deep-warden",
+        "n": 11
+      },
+      {
+        "body": "hum.stooped-widow",
+        "n": 10
+      },
+      {
+        "body": "sax.deep-warden~wiry",
+        "n": 10
+      },
+      {
+        "body": "sax.marsh-lean~wiry",
+        "n": 10
+      },
+      {
+        "body": "sax.reed-widow~wiry",
+        "n": 9
+      },
+      {
+        "body": "hum.stooped-widow~wiry",
+        "n": 9
+      },
+      {
+        "body": "sax.marsh-lean",
+        "n": 9
+      },
+      {
+        "body": "sax.mire-runner",
+        "n": 8
+      },
+      {
+        "body": "sax.dock-hauler",
+        "n": 8
+      },
+      {
+        "body": "hum.breton-stout",
+        "n": 8
+      },
+      {
+        "body": "player.saxhleel",
+        "n": 8
+      },
+      {
+        "body": "hum.stooped-widow~thickset",
+        "n": 8
+      },
+      {
+        "body": "hum.dock-porter",
+        "n": 8
+      },
+      {
+        "body": "sax.mire-runner~thickset",
+        "n": 7
+      },
+      {
+        "body": "hum.dunmer-lean",
+        "n": 7
+      },
+      {
+        "body": "sax.reed-widow~thickset",
+        "n": 7
+      },
+      {
+        "body": "sax.reed-widow",
+        "n": 7
+      },
+      {
+        "body": "sax.thorn-hunter~wiry",
+        "n": 7
+      },
+      {
+        "body": "sax.stooped-elder",
+        "n": 7
+      },
+      {
+        "body": "sax.dock-hauler~thickset",
+        "n": 7
+      },
+      {
+        "body": "sax.helstrom-guard~wiry",
+        "n": 7
+      },
+      {
+        "body": "hum.dunmer-lean~wiry",
+        "n": 7
+      },
+      {
+        "body": "sax.dock-hauler~wiry",
+        "n": 7
+      },
+      {
+        "body": "player.saxhleel~wiry",
+        "n": 7
+      },
+      {
+        "body": "sax.marsh-lean~thickset",
+        "n": 6
+      },
+      {
+        "body": "sax.hive-drone~wiry",
+        "n": 6
+      },
+      {
+        "body": "hum.marauder~thickset",
+        "n": 6
+      },
+      {
+        "body": "sax.mire-runner~wiry",
+        "n": 6
+      },
+      {
+        "body": "hum.khajiit-lean~wiry",
+        "n": 6
+      },
+      {
+        "body": "player.saxhleel~thickset",
+        "n": 6
+      },
+      {
+        "body": "sax.hist-broad~thickset",
+        "n": 6
+      },
+      {
+        "body": "sax.thorn-hunter",
+        "n": 6
+      },
+      {
+        "body": "sax.hive-drone",
+        "n": 6
+      },
+      {
+        "body": "sax.hist-priest~thickset",
+        "n": 6
+      },
+      {
+        "body": "sax.salt-elder~wiry",
+        "n": 6
+      },
+      {
+        "body": "sax.thorn-hunter~thickset",
+        "n": 6
+      },
+      {
+        "body": "hum.legion-heavy~wiry",
+        "n": 5
+      },
+      {
+        "body": "hum.dunmer-lean~thickset",
+        "n": 5
+      },
+      {
+        "body": "sax.hist-broad~wiry",
+        "n": 5
+      },
+      {
+        "body": "hum.legion-heavy",
+        "n": 5
+      },
+      {
+        "body": "sax.hive-drone~thickset",
+        "n": 5
+      },
+      {
+        "body": "hum.imperial-clerk~thickset",
+        "n": 5
+      },
+      {
+        "body": "sax.hist-broad",
+        "n": 5
+      },
+      {
+        "body": "hum.imperial-factor~thickset",
+        "n": 5
+      },
+      {
+        "body": "sax.salt-elder",
+        "n": 5
+      },
+      {
+        "body": "hum.imperial-factor~wiry",
+        "n": 5
+      },
+      {
+        "body": "hum.breton-stout~thickset",
+        "n": 4
+      },
+      {
+        "body": "hum.marauder~wiry",
+        "n": 4
+      },
+      {
+        "body": "hum.dock-porter~wiry",
+        "n": 4
+      },
+      {
+        "body": "hum.khajiit-lean",
+        "n": 4
+      },
+      {
+        "body": "sax.deep-warden~thickset",
+        "n": 4
+      },
+      {
+        "body": "sax.hist-priest~wiry",
+        "n": 4
+      },
+      {
+        "body": "hum.marauder",
+        "n": 3
+      },
+      {
+        "body": "hum.khajiit-lean~thickset",
+        "n": 3
+      },
+      {
+        "body": "sax.helstrom-guard",
+        "n": 3
+      },
+      {
+        "body": "sax.stooped-elder~thickset",
+        "n": 3
+      },
+      {
+        "body": "hum.imperial-clerk~wiry",
+        "n": 2
+      },
+      {
+        "body": "hum.imperial-clerk",
+        "n": 2
+      },
+      {
+        "body": "hum.dunmer-broad",
+        "n": 2
+      },
+      {
+        "body": "hum.dunmer-broad~thickset",
+        "n": 2
+      },
+      {
+        "body": "hum.nord-raw~thickset",
+        "n": 2
+      },
+      {
+        "body": "sax.hist-priest",
+        "n": 2
+      },
+      {
+        "body": "hum.legion-heavy~thickset",
+        "n": 2
+      },
+      {
+        "body": "sax.naga-broad~wiry",
+        "n": 1
+      },
+      {
+        "body": "hum.nord-raw",
+        "n": 1
+      },
+      {
+        "body": "sax.salt-elder~thickset",
+        "n": 1
+      },
+      {
+        "body": "hum.breton-stout~wiry",
+        "n": 1
+      },
+      {
+        "body": "hum.imperial-factor",
+        "n": 1
+      },
+      {
+        "body": "sax.naga-tall",
+        "n": 1
+      }
+    ]
+  },
+  "null_control_cuts_collapsed_race_scoping_off": {
+    "records": 408,
+    "distinct_bodies": 24,
+    "distinct_structural_keys": 24,
+    "names_beyond_keys": 0,
+    "npcs_per_body": 17,
+    "required_at_this_n": 34,
+    "largest_bucket": {
+      "body": "hum.dunmer-lean",
+      "n": 26,
+      "pct": 6.37
+    },
+    "ceiling_at_this_n": 40,
+    "E1_rendered_arm": "fail",
+    "E3_bands": [
+      "average",
+      "heavy",
+      "slight",
+      "stooped-old"
+    ],
+    "E3": "pass",
+    "E4_identical_pairs_within_15m": 69,
+    "E4": "fail",
+    "E4_per_settlement": [
+      {
+        "settlement": "lilmoth",
+        "placed": 49,
+        "identical_pairs_within_15m": 14
+      },
+      {
+        "settlement": "helstrom",
+        "placed": 61,
+        "identical_pairs_within_15m": 11
+      },
+      {
+        "settlement": "gideon",
+        "placed": 43,
+        "identical_pairs_within_15m": 10
+      },
+      {
+        "settlement": "blackrose",
+        "placed": 35,
+        "identical_pairs_within_15m": 10
+      },
+      {
+        "settlement": "soulrest",
+        "placed": 26,
+        "identical_pairs_within_15m": 8
+      },
+      {
+        "settlement": "stormhold",
+        "placed": 48,
+        "identical_pairs_within_15m": 8
+      },
+      {
+        "settlement": "archon",
+        "placed": 37,
+        "identical_pairs_within_15m": 6
+      },
+      {
+        "settlement": "none",
+        "placed": 10,
+        "identical_pairs_within_15m": 1
+      },
+      {
+        "settlement": "thorn",
+        "placed": 22,
+        "identical_pairs_within_15m": 1
+      }
+    ],
+    "body_census": [
+      {
+        "body": "hum.dunmer-lean",
+        "n": 26
+      },
+      {
+        "body": "sax.marsh-lean",
+        "n": 25
+      },
+      {
+        "body": "sax.deep-warden",
+        "n": 25
+      },
+      {
+        "body": "sax.reed-widow",
+        "n": 24
+      },
+      {
+        "body": "sax.helstrom-guard",
+        "n": 23
+      },
+      {
+        "body": "sax.stooped-elder",
+        "n": 23
+      },
+      {
+        "body": "sax.dock-hauler",
+        "n": 22
+      },
+      {
+        "body": "sax.mire-runner",
+        "n": 21
+      },
+      {
+        "body": "player.saxhleel",
+        "n": 21
+      },
+      {
+        "body": "sax.thorn-hunter",
+        "n": 19
+      },
+      {
+        "body": "hum.marauder",
+        "n": 19
+      },
+      {
+        "body": "hum.legion-heavy",
+        "n": 18
+      },
+      {
+        "body": "sax.hive-drone",
+        "n": 17
+      },
+      {
+        "body": "sax.hist-broad",
+        "n": 16
+      },
+      {
+        "body": "hum.khajiit-lean",
+        "n": 13
+      },
+      {
+        "body": "hum.dock-porter",
+        "n": 12
+      },
+      {
+        "body": "hum.breton-stout",
+        "n": 12
+      },
+      {
+        "body": "sax.salt-elder",
+        "n": 12
+      },
+      {
+        "body": "sax.hist-priest",
+        "n": 12
+      },
+      {
+        "body": "hum.dunmer-broad",
+        "n": 11
+      },
+      {
+        "body": "hum.imperial-clerk",
+        "n": 11
+      },
+      {
+        "body": "hum.imperial-factor",
+        "n": 9
+      },
+      {
+        "body": "hum.nord-raw",
+        "n": 9
+      },
+      {
+        "body": "hum.stooped-widow",
+        "n": 8
+      }
+    ]
+  },
+  "control_is_required_to_disagree": {
+    "bodies_shipped": 72,
+    "bodies_control": 24,
+    "pairs_shipped": 28,
+    "pairs_control": 69,
+    "max_iou_shipped": 0.9905,
+    "max_iou_control": 0.9809,
+    "ok": true,
+    "what_would_turn_this_red": "a cut layer that composes to the archetype, or race scoping that reaches no pool — either would make the control equal the shipped arm"
+  },
+  "C1_preservation": {
+    "bodies_measured": 72,
+    "R_min": 7.098,
+    "R_median": 7.449,
+    "R_max": 7.838,
+    "band": "7.0-8.0 (man/mer default) — hard fail outside 6.0-8.5",
+    "in_band_7_8": 72,
+    "in_hard_band_6_8_5": 72,
+    "pixel_numbers_published": [
+      {
+        "body": "sax.reed-widow~wiry",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "hum.breton-stout~thickset",
+        "H_px": 581,
+        "h_px": 79,
+        "R": 7.354
+      },
+      {
+        "body": "sax.helstrom-guard~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "hum.stooped-widow~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.imperial-clerk~wiry",
+        "H_px": 581,
+        "h_px": 75,
+        "R": 7.747
+      },
+      {
+        "body": "sax.mire-runner",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "sax.mire-runner~thickset",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "hum.legion-heavy~wiry",
+        "H_px": 580,
+        "h_px": 74,
+        "R": 7.838
+      },
+      {
+        "body": "hum.dunmer-lean",
+        "H_px": 581,
+        "h_px": 76,
+        "R": 7.645
+      },
+      {
+        "body": "hum.imperial-clerk",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.reed-widow~thickset",
+        "H_px": 582,
+        "h_px": 82,
+        "R": 7.098
+      },
+      {
+        "body": "sax.stooped-elder~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.marauder",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "sax.dock-hauler",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.breton-stout",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "hum.khajiit-lean~thickset",
+        "H_px": 581,
+        "h_px": 81,
+        "R": 7.173
+      },
+      {
+        "body": "hum.dunmer-lean~thickset",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "sax.hist-broad~wiry",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.reed-widow",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "player.saxhleel",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "hum.stooped-widow",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.thorn-hunter~wiry",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.stooped-elder",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.marsh-lean",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.legion-heavy",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "sax.marsh-lean~thickset",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.deep-warden~wiry",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.hive-drone~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "sax.dock-hauler~thickset",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "hum.marauder~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.marauder~thickset",
+        "H_px": 581,
+        "h_px": 80,
+        "R": 7.263
+      },
+      {
+        "body": "hum.dock-porter~wiry",
+        "H_px": 581,
+        "h_px": 76,
+        "R": 7.645
+      },
+      {
+        "body": "sax.deep-warden",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.helstrom-guard~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.dunmer-lean~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "sax.hive-drone~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "hum.dock-porter~thickset",
+        "H_px": 581,
+        "h_px": 79,
+        "R": 7.354
+      },
+      {
+        "body": "hum.stooped-widow~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "hum.imperial-clerk~thickset",
+        "H_px": 581,
+        "h_px": 79,
+        "R": 7.354
+      },
+      {
+        "body": "sax.hist-broad",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.dock-hauler~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "sax.mire-runner~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "hum.khajiit-lean~wiry",
+        "H_px": 580,
+        "h_px": 74,
+        "R": 7.838
+      },
+      {
+        "body": "sax.helstrom-guard",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "player.saxhleel~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.hist-broad~thickset",
+        "H_px": 582,
+        "h_px": 82,
+        "R": 7.098
+      },
+      {
+        "body": "sax.naga-broad~wiry",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.marsh-lean~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "hum.dock-porter",
+        "H_px": 581,
+        "h_px": 78,
+        "R": 7.449
+      },
+      {
+        "body": "sax.thorn-hunter",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "hum.imperial-factor~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "hum.dunmer-broad",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "sax.salt-elder",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.hive-drone",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.hist-priest~thickset",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "hum.dunmer-broad~thickset",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "player.saxhleel~wiry",
+        "H_px": 582,
+        "h_px": 76,
+        "R": 7.658
+      },
+      {
+        "body": "hum.imperial-factor~wiry",
+        "H_px": 581,
+        "h_px": 77,
+        "R": 7.545
+      },
+      {
+        "body": "hum.khajiit-lean",
+        "H_px": 582,
+        "h_px": 80,
+        "R": 7.275
+      },
+      {
+        "body": "sax.stooped-elder~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "sax.deep-warden~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "sax.salt-elder~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.nord-raw",
+        "H_px": 582,
+        "h_px": 79,
+        "R": 7.367
+      },
+      {
+        "body": "sax.thorn-hunter~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "hum.nord-raw~thickset",
+        "H_px": 581,
+        "h_px": 79,
+        "R": 7.354
+      },
+      {
+        "body": "sax.hist-priest",
+        "H_px": 582,
+        "h_px": 78,
+        "R": 7.462
+      },
+      {
+        "body": "sax.hist-priest~wiry",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      },
+      {
+        "body": "hum.legion-heavy~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "sax.salt-elder~thickset",
+        "H_px": 582,
+        "h_px": 81,
+        "R": 7.185
+      },
+      {
+        "body": "hum.breton-stout~wiry",
+        "H_px": 581,
+        "h_px": 76,
+        "R": 7.645
+      },
+      {
+        "body": "hum.imperial-factor",
+        "H_px": 580,
+        "h_px": 77,
+        "R": 7.532
+      },
+      {
+        "body": "sax.naga-tall",
+        "H_px": 582,
+        "h_px": 77,
+        "R": 7.558
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "C2_silhouette_discriminator": {
+    "note": "pose held IDENTICAL across every body; masks height-normalised to 120 px, so a uniform scale cannot move this number",
+    "shipped": {
+      "pairs_n": 5112,
+      "median_iou": 0.8074,
+      "max_iou": 0.9905,
+      "pairs_at_or_above_0_93": 698,
+      "worst": [
+        {
+          "angle": 0,
+          "a": "sax.reed-widow",
+          "b": "sax.hive-drone~thickset",
+          "iou": 0.9905
+        },
+        {
+          "angle": 0,
+          "a": "sax.mire-runner~thickset",
+          "b": "sax.thorn-hunter",
+          "iou": 0.9879
+        },
+        {
+          "angle": 0,
+          "a": "sax.mire-runner",
+          "b": "sax.thorn-hunter~wiry",
+          "iou": 0.9876
+        },
+        {
+          "angle": 0,
+          "a": "hum.marauder~wiry",
+          "b": "sax.helstrom-guard~wiry",
+          "iou": 0.9821
+        },
+        {
+          "angle": 0,
+          "a": "hum.marauder~thickset",
+          "b": "hum.dunmer-broad~thickset",
+          "iou": 0.9821
+        },
+        {
+          "angle": 0,
+          "a": "hum.imperial-clerk",
+          "b": "sax.naga-tall",
+          "iou": 0.9811
+        },
+        {
+          "angle": 0,
+          "a": "sax.dock-hauler",
+          "b": "hum.nord-raw",
+          "iou": 0.9809
+        },
+        {
+          "angle": 0,
+          "a": "sax.hist-broad",
+          "b": "hum.dunmer-broad",
+          "iou": 0.9808
+        },
+        {
+          "angle": 0,
+          "a": "sax.helstrom-guard~thickset",
+          "b": "sax.deep-warden",
+          "iou": 0.9804
+        },
+        {
+          "angle": 0,
+          "a": "sax.reed-widow~wiry",
+          "b": "sax.hive-drone",
+          "iou": 0.9802
+        },
+        {
+          "angle": 0,
+          "a": "sax.deep-warden~wiry",
+          "b": "sax.helstrom-guard",
+          "iou": 0.9799
+        },
+        {
+          "angle": 0,
+          "a": "sax.helstrom-guard~thickset",
+          "b": "hum.marauder~thickset",
+          "iou": 0.9792
+        },
+        {
+          "angle": 0,
+          "a": "hum.imperial-factor~thickset",
+          "b": "sax.salt-elder~thickset",
+          "iou": 0.979
+        },
+        {
+          "angle": 0,
+          "a": "sax.hist-broad~wiry",
+          "b": "sax.deep-warden~wiry",
+          "iou": 0.9789
+        },
+        {
+          "angle": 0,
+          "a": "hum.imperial-clerk",
+          "b": "sax.stooped-elder",
+          "iou": 0.9788
+        }
+      ]
+    },
+    "control": {
+      "pairs_n": 552,
+      "median_iou": 0.8187,
+      "max_iou": 0.9809,
+      "pairs_at_or_above_0_93": 97,
+      "worst": [
+        {
+          "angle": 0,
+          "a": "sax.dock-hauler",
+          "b": "hum.nord-raw",
+          "iou": 0.9809
+        },
+        {
+          "angle": 0,
+          "a": "sax.hist-broad",
+          "b": "hum.dunmer-broad",
+          "iou": 0.9808
+        },
+        {
+          "angle": 0,
+          "a": "sax.stooped-elder",
+          "b": "hum.imperial-clerk",
+          "iou": 0.9788
+        },
+        {
+          "angle": 0,
+          "a": "sax.hist-broad",
+          "b": "sax.deep-warden",
+          "iou": 0.9785
+        },
+        {
+          "angle": 0,
+          "a": "sax.helstrom-guard",
+          "b": "hum.marauder",
+          "iou": 0.9771
+        },
+        {
+          "angle": 0,
+          "a": "hum.marauder",
+          "b": "hum.dunmer-broad",
+          "iou": 0.9768
+        },
+        {
+          "angle": 0,
+          "a": "hum.imperial-factor",
+          "b": "sax.salt-elder",
+          "iou": 0.9761
+        },
+        {
+          "angle": 0,
+          "a": "sax.reed-widow",
+          "b": "sax.marsh-lean",
+          "iou": 0.9751
+        },
+        {
+          "angle": 0,
+          "a": "sax.hist-broad",
+          "b": "hum.marauder",
+          "iou": 0.9742
+        },
+        {
+          "angle": 0,
+          "a": "hum.legion-heavy",
+          "b": "hum.nord-raw",
+          "iou": 0.9735
+        },
+        {
+          "angle": 0,
+          "a": "sax.reed-widow",
+          "b": "hum.stooped-widow",
+          "iou": 0.9728
+        },
+        {
+          "angle": 0,
+          "a": "hum.imperial-factor",
+          "b": "hum.breton-stout",
+          "iou": 0.9725
+        },
+        {
+          "angle": 0,
+          "a": "player.saxhleel",
+          "b": "sax.hist-priest",
+          "iou": 0.9705
+        },
+        {
+          "angle": 0,
+          "a": "hum.legion-heavy",
+          "b": "hum.dunmer-broad",
+          "iou": 0.9692
+        },
+        {
+          "angle": 0,
+          "a": "sax.helstrom-guard",
+          "b": "sax.hist-broad",
+          "iou": 0.9688
+        }
+      ]
+    }
+  }
+}

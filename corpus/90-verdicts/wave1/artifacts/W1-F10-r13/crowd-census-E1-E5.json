@@ -1,0 +1,1564 @@
+{
+  "tool": "f10-r9c-crowd-census.mjs",
+  "role": "independent critic, W1-F10-r9",
+  "generated": "2026-08-16T03:46:21.105Z",
+  "item": "RI-VIS10 §E (E1..E5)",
+  "enumeration": {
+    "command": "readdirSync(game/data/npcs).filter(.json) then walk every record with an `id`",
+    "files": 18,
+    "records": 408,
+    "distinct_actors": 32,
+    "distinct_races": 12,
+    "race_census": [
+      {
+        "race": "argonian",
+        "n": 181
+      },
+      {
+        "race": "saxhleel",
+        "n": 77
+      },
+      {
+        "race": "imperial",
+        "n": 59
+      },
+      {
+        "race": "dunmer",
+        "n": 57
+      },
+      {
+        "race": "nord",
+        "n": 12
+      },
+      {
+        "race": "breton",
+        "n": 10
+      },
+      {
+        "race": "khajiit",
+        "n": 6
+      },
+      {
+        "race": "naga",
+        "n": 2
+      },
+      {
+        "race": "none",
+        "n": 1
+      },
+      {
+        "race": "mixed",
+        "n": 1
+      },
+      {
+        "race": "redguard",
+        "n": 1
+      },
+      {
+        "race": "orsimer",
+        "n": 1
+      }
+    ]
+  },
+  "renderer_finding": "game/src/render/actor.js:characterFor selects the body from FNV1a(group.name) % pool(artFamilyForRace(race)) — the `actor` field never reaches the renderer. RI-VIS10 §E uses `actor` as its denominator throughout.",
+  "E1": {
+    "check": "E1 — visual actors against population",
+    "command": "walked game/data/npcs/*.json (18 files) and counted the `actor` field",
+    "n_npcs": 408,
+    "distinct_actors": 32,
+    "npcs_per_actor": 12.75,
+    "required_actors_at_this_n": 34,
+    "largest_bucket": {
+      "actor": "townsman",
+      "n": 97,
+      "pct": 23.8
+    },
+    "ceiling_at_this_n": 40,
+    "arm_1_actors_per_12": "fail",
+    "arm_2_bucket_ceiling": "fail",
+    "census": [
+      {
+        "actor": "townsman",
+        "n": 97,
+        "pct": 23.8
+      },
+      {
+        "actor": "villager",
+        "n": 37,
+        "pct": 9.1
+      },
+      {
+        "actor": "legionary",
+        "n": 31,
+        "pct": 7.6
+      },
+      {
+        "actor": "rootkeeper",
+        "n": 30,
+        "pct": 7.4
+      },
+      {
+        "actor": "merchant",
+        "n": 29,
+        "pct": 7.1
+      },
+      {
+        "actor": "healer",
+        "n": 29,
+        "pct": 7.1
+      },
+      {
+        "actor": "dres-factor",
+        "n": 25,
+        "pct": 6.1
+      },
+      {
+        "actor": "mudborn",
+        "n": 23,
+        "pct": 5.6
+      },
+      {
+        "actor": "clerk",
+        "n": 21,
+        "pct": 5.1
+      },
+      {
+        "actor": "innkeeper",
+        "n": 19,
+        "pct": 4.7
+      },
+      {
+        "actor": "fisher",
+        "n": 12,
+        "pct": 2.9
+      },
+      {
+        "actor": "archivist",
+        "n": 10,
+        "pct": 2.5
+      },
+      {
+        "actor": "sapcutter",
+        "n": 10,
+        "pct": 2.5
+      },
+      {
+        "actor": "town-elder",
+        "n": 9,
+        "pct": 2.2
+      },
+      {
+        "actor": "spellwright",
+        "n": 4,
+        "pct": 1
+      },
+      {
+        "actor": "enchanter",
+        "n": 3,
+        "pct": 0.7
+      },
+      {
+        "actor": "outlaw",
+        "n": 2,
+        "pct": 0.5
+      },
+      {
+        "actor": "naga-elder",
+        "n": 2,
+        "pct": 0.5
+      },
+      {
+        "actor": "mercenary",
+        "n": 2,
+        "pct": 0.5
+      },
+      {
+        "actor": "deep-elder",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "magister",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "agaceph-guide",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "agaceph-weir",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "paatru-clay",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "paatru-edge",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "sarpa-flier",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "archein-holder",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "archein-factor",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "sap-speaker",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "miredancer-elder",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "deadwater-warrior",
+        "n": 1,
+        "pct": 0.2
+      },
+      {
+        "actor": "antiquarian",
+        "n": 1,
+        "pct": 0.2
+      }
+    ],
+    "rendered_arm": {
+      "measured_by": "building all 408 records through makeRiggedActor(+race) -> poseFromRig and reading userData.characterId off the built mesh",
+      "distinct_rendered_bodies": 72,
+      "distinct_structural_keys": 72,
+      "npcs_per_rendered_body": 5.67,
+      "required_bodies_at_this_n": 34,
+      "largest_bucket": {
+        "body": "sax.stooped-elder~wiry",
+        "n": 13,
+        "pct": 3.2
+      },
+      "ceiling_at_this_n": 40,
+      "arm_1_bodies_per_12": "pass",
+      "arm_2_bucket_ceiling": "pass",
+      "names_equal_structural_keys": true,
+      "census": [
+        {
+          "rendered_body": "sax.stooped-elder~wiry",
+          "n": 13,
+          "pct": 3.2
+        },
+        {
+          "rendered_body": "sax.helstrom-guard~thickset",
+          "n": 12,
+          "pct": 2.9
+        },
+        {
+          "rendered_body": "hum.dock-porter~thickset",
+          "n": 12,
+          "pct": 2.9
+        },
+        {
+          "rendered_body": "sax.deep-warden",
+          "n": 11,
+          "pct": 2.7
+        },
+        {
+          "rendered_body": "hum.stooped-widow",
+          "n": 10,
+          "pct": 2.5
+        },
+        {
+          "rendered_body": "sax.deep-warden~wiry",
+          "n": 10,
+          "pct": 2.5
+        },
+        {
+          "rendered_body": "sax.marsh-lean~wiry",
+          "n": 10,
+          "pct": 2.5
+        },
+        {
+          "rendered_body": "sax.reed-widow~wiry",
+          "n": 9,
+          "pct": 2.2
+        },
+        {
+          "rendered_body": "hum.stooped-widow~wiry",
+          "n": 9,
+          "pct": 2.2
+        },
+        {
+          "rendered_body": "sax.marsh-lean",
+          "n": 9,
+          "pct": 2.2
+        },
+        {
+          "rendered_body": "sax.mire-runner",
+          "n": 8,
+          "pct": 2
+        },
+        {
+          "rendered_body": "sax.dock-hauler",
+          "n": 8,
+          "pct": 2
+        },
+        {
+          "rendered_body": "hum.breton-stout",
+          "n": 8,
+          "pct": 2
+        },
+        {
+          "rendered_body": "player.saxhleel",
+          "n": 8,
+          "pct": 2
+        },
+        {
+          "rendered_body": "hum.stooped-widow~thickset",
+          "n": 8,
+          "pct": 2
+        },
+        {
+          "rendered_body": "hum.dock-porter",
+          "n": 8,
+          "pct": 2
+        },
+        {
+          "rendered_body": "sax.mire-runner~thickset",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "hum.dunmer-lean",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "sax.reed-widow~thickset",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "sax.reed-widow",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "sax.thorn-hunter~wiry",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "sax.stooped-elder",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "sax.dock-hauler~thickset",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "sax.helstrom-guard~wiry",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "hum.dunmer-lean~wiry",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "sax.dock-hauler~wiry",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "player.saxhleel~wiry",
+          "n": 7,
+          "pct": 1.7
+        },
+        {
+          "rendered_body": "sax.marsh-lean~thickset",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "sax.hive-drone~wiry",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "hum.marauder~thickset",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "sax.mire-runner~wiry",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "hum.khajiit-lean~wiry",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "player.saxhleel~thickset",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "sax.hist-broad~thickset",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "sax.thorn-hunter",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "sax.hive-drone",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "sax.hist-priest~thickset",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "sax.salt-elder~wiry",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "sax.thorn-hunter~thickset",
+          "n": 6,
+          "pct": 1.5
+        },
+        {
+          "rendered_body": "hum.legion-heavy~wiry",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "hum.dunmer-lean~thickset",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "sax.hist-broad~wiry",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "hum.legion-heavy",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "sax.hive-drone~thickset",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "hum.imperial-clerk~thickset",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "sax.hist-broad",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "hum.imperial-factor~thickset",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "sax.salt-elder",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "hum.imperial-factor~wiry",
+          "n": 5,
+          "pct": 1.2
+        },
+        {
+          "rendered_body": "hum.breton-stout~thickset",
+          "n": 4,
+          "pct": 1
+        },
+        {
+          "rendered_body": "hum.marauder~wiry",
+          "n": 4,
+          "pct": 1
+        },
+        {
+          "rendered_body": "hum.dock-porter~wiry",
+          "n": 4,
+          "pct": 1
+        },
+        {
+          "rendered_body": "hum.khajiit-lean",
+          "n": 4,
+          "pct": 1
+        },
+        {
+          "rendered_body": "sax.deep-warden~thickset",
+          "n": 4,
+          "pct": 1
+        },
+        {
+          "rendered_body": "sax.hist-priest~wiry",
+          "n": 4,
+          "pct": 1
+        },
+        {
+          "rendered_body": "hum.marauder",
+          "n": 3,
+          "pct": 0.7
+        },
+        {
+          "rendered_body": "hum.khajiit-lean~thickset",
+          "n": 3,
+          "pct": 0.7
+        },
+        {
+          "rendered_body": "sax.helstrom-guard",
+          "n": 3,
+          "pct": 0.7
+        },
+        {
+          "rendered_body": "sax.stooped-elder~thickset",
+          "n": 3,
+          "pct": 0.7
+        },
+        {
+          "rendered_body": "hum.imperial-clerk~wiry",
+          "n": 2,
+          "pct": 0.5
+        },
+        {
+          "rendered_body": "hum.imperial-clerk",
+          "n": 2,
+          "pct": 0.5
+        },
+        {
+          "rendered_body": "hum.dunmer-broad",
+          "n": 2,
+          "pct": 0.5
+        },
+        {
+          "rendered_body": "hum.dunmer-broad~thickset",
+          "n": 2,
+          "pct": 0.5
+        },
+        {
+          "rendered_body": "hum.nord-raw~thickset",
+          "n": 2,
+          "pct": 0.5
+        },
+        {
+          "rendered_body": "sax.hist-priest",
+          "n": 2,
+          "pct": 0.5
+        },
+        {
+          "rendered_body": "hum.legion-heavy~thickset",
+          "n": 2,
+          "pct": 0.5
+        },
+        {
+          "rendered_body": "sax.naga-broad~wiry",
+          "n": 1,
+          "pct": 0.2
+        },
+        {
+          "rendered_body": "hum.nord-raw",
+          "n": 1,
+          "pct": 0.2
+        },
+        {
+          "rendered_body": "sax.salt-elder~thickset",
+          "n": 1,
+          "pct": 0.2
+        },
+        {
+          "rendered_body": "hum.breton-stout~wiry",
+          "n": 1,
+          "pct": 0.2
+        },
+        {
+          "rendered_body": "hum.imperial-factor",
+          "n": 1,
+          "pct": 0.2
+        },
+        {
+          "rendered_body": "sax.naga-tall",
+          "n": 1,
+          "pct": 0.2
+        }
+      ]
+    },
+    "verdict": "FAIL"
+  },
+  "E2": {
+    "check": "E2 — head/face variety inside the single largest actor",
+    "actor": "townsman",
+    "n_in_bucket": 97,
+    "measured_by": "building each record through makeRiggedActor + poseFromRig and reading userData.characterId off the built mesh",
+    "distinct_rendered_bodies": 47,
+    "census": [
+      {
+        "rendered_body": "sax.reed-widow~thickset",
+        "n": 4
+      },
+      {
+        "rendered_body": "hum.dock-porter~thickset",
+        "n": 4
+      },
+      {
+        "rendered_body": "sax.helstrom-guard~thickset",
+        "n": 4
+      },
+      {
+        "rendered_body": "sax.marsh-lean~wiry",
+        "n": 4
+      },
+      {
+        "rendered_body": "sax.deep-warden~wiry",
+        "n": 4
+      },
+      {
+        "rendered_body": "sax.reed-widow~wiry",
+        "n": 3
+      },
+      {
+        "rendered_body": "player.saxhleel",
+        "n": 3
+      },
+      {
+        "rendered_body": "sax.stooped-elder~wiry",
+        "n": 3
+      },
+      {
+        "rendered_body": "sax.thorn-hunter",
+        "n": 3
+      },
+      {
+        "rendered_body": "sax.stooped-elder",
+        "n": 3
+      },
+      {
+        "rendered_body": "hum.dock-porter",
+        "n": 3
+      },
+      {
+        "rendered_body": "sax.salt-elder~wiry",
+        "n": 3
+      },
+      {
+        "rendered_body": "sax.hist-priest~thickset",
+        "n": 3
+      },
+      {
+        "rendered_body": "sax.helstrom-guard~wiry",
+        "n": 3
+      },
+      {
+        "rendered_body": "sax.deep-warden",
+        "n": 3
+      },
+      {
+        "rendered_body": "hum.marauder",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.dock-porter~wiry",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.dunmer-lean~wiry",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.stooped-widow~thickset",
+        "n": 2
+      },
+      {
+        "rendered_body": "sax.thorn-hunter~wiry",
+        "n": 2
+      },
+      {
+        "rendered_body": "sax.dock-hauler",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.stooped-widow",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.stooped-widow~wiry",
+        "n": 2
+      },
+      {
+        "rendered_body": "sax.deep-warden~thickset",
+        "n": 2
+      },
+      {
+        "rendered_body": "sax.thorn-hunter~thickset",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.legion-heavy~thickset",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.khajiit-lean~wiry",
+        "n": 2
+      },
+      {
+        "rendered_body": "sax.hist-broad~thickset",
+        "n": 2
+      },
+      {
+        "rendered_body": "sax.hive-drone~thickset",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.dunmer-lean",
+        "n": 2
+      },
+      {
+        "rendered_body": "hum.dunmer-lean~thickset",
+        "n": 1
+      },
+      {
+        "rendered_body": "hum.marauder~thickset",
+        "n": 1
+      },
+      {
+        "rendered_body": "hum.imperial-clerk~thickset",
+        "n": 1
+      },
+      {
+        "rendered_body": "sax.hist-broad",
+        "n": 1
+      },
+      {
+        "rendered_body": "sax.mire-runner~thickset",
+        "n": 1
+      },
+      {
+        "rendered_body": "player.saxhleel~thickset",
+        "n": 1
+      },
+      {
+        "rendered_body": "hum.legion-heavy",
+        "n": 1
+      },
+      {
+        "rendered_body": "sax.hive-drone~wiry",
+        "n": 1
+      },
+      {
+        "rendered_body": "sax.salt-elder",
+        "n": 1
+      },
+      {
+        "rendered_body": "hum.breton-stout",
+        "n": 1
+      },
+      {
+        "rendered_body": "hum.imperial-factor~thickset",
+        "n": 1
+      },
+      {
+        "rendered_body": "player.saxhleel~wiry",
+        "n": 1
+      },
+      {
+        "rendered_body": "sax.hist-priest~wiry",
+        "n": 1
+      },
+      {
+        "rendered_body": "sax.hive-drone",
+        "n": 1
+      },
+      {
+        "rendered_body": "hum.khajiit-lean~thickset",
+        "n": 1
+      },
+      {
+        "rendered_body": "sax.dock-hauler~thickset",
+        "n": 1
+      },
+      {
+        "rendered_body": "sax.dock-hauler~wiry",
+        "n": 1
+      }
+    ],
+    "bar": ">= 4 distinct head/face variants; 1 => every townsman is the same man",
+    "note": "This build has no head variant axis separate from the body variant — one CHARACTER_SPECS row carries build, crest, snout and material together, so \"distinct head\" and \"distinct body\" are the same number here. Reported as the body count, and that is the most generous reading available.",
+    "verdict": "PASS"
+  },
+  "E3": {
+    "check": "E3 — age and build spread",
+    "measured_by": "distinct morph.build values across every rendered NPC body, banded",
+    "distinct_build_values": [
+      0.72,
+      0.738,
+      0.756,
+      0.774,
+      0.792,
+      0.8,
+      0.81,
+      0.82,
+      0.84,
+      0.846,
+      0.86,
+      0.88,
+      0.9,
+      0.902,
+      0.918,
+      0.924,
+      0.936,
+      0.94,
+      0.946,
+      0.954,
+      0.968,
+      0.99,
+      1,
+      1.008,
+      1.02,
+      1.026,
+      1.034,
+      1.04,
+      1.06,
+      1.062,
+      1.08,
+      1.098,
+      1.1,
+      1.12,
+      1.122,
+      1.134,
+      1.14,
+      1.144,
+      1.16,
+      1.166,
+      1.17,
+      1.18,
+      1.2,
+      1.21,
+      1.22,
+      1.232,
+      1.24,
+      1.254,
+      1.26,
+      1.276,
+      1.298,
+      1.32,
+      1.342,
+      1.364,
+      1.386
+    ],
+    "band_rule": "child <0.70 | slight 0.70-0.92 | average 0.92-1.08 | heavy >1.08 | stooped-old requires a spine/neck morph axis",
+    "bands_present": [
+      "slight",
+      "heavy",
+      "average",
+      "stooped-old"
+    ],
+    "n_bands": 4,
+    "bar": ">= 4 of {child, slight, average, heavy, stooped-old}; 1 caps the item at 3",
+    "no_child_axis": true,
+    "stoop_axis": "reachable: morph.stoop values in use = 0.85, 1.15, 1.25 over 73 of 408 records",
+    "stoop_census": [
+      {
+        "stoop": 0,
+        "n_npcs": 335
+      },
+      {
+        "stoop": 1.15,
+        "n_npcs": 27
+      },
+      {
+        "stoop": 0.85,
+        "n_npcs": 23
+      },
+      {
+        "stoop": 1.25,
+        "n_npcs": 23
+      }
+    ],
+    "census": [
+      {
+        "build": 0.9,
+        "n_npcs": 23
+      },
+      {
+        "build": 1.22,
+        "n_npcs": 19
+      },
+      {
+        "build": 0.81,
+        "n_npcs": 16
+      },
+      {
+        "build": 1.342,
+        "n_npcs": 16
+      },
+      {
+        "build": 0.774,
+        "n_npcs": 16
+      },
+      {
+        "build": 0.846,
+        "n_npcs": 15
+      },
+      {
+        "build": 0.99,
+        "n_npcs": 15
+      },
+      {
+        "build": 1.1,
+        "n_npcs": 14
+      },
+      {
+        "build": 1.098,
+        "n_npcs": 14
+      },
+      {
+        "build": 0.86,
+        "n_npcs": 13
+      },
+      {
+        "build": 1.232,
+        "n_npcs": 12
+      },
+      {
+        "build": 0.88,
+        "n_npcs": 12
+      },
+      {
+        "build": 0.94,
+        "n_npcs": 10
+      },
+      {
+        "build": 0.792,
+        "n_npcs": 9
+      },
+      {
+        "build": 0.946,
+        "n_npcs": 9
+      },
+      {
+        "build": 0.82,
+        "n_npcs": 8
+      },
+      {
+        "build": 1.26,
+        "n_npcs": 8
+      },
+      {
+        "build": 1,
+        "n_npcs": 8
+      },
+      {
+        "build": 1.034,
+        "n_npcs": 8
+      },
+      {
+        "build": 0.902,
+        "n_npcs": 7
+      },
+      {
+        "build": 0.84,
+        "n_npcs": 7
+      },
+      {
+        "build": 0.968,
+        "n_npcs": 7
+      },
+      {
+        "build": 1.386,
+        "n_npcs": 7
+      },
+      {
+        "build": 1.008,
+        "n_npcs": 7
+      },
+      {
+        "build": 0.756,
+        "n_npcs": 7
+      },
+      {
+        "build": 1.134,
+        "n_npcs": 7
+      },
+      {
+        "build": 0.72,
+        "n_npcs": 6
+      },
+      {
+        "build": 1.254,
+        "n_npcs": 6
+      },
+      {
+        "build": 0.738,
+        "n_npcs": 6
+      },
+      {
+        "build": 1.298,
+        "n_npcs": 6
+      },
+      {
+        "build": 0.8,
+        "n_npcs": 6
+      },
+      {
+        "build": 1.122,
+        "n_npcs": 6
+      },
+      {
+        "build": 0.936,
+        "n_npcs": 6
+      },
+      {
+        "build": 1.08,
+        "n_npcs": 5
+      },
+      {
+        "build": 0.924,
+        "n_npcs": 5
+      },
+      {
+        "build": 1.062,
+        "n_npcs": 5
+      },
+      {
+        "build": 1.2,
+        "n_npcs": 5
+      },
+      {
+        "build": 1.18,
+        "n_npcs": 5
+      },
+      {
+        "build": 1.166,
+        "n_npcs": 5
+      },
+      {
+        "build": 1.04,
+        "n_npcs": 5
+      },
+      {
+        "build": 0.954,
+        "n_npcs": 5
+      },
+      {
+        "build": 1.21,
+        "n_npcs": 4
+      },
+      {
+        "build": 1.026,
+        "n_npcs": 4
+      },
+      {
+        "build": 0.918,
+        "n_npcs": 4
+      },
+      {
+        "build": 1.14,
+        "n_npcs": 3
+      },
+      {
+        "build": 1.12,
+        "n_npcs": 3
+      },
+      {
+        "build": 1.16,
+        "n_npcs": 2
+      },
+      {
+        "build": 1.276,
+        "n_npcs": 2
+      },
+      {
+        "build": 1.364,
+        "n_npcs": 2
+      },
+      {
+        "build": 1.02,
+        "n_npcs": 2
+      },
+      {
+        "build": 1.32,
+        "n_npcs": 2
+      },
+      {
+        "build": 1.17,
+        "n_npcs": 1
+      },
+      {
+        "build": 1.24,
+        "n_npcs": 1
+      },
+      {
+        "build": 1.144,
+        "n_npcs": 1
+      },
+      {
+        "build": 1.06,
+        "n_npcs": 1
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "E4": {
+    "check": "E4 — adjacency",
+    "method_deviation": "the item asks for a 60-second walk counting pairs ON SCREEN TOGETHER; this counts authored posts within 15 m in the same settlement, which is the static proxy — declared, not substituted silently",
+    "tuple": "(rendered characterId, race) — race is what carries the tint at renderer.js:729",
+    "total_identical_pairs_within_15m": 29,
+    "bar": "0 pairs; >= 3 pairs => the duplication is visible in one shot",
+    "census": [
+      {
+        "settlement": "helstrom",
+        "placed_npcs": 67,
+        "identical_pairs_within_15m": 2,
+        "examples": [
+          {
+            "a": "helstrom-gallery-keepers",
+            "b": "npc-uneel-vaakh-sister",
+            "body": "sax.reed-widow",
+            "race": "saxhleel",
+            "distance_m": 6.2
+          },
+          {
+            "a": "npc-uneel-vaakh-sister",
+            "b": "npc-fourth-day-boatman",
+            "body": "hum.dunmer-lean",
+            "race": "dunmer",
+            "distance_m": 4.3
+          }
+        ]
+      },
+      {
+        "settlement": "lilmoth",
+        "placed_npcs": 54,
+        "identical_pairs_within_15m": 4,
+        "examples": [
+          {
+            "a": "lilmoth-factor-0",
+            "b": "spellwright-lilmoth",
+            "body": "sax.marsh-lean",
+            "race": "argonian",
+            "distance_m": 10.8
+          },
+          {
+            "a": "lilmoth-priest-8",
+            "b": "lilmoth-priest-8-lodger0",
+            "body": "hum.dunmer-lean~thickset",
+            "race": "dunmer",
+            "distance_m": 5.9
+          },
+          {
+            "a": "lilmoth-cook-5-sibling0",
+            "b": "lilmoth-keeper-inn-stilt",
+            "body": "sax.marsh-lean~wiry",
+            "race": "argonian",
+            "distance_m": 9
+          },
+          {
+            "a": "lilmoth-keeper-yard",
+            "b": "lilmoth-keeper-market",
+            "body": "hum.breton-stout",
+            "race": "imperial",
+            "distance_m": 11.1
+          }
+        ]
+      },
+      {
+        "settlement": "stormhold",
+        "placed_npcs": 50,
+        "identical_pairs_within_15m": 4,
+        "examples": [
+          {
+            "a": "stormhold-apothecary-2",
+            "b": "stormhold-warder-9-lodger0",
+            "body": "sax.stooped-elder~wiry",
+            "race": "argonian",
+            "distance_m": 0.8
+          },
+          {
+            "a": "stormhold-boatwright-11",
+            "b": "stormhold-keeper-scribe",
+            "body": "sax.mire-runner",
+            "race": "argonian",
+            "distance_m": 0.8
+          },
+          {
+            "a": "stormhold-keeper-smithy",
+            "b": "stormhold-keeper-inn-lean",
+            "body": "sax.marsh-lean~wiry",
+            "race": "argonian",
+            "distance_m": 2.5
+          },
+          {
+            "a": "quartermaster-sedd",
+            "b": "enchanter-stormhold",
+            "body": "hum.imperial-factor~wiry",
+            "race": "imperial",
+            "distance_m": 13.4
+          }
+        ]
+      },
+      {
+        "settlement": "gideon",
+        "placed_npcs": 43,
+        "identical_pairs_within_15m": 5,
+        "examples": [
+          {
+            "a": "npc-wuleen-kus",
+            "b": "npc-ineel-sa",
+            "body": "sax.reed-widow~wiry",
+            "race": "saxhleel",
+            "distance_m": 6.1
+          },
+          {
+            "a": "factor-ruvela-sath",
+            "b": "factor-belliene",
+            "body": "hum.stooped-widow~wiry",
+            "race": "breton",
+            "distance_m": 1.6
+          },
+          {
+            "a": "npc-ineve-corrano",
+            "b": "npc-widow-tesla-vor",
+            "body": "hum.stooped-widow~thickset",
+            "race": "imperial",
+            "distance_m": 2.8
+          },
+          {
+            "a": "gideon-apothecary-1",
+            "b": "gideon-legionary-7",
+            "body": "sax.reed-widow",
+            "race": "argonian",
+            "distance_m": 2.2
+          }
+        ]
+      },
+      {
+        "settlement": "blackrose",
+        "placed_npcs": 37,
+        "identical_pairs_within_15m": 7,
+        "examples": [
+          {
+            "a": "blackrose-publican-1",
+            "b": "blackrose-legionary-3",
+            "body": "hum.stooped-widow",
+            "race": "dunmer",
+            "distance_m": 14.3
+          },
+          {
+            "a": "blackrose-publican-1",
+            "b": "blackrose-trader-0-partner0",
+            "body": "hum.stooped-widow",
+            "race": "dunmer",
+            "distance_m": 2
+          },
+          {
+            "a": "blackrose-legionary-3",
+            "b": "blackrose-trader-0-partner0",
+            "body": "hum.stooped-widow",
+            "race": "dunmer",
+            "distance_m": 13.6
+          },
+          {
+            "a": "blackrose-warder-7",
+            "b": "blackrose-keeper-pawn",
+            "body": "hum.imperial-clerk~thickset",
+            "race": "imperial",
+            "distance_m": 2.3
+          }
+        ]
+      },
+      {
+        "settlement": "archon",
+        "placed_npcs": 37,
+        "identical_pairs_within_15m": 2,
+        "examples": [
+          {
+            "a": "archon-legionary-13",
+            "b": "archon-keeper-apothecary",
+            "body": "hum.breton-stout",
+            "race": "imperial",
+            "distance_m": 9.4
+          },
+          {
+            "a": "archon-keeper-guild-office",
+            "b": "archon-keeper-ward",
+            "body": "hum.khajiit-lean~wiry",
+            "race": "dunmer",
+            "distance_m": 1.4
+          }
+        ]
+      },
+      {
+        "settlement": "soulrest",
+        "placed_npcs": 26,
+        "identical_pairs_within_15m": 3,
+        "examples": [
+          {
+            "a": "soulrest-weaver-1",
+            "b": "soulrest-keeper-grey-hist",
+            "body": "sax.helstrom-guard~wiry",
+            "race": "argonian",
+            "distance_m": 12.6
+          },
+          {
+            "a": "soulrest-weaver-1",
+            "b": "soulrest-keeper-market",
+            "body": "sax.helstrom-guard~wiry",
+            "race": "argonian",
+            "distance_m": 4.8
+          },
+          {
+            "a": "soulrest-boatwright-6",
+            "b": "soulrest-boatwright-9",
+            "body": "sax.mire-runner~wiry",
+            "race": "argonian",
+            "distance_m": 11.8
+          }
+        ]
+      },
+      {
+        "settlement": "thorn",
+        "placed_npcs": 22,
+        "identical_pairs_within_15m": 2,
+        "examples": [
+          {
+            "a": "thorn-priest-2",
+            "b": "thorn-weaver-5",
+            "body": "hum.dock-porter~thickset",
+            "race": "khajiit",
+            "distance_m": 11.9
+          },
+          {
+            "a": "thorn-weaver-3",
+            "b": "thorn-legionary-10",
+            "body": "sax.helstrom-guard~thickset",
+            "race": "argonian",
+            "distance_m": 8.3
+          }
+        ]
+      },
+      {
+        "settlement": "none",
+        "placed_npcs": 10,
+        "identical_pairs_within_15m": 0,
+        "examples": []
+      }
+    ],
+    "verdict": "FAIL"
+  },
+  "E5": {
+    "check": "E5 — the rendered mix matches the data",
+    "settlement": "helstrom",
+    "n_npcs_here": 78,
+    "bar": "every race with >= 5% share in the data is distinguishable on screen",
+    "census": [
+      {
+        "race": "argonian",
+        "n": 41,
+        "share_pct": 52.6,
+        "at_or_above_5pct": true,
+        "rendered_bodies": [
+          "player.saxhleel",
+          "player.saxhleel~thickset",
+          "sax.deep-warden",
+          "sax.deep-warden~thickset",
+          "sax.deep-warden~wiry",
+          "sax.dock-hauler",
+          "sax.helstrom-guard",
+          "sax.hist-broad",
+          "sax.hist-broad~wiry",
+          "sax.hist-priest",
+          "sax.hist-priest~thickset",
+          "sax.hist-priest~wiry",
+          "sax.hive-drone~wiry",
+          "sax.marsh-lean",
+          "sax.marsh-lean~thickset",
+          "sax.marsh-lean~wiry",
+          "sax.mire-runner~thickset",
+          "sax.mire-runner~wiry",
+          "sax.salt-elder",
+          "sax.stooped-elder",
+          "sax.stooped-elder~thickset",
+          "sax.stooped-elder~wiry",
+          "sax.thorn-hunter~thickset",
+          "sax.thorn-hunter~wiry"
+        ],
+        "bodies_unique_to_this_race": [
+          "player.saxhleel",
+          "player.saxhleel~thickset",
+          "sax.deep-warden~wiry",
+          "sax.dock-hauler",
+          "sax.hist-priest",
+          "sax.hist-priest~thickset",
+          "sax.hist-priest~wiry",
+          "sax.hive-drone~wiry",
+          "sax.marsh-lean",
+          "sax.marsh-lean~thickset",
+          "sax.marsh-lean~wiry",
+          "sax.mire-runner~thickset",
+          "sax.salt-elder",
+          "sax.stooped-elder",
+          "sax.stooped-elder~thickset",
+          "sax.stooped-elder~wiry",
+          "sax.thorn-hunter~thickset",
+          "sax.thorn-hunter~wiry"
+        ],
+        "shape_distinguishable": true,
+        "tint_distinguishable": true,
+        "tint_note": "RACE_TINT (renderer.js:45) gives every shipped race its own skin/cloth pair, so colour separates them; shape does not"
+      },
+      {
+        "race": "saxhleel",
+        "n": 22,
+        "share_pct": 28.2,
+        "at_or_above_5pct": true,
+        "rendered_bodies": [
+          "player.saxhleel~wiry",
+          "sax.deep-warden",
+          "sax.deep-warden~thickset",
+          "sax.dock-hauler~wiry",
+          "sax.helstrom-guard",
+          "sax.helstrom-guard~thickset",
+          "sax.hist-broad",
+          "sax.hist-broad~thickset",
+          "sax.hist-broad~wiry",
+          "sax.hive-drone~thickset",
+          "sax.mire-runner~wiry",
+          "sax.reed-widow",
+          "sax.reed-widow~thickset",
+          "sax.reed-widow~wiry",
+          "sax.salt-elder~wiry"
+        ],
+        "bodies_unique_to_this_race": [
+          "player.saxhleel~wiry",
+          "sax.dock-hauler~wiry",
+          "sax.helstrom-guard~thickset",
+          "sax.hist-broad~thickset",
+          "sax.hive-drone~thickset",
+          "sax.reed-widow",
+          "sax.reed-widow~thickset",
+          "sax.reed-widow~wiry",
+          "sax.salt-elder~wiry"
+        ],
+        "shape_distinguishable": true,
+        "tint_distinguishable": true,
+        "tint_note": "RACE_TINT (renderer.js:45) gives every shipped race its own skin/cloth pair, so colour separates them; shape does not"
+      },
+      {
+        "race": "nord",
+        "n": 8,
+        "share_pct": 10.3,
+        "at_or_above_5pct": true,
+        "rendered_bodies": [
+          "hum.dock-porter",
+          "hum.dock-porter~thickset",
+          "hum.legion-heavy",
+          "hum.marauder~thickset",
+          "hum.nord-raw",
+          "hum.nord-raw~thickset"
+        ],
+        "bodies_unique_to_this_race": [
+          "hum.dock-porter",
+          "hum.dock-porter~thickset",
+          "hum.legion-heavy",
+          "hum.marauder~thickset",
+          "hum.nord-raw",
+          "hum.nord-raw~thickset"
+        ],
+        "shape_distinguishable": true,
+        "tint_distinguishable": true,
+        "tint_note": "RACE_TINT (renderer.js:45) gives every shipped race its own skin/cloth pair, so colour separates them; shape does not"
+      },
+      {
+        "race": "dunmer",
+        "n": 4,
+        "share_pct": 5.1,
+        "at_or_above_5pct": true,
+        "rendered_bodies": [
+          "hum.dunmer-lean",
+          "hum.khajiit-lean~wiry",
+          "hum.stooped-widow"
+        ],
+        "bodies_unique_to_this_race": [
+          "hum.dunmer-lean",
+          "hum.khajiit-lean~wiry",
+          "hum.stooped-widow"
+        ],
+        "shape_distinguishable": true,
+        "tint_distinguishable": true,
+        "tint_note": "RACE_TINT (renderer.js:45) gives every shipped race its own skin/cloth pair, so colour separates them; shape does not"
+      },
+      {
+        "race": "breton",
+        "n": 2,
+        "share_pct": 2.6,
+        "at_or_above_5pct": false,
+        "rendered_bodies": [
+          "hum.dunmer-lean~wiry",
+          "hum.imperial-clerk~thickset"
+        ],
+        "bodies_unique_to_this_race": [
+          "hum.dunmer-lean~wiry"
+        ],
+        "shape_distinguishable": true,
+        "tint_distinguishable": true,
+        "tint_note": "RACE_TINT (renderer.js:45) gives every shipped race its own skin/cloth pair, so colour separates them; shape does not"
+      },
+      {
+        "race": "imperial",
+        "n": 1,
+        "share_pct": 1.3,
+        "at_or_above_5pct": false,
+        "rendered_bodies": [
+          "hum.imperial-clerk~thickset"
+        ],
+        "bodies_unique_to_this_race": [],
+        "shape_distinguishable": false,
+        "tint_distinguishable": true,
+        "tint_note": "RACE_TINT (renderer.js:45) gives every shipped race its own skin/cloth pair, so colour separates them; shape does not"
+      }
+    ],
+    "races_at_or_above_5pct": [
+      "argonian",
+      "saxhleel",
+      "nord",
+      "dunmer"
+    ],
+    "races_at_or_above_5pct_not_shape_distinguishable": [],
+    "reading": "scored on SHAPE. RI-VIS10 C2 already refuses a variety claim that rests on palette, and `rig-variant-proof.mjs` records the measured reason (Morrowind's own nine regions separate at 9.1% by colour against an 11.1% chance baseline). Both columns are published so a second critic may score it on tint and get a different, stated answer.",
+    "verdict": "PASS"
+  },
+  "passed": 3
+}
