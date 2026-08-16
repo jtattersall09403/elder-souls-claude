@@ -1,0 +1,74 @@
+{
+  "what": "W1-DIALOGUE-AUTHORING-LEAK round 3 negative-control battery",
+  "clone": "/tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p14407-authoring-leak-controls-2026-08-16T052124167Z-ba73e7",
+  "arms": [
+    {
+      "id": "baseline",
+      "why": "the clone, untouched: every check must be green, or every red below is meaningless",
+      "requires": "leaks 0, voice 0",
+      "ok": true,
+      "observed": "leaks 0, voice 0",
+      "log": "that writes this file\n      2  register_anchor    provenance: the corpus register this file answers to\n      1  corpus_item        citation of the governing reference item\n      1  honest_statement   provenance's own volume-vs-labour declaration\n      1  order_note         note about declared merge order\n  A leak authored into one of those keys is invisible here — by design, and the\n  count is printed so that is a decision a reader can audit, not an assumption.\n\ncheck-authoring-leaks — WIRING (shipped call sites, read as text; see tools/lib/call-site.mjs\n  on what this proves and what it does not):\n  ok   game/src/engine.js — engine loads dialogue/greetings.json and dialogue/faction-refusals.json, and speaks both\n  ok   game/src/character/converse.js — greetingFor() is what turns a greetings.json pool into the line an NPC says\n  ok   game/src/sim/quest/refusal.js — FactionRefusals.speak() is what turns faction-refusals.json into a spoken refusal\n  ok   game/src/engine.js — books/*.json reach the reading UI through foldBooks() (see tools/books/check-book-fold.mjs)\n\nPASS: no authoring-instruction leaks in any scanned string, and every scanned\nsurface still has its shipped call site.\n"
+    },
+    {
+      "id": "D",
+      "why": "ANCHOR. Hand-author the leak into shipped greetings.json. Round 1: exit 0 and the leak was DELETED by the check. The evidence must survive the run.",
+      "requires": "leaks exit 1, grep before 1 -> grep after 1",
+      "ok": true,
+      "observed": "leaks exit 1, grep 1 -> 1, names .pools[180].lines[3]: true",
+      "log": "s register this file answers to\n      1  corpus_item        citation of the governing reference item\n      1  honest_statement   provenance's own volume-vs-labour declaration\n      1  order_note         note about declared merge order\n  A leak authored into one of those keys is invisible here — by design, and the\n  count is printed so that is a decision a reader can audit, not an assumption.\n\ncheck-authoring-leaks — WIRING (shipped call sites, read as text; see tools/lib/call-site.mjs\n  on what this proves and what it does not):\n  ok   game/src/engine.js — engine loads dialogue/greetings.json and dialogue/faction-refusals.json, and speaks both\n  ok   game/src/character/converse.js — greetingFor() is what turns a greetings.json pool into the line an NPC says\n  ok   game/src/sim/quest/refusal.js — FactionRefusals.speak() is what turns faction-refusals.json into a spoken refusal\n  ok   game/src/engine.js — books/*.json reach the reading UI through foldBooks() (see tools/books/check-book-fold.mjs)\n\nFLAGGED:\n  game/data/dialogue/greetings.json  .pools[180].lines[3]\n    (authoring brief about line length) \"Say it in one line. Local. Useful.\"\n\nFAIL: 1 authoring-instruction leak(s) found.\n"
+    },
+    {
+      "id": "H1",
+      "why": "THE ARM ROUND 2 DID NOT HAVE. Generator guard stripped and the generator imported as a STATIC TOP-LEVEL `import` below the seal — the ordinary ESM form, and the one HAZARDS §31 describes. In round 2 this exited 0 printing PASS with the leak deleted.",
+      "requires": "exit 4, and the leak SURVIVES in the file",
+      "ok": true,
+      "observed": "exit 4, grep 1 -> 0",
+      "note": "the generator DID rewrite the file (leak gone) — the seal is what reports it",
+      "log": "wrote /tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p14407-authoring-leak-controls-2026-08-16T052124167Z-ba73e7/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct\n\nEVIDENCE-MUTATION TRIPWIRE (HAZARDS §31, module-scope seal).\nThis check changed the bytes it was scanning — the round-1 defect exactly: a check\nthat regenerates its own evidence deletes the leak and then reports its absence.\nFiles changed under it (1):\n  game/data/dialogue/greetings.json\nNo verdict from this run may be believed. Exit 4.\n"
+    },
+    {
+      "id": "H2",
+      "why": "The placement that would defeat a naive module-scope seal: the generator imported ABOVE the seal, so it runs first and the seal fingerprints the damage. Caught by the first-import assertion instead of by the hashes.",
+      "requires": "exit 4, and the failure names IMPORT ORDER",
+      "ok": true,
+      "observed": "exit 4, grep 1 -> 0, import-order named: true",
+      "log": "wrote /tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p14407-authoring-leak-controls-2026-08-16T052124167Z-ba73e7/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct\n\nEVIDENCE-MUTATION TRIPWIRE (HAZARDS §31, module-scope seal).\nImport-order assertion FAILED: the caller's FIRST import is \"./gen-greetings.mjs\", not the evidence seal — that module's body ran before the fingerprint was taken, so the fingerprint may be of the damage\nThe seal must be the FIRST import statement in the file, because ESM evaluates\nevery import before the importing module's own body.\nNo verdict from this run may be believed. Exit 4.\n"
+    },
+    {
+      "id": "H3",
+      "why": "Generator imported at the top of main(). Green in round 2.",
+      "requires": "exit 4",
+      "ok": true,
+      "observed": "exit 4, grep 1 -> 0",
+      "log": "wrote /tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p14407-authoring-leak-controls-2026-08-16T052124167Z-ba73e7/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct\n\nEVIDENCE-MUTATION TRIPWIRE (HAZARDS §31, module-scope seal).\nThis check changed the bytes it was scanning — the round-1 defect exactly: a check\nthat regenerates its own evidence deletes the leak and then reports its absence.\nFiles changed under it (1):\n  game/data/dialogue/greetings.json\nNo verdict from this run may be believed. Exit 4.\n"
+    },
+    {
+      "id": "H4",
+      "why": "Round 1's actual placement — the import inside scanAuthoredSource(). Round 2's tripwire already caught this one; it must stay caught.",
+      "requires": "exit 4",
+      "ok": true,
+      "observed": "exit 4, grep 1 -> 0",
+      "log": "wrote /tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p14407-authoring-leak-controls-2026-08-16T052124167Z-ba73e7/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct\n\nEVIDENCE-MUTATION TRIPWIRE (HAZARDS §31, module-scope seal).\nThis check changed the bytes it was scanning — the round-1 defect exactly: a check\nthat regenerates its own evidence deletes the leak and then reports its absence.\nFiles changed under it (1):\n  game/data/dialogue/greetings.json\nNo verdict from this run may be believed. Exit 4.\n"
+    },
+    {
+      "id": "I",
+      "why": "THE ROUND-3 DEFECT. Put `Local. Useful.` back as the RG-BWC/saxhleel ADDRESS and regenerate. This is the state the game shipped in for two rounds. The voice check must go red on the ADDRESS half; in round 2 it was green, because it gated only the composed line and the composed line borrowed `leyawiin` from the STANCE half.",
+      "requires": "voice exit 1, and the ADDRESS gate is what names it",
+      "ok": true,
+      "observed": "voice exit 1, leaks exit 0 (leaks correctly stays green: two words are not a pattern match)",
+      "log": " contract. Sit down.\"\n  ok   RG-BWC/cold[3] (other-foreign) exclusive tokens: leyawiin, bought\n         \"Company time, and Leyawiin bought it. You look like you can carry things.\"\n\nGATED ADDRESS HALVES (1 of 60):\n  FAIL RG-BWC/saxhleel ADDRESS (agreed by all 5 bands) exclusive tokens: (NONE — this half is common property)\n         \"Local. Useful.\"\n\nNEGATIVE CONTROL 2 — the ADDRESS half as it shipped for two rounds \"Local. Useful.\"\n  RG-BWC-exclusive tokens in it: (none)\n  who uses \"local\": RG-BWC, RG-OUTLAW\n  who uses \"useful\": RG-BWC, RG-EMPIRE\n  -> correctly rejected: both content words are shared with another group.\n\nNEGATIVE CONTROL — round 1's rejected line \"The writ says nothing about talk.\"\n  RG-BWC-exclusive tokens in it: (none)\n  who uses the word \"writ\" in the shipped file: RG-LEDGER\n  -> correctly rejected: every content word in it is shared with another group.\n\n(run with --census for the per-group table of how much of the corpus is unguarded)\n\nFAIL: 1 guarded slot(s) carry no token exclusive to their reaction group.\nA greeting is how a town tells you what it is; this one would sit unchanged in\nanother faction. Name a referent that belongs to this group and nobody else.\n"
+    }
+  ],
+  "failed": 0,
+  "not_rerun": [
+    "A",
+    "B",
+    "B2",
+    "C",
+    "E",
+    "F",
+    "G1"
+  ],
+  "not_rerun_why": "reproduced exactly by the round-2 critic and recorded as settled in that verdict"
+}

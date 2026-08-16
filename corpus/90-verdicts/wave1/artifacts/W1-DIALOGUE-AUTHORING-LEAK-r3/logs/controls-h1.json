@@ -1,0 +1,26 @@
+{
+  "what": "W1-DIALOGUE-AUTHORING-LEAK round 3 negative-control battery",
+  "clone": "/tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p17457-authoring-leak-controls-2026-08-16T052144777Z-d96873",
+  "arms": [
+    {
+      "id": "H1",
+      "why": "THE ARM ROUND 2 DID NOT HAVE. Generator guard stripped and the generator imported as a STATIC TOP-LEVEL `import` below the seal — the ordinary ESM form, and the one HAZARDS §31 describes. In round 2 this exited 0 printing PASS with the leak deleted.",
+      "requires": "exit 4 (the seal reports the mutation; it does not prevent it)",
+      "ok": true,
+      "observed": "exit 4, grep 1 -> 0",
+      "note": "the generator DID rewrite the file (leak gone) — the seal is what reports it",
+      "log": "wrote /tmp/elder-souls-control-clones/elder-souls-control-oe9b0d69d-p17457-authoring-leak-controls-2026-08-16T052144777Z-d96873/game/data/dialogue/greetings.json: 300 cells, 1500 lines, 1400 distinct\n\nEVIDENCE-MUTATION TRIPWIRE (HAZARDS §31, module-scope seal).\nThis check changed the bytes it was scanning — the round-1 defect exactly: a check\nthat regenerates its own evidence deletes the leak and then reports its absence.\nFiles changed under it (1):\n  game/data/dialogue/greetings.json\nNo verdict from this run may be believed. Exit 4.\n"
+    }
+  ],
+  "failed": 0,
+  "not_rerun": [
+    "A",
+    "B",
+    "B2",
+    "C",
+    "E",
+    "F",
+    "G1"
+  ],
+  "not_rerun_why": "reproduced exactly by the round-2 critic and recorded as settled in that verdict"
+}

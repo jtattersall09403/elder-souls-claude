@@ -198,7 +198,12 @@ const ARMS = [
     why: 'THE ARM ROUND 2 DID NOT HAVE. Generator guard stripped and the generator imported as a '
       + 'STATIC TOP-LEVEL `import` below the seal — the ordinary ESM form, and the one HAZARDS §31 '
       + 'describes. In round 2 this exited 0 printing PASS with the leak deleted.',
-    requires: 'exit 4, and the leak SURVIVES in the file',
+    // NOTE THE DIVISION OF LABOUR, because it is easy to overstate. The seal DETECTS; it does
+    // not PREVENT. With the RUN_DIRECTLY guard stripped, the imported generator really does
+    // rewrite greetings.json and the hand-authored leak really is destroyed (grep 1 -> 0) —
+    // exactly as in round 1. What the seal buys is that the run can no longer report PASS about
+    // it. Prevention is the generator's own guard, and the two are deliberately independent.
+    requires: 'exit 4 (the seal reports the mutation; it does not prevent it)',
     run(dir) {
       injectIntoShipped(dir);
       stripRunDirectlyGuard(dir);
