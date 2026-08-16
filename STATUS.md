@@ -15,8 +15,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
   sessions, with the motion visible in pixels rather than only in numbers.
 - **The water, round five** — the fade's setting is twelve times too big, and every number this work
   has ever published was measured on an unstable setting.
-- **The dialogue and books guards** — both fixes are real; the *checks* protecting them turned out to
-  be able to delete their own evidence.
+- **Judging the dialogue and books guards** — the checks that could delete their own evidence have been
+  rebuilt, and all seven failure tests now go red when they should.
 
 ## If you play right now, expect this
 
@@ -37,12 +37,14 @@ conversation window that *"reads like an authoring instruction to the writer"* �
 (**5 lines from a single source**; the larger count I first quoted was legitimate authored text,
 checked by hand across 43 matches). And **books were printing the literal word `undefined`**: I said
 four, the true blast radius is **24** — a title-only catalogue of 162 entries loads fifth of twenty-six
-and was overwriting every real book before it. **But the checks guarding them failed their own audit** — one of them **imports a generator that
-rewrites the very file it then scans**, so hand-authoring the defect back in makes it *vanish* and the
-check reports all clear. Two others test the fixed function while never checking anything still calls
-it. Being repaired now; the fixes themselves survived independent re-derivation, and the books one was
-**understated** — across 500 shuffled load orders the old code broke anywhere from 0 to 162 books
-depending purely on file order, and the new code is invariant in all 500.
+and was overwriting every real book before it. **The checks guarding them failed their own audit, and are now rebuilt.** One **imported a generator
+that rewrites the very file it then scans**, so hand-authoring the defect back in made it *vanish* and
+the check reported all clear. Two others tested the fixed function while nothing verified anything
+still called it. All seven failure tests now go red when they should — and the books repair is proven
+**in the running game**, not just in the data: with the fix reverted the library collapses from 1,897
+pages to 1,715 and single-page books go from 15 to 57. The books defect was also **understated**:
+across 500 shuffled load orders the old code broke anywhere from 0 to 162 books depending purely on
+file order; the new code is invariant in all 500.
 
 **It is a slice, not a game.** You can walk around, look at things, open the map and journal, talk to people, and fight. It will not look good yet.
 
@@ -97,16 +99,17 @@ depending purely on file order, and the new code is invariant in all 500.
 
 - **The characters were being drawn inside-out — fixed, and confirmed by eye.** Your winding tip was
   right and bigger than the report you sent: **153,344 of 227,850 triangles (67.3%)** had normals
-  disagreeing with winding. Now zero. A Gideon market stand of *chrome-and-glass skeletons with black
-  shards jutting from their backs* now holds solid people in coloured clothes.
+  disagreeing with winding. A Gideon market stand of *chrome-and-glass skeletons with black shards
+  jutting from their backs* now holds solid people in coloured clothes.
 - **Four more things about the cast, all fixed from one shared body plan.** 44% were on a generic body
   with **no eye geometry at all**; **everyone was the wrong height** (0 of 41 in the correct band → 41
   of 41); the clothing textures were pasted **5.5× too fine**, which averages to a flat colour; and the
   eyes went from cream googly balls to dark sockets.
 
 - **People stand on the ground now, and it is photographed.** Positions came from one authored constant
-  per settlement, never compared to the terrain: of 31 drawn at Lilmoth, **12 were underground and 15
-  in the air, worst 35 m up**. Now zero and zero, confirmed on hardware.
+  per settlement, never compared to the terrain: of 31 drawn at Lilmoth, **12 were underground and 15 in
+  the air, worst 35 m up**. Now zero and zero.
+
 - **The bodies were measurably cones — now they have hips and a waist.** No instrument in the project
   could tell a cone from a body; one was written and the answer was blunt — the **hip was 18% narrower
   than the waist on 11 of 11 figures**, and the waist pinch read **0.029, identical to a synthetic
@@ -119,24 +122,19 @@ depending purely on file order, and the new code is invariant in all 500.
 - **The body is photographed on real hardware and the change is visible.** Eight angles, before and
   after, on an RTX A4500 — the picture the last four judgements were written against. The waist reads
   at player distance.
-- **Everybody in the game stood in one identical pose. Now 392 of 408 stand differently.** Every NPC
-  had shoulder and hip tilt of **exactly 0.000°** — nobody put their weight on one leg, which is the
-  first thing that makes a crowd read as people. Each now has a stance seeded from their own identity,
-  so the same person always stands the same way.
-  **It is photographed at last** — nine frames, five angles and two motion offsets, the first pictures
-  of this work in eleven rounds. The builder had reported the camera and the townspeople running on two
-  different clocks; **that turned out to be false**, and the real cause was one object reporting its
-  position as the origin.
-  **The photograph showed the next problem — they were statues.** Over sixty frames not one person
-  moved a single joint. **They breathe now:** every townsperson at the stand moves, staggered so the
-  crowd doesn't inhale in unison, replicated in three separate runs and confirmed in pixels — three
-  consecutive frames differ by 42,186, 30,847 and 32,872 pixels against a control of exactly zero.
-  **The builder's first attempt at the stagger passed offline and starved in the real game** — 408 of
-  408 on the bench, **2 of 27 live** — because the game skips frames and its scheduler assumed it
-  didn't. It found that itself, kept the failing run, and rebuilt it.
-  **And the 29 buried people are explained:** they are the ones whose day is spent indoors, correctly
-  hidden — but their position is an *interior* coordinate read as a world one, so each is built and
-  parked at the map origin, 41 m down. They now cost nothing to draw.
+- **Everybody in the game stood in one identical pose, and none of them moved. Both are fixed.** Every
+  NPC had shoulder and hip tilt of **exactly 0.000°** — nobody put their weight on one leg — and over
+  sixty frames not one person moved a single joint. Now **392 of 408 stand differently**, each seeded
+  from their own identity so the same person always stands the same way, and every townsperson
+  breathes, staggered so the crowd doesn't inhale in unison. Verified independently in the running
+  game, replicated across three sessions, and shown in pixels: three consecutive frames differ by
+  42,186, 30,847 and 32,872 pixels against a control of exactly zero.
+  **It is photographed at last** — nine frames, five angles, two motion offsets, the first pictures of
+  this work in eleven rounds. **A counting error worth knowing:** two rounds reported 60 people at that
+  spot. **29 are invisible, parked at the map origin 41 m underground** — they are the ones whose day
+  is spent indoors, correctly hidden, but their position is an *interior* coordinate read as a world
+  one. The real crowd is 27, and they now cost nothing to draw.
+
 - **A side-effect of that pose, found and closed: it lifted everyone 8.9 mm off the floor.** Fixed and
   photographed; worst planting error across all 408 people is now effectively zero.
 - **The eye had a pupil worth literally zero pixels — now it has one, and it reads in conversation.**
