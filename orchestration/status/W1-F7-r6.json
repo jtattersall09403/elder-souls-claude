@@ -5,33 +5,20 @@
   "state": "delivered-awaiting-critic",
   "branch": "codex/wave1-build-experiment",
   "verdict_this_answers": "corpus/90-verdicts/wave1/W1-F7-WATER-r5.json (FAIL at 2/10, held not lowered). Its round-6 instruction: retire and replace the width gate before dispatching anything; target the alpha multiplier and do NOT promise it clears the acceptance; attack TemporalVar and hf_survival together.",
-
   "what_i_could_not_do": [
     "**THE ACCEPTANCE STILL FAILS AND I AM NOT CLAIMING IT, AND THE MOST USEFUL THING I HAVE IS THE REASON IT CANNOT BE CLEARED BY TUNING.** At deep-marshes `edge-b135`, threshold 16, in ONE interleaved run with a 3.83-point drift band, the shore alpha term's multiplier maps to presence as: **.00 -> 22.44% | .42 -> 50.77% (the shipped r5 arm) | .70 -> 72.78% (what I ship) | no term at all -> 91.18%**. That is ~63 presence points per unit of multiplier across four measured values, nearly linear. Interpolating between the measured .70 and the measured no-fade point, **presence reaches the 90% bar at a multiplier of about 0.98 — an alpha reduction of two per cent, which is not a fade.** So at this pose the 90% presence clause and a visible shore fade are mutually exclusive under this mechanism. **A seventh round that tunes either the band or the multiplier cannot clear the acceptance, and I would rather say that than ship a number that looks like progress.**",
-
     "**AND THE TARGET I WAS SENT AT IS NOT WHERE THE COST LIVES. MY OWN ARM FALSIFIED MY OWN BRIEF'S READING.** The r5 decomposition (91.34 / 60.67 / 51.38) was read as *round 3's transmittance gate costs 30.67 points, go and remove it*. Nobody had ever run the two halves of `esShoreT = 1-(1-esTrans)*(1-esBandM)` apart — four rounds moved only the band. Run apart, at the same pose, in one run: **union .42 -> 50.77%, band-gate-only .42 -> 54.42%, transmittance-gate-only .42 -> 60.66%, no fade -> 91.18%.** Removing EITHER gate recovers 4 to 10 points of the ~40 the term costs; **the metre band alone reproduces 36.8 of the union's 40.4 points.** The gates are strongly sub-additive and neither is the term. **The 30.67 figure is correct arithmetic and a misleading target, and it travelled from a verdict into a brief into this build before an arm was pointed at it.**",
-
     "**I HAVE NO MEASURE OF THE THING THIS ITEM IS BUILDING, AND SIX ROUNDS HAVE NOT HAD ONE.** Both admissible measures — `presence` and the new `shore_contrast_retained_pct` — are **monotone increasing in the shore fade's multiplier at the deep-marshes pose**, so at that pose both are maximised by having no fade at all. A shoreline depth fade exists to remove `RI-VIS04` §9's TELL, *a hard geometric line where the water plane intersects the terrain*. **Nothing in this piece measures that line.** Every instrument F7 has built measures what the fade COSTS. That is why the round ships a constant it can defend on two damage measures and cannot defend as a shoreline. It is a `blind_pair` question and `CLAUDE.md` rule 0e puts it with the orchestrator. `blind_status: not_possible`, 0, fails closed, for the sixth round running.",
-
     "**MY OWN NEW CLAUSE IS NOT AS GOOD AS THE ONE IT SITS BESIDE, AND I SAY SO IN THE ITEM.** `RI-VIS03` M12b's `shore_contrast_retained_pct` is threshold-CONDITIONAL on arms: one arm reads **40.98 / 33.84 / 28.43%** at thresholds 6 / 10 / 16, a 12.6-point spread against a 0.72-point drift band. `presence` on the identical captures reads **50.49 / 50.63 / 50.77** — a 0.28-point spread. **So the clause I wrote is an order of magnitude less threshold-portable than the measure that already existed**, it does not displace it, and a number under it may never be carried between thresholds. Written into the item itself, not just here.",
-
     "**THE WESTERN ROOTLANDS FALSIFIED THE FIRST DRAFT OF MY OWN CLAUSE, WITHIN THE ROUND.** I wrote that the contrast measure is *maximised by deleting the shore fade*, from four deep-marshes poses. At western-rootlands `edge-b045` it is not: **`no-shorefade` retains 100.27% and both FADING arms retain 105.7%** — the fade RAISES the water's shoreline contrast there, on a 0.056-level baseline drift. So the direction of the measure depends on the pose and my generalisation was a pattern I wanted from one region. Corrected in `RI-VIS03` M12b the same turn. **This is `ARBITRATION` S66's exact shape and I filed it against myself.**",
-
     "**I RAN BROWSERS WHILE `node tools/contention.mjs` REPORTED THE BOX OVER ITS CEILING, AND THE TOOL ASKS THAT THIS BE SAID.** Every reading taken this round, in order: **2.08 GO, 1.58 GO, 4.33 WAIT, 4.22 WAIT, 3.28 GO, 4.03 WAIT, 3.94 GO** per core against a 4.0 ceiling. I launched only on a GO; the WAIT readings occurred with runs already in flight. When the box went over I launched nothing further and killed no running measurement (HAZARDS §23, §13). The visible cost is that the western-rootlands run is slow enough that it will not finish all four bearings inside its timeout.",
-
     "**THE WESTERN ROOTLANDS IS STILL SHORT OF `RI-VIS03` M12a CLAUSE 1, FOR THE THIRD ROUND RUNNING, AND THIS TIME IT IS TRUNCATION RATHER THAN A CHOICE.** I dispatched all four declared bearings. What completed is recorded in `job_5`; the run banks `sweep.json` after every arm so whatever landed is real, and whatever did not is absent rather than approximated. **M12a clause 1 fails closed there again.**",
-
     "**I DID NOT RE-SHOOT `TemporalVar` AND IT REMAINS THE HARD FAIL THE r5 CRITIC MEASURED — ON THE WRONG ARM.** The r5 critic confirmed 0.000341 against a >= 0.002 band and a 0.0005 hard-fail floor, and named its own limit: the sequence was shot on the arm called `fixed` at a commit where `fixed` was still 1.20 m, so **it has never been measured on any shipped arm.** `--mode motion` in `tools/visual/f7-r6-sweep.mjs` carries the r5 write-ordering fix and would bank it properly. I did not spend the browser on it, because the box went to WAIT and the gate question and the preservation set were worth more. **So M12's `TemporalVar` row for the r6 build does not exist. Not 'passes', not 'fails' — does not exist**, and a critic must not read the r5 number as this build's.",
-
     "**I DID NOT ABLATE THE RIPPLE COEFFICIENTS, WHICH THE r5 VERDICT NAMED AS ITS THIRD ROUND-6 ITEM.** `TemporalVar` and `hf_survival` may be one defect at the three procedural terms. Untouched, untested, and `ARBITRATION` S63 forbids me narrating it. The one thing I did do is repair the CITATION that points at them: `RI-VIS11` §2 said *lines 304-306* and the terms were at 323-325 — and round 6 edits that region again, so I replaced the line number with the grep that finds the symbols. **A line number is a citation with a half-life.**",
-
     "**THE GATE CHANGE COSTS A REVERSIBILITY PROPERTY ROUND 4 BUILT ON PURPOSE, AND I AM NOT HIDING IT.** With the union in place, `uWaterShoreBandM -> 1e-4` restored round 3 EXACTLY from a uniform, with no shader edit. With `esShoreT = esBandM` it restores NOTHING — the fade vanishes entirely, which is the `no-shorefade` arm, not the `r3` arm. **Round 3's gate is no longer reachable without a shader edit** (`transonly` in `tools/visual/f7-r6-sweep.mjs`). What a critic keeps: `uWaterShoreFade = 0` still ablates the whole line, and the band still sweeps.",
-
     "**NO FRAME-TIME READING, AND I DID NOT ATTEMPT ONE.** Round 4 established by measurement that it is unobtainable on this SwiftShader box (3703.09 ms/world-pass, replicate spread 5605.27) and `game/src/engine.js` puts `renderCpuMs` in `_unmeasurable` in its own words. Inherited, not re-derived, and marked as such.",
-
     "**I DID NOT RE-DERIVE THE OFFLINE BAND CENSUS (59.81% / 3.11%, 100% / 17.98%) — AND ROUND 6 GIVES A REASON TO DOUBT IT AS A PREDICTOR.** That census counts WET CORNERS on a 12.5 m lattice whose band coverage at 0.10 m it puts at 3.11% in the Deep Marshes. Measured on screen at `edge-b135`, the band gate ALONE removes 36.8 presence points. **A per-corner census cannot see how much SCREEN a 0.10 m band covers at a grazing view**, and the two instruments should not be read as saying the same thing. I did not re-run the census; I am flagging the inference, not the number."
   ],
-
   "what_i_shipped": {
     "file": "game/src/render/water.js",
     "diff_in_words": "Two tokens in the shore alpha term. The gate stops being a union — `float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);` becomes `float esShoreT=esBandM;` — and the multiplier goes `.42` -> `.70`. `customProgramCacheKey` v19-f7r5-shore-band-0p10 -> v20-f7r6-band-gate-alpha-0p70. No uniform added, no uniform removed, nothing else in the file touched except comments.",
@@ -39,7 +26,6 @@
     "reversal": "`git show <this commit> -- game/src/render/water.js | git apply -R`, or by hand: restore the union gate line and change `.70` back to `.42`. Two tokens.",
     "tripwire": "Any capture showing the waterline reading as a hard geometric line at `.70` where it did not at `.42` — `RI-VIS04` §9's TELL, judged on a frame. Neither of this piece's measures can fire this tripwire, which is the point of `RI-VIS03` M12b's closing paragraph."
   },
-
   "job_2_the_span_drift_run_S67_said_nobody_had_done": {
     "why_it_matters": "`ARBITRATION` S67 retired `gradient_width_px >= 12` because the measure is exactly invariant under any rescaling of the luma profile. Its named replacement was a contrast clause on `|span|`, and the r5 critic refused to land it under `CRITIC-DOCTRINE` §1.3's third guard because **`|span|` had never had a drift measurement**. That restraint was right and the run was cheap.",
     "and_it_needed_no_browser": "`f7-r5-sweep.mjs --interleave` re-captures the UNCHANGED baseline arm before and after every arm and runs `shoreProfile()` on every one of them. So `poses[].baseline_captures[].by_threshold[].shore.span` is a repeated measurement of one unchanged shader across exactly the ordinals the arms occupy — `HAZARDS` §25a rule 3's definition of the right noise floor. **33 such captures were already on disk across 6 runs, 4 poses, 2 regions, 5 commits and 2 processes.** Tool: `tools/visual/f7-r6-offline.mjs --mode span` and `--mode spanctl`.",
@@ -54,23 +40,57 @@
     "faithfulness_check_because_i_re_implemented_the_instrument": "`--mode spanctl` re-implements `lumOf`/`distanceFromLand`/`closeMask`/`shoreProfile` by copying them verbatim out of `f7-r5-sweep.mjs` (which cannot be imported offline — it opens a browser at module load). Its first run **disagreed with `sweep.json` on 60 of 60 rows**, by 5-7 luma levels. The cause was mine: the r5 tool scores the RAW mask with the distance transform of the CLOSED mask, and I had passed the closed mask as the mask. Fixed, **60 of 60 rows now reproduce the published `span` exactly**, and the check is part of the tool's output rather than something I did once.",
     "what_i_did_with_it": "Wrote it into `RI-VIS03` as **M12b**, an ADD under `CRITIC-DOCTRINE` §1.3. **It fails this build** (28.43% retained at `edge-b135`) and by its own construction it may never be the reason a build passes. I did not score myself on it."
   },
-
   "job_1_the_multiplier_run_apart_for_the_first_time": {
     "run": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r6/dm-b135-gate/ — one interleaved run, six arms, six baseline captures, deep-marshes edge-b135, threshold 16, drift band 3.83 presence points and 0.72 retained-contrast points",
     "table_thr16": [
-      { "arm": "band-0.10 — THE r5 SHIPPED ARM", "gate": "union", "multiplier": 0.42, "presence_pct": 50.77, "shore_contrast_retained_pct": 28.43 },
-      { "arm": "bandonly", "gate": "metre band only", "multiplier": 0.42, "presence_pct": 54.42, "shore_contrast_retained_pct": 32.73 },
-      { "arm": "r3", "gate": "transmittance only", "multiplier": 0.42, "presence_pct": 60.66, "shore_contrast_retained_pct": 41.07 },
-      { "arm": "bandonly-a70 — WHAT I SHIP", "gate": "metre band only", "multiplier": 0.70, "presence_pct": 72.78, "shore_contrast_retained_pct": 62.36 },
-      { "arm": "bandonly-a00", "gate": "metre band only", "multiplier": 0.0, "presence_pct": 22.44, "shore_contrast_retained_pct": -19.02 },
-      { "arm": "no-shorefade", "gate": "none — term ablated", "multiplier": "n/a", "presence_pct": 91.18, "shore_contrast_retained_pct": 90.49 }
+      {
+        "arm": "band-0.10 — THE r5 SHIPPED ARM",
+        "gate": "union",
+        "multiplier": 0.42,
+        "presence_pct": 50.77,
+        "shore_contrast_retained_pct": 28.43
+      },
+      {
+        "arm": "bandonly",
+        "gate": "metre band only",
+        "multiplier": 0.42,
+        "presence_pct": 54.42,
+        "shore_contrast_retained_pct": 32.73
+      },
+      {
+        "arm": "r3",
+        "gate": "transmittance only",
+        "multiplier": 0.42,
+        "presence_pct": 60.66,
+        "shore_contrast_retained_pct": 41.07
+      },
+      {
+        "arm": "bandonly-a70 — WHAT I SHIP",
+        "gate": "metre band only",
+        "multiplier": 0.7,
+        "presence_pct": 72.78,
+        "shore_contrast_retained_pct": 62.36
+      },
+      {
+        "arm": "bandonly-a00",
+        "gate": "metre band only",
+        "multiplier": 0.0,
+        "presence_pct": 22.44,
+        "shore_contrast_retained_pct": -19.02
+      },
+      {
+        "arm": "no-shorefade",
+        "gate": "none — term ablated",
+        "multiplier": "n/a",
+        "presence_pct": 91.18,
+        "shore_contrast_retained_pct": 90.49
+      }
     ],
     "the_two_readings": "**(1) The gate is worth 4 points and the multiplier is worth 40.** **(2) `bandonly-a70` dominates the shipped arm on BOTH measures** — +22.01 presence and +33.93 retained contrast, each an order of magnitude outside its band. It is not a trade.",
     "the_other_ditch_is_measured_too": "`bandonly-a00` — fade all the way to zero alpha at the waterline, which is what a textbook depth fade does — reads 22.44% presence and NEGATIVE retained contrast, and **the frame is bare black mud with a lily pad floating on nothing**. That is `RI-WLD10` §8's black standing water, photographed. Frame: `dm-b135-gate/frames/edge-b135--bandonly-a00-o7.png`.",
     "reproduction_across_a_CHANGED_WORLD": "The shipped r5 arm measured in my process at commit a140ff2b reads presence **50.77** against round 5's **51.38**, and retained contrast **28.43%** against **27.61%** recomputed from round 5's own frames. Between the two, other pieces changed the scene — the water-hidden frame's masked luma moved 28.259 -> 29.817. **The effect survives a changed world.**",
     "why_i_did_not_delete_the_term_even_though_that_scores_91.18": "See `what_i_shipped.why_this_and_not_deleting_the_term`. And a look note that cuts against the numbers and is offered as an observation, not evidence: **opening the two frames, `bandonly-a70` reads to me as more like water than `no-shorefade` does** — the bed relief carries, where the ablated arm is a flatter, milkier sheet. The arm with 18 more presence points is not obviously the better-looking one, which is precisely why presence cannot be the whole bar. `blind_pair` is the instrument for that and it has never run."
   },
-
   "job_3_the_finding_i_did_not_go_looking_for": {
     "headline": "**THE 'DRIFT BAND' THIS PIECE HAS PUBLISHED FOR TWO ROUNDS IS NOT NOISE. THE CAPTURE PIPELINE IS BYTE-DETERMINISTIC, AND THE SPREAD ACROSS ORDINALS IS A REPRODUCIBLE SETTLING TRANSIENT.**",
     "how_i_found_it": "Checking whether `dm-b135-null` and `dm-b135-verify` were two independent processes — the r5 critic reported they reproduce to three decimals, and my span tool printed their baseline drift as identical to the digit, which is not what three decimals of agreement looks like.",
@@ -79,22 +99,132 @@
     "what_it_does_not_change": "Nothing in the r5 verdict's conclusions depends on the band being stochastic. Every effect this round reports is 10x to 90x the band either way.",
     "the_limit_of_the_finding": "Byte-identity held across two commits INSIDE round 5's commit range. It did NOT hold between round 5 and round 6 — my `edge-b135` BASE-o0 and water-hidden frames differ from round 5's, and the hidden-frame masked luma moved 1.56 levels, because other pieces changed the world between them. **Determinism is per-world, not absolute**, which is `HAZARDS` §12's family."
   },
-
   "job_4_the_two_debts_i_did_pay": {
     "RI_VIS11_citation": "§2 cited `water.js` lines 304-306 for the three procedural terms; they were at 323-325 when the r5 critic read them, and round 6 edits that region again. Replaced with `grep -n 'esRipples\\|esCapillary\\|esMicro' game/src/render/water.js`, plus a dated note recording the defect and why a line number was the wrong repair. The frequencies quoted (4.7, 13.7, 26.3 rad/m) were and remain exactly right.",
     "the_r5_status_header": "It said `null-t0.90` *did not capture* while its own corrected §S52 block tabulated that arm. The arm captured: `dm-b135-null/sweep.json` carries it at all three thresholds and `frames/edge-b135--null-t0.90-o9.png` is on disk. Re-derived this turn — mean_luma 44.644, presence 41.41%, span -3.06 at threshold 16. The r5 critic flagged it rather than editing another agent's file; I fixed it in place with a dated correction, because the top of a status file is what the next reader inherits."
   },
-
-  "contention_readings_in_order": ["2.08 GO", "1.58 GO", "4.33 WAIT", "4.22 WAIT", "3.28 GO", "4.03 WAIT", "3.94 GO"],
-
+  "contention_readings_in_order": [
+    "2.08 GO",
+    "1.58 GO",
+    "4.33 WAIT",
+    "4.22 WAIT",
+    "3.28 GO",
+    "4.03 WAIT",
+    "3.94 GO"
+  ],
   "tools_added": [
     "tools/visual/f7-r6-offline.mjs — `--mode span` (the drift run, from banked artifacts), `--mode spanctl` (the water-hidden control + `shore_contrast_retained_pct`, with a per-row `reproduces_sweep_json` faithfulness check), `--mode presence` (the decomposition re-derived in my own arithmetic from `mean_luma`, `L_hidden` and each arm's own flanking baselines — **70 of 70 rows** reproduce the published `presence_pct`, counted by re-running the tool rather than by memory), `--mode nulls`. No browser.",
     "tools/visual/f7-r6-sweep.mjs — a copy of the r5 sweep (ownership: `tools/visual/` is claimed as a directory by live piece W1-30V, so every F7 round adds a file; and editing r5's tool would make round 5's artifacts non-reproducible, HAZARDS §17). Adds the gate arms `bandonly`, `bandonly-a70`, `bandonly-a00`, `transonly`, `union-a70`; puts `contrast` with its water-hidden control on every scored row; widens the source guard so it recognises EITHER the r4 or the r6 shore gate, quotes the two lines it found into the artifact, and refuses only if it finds neither."
   ],
-
   "for_the_critic": {
     "inherit_nothing": "Every number in this file was computed this turn from a banked artifact or by re-running an offline tool, in a process of mine. The four figures I did NOT derive are marked inherited in `what_i_could_not_do`: the r4 frame-time result, the r5 offline band census, the r5 `TemporalVar` 0.000341, and the r5 `no-shorefade` 91.34 (my own run's is 91.18).",
     "the_cheapest_way_to_falsify_me": "`node tools/visual/f7-r6-offline.mjs --mode spanctl --thresholds 6,10,16` runs in seconds with no browser and reproduces every contrast figure here from round 5's and round 6's banked frames, with its own faithfulness check against `sweep.json`.",
     "where_i_am_most_likely_wrong": "The bound (multiplier ~0.98 for 90% presence) is an interpolation between two measured points at ONE pose in ONE region. It is not a claim about the Western Rootlands, where the same term costs 4.5 presence points instead of 40, and it is not a claim about any pose I did not shoot."
+  },
+  "job_5_the_western_rootlands_second_region_and_the_gate_change_confirmed_there": {
+    "run": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r6/wr-4bearings/ — vista-western-rootlands, k = 1.9, all four declared bearings dispatched, interleaved baseline, thresholds 10 and 16. Every number below is threshold 16.",
+    "THE_RESULT_THAT_CONFIRMS_THE_GATE_CHANGE_IN_A_SECOND_REGION": "At `edge-b135` the **currently shipped r5 arm FAILS the presence bar at 86.06%** and **the band-gate-only arm PASSES it at 93.56%**, against a baseline contrast drift of 0.028 luma levels. Retained shoreline contrast moves the same way: **92.17% -> 104.36%.** So dropping the transmittance gate is not a Deep Marshes-only improvement, and it moves a failing pose across the bar on both measures at once. **This is the strongest single argument for the change and I did not go looking for it — the run existed to pay a four-round pose-set debt.**",
+    "rows": [
+      {
+        "pose": "edge-b045",
+        "baseline_contrast": 17.366,
+        "contrast_drift": 0.056,
+        "presence_drift": 0.2,
+        "arms": {
+          "bandonly": {
+            "presence": 97.48,
+            "retained": 105.79
+          },
+          "band-0.10 (r5 shipped)": {
+            "presence": 95.51,
+            "retained": 105.7
+          },
+          "no-shorefade": {
+            "presence": 100.19,
+            "retained": 100.27
+          }
+        }
+      },
+      {
+        "pose": "edge-b135",
+        "baseline_contrast": 14.341,
+        "contrast_drift": 0.028,
+        "arms": {
+          "bandonly": {
+            "presence": 93.56,
+            "retained": 104.36
+          },
+          "band-0.10 (r5 shipped)": {
+            "presence": 86.06,
+            "retained": 92.17
+          }
+        }
+      }
+    ],
+    "what_it_does_NOT_carry": "**No `bandonly-a70` arm was run in the Western Rootlands.** The multiplier change is measured only in the Deep Marshes. The two changes shipped together and only one of them has two-region evidence; that is a real gap and a critic should treat the WR rows as evidence about the GATE only.",
+    "M12a_clause_1": "Still fails closed. Four bearings were dispatched; the box went to WAIT mid-run and the run banks after every arm, so whatever landed is real and whatever did not is absent. `job_5.rows` is the honest count at filing.",
+    "AND_A_LOOK_FINDING_THAT_NO_NUMBER_HERE_CARRIES": "I opened `wr-4bearings/frames/edge-b045--band-0.10-o3.png`. The paddy water is a flat pale-green sheet and **the boundary where it meets every bund is a hard geometric line** — `RI-VIS04` §9's TELL, in the frame, in the region where the contrast measure says the shore fade is doing its best work (105.7% retained). **The measure and the defect are looking at different things, and one frame settles it where three tables could not.** No reflection, no ripple, heavy speckle, consistent with `RI-VIS11`."
+  },
+  "job_6_M12_re_derived_in_my_own_captures_and_the_two_clauses_that_cannot_both_be_satisfied": {
+    "method": "`RI-VIS03` M12 computed by `tools/metrics/lib/vis03.mjs` inside every scored row of every r6 run, over the PINNED mask, threshold 16, min over poses per M12a clause 3. 13 arm-rows across 2 regions and 4 poses. Nothing inherited.",
+    "THE_HEADLINE_AND_IT_IS_A_PROOF_NOT_A_COMPLAINT": "**`presence >= 90%` AND `ShoreDelta >= 0.03` CANNOT BOTH BE SATISFIED AT `edge-b135` BY ANY VALUE OF THE SHORE MULTIPLIER.** They are monotone in it and they point in OPPOSITE directions. Four measured values of the multiplier at that pose, threshold 16, one interleaved run:",
+    "the_opposition_table": [
+      {
+        "multiplier": 0.0,
+        "presence_pct": 22.44,
+        "ShoreDelta": 0.11282,
+        "presence_clause": "FAIL",
+        "ShoreDelta_clause": "PASS"
+      },
+      {
+        "multiplier": 0.42,
+        "presence_pct": 50.77,
+        "ShoreDelta": 0.07135,
+        "presence_clause": "FAIL",
+        "ShoreDelta_clause": "PASS"
+      },
+      {
+        "multiplier": 0.7,
+        "presence_pct": 72.78,
+        "ShoreDelta": 0.04133,
+        "presence_clause": "FAIL",
+        "ShoreDelta_clause": "PASS"
+      },
+      {
+        "multiplier": "term absent",
+        "presence_pct": 91.18,
+        "ShoreDelta": 0.01586,
+        "presence_clause": "PASS",
+        "ShoreDelta_clause": "FAIL — and 0.01586 is a fifth of the band"
+      }
+    ],
+    "the_crossing_derived": "Interpolating each between its two bracketing measured values: **`presence >= 90%` needs multiplier >= ~0.98. `ShoreDelta >= 0.03` needs multiplier <= ~0.83.** The intervals are disjoint. There is no value. **This is the sharpest possible form of the r5 critic's 'necessary, not sufficient': it is not that the multiplier is insufficient, it is that the two clauses F7 is judged on are in opposition on the only knob anyone has been turning.** Marked as interpolation between measured points, at one pose in one region, which is what it is.",
+    "why_it_happens_is_NOT_narrated_here": "`ARBITRATION` S63 and S65: a ruling may state what must be measured and may not narrate why a number moved without the ablation. I ran the ablation of the MULTIPLIER, which is what licenses the table. I did not ablate whatever makes `ShoreDelta` rise as the water disappears, so I do not claim a mechanism for it.",
+    "M12_scored_min_over_poses_from_MY_OWN_captures": {
+      "FresnelDelta": "**PASS at 13 of 13 rows.** Band >= 0.05; worst row **0.10424** (deep-marshes `edge-b045`, `band-0.10`), best 0.21875. **This independently confirms the r5 critic's correction of the r5 build** — the inherited 0.03085 was wrong, the critic re-derived 0.08639, and my own captures in a different process at a different commit across two regions put the worst pose at 0.10424. `FresnelDelta` is not one of F7's failures and three rounds of paperwork said it was.",
+      "ShoreDelta": "**HARD FAIL.** Band >= 0.03, hard-fail floor < 0.01. Worst row **0.00647** (western-rootlands `edge-b045`, `no-shorefade`); the SHIPPED candidate reads **0.00982** at deep-marshes `edge-b045` and **0.01266–0.01476** at western-rootlands `edge-b135`. Below the floor at the worst pose, for both the r5 arm and mine.",
+      "NormalEnergy": "**Fails two ways.** Below the 0.035 band outright at western-rootlands `edge-b045` (**0.02371** on all three arms), and gated `unresolved` everywhere else by `RI-VIS11` §3's 64.95% supersample survival, which fails closed.",
+      "ReflCorr": "**Unmeasurable at 13 of 13 rows** — `only 0 paired samples above the far half of the water; need >= 500`. `inapplicable` under `ARBITRATION` S64, which carries the absence forward as a finding and is never a pass. Four rounds have now recorded this at every pose either has shot.",
+      "TemporalVar": "**NOT MEASURED FOR THIS BUILD.** See `what_i_could_not_do`. The r5 hard fail of 0.000341 was shot on a 1.20 m arm and is not this build's number.",
+      "the_M12_verdict": "M12's *any two failing = water is a blue plane hard fail* is met **three times over on my own captures alone** — ShoreDelta below its hard-fail floor, NormalEnergy below its band and separately unresolved, ReflCorr inapplicable — before `TemporalVar` is counted. **F7 is still a blue plane and this round does not change that.**"
+    },
+    "the_preservation_clause_S59_and_it_HOLDS": {
+      "run": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r6/dm-preserve/",
+      "clause": "The change must not cost presence or shoreline contrast at the deep-marshes bearings where the r5 arm was already at ~100%.",
+      "deep_marshes_edge_b045": {
+        "band-0.10 (r5 shipped)": {
+          "presence": 99.93,
+          "retained_contrast": 100.58,
+          "ShoreDelta": 0.00985
+        },
+        "bandonly-a70 (r6 shipped)": {
+          "presence": 100.17,
+          "retained_contrast": 100.53,
+          "ShoreDelta": 0.00982
+        },
+        "reading": "**No trade.** +0.24 presence and −0.05 retained contrast against a baseline contrast drift of 0.137 luma levels — the contrast move is inside the band and is nothing. ShoreDelta moves 0.00003, i.e. not at all."
+      },
+      "and_the_regression_i_WILL_report_against_myself": "**At `edge-b135` the multiplier change LOWERS `ShoreDelta` from 0.07135 to 0.04133** — still above the 0.03 band, but a 42% fall, in the direction of the failure. It is the same opposition the table above describes, arriving as a cost of my own change. A critic is entitled to read that as the round buying presence with shoreline, and the only defence I have is that `ShoreDelta` at the WORST pose is a hard fail either way (0.00982 vs 0.00985) so nothing crossed a band because of me."
+    }
   }
 }
