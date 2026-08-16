@@ -119,6 +119,19 @@
     }
   },
 
+  "what_it_looks_like_because_a_number_did_not_find_this_gap_and_will_not_confirm_it": {
+    "why_this_section_exists": "The r7 critic found the gap by cropping the picture at 2x and reading it. Every metric on the screen said clean. So the round is not finished until the same crop is on disk, and I looked at it myself before writing any of the above.",
+    "geometry_read_off_the_live_screen_not_off_the_source": {
+      "panel": "[720, 314, 480, 452]",
+      "container.mine.head": "[742, 378, 206, 24]",
+      "first list row": "[742, 402, 190, 32]",
+      "the_arithmetic_that_matters": "378 + 24 = 402. The header's rect ends exactly where the first row's begins — flush, not overlapping, and not separated by a fudge constant either. HEAD_H 24 and CROW_H 32 are what the running screen reports, not what the source says."
+    },
+    "at_rest_3x_crop": "corpus/90-verdicts/wave1/artifacts/T4-r8/shots/1920x1080-rest-listhead-3x.png — `Carried` and `Reed Creel` sit above their own rules with clear ground under them; `Bark token` and `Shell-scale …` sit below. Round 7's same crop is the Bark token's icon cutting through `Carried`.",
+    "the_reading_view": "corpus/90-verdicts/wave1/artifacts/T4-r8/shots/1920x1080-open-panel.png — Shell-scale hauberk, the depiction, weight/gold/condition, and all six lines of its description ending in 'worth more than the house it came from.' The foot hint reads 'Back returns to the two lists, and lock on again does the same.'",
+    "at_rest_the_whole_panel": "corpus/90-verdicts/wave1/artifacts/T4-r8/shots/1920x1080-rest-panel.png — four rows a side, the band with its plate, four description lines ending in an ellipsis, and a foot hint that now says 'Lock on to read the whole description.' The ellipsis is still there and it is supposed to be: S65 asks the resting panel to show what it holds and publish the shortfall, and to make the rest reachable."
+  },
+
   "job_2_the_claim_of_round_7s_that_was_false_as_written": {
     "the_claim": "Round 7: \"no numeric column can truncate again.\"",
     "the_finding_confirmed": "The r7 critic is right and I do not dispute it. `wCol`/`gCol` are `Math.min(usable * 0.34, widest + 12)`; the `Math.min` has a ceiling and a ceiling can be hit, so a gold value of 987654321 draws `98765…` through the shipped `drawContainer()`. The guarantee was a property of the DATA, not of the layout.",
