@@ -1,0 +1,757 @@
+{
+ "tool": "tools/visual/f7-r6-offline.mjs --mode presence",
+ "formula": "presence = 100 * (L_arm - L_hidden) / (L_base_local - L_hidden), where L_base_local is the MEAN of the arm's two flanking baseline captures. Recomputed here from mean_luma fields; the published `presence_pct` is printed beside it as a cross-check and is NOT the source.",
+ "generated": "2026-08-16T04:42:15.977Z",
+ "runs": [
+  {
+   "run": "dm-b045-b315",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b045-b315/sweep.json",
+   "pose": "edge-b045",
+   "threshold": 10,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 69.593,
+     "L_hidden": 28.856,
+     "L_base_flanking_mean": 69.626,
+     "presence_recomputed": 99.92,
+     "presence_published": 99.92
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 69.029,
+     "L_hidden": 28.856,
+     "L_base_flanking_mean": 68.963,
+     "presence_recomputed": 100.16,
+     "presence_published": 100.16
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 5,
+     "L_arm": 68.691,
+     "L_hidden": 28.856,
+     "L_base_flanking_mean": 68.657,
+     "presence_recomputed": 100.08,
+     "presence_published": 100.08
+    }
+   ]
+  },
+  {
+   "run": "dm-b045-b315",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b045-b315/sweep.json",
+   "pose": "edge-b045",
+   "threshold": 16,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 70.471,
+     "L_hidden": 28.774,
+     "L_base_flanking_mean": 70.501,
+     "presence_recomputed": 99.93,
+     "presence_published": 99.93
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 69.904,
+     "L_hidden": 28.774,
+     "L_base_flanking_mean": 69.835,
+     "presence_recomputed": 100.17,
+     "presence_published": 100.17
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 5,
+     "L_arm": 69.565,
+     "L_hidden": 28.774,
+     "L_base_flanking_mean": 69.525,
+     "presence_recomputed": 100.1,
+     "presence_published": 100.1
+    }
+   ]
+  },
+  {
+   "run": "dm-b045-b315",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b045-b315/sweep.json",
+   "pose": "edge-b315",
+   "threshold": 10,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 69.514,
+     "L_hidden": 31.671,
+     "L_base_flanking_mean": 69.3,
+     "presence_recomputed": 100.57,
+     "presence_published": 100.57
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 69.535,
+     "L_hidden": 31.671,
+     "L_base_flanking_mean": 69.298,
+     "presence_recomputed": 100.63,
+     "presence_published": 100.63
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 5,
+     "L_arm": 69.512,
+     "L_hidden": 31.671,
+     "L_base_flanking_mean": 69.3,
+     "presence_recomputed": 100.56,
+     "presence_published": 100.56
+    }
+   ]
+  },
+  {
+   "run": "dm-b045-b315",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b045-b315/sweep.json",
+   "pose": "edge-b315",
+   "threshold": 16,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 70.007,
+     "L_hidden": 31.537,
+     "L_base_flanking_mean": 69.788,
+     "presence_recomputed": 100.57,
+     "presence_published": 100.57
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 70.026,
+     "L_hidden": 31.537,
+     "L_base_flanking_mean": 69.787,
+     "presence_recomputed": 100.62,
+     "presence_published": 100.62
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 5,
+     "L_arm": 70.01,
+     "L_hidden": 31.537,
+     "L_base_flanking_mean": 69.79,
+     "presence_recomputed": 100.58,
+     "presence_published": 100.58
+    }
+   ]
+  },
+  {
+   "run": "dm-b135-null",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b135-null/sweep.json",
+   "pose": "edge-b135",
+   "threshold": 10,
+   "rows": [
+    {
+     "arm": "band-0.10",
+     "ordinal": 1,
+     "L_arm": 49.144,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 68.032,
+     "presence_recomputed": 52.16,
+     "presence_published": 52.16
+    },
+    {
+     "arm": "null-t0.30",
+     "ordinal": 3,
+     "L_arm": 60.161,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 67.395,
+     "presence_recomputed": 81.38,
+     "presence_published": 81.38
+    },
+    {
+     "arm": "null-t0.50",
+     "ordinal": 5,
+     "L_arm": 54.748,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 67.118,
+     "presence_recomputed": 67.93,
+     "presence_published": 67.93
+    },
+    {
+     "arm": "null-t0.70",
+     "ordinal": 7,
+     "L_arm": 49.508,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 66.995,
+     "presence_recomputed": 54.52,
+     "presence_published": 54.52
+    },
+    {
+     "arm": "null-t0.90",
+     "ordinal": 9,
+     "L_arm": 44.382,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 66.942,
+     "presence_recomputed": 41.24,
+     "presence_published": 41.24
+    }
+   ]
+  },
+  {
+   "run": "dm-b135-null",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b135-null/sweep.json",
+   "pose": "edge-b135",
+   "threshold": 16,
+   "rows": [
+    {
+     "arm": "band-0.10",
+     "ordinal": 1,
+     "L_arm": 49.5,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 68.903,
+     "presence_recomputed": 52.26,
+     "presence_published": 52.26
+    },
+    {
+     "arm": "null-t0.30",
+     "ordinal": 3,
+     "L_arm": 60.836,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 68.267,
+     "presence_recomputed": 81.43,
+     "presence_published": 81.43
+    },
+    {
+     "arm": "null-t0.50",
+     "ordinal": 5,
+     "L_arm": 55.286,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 67.991,
+     "presence_recomputed": 68.02,
+     "presence_published": 68.02
+    },
+    {
+     "arm": "null-t0.70",
+     "ordinal": 7,
+     "L_arm": 49.906,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 67.873,
+     "presence_recomputed": 54.65,
+     "presence_published": 54.65
+    },
+    {
+     "arm": "null-t0.90",
+     "ordinal": 9,
+     "L_arm": 44.644,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 67.822,
+     "presence_recomputed": 41.41,
+     "presence_published": 41.41
+    }
+   ]
+  },
+  {
+   "run": "dm-b135-verify",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b135-verify/sweep.json",
+   "pose": "edge-b135",
+   "threshold": 6,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 52.124,
+     "L_hidden": 28.925,
+     "L_base_flanking_mean": 67.272,
+     "presence_recomputed": 60.5,
+     "presence_published": 60.5
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 48.209,
+     "L_hidden": 28.925,
+     "L_base_flanking_mean": 66.632,
+     "presence_recomputed": 51.14,
+     "presence_published": 51.14
+    },
+    {
+     "arm": "band-0.30",
+     "ordinal": 5,
+     "L_arm": 46.924,
+     "L_hidden": 28.925,
+     "L_base_flanking_mean": 66.353,
+     "presence_recomputed": 48.09,
+     "presence_published": 48.09
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 7,
+     "L_arm": 44.469,
+     "L_hidden": 28.925,
+     "L_base_flanking_mean": 66.23,
+     "presence_recomputed": 41.67,
+     "presence_published": 41.67
+    },
+    {
+     "arm": "no-shorefade",
+     "ordinal": 9,
+     "L_arm": 62.924,
+     "L_hidden": 28.925,
+     "L_base_flanking_mean": 66.176,
+     "presence_recomputed": 91.27,
+     "presence_published": 91.27
+    }
+   ]
+  },
+  {
+   "run": "dm-b135-verify",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b135-verify/sweep.json",
+   "pose": "edge-b135",
+   "threshold": 10,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 52.47,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 68.032,
+     "presence_recomputed": 60.59,
+     "presence_published": 60.59
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 48.464,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 67.395,
+     "presence_recomputed": 51.27,
+     "presence_published": 51.27
+    },
+    {
+     "arm": "band-0.30",
+     "ordinal": 5,
+     "L_arm": 47.152,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 67.118,
+     "presence_recomputed": 48.24,
+     "presence_published": 48.24
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 7,
+     "L_arm": 44.631,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 66.995,
+     "presence_recomputed": 41.83,
+     "presence_published": 41.83
+    },
+    {
+     "arm": "no-shorefade",
+     "ordinal": 9,
+     "L_arm": 63.604,
+     "L_hidden": 28.547,
+     "L_base_flanking_mean": 66.942,
+     "presence_recomputed": 91.31,
+     "presence_published": 91.31
+    }
+   ]
+  },
+  {
+   "run": "dm-b135-verify",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b135-verify/sweep.json",
+   "pose": "edge-b135",
+   "threshold": 16,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 52.918,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 68.903,
+     "presence_recomputed": 60.67,
+     "presence_published": 60.67
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 48.816,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 68.267,
+     "presence_recomputed": 51.38,
+     "presence_published": 51.38
+    },
+    {
+     "arm": "band-0.30",
+     "ordinal": 5,
+     "L_arm": 47.478,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 67.991,
+     "presence_recomputed": 48.37,
+     "presence_published": 48.37
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 7,
+     "L_arm": 44.891,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 67.873,
+     "presence_recomputed": 41.99,
+     "presence_published": 41.99
+    },
+    {
+     "arm": "no-shorefade",
+     "ordinal": 9,
+     "L_arm": 64.395,
+     "L_hidden": 28.259,
+     "L_base_flanking_mean": 67.822,
+     "presence_recomputed": 91.34,
+     "presence_published": 91.34
+    }
+   ]
+  },
+  {
+   "run": "dm-b225-reverse",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b225-reverse/sweep.json",
+   "pose": "edge-b225",
+   "threshold": 6,
+   "rows": [
+    {
+     "arm": "fixed",
+     "ordinal": 1,
+     "L_arm": 68.246,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 68.181,
+     "presence_recomputed": 100.16,
+     "presence_published": 100.16
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 67.653,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 67.508,
+     "presence_recomputed": 100.36,
+     "presence_published": 100.36
+    },
+    {
+     "arm": "r3",
+     "ordinal": 5,
+     "L_arm": 67.354,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 67.197,
+     "presence_recomputed": 100.4,
+     "presence_published": 100.4
+    }
+   ]
+  },
+  {
+   "run": "dm-b225-reverse",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b225-reverse/sweep.json",
+   "pose": "edge-b225",
+   "threshold": 10,
+   "rows": [
+    {
+     "arm": "fixed",
+     "ordinal": 1,
+     "L_arm": 68.444,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 68.377,
+     "presence_recomputed": 100.16,
+     "presence_published": 100.16
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 67.853,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.705,
+     "presence_recomputed": 100.37,
+     "presence_published": 100.37
+    },
+    {
+     "arm": "r3",
+     "ordinal": 5,
+     "L_arm": 67.553,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.392,
+     "presence_recomputed": 100.4,
+     "presence_published": 100.4
+    }
+   ]
+  },
+  {
+   "run": "dm-b225-reverse",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b225-reverse/sweep.json",
+   "pose": "edge-b225",
+   "threshold": 16,
+   "rows": [
+    {
+     "arm": "fixed",
+     "ordinal": 1,
+     "L_arm": 68.751,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 68.684,
+     "presence_recomputed": 100.16,
+     "presence_published": 100.16
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 3,
+     "L_arm": 68.165,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 68.013,
+     "presence_recomputed": 100.37,
+     "presence_published": 100.37
+    },
+    {
+     "arm": "r3",
+     "ordinal": 5,
+     "L_arm": 67.865,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 67.703,
+     "presence_recomputed": 100.4,
+     "presence_published": 100.4
+    }
+   ]
+  },
+  {
+   "run": "dm-b225-sweep",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b225-sweep/sweep.json",
+   "pose": "edge-b225",
+   "threshold": 6,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 68.267,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 68.181,
+     "presence_recomputed": 100.21,
+     "presence_published": 100.21
+    },
+    {
+     "arm": "band-0.05",
+     "ordinal": 3,
+     "L_arm": 67.668,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 67.508,
+     "presence_recomputed": 100.4,
+     "presence_published": 100.4
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 5,
+     "L_arm": 67.334,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 67.197,
+     "presence_recomputed": 100.35,
+     "presence_published": 100.35
+    },
+    {
+     "arm": "band-0.20",
+     "ordinal": 7,
+     "L_arm": 67.116,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 67.079,
+     "presence_recomputed": 100.09,
+     "presence_published": 100.09
+    },
+    {
+     "arm": "band-0.30",
+     "ordinal": 9,
+     "L_arm": 66.854,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 67.025,
+     "presence_recomputed": 99.56,
+     "presence_published": 99.56
+    },
+    {
+     "arm": "band-0.60",
+     "ordinal": 11,
+     "L_arm": 65.658,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 66.998,
+     "presence_recomputed": 96.58,
+     "presence_published": 96.58
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 13,
+     "L_arm": 60.451,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 66.983,
+     "presence_recomputed": 83.3,
+     "presence_published": 83.3
+    },
+    {
+     "arm": "no-shorefade",
+     "ordinal": 15,
+     "L_arm": 67.195,
+     "L_hidden": 27.871,
+     "L_base_flanking_mean": 66.977,
+     "presence_recomputed": 100.56,
+     "presence_published": 100.56
+    }
+   ]
+  },
+  {
+   "run": "dm-b225-sweep",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b225-sweep/sweep.json",
+   "pose": "edge-b225",
+   "threshold": 10,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 68.465,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 68.377,
+     "presence_recomputed": 100.21,
+     "presence_published": 100.21
+    },
+    {
+     "arm": "band-0.05",
+     "ordinal": 3,
+     "L_arm": 67.869,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.705,
+     "presence_recomputed": 100.41,
+     "presence_published": 100.41
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 5,
+     "L_arm": 67.532,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.392,
+     "presence_recomputed": 100.35,
+     "presence_published": 100.35
+    },
+    {
+     "arm": "band-0.20",
+     "ordinal": 7,
+     "L_arm": 67.315,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.276,
+     "presence_recomputed": 100.1,
+     "presence_published": 100.1
+    },
+    {
+     "arm": "band-0.30",
+     "ordinal": 9,
+     "L_arm": 67.051,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.223,
+     "presence_recomputed": 99.57,
+     "presence_published": 99.57
+    },
+    {
+     "arm": "band-0.60",
+     "ordinal": 11,
+     "L_arm": 65.841,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.197,
+     "presence_recomputed": 96.58,
+     "presence_published": 96.58
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 13,
+     "L_arm": 60.574,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.182,
+     "presence_recomputed": 83.32,
+     "presence_published": 83.32
+    },
+    {
+     "arm": "no-shorefade",
+     "ordinal": 15,
+     "L_arm": 67.398,
+     "L_hidden": 27.557,
+     "L_base_flanking_mean": 67.177,
+     "presence_recomputed": 100.56,
+     "presence_published": 100.56
+    }
+   ]
+  },
+  {
+   "run": "dm-b225-sweep",
+   "file": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-b225-sweep/sweep.json",
+   "pose": "edge-b225",
+   "threshold": 16,
+   "rows": [
+    {
+     "arm": "r3",
+     "ordinal": 1,
+     "L_arm": 68.772,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 68.684,
+     "presence_recomputed": 100.21,
+     "presence_published": 100.21
+    },
+    {
+     "arm": "band-0.05",
+     "ordinal": 3,
+     "L_arm": 68.181,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 68.013,
+     "presence_recomputed": 100.41,
+     "presence_published": 100.41
+    },
+    {
+     "arm": "band-0.10",
+     "ordinal": 5,
+     "L_arm": 67.843,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 67.703,
+     "presence_recomputed": 100.35,
+     "presence_published": 100.35
+    },
+    {
+     "arm": "band-0.20",
+     "ordinal": 7,
+     "L_arm": 67.626,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 67.584,
+     "presence_recomputed": 100.1,
+     "presence_published": 100.1
+    },
+    {
+     "arm": "band-0.30",
+     "ordinal": 9,
+     "L_arm": 67.359,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 67.532,
+     "presence_recomputed": 99.57,
+     "presence_published": 99.57
+    },
+    {
+     "arm": "band-0.60",
+     "ordinal": 11,
+     "L_arm": 66.136,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 67.508,
+     "presence_recomputed": 96.59,
+     "presence_published": 96.59
+    },
+    {
+     "arm": "fixed",
+     "ordinal": 13,
+     "L_arm": 60.804,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 67.496,
+     "presence_recomputed": 83.35,
+     "presence_published": 83.35
+    },
+    {
+     "arm": "no-shorefade",
+     "ordinal": 15,
+     "L_arm": 67.714,
+     "L_hidden": 27.307,
+     "L_base_flanking_mean": 67.491,
+     "presence_recomputed": 100.55,
+     "presence_published": 100.55
+    }
+   ]
+  }
+ ]
+}
