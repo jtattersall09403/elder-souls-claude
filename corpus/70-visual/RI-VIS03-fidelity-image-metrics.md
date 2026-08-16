@@ -644,10 +644,17 @@ shore_contrast_retained_pct    = 100 × span_water_minus_hidden(arm)
    occupy (`HAZARDS` §25a rule 3), never from a back-to-back replicate.
 2. **A build whose retained contrast falls outside that band, downward, has traded the water's own
    shoreline away** and must say what it bought. Min over the declared M12a pose set.
-3. **It may never be cited as a pass.** The measure is **maximised by deleting the shore fade
-   entirely** — measured, `no-shorefade` scores 90.49% against every fading arm below it. A clause a
-   feature's *deletion* wins is S59/S60's exact failure shape, and stating that here is the only
-   thing that stops the next round tuning to it.
+3. **It may never be cited as a pass — and the reason is NOT the one I first wrote.** *(Corrected
+   the same turn, by the round-6 build's own Western Rootlands captures, against its author.)* My
+   first draft said the measure is *maximised by deleting the shore fade entirely*, from four
+   deep-marshes poses where `no-shorefade` scores **90.49%** and every fading arm sits below it.
+   **In the Western Rootlands it is the other way round:** at `edge-b045`, `no-shorefade` retains
+   **100.27%** and both fading arms retain **105.7%**, against a baseline drift of 0.056 luma
+   levels; at `edge-b135` a fading arm retains **104.30%**. **So the fade raises the water's
+   shoreline contrast in one region and destroys it in another, and the measure is not monotone in
+   the feature.** It stays fail-only for the ordinary reason instead: it is a **preservation**
+   clause, it can show that a build traded the waterline away, and it cannot show that a build
+   built one — for that see the closing paragraph.
 4. **`gradient_width_px` may still be reported and may not gate anything**, ever, in either
    direction.
 
@@ -675,11 +682,16 @@ shore_contrast_retained_pct    = 100 × span_water_minus_hidden(arm)
   thresholds. So the threshold must be declared and a number may never be carried between thresholds.
   **`presence` is strictly better on this axis** (the same arm reads 50.49 / 50.63 / 50.77) and this
   clause does not displace it.
-- **Nothing here measures whether the shoreline looks right.** Both admissible measures — `presence`
-  and this one — are **monotone increasing in the shore fade's alpha multiplier**, so both are
-  maximised by having no fade at all. **F7 has no instrument that can prefer a fade to no fade**, and
-  that is a hole this item does not close. Closing it is a look question and belongs to a blind pair
-  (`blind_pair` and `CLAUDE.md` rule 0e), not to another statistic.
+- **Nothing here measures whether the shoreline looks right.** At the deep-marshes pose both
+  admissible measures — `presence` and this one — are **monotone increasing in the shore fade's
+  alpha multiplier** across four measured values (multiplier .00 / .42 / .70 / term absent →
+  presence 22.44 / 50.77 / 72.78 / 91.18%), so at that pose both are maximised by having no fade at
+  all. **Where the two disagree — as they do in the Western Rootlands, where the fade costs presence
+  and buys contrast — neither is arbitrating a waterline; they are two damage measures disagreeing
+  about the damage.** `RI-VIS04` §9's TELL is a *hard geometric line where the water plane
+  intersects the terrain*, and **no instrument in this corpus measures that line.** That is a hole
+  this item does not close. Closing it is a look question and belongs to a blind pair (`blind_pair`
+  and `CLAUDE.md` rule 0e), not to another statistic.
 
 **The mask is part of the instrument and must be pinned.** Where `WATER_MASK` is derived by
 differencing against a water-hidden frame, **an arm that changes the water's alpha changes the
