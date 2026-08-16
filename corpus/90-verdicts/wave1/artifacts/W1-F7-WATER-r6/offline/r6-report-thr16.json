@@ -1,7 +1,7 @@
 {
  "tool": "tools/visual/f7-r6-report.mjs",
  "threshold": 16,
- "generated": "2026-08-16T05:19:26.019Z",
+ "generated": "2026-08-16T05:22:33.623Z",
  "runs": [
   {
    "run": "dm-b135-gate",
@@ -152,11 +152,32 @@
    "commit": "e17736ba",
    "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
    "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
-   "baseline_captures": 1,
-   "baseline_water_contrast": 24.917,
-   "DRIFT_contrast_retained_pp": 0,
-   "DRIFT_presence_pp": null,
-   "arms": {}
+   "baseline_captures": 3,
+   "baseline_water_contrast": 24.861,
+   "DRIFT_contrast_retained_pp": 0.49,
+   "DRIFT_presence_pp": 0.06,
+   "arms": {
+    "band-0.10": {
+     "presence_pct": 100.61,
+     "shore_contrast_retained_pct": 101.01,
+     "m12_FresnelDelta": 0.12638,
+     "m12_ShoreDelta": 0.00182,
+     "m12_NormalEnergy": 0.45234,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 4,
+     "VACUOUS": null
+    },
+    "bandonly-a70": {
+     "presence_pct": 100.62,
+     "shore_contrast_retained_pct": 100.68,
+     "m12_FresnelDelta": 0.1275,
+     "m12_ShoreDelta": 0.00184,
+     "m12_NormalEnergy": 0.45235,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 4,
+     "VACUOUS": null
+    }
+   }
   },
   {
    "run": "wr-4bearings",
@@ -286,6 +307,30 @@
      "m12_NormalEnergy": 0.02234,
      "m12_ReflCorr": "unmeasurable — S64 inapplicable",
      "width_px_RETIRED_S67": 1,
+     "VACUOUS": null
+    }
+   }
+  },
+  {
+   "run": "wr-4bearings",
+   "site": "vista-western-rootlands",
+   "pose": "edge-b315",
+   "commit": "c2439837",
+   "shader_gate_measured": "float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);",
+   "shader_alpha_measured": "diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));",
+   "baseline_captures": 2,
+   "baseline_water_contrast": 5.296,
+   "DRIFT_contrast_retained_pp": 0.49,
+   "DRIFT_presence_pp": null,
+   "arms": {
+    "bandonly": {
+     "presence_pct": 65.22,
+     "shore_contrast_retained_pct": 35.9,
+     "m12_FresnelDelta": 0.15674,
+     "m12_ShoreDelta": 0.02075,
+     "m12_NormalEnergy": 0.30239,
+     "m12_ReflCorr": "unmeasurable — S64 inapplicable",
+     "width_px_RETIRED_S67": 28,
      "VACUOUS": null
     }
    }
