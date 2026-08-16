@@ -15,8 +15,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
   sessions, with the motion visible in pixels rather than only in numbers.
 - **Judging the water, round four** — the fade is built in metres now; it still fails its own bar, and
   the builder says so.
-- **Fixing two things the blind judging turned up** — the writer's own notes are shipping as NPC
-  dialogue, and four books print the word `undefined`.
+- **Judging the dialogue and books fix** — the authoring leak and the `undefined` book bodies are
+  closed; a critic is checking them.
 
 ## If you play right now, expect this
 
@@ -32,10 +32,14 @@ materials the interface should be made of. Across six people looking hard, only 
 were ever seen. **Chitin, root, bone, shell inlay and reed weave: nobody saw them anywhere** — and the
 two screens carrying none of them are exactly the two that failed hardest.
 
-**Two things you would see, found by accident:** a judge reading the conversation window noticed a line
-that *"reads like an authoring instruction to the writer rather than in-world dialogue"* — because it
-is one, and **25 speakers are using it**. And **four books in the game print the literal word
-`undefined`** instead of their text. Both are being fixed now.
+**Two things you would see, found by accident — and both are now fixed.** A judge reading the
+conversation window noticed a line that *"reads like an authoring instruction to the writer rather than
+in-world dialogue"* — because it was one. **I told you 25 speakers were using it; the real number is 5
+lines from a single source**, and the "25" I quoted turned out to be a legitimate piece of authored
+Argonian address, checked by hand across 43 candidate matches. And **books were printing the literal
+word `undefined`** instead of their text: I said four, the true blast radius is **24** — a title-only
+catalogue of 162 entries loads fifth of twenty-six and was overwriting every real book that loaded
+before it. Both carry regression checks proven to fail on the old build and pass on the new.
 
 **It is a slice, not a game.** You can walk around, look at things, open the map and journal, talk to people, and fight. It will not look good yet.
 
