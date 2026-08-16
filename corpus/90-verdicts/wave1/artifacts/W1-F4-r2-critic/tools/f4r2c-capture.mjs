@@ -27,10 +27,17 @@
  *
  * ARMS ARE PAGE-SIDE AND PER-FRAME, applied in `scene.onBeforeRender` because `sky.apply()`
  * rewrites every light every frame. KNOWN AND DECLARED BLIND SPOT, inherited from the round's own
- * tool and true of every page-side arm here: `bakeEnvironmentProbe()` consumes the SUN COLOUR, so
- * recolouring the key page-side does not recolour the probe's sun lobe. That makes every key-hue
- * arm below a LOWER BOUND on what the same change would do in source, which is the safe direction
- * for a critic trying to falsify "no configuration reaches 15".
+ * tool and true of every page-side arm here: `bakeEnvironmentProbe()` consumes the SUN COLOUR from
+ * the `uSunColour` UNIFORM, so recolouring the key light page-side does not recolour the probe's
+ * sun lobe.
+ *
+ * **CORRECTED BEFORE FILING — I FIRST WROTE THAT THIS MAKES A KEY-HUE ARM A LOWER BOUND AND THE
+ * SIGN IS THE OTHER WAY.** In source, a bluer key also makes the probe's sun lobe bluer, which
+ * makes the SHADOW side bluer too and pulls the two quartiles back together. So a page-side
+ * key-hue arm OVERSTATES what the same change does in source: every number below from `x1`, `x2`,
+ * `x3`, `y1` and `y2` is an **UPPER BOUND**. That is the unsafe direction for a critic trying to
+ * falsify "no configuration reaches 15", and it is why this verdict reports the ruling as
+ * unsupported by its own evidence rather than as overturned.
  */
 import fs from 'node:fs';
 import path from 'node:path';
