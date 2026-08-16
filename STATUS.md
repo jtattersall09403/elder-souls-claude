@@ -11,8 +11,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
 
 - **The sun, round four** — a judge found the real hard fail, sitting unrecorded in the evidence since
   round one, and proved the metric we tuned against reads the wrong pixels.
-- **Judging the crowd, which now breathes** — 27 of 27 townspeople move, replicated across three
-  sessions, with the motion visible in pixels rather than only in numbers.
+- **Judging the crowd, which went from 14 different bodies to 72** — and four more people who were
+  standing 6 km out to sea are back in their towns.
 - **Judging the water, round five** — the setting is corrected, and the round found the bigger cost was
   somewhere else entirely.
 - **Judging the dialogue and books guards** — the checks that could delete their own evidence have been
@@ -117,13 +117,7 @@ file order; the new code is invariant in all 500.
   than the waist on 11 of 11 figures**, and the waist pinch read **0.029, identical to a synthetic
   cone**. So "slabs" was literally accurate. Fixed on the shared body plan: **one edit moved all 17
   characters**, for 96 extra triangles and no new draw call.
-- **Armoured helmets were erasing people's eyes** — **69 of 96 camera bearings** lost the eye entirely,
-  two armour sets from *every* angle, because the head was shrunk without shrinking what sits on it.
-  Now 0 of 96.
 
-- **The body is photographed on real hardware and the change is visible.** Eight angles, before and
-  after, on an RTX A4500 — the picture the last four judgements were written against. The waist reads
-  at player distance.
 - **Everybody in the game stood in one identical pose, and none of them moved. Both are fixed.** Every
   NPC had shoulder and hip tilt of **exactly 0.000°** — nobody put their weight on one leg — and over
   sixty frames not one person moved a single joint. Now **392 of 408 stand differently**, each seeded
@@ -132,19 +126,24 @@ file order; the new code is invariant in all 500.
   game, replicated across three sessions, and shown in pixels: three consecutive frames differ by
   42,186, 30,847 and 32,872 pixels against a control of exactly zero.
   **It is photographed at last** — nine frames, five angles, two motion offsets, the first pictures of
-  this work in eleven rounds. **A counting error worth knowing:** two rounds reported 60 people at that
-  spot. **29 are invisible, parked at the map origin 41 m underground** — they are the ones whose day
-  is spent indoors, correctly hidden, but their position is an *interior* coordinate read as a world
-  one. The real crowd is 27, and they now cost nothing to draw.
+  this work in eleven rounds.
+- **And the crowd was still fourteen people. It is now seventy-two.** For 408 townspeople the game was
+  drawing **14 distinct bodies** — one body per 29 people, with 93 identical pairs standing within 15
+  metres of each other. Now **72**, one per 5.7, built from a new age/posture axis, twelve new body
+  types and race-specific proportions. The builder **deliberately refused the easy version**: scaling
+  people up and down would have satisfied the count while being invisible to the checks that police it.
+  At Lilmoth, **26 distinct bodies among the 31 people drawn**.
+- **Four people were standing 6 km out to sea, and the reason is worse than a typo.** A quest data file
+  invented coordinates for 16 witnesses — **15 of them 5 to 10 km from the town each record names** —
+  and all 16 were **already real people elsewhere in the game**, so the file had quietly stolen four
+  residents from Archon and Gideon. The invented positions are gone and all 31 people at Lilmoth now
+  stand where they belong.
 
-- **A side-effect of that pose, found and closed: it lifted everyone 8.9 mm off the floor.** Fixed and
-  photographed; worst planting error across all 408 people is now effectively zero.
+
 - **The eye had a pupil worth literally zero pixels — now it has one, and it reads in conversation.**
   The pupil rendered **0 pixels at every angle on 4 of 5 face shapes**, and the cause was not the eye:
-  **the snout was in front of it.** Moved 6 mm out and 12 mm forward, then photographed on hardware:
-  at talking distance you now see a dark pupil with a catchlight. At third-person distance it is still
-  two amber smudges.
-
+  **the snout was in front of it.** At talking distance you now see a dark pupil with a catchlight; at
+  third-person distance it is still two amber smudges.
 
 - **Dialogue: the topic links work, and were preferred — the first real quality judgement this project
   has ever completed.** Two people played two builds blind — ours, and one with the inline links
