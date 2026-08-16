@@ -1026,6 +1026,13 @@ for zero information. Three distinct failures in that one batch, all worth avoid
 - **One reported `completed` because the watcher it was chained to had been killed** — a chained wait
   inherits a success signal from its parent's *death*, not from any artefact arriving.
 
+**A fourth mechanism, found the same day and written up as §32 — read it, because it is the one that
+makes pattern-waiting unfixable rather than merely fragile:** `until [ -z "$(pgrep -f X)" ]` **can never
+exit**, because this harness wraps every command in a `bash -c '… eval "<your whole command>" …'` whose
+command line *contains X*. `pgrep` excludes itself but not its parent, so the loop watches itself
+forever. It cost two dead background slots in one round, and **both times the job it was watching had
+finished twenty minutes earlier with a complete output file.**
+
 **The rule: wait on a PID you started, or on a FILE you expect to exist — never on a name.** `kill -0
 <pid>` answers the question `pgrep -f` cannot. And prefer the file: a run is finished when its report
 is on disk, and that check stays true after you are gone, cannot be confused by a sibling, and is the
