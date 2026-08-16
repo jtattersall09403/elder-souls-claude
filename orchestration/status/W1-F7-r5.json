@@ -132,6 +132,34 @@
     "why_this_matters_to_F7_specifically": "`NormalEnergy` is the ONE M12 sub-metric F7 passes, in three rounds running, and it is high-frequency energy over a water window. RI-VIS11 §3 gates it: a `NormalEnergy` pass is only admissible where supersampled high-frequency energy survives at >= 70%; below 45% the row is `inapplicable` and per ARBITRATION S64 that carries the absence forward as a finding rather than absorbing it."
   },
 
+  "job_5a_MOTION_SHOT_AT_LAST_AND_IT_FAILS_A_METRIC_FIVE_ROUNDS_HAVE_NOT_MEASURED": {
+    "the_debt": "The r4 critic: *'No motion. I judged 5 bearings x 3-8 arms of stills … the owner's directive is explicit that stills are not enough, and every tool in this piece freezes `uWaterPhase` by design.'* Five rounds, no motion, and `TemporalVar` unmeasured every time.",
+    "what_i_shot": "`tools/visual/f7-r5-sweep.mjs --mode motion`, with `uWaterPhase` **LIVE, not frozen** (`phase_frozen: false` in the banked `gpu_state_before`, which is the check that this is not the frozen tool wearing a new name). Two sequences per arm at deep-marshes `edge-b135`: a **12-bearing orbit** circling the declared waterline cell at 11 m radius, and a **30-frame stationary sequence** with the camera still and the water running. Every frame is written out: `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-motion/frames/`.",
+    "TEMPORALVAR_MEASURED_AND_IT_IS_A_HARD_FAIL": {
+      "value": 0.000341,
+      "band": ">= 0.002", "hard_fail_below": 0.0005,
+      "verdict": "**HARD FAIL — 'water is static' by RI-VIS03 M12's own words.** It is 5.9x under the band and 1.5x under the hard-fail floor.",
+      "i_checked_it_was_not_an_identity_first": "HAZARDS §30 — a control that compares a buffer with itself reads 0 by arithmetic and cannot fail. Before publishing a hard fail I md5'd the temporal frames: **all 30 are distinct**, so the scene is genuinely advancing and this is a measurement of a moving world, not of a frozen one.",
+      "and_i_added_the_control_the_SPEC_cannot_see": "M12 defines `TemporalVar` as the stddev of the MEAN of Yp over the mask, and a mean is blind to ripples that move brightness around without changing the total. So I also measured per-pixel temporal energy — mean |Yp(t) - Yp(t-1)| per pixel — with a land control: **water 0.000525, land 0.000107.** So the water IS moving about 5x more than the static scene, and it is still only **0.13 of one 8-bit level per frame.** The water is not frozen; it is animated far below anything a player could see. The metric is not blind here — both measures agree.",
+      "the_land_control_that_makes_it_worse": "`TemporalVar` over the LAND control is **0.000256** — the static ground has **75%** as much temporal variance as the water does. Whatever our water is doing over time, it is barely more than what the scene does when nothing is meant to be moving.",
+      "consequence_for_M12": "`RI-VIS03` M12: *'Any two of these failing = water is a blue plane hard fail.'* On round 4's own complete Deep Marshes pose set `FresnelDelta` fails at its worst pose (0.03085 vs 0.05) and `ShoreDelta` fails at its worst pose (0.00610 vs 0.03). **`TemporalVar` is now a measured third.** I am not scoring my own work, but a critic should know the two-or-more clause is met with room to spare and that the third was never measured before this round."
+    },
+    "derived_offline_too_so_it_survives_a_killed_run": "`tools/visual/f7-r5-offline.mjs --mode temporal` recomputes `TemporalVar` from the banked PNGs and returns **0.000341** — identical to the in-browser figure, from a separate code path, and reproducible by a critic in seconds without a browser.",
+    "and_what_i_saw_by_eye_because_a_number_is_not_a_picture": [
+      "**The stipple is on the TREES and the bank as much as on the water.** In the orbit frames the dotted patterning covers distant canopy, trunks and ground alike. That is a screen-wide sampling artefact and it is not what a water-shader dither would look like — it is the visual half of RI-VIS11's phase measurement.",
+      "**The 12.5 m water lattice is visible as flat faceted polygons.** At several bearings the water surface reads as large flat shaded quads with visible straight edges between them. `water.js`'s own comment already names the cause — the depth signal is a per-vertex quantity on province.js's 12.5 m lattice — but I had not seen how plainly it reads until the camera moved.",
+      "**The same water looks completely different bearing to bearing** — pale and washed out at one, near-black at another, in the same frame set with nothing changed but the camera. That is exactly why five rounds of single-bearing stills have been able to disagree with each other, and it is the strongest argument in this round for M12a's declared pose set."
+    ]
+  },
+
+  "job_5b_the_supersample_test_RI_VIS04_section_8_owed_four_rounds": {
+    "run": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-supersample/ — the same pose captured at 1x and at 2x linear resolution, the 2x frame box-downsampled to 1x, each frame masked from its OWN water-hidden capture so neither is compared through the other's boundary.",
+    "result": { "fixed (shipped)": { "hf_survival_pct": 64.95, "stipple_ratio_1x": 0.9368, "stipple_ratio_2x_downsampled": 0.8205 }, "prefix (round 2)": { "hf_survival_pct": 64.01, "stipple_ratio_1x": 0.9161, "stipple_ratio_2x_downsampled": 0.8001 } },
+    "reading": "About **35% of the water's adjacent-pixel energy does not survive four samples being averaged into one**, and the stipple ratio falls from ~0.93 toward the land control's ~0.73. So a material fraction of what `NormalEnergy` is scoring is aliasing rather than surface detail. **Both arms read the same to within a point, so this is a standing property of our water and not something round 4 caused.**",
+    "consequence": "Under `RI-VIS11` §3 a `NormalEnergy` pass is admissible only at `hf_survival >= 70%`. At 64.95% it is **`unresolved`, and `unresolved` fails closed.** So the one M12 sub-metric F7 has been passing for three rounds cannot be claimed as a pass. `NormalEnergy` itself reads 0.232-0.237 across every arm at every threshold, comfortably over its 0.035 band — and that is exactly the point: the number is high and it is not evidence.",
+    "the_hole_this_opened_in_my_OWN_reference_item_and_i_fixed_it": "RI-VIS11's first draft banded `>= 70%` and hard-failed `< 45%` and **said nothing about the middle**. The very first measurement taken against it returned 64.95% and landed in that gap. I amended the item the same turn to define 45-70% as `unresolved`, failing closed, citing `ARBITRATION` S61's asymmetry — a statistic can fail a build and can never pass one. Recording that my own new bar had a hole in it rather than rounding the number into whichever neighbouring verdict suited me."
+  },
+
   "files_claimed": [
     "game/src/render/water.js",
     "tools/visual/f7-r5-sweep.mjs",
