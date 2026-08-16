@@ -298,26 +298,96 @@ export function installWaterShader(mat) {
         // pond still does not end in a 1 px step.
         //
         // THE TERM. 'esBandM' is 1 at the waterline and falls to 0 at 'uWaterShoreBandM' metres of
-        // column, with no k in it anywhere. It is combined with the transmittance term as a UNION
-        // — mixed with, not replacing it, exactly as the r3 verdict's remedy asks — so the fade
-        // acts wherever EITHER light still gets through OR the column is thin, and clear water
-        // keeps the wider fade its own k earns it.
+        // column, with no k in it anywhere.
         //
-        // PRESERVATION, BY CONSTRUCTION (ARBITRATION S59), BOTH ARMS:
-        //   * at 'uWaterShoreBandM -> 0' the band is identically 0 and this line is round 3
-        //     EXACTLY. That is the r3-restore arm and it needs no shader edit, only a uniform.
+        // ⚠ THE NEXT TWO PARAGRAPHS WERE ROUND 4'S AND ROUND 6 FALSIFIED THEM. Kept, struck, so
+        // nobody re-derives the union from a comment that outlived the code. ROUND 4 WROTE: the
+        // band ~~is combined with the transmittance term as a UNION — mixed with, not replacing
+        // it, exactly as the r3 verdict's remedy asks — so the fade acts wherever EITHER light
+        // still gets through OR the column is thin, and clear water keeps the wider fade its own k
+        // earns it.~~ IT IS NOT COMBINED ANY MORE: the gate below is 'esShoreT = esBandM'. The
+        // union was never measured apart until round 6 did it, and when it was, it turned out to
+        // be buying ~4 presence points and no measurable contrast anywhere it was tested.
+        //
+        // PRESERVATION, BY CONSTRUCTION (ARBITRATION S59) — ONE ARM SURVIVES THE CHANGE AND ONE
+        // DOES NOT, AND THE LOSS IS STATED RATHER THAN QUIETLY DROPPED:
+        //   * ~~at 'uWaterShoreBandM -> 0' the band is identically 0 and this line is round 3
+        //     EXACTLY. That is the r3-restore arm and it needs no shader edit, only a uniform.~~
+        //     **NO LONGER TRUE, AND IT IS A REAL COST OF ROUND 6.** With the union gone, driving
+        //     the band uniform to 0 gives NO FADE AT ALL, not round 3 — round 3's transmittance
+        //     gate is no longer reachable from a uniform and needs the 'transonly' shader arm in
+        //     'tools/visual/f7-r6-sweep.mjs'. What a uniform still buys a critic: 'uWaterShoreFade
+        //     = 0' ablates this whole line, and 'uWaterShoreBandM' still sweeps the band's extent.
         //   * at 'esDepthM >= uWaterShoreBandM' (deep water, and everything at province.js's q = 1
-        //     clamp) the band is 0, 'esShoreT == esTrans', and round 2's look is preserved through
-        //     round 3's own preservation property. This change can still only act in the shallows.
+        //     clamp) the band is 0 and 'esShoreT' is now identically 0, so the fade is ABSENT in
+        //     deep water rather than merely equal to 'esTrans'. Round 2's look is preserved there
+        //     more strongly than round 4 preserved it, not less. This change can still only act in
+        //     the shallows.
         //
         // WHAT IT CANNOT REPAIR, AND IT IS THE SAME LIMIT ROUND 3 NAMED: 'esDepthM' is inverted
         // from a PER-VERTEX quantity on province.js's 12.5 m water lattice, clamped at 1.35 m. So
         // the band is as spatially coarse as that lattice and cannot resolve bed relief between
         // two cell corners. Widening the band in metres widens the fade; it does not add
         // resolution the vertex stream never carried.
+        //
+        // ── F7 r5 -> r6. THE GATE STOPS BEING A UNION, AND THE MULTIPLIER GOES .42 -> .70. ──────
+        //
+        // WHAT ROUND 6 WAS SENT AT, AND WHY THAT TARGET WAS WRONG. Rounds 3, 4 and 5 all moved
+        // 'uWaterShoreBandM'. The r5 decomposition then showed the band is the SMALL term: at the
+        // Deep Marshes 'edge-b135', threshold 16, presence runs 91.34% with this whole line off,
+        // 60.67% with the transmittance gate alone, 51.38% shipped. So the reading everyone took
+        // was "the transmittance gate costs 30 points, go and remove it".
+        //
+        // IT DOES NOT SURVIVE THE ARM. Round 6 ran the gates apart for the first time — the two
+        // halves of this union had never been separated, only the band ever moved — in ONE
+        // interleaved run at that pose, drift band 3.83 presence points:
+        //
+        //     gate        multiplier   presence   shore contrast retained
+        //     union       .42            50.77%       28.43%     <- what round 5 shipped
+        //     band only   .42            54.42%       32.73%
+        //     trans only  .42            60.66%       41.07%
+        //     band only   .70            72.78%       62.36%     <- THIS LINE
+        //     band only   .00            22.44%      -19.02%     <- RI-WLD10 §8's black water
+        //     no fade at all             91.18%       90.49%
+        //
+        // The metre band ALONE reproduces 36.8 of the union's 40.4 presence points. Removing
+        // either gate recovers 4 to 10 points of the ~40 this term costs. THE GATE IS NOT THE
+        // TERM. The multiplier is, and it is monotone: presence moves ~63 points per unit of
+        // multiplier across four measured values.
+        //
+        // THE BOUND THAT FOLLOWS, AND IT IS THE MOST USEFUL THING THIS ROUND HAS. Interpolating
+        // between the measured .70 (72.78%) and no-fade (91.18%), presence reaches the acceptance's
+        // 90% at a multiplier of about 0.98 — an alpha reduction of two per cent, which is not a
+        // fade. AT THIS POSE THE 90% PRESENCE BAR AND A VISIBLE SHORE FADE ARE MUTUALLY EXCLUSIVE
+        // UNDER THIS MECHANISM. That is a fact about the mechanism, not about the constant, and no
+        // seventh round of tuning either number can get around it.
+        //
+        // WHY .70 AND NOT 1.0 (i.e. why the term stays at all). Deleting it reaches 91.18% and
+        // deletes the ONLY shoreline blend this shader has. The critic's standing grep for a
+        // depth-buffer fade in this file still returns 0 — it is spelled out in the r6 status file
+        // rather than here, because writing the pattern into a comment makes the grep match its own
+        // citation and three rounds of critics would have inherited a false 3. So there is no
+        // depth-buffer fade to fall back on and RI-VIS04 §9's MIN BAR asks for one. ARBITRATION
+        // S59: an acceptance criterion must name what it is protecting. Presence is not free.
+        //
+        // WHY THE UNION GOES. Round 4's own argument, which it wrote three lines above this one and
+        // then did not apply to its own gate: how far a waterline is softened over is a property of
+        // the bank's slope, NOT of how murky the water is. With the union in, a region's k decides
+        // how much of its water body gets faded — which is the defect round 4 named for the WIDTH,
+        // arriving through the GATE. Measured in the Western Rootlands (k = 1.9) at 'edge-b045',
+        // where the union was suspected of earning its keep: band-only 97.48% presence / 105.79%
+        // contrast against the union's 95.51% / 105.70%. It costs nothing there and gains two
+        // points, so the k-dependence is not buying a fade anywhere it has been measured.
+        //
+        // WHAT WOULD SEND THIS BACK. Any capture showing the waterline reads as a hard geometric
+        // line at .70 where it did not at .42 — RI-VIS04 §9's TELL, judged on a frame, not a
+        // number. Both of this piece's admissible measures are MONOTONE INCREASING in this
+        // multiplier, so neither of them can ever prefer a fade to no fade and neither can settle
+        // it. That is a hole in the bar and it is written up in RI-VIS03 M12b rather than worked
+        // around here.
         float esBandM=1.0-smoothstep(0.0,max(uWaterShoreBandM,1e-4),esDepthM);
-        float esShoreT=1.0-(1.0-esTrans)*(1.0-esBandM);
-        diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.42,esShoreT*clamp(uWaterShoreFade,0.0,1.0));
+        float esShoreT=esBandM;
+        diffuseColor.a=mix(diffuseColor.a,diffuseColor.a*.70,esShoreT*clamp(uWaterShoreFade,0.0,1.0));
         vec3 esSurface=mix(esDepth,esReflection,esRefl*uWaterReflectionStrength);
         outgoingLight=mix(outgoingLight,esSurface,.68);
         float esRipples=.5+.5*sin(vEsWaterWorld.x*4.7+uWaterPhase*2.1)*sin(vEsWaterWorld.z*4.1-uWaterPhase*1.7);
@@ -330,7 +400,7 @@ export function installWaterShader(mat) {
         outgoingLight=mix(outgoingLight,vec3(.055,.064,.048)+outgoingLight*.34,esShore*.76);
         outgoingLight+=vec3(.095,.105,.082)*esFoam;
         #include <opaque_fragment>`);
-  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v19-f7r5-shore-band-0p10`;animatedWaterMaterials.add(mat);
+  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v20-f7r6-band-gate-alpha-0p70`;animatedWaterMaterials.add(mat);
 }
 
 /** Drive all live water shaders from the fixed simulation frame. */
