@@ -164,5 +164,6 @@
     "**B2 / B4 with img2threejs, now that the plates exist.** 6 of 10 non-human features and 1 of 7 facial landmarks are the two worst numbers left in this item, they are both reconstruction-from-reference work, and `character-refs.mjs --check` reports 252 files across 13 slots. Round 12 declined the tool because its round had no geometry; that reason is gone and I have recorded it as `concept-only` rather than `declined` for exactly this.",
     "**AN ID-UNIQUENESS ARM ON `tools/check-data.mjs`.** 16 duplicate NPC ids shipped, and the check that walks all 408 records reports them as fine.",
     "**B1, C4, D4 need the orchestrator.** Three checks, 17% of this item's score, that no builder or critic in this project can reach."
-  ]
+  ],
+  "a_hazard_this_round_filed": "`HAZARDS §32` — `until [ -z \"$(pgrep -f X)\" ]` never exits, because this harness wraps every command in a `bash -c '... eval \"<your whole command>\" ...'` whose command line contains X, so the loop observes itself forever. It cost me two dead background slots and about fifty minutes of the box's wall-clock ceiling, **and both times the measurement it was watching had already written its final JSON with a clean `commit:` and `dirty: false`.** Nothing was lost; what was at risk is a reader trusting exit code 124 and concluding a run failed. Wait on the artefact, not the process. Filed with the §27 mitigation actually performed (headings re-read at the moment of writing)."
 }
