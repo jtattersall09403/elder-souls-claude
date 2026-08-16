@@ -97,7 +97,13 @@ export class UISystem {
     this.hudMode = 'full';
     this.focus = {
       inventory: { col: 1, tagIdx: 0, rowIdx: 0, sortIdx: 0 },
-      container: { side: 0, rowIdx: 0, otherIdx: 0 },
+      // T4 round 8, `RI-UIX03` C7 / `ARBITRATION` S65(1). `read` is whether the container is
+      // showing the SELECTED RECORD'S WHOLE DESCRIPTION instead of its two lists. S65 scoped C7
+      // to "the surface a player can reach in one input" with the guard that the expansion must
+      // actually work when driven, and the r7 critic then pressed 22 bound desktop controls on a
+      // record needing five lines in a band that shows four and found no such surface existed.
+      // This field, `_examine()` below and `drawContainer()`'s reading view are that surface.
+      container: { side: 0, rowIdx: 0, otherIdx: 0, read: false },
       journal: { view: 'chronicle', page: 0, indexIdx: 0, ringIdx: 0, query: '' },
       book: { page: 0 },
       levelup: { attrIdx: 0, armed: false },
@@ -264,7 +270,10 @@ export class UISystem {
         'parameter here in which a place could be named, and adding one is a hard fail under ' +
         'RI-UIX04 Q13.');
     }
-    if (n === 'container') this.containerEid = (opts && opts.eid) || null;
+    // T4 round 8. The reading view is ephemeral and resets on entry, exactly as the journal's
+    // `view` does twenty lines above and for the same recorded reason: a view that survives a
+    // close and a re-open is a view you can be stuck in, and `_walkPeer()` re-enters through here.
+    if (n === 'container') { this.containerEid = (opts && opts.eid) || null; this.focus.container.read = false; }
     if (this.isMenu() && this.mode !== n) this.stack.push(this.mode);
     this.mode = n;
     this.openedAt = ctx ? ctx.frame : 0;
@@ -433,6 +442,24 @@ export class UISystem {
     const dx = this._edge('x', navX, ctx.frame);
     const dy = this._edge('y', -navY, ctx.frame);
     if (dx || dy) this._move(dx, dy, ctx);
+    // T4 round 8 — `RI-UIX03` C7 GETS A ROUTE, and it is `ARBITRATION` S65(1)'s "one input".
+    //
+    // THE ACTION SET IS NOT WIDENED. `RI-JRN03` §A closes it at sixteen names, so as with
+    // `two_hand` above what changes is what an existing name MEANS while a screen is open.
+    // `lock_on` is the one chosen because it is the closed set's "fix your attention on this
+    // thing", it is bound on desktop (Tab), on both pad profiles and as a direct touch button
+    // (`game/data/input/profiles.json`, read this run), and nothing in this file consumes it on a
+    // paused frame — `grep -rn "pressedName('lock_on')" game/src/` returned nothing before this
+    // line. ONLY OUT OF COMBAT, for the same reason `two_hand` is: `RI-UIX03` P6 keeps the fight
+    // playable with the screen up and in a fight lock-on is lock-on.
+    //
+    // It is a TOGGLE and it is reported in `state()`, so a probe reads the binding rather than
+    // discovering it — the r7 critic had to press 22 controls to establish that no such control
+    // existed, which is exactly the cost an undeclared affordance imposes.
+    if (!inCombat && input.pressedName('lock_on') && this._canExamine(ctx)) {
+      taken.push('lock_on');
+      this._examine(ctx);
+    }
     if (input.pressedName('interact')) this._confirm(ctx);
     // T4 round 3, RI-UIX10 OP5/OP6 — THE CALL SITE. This line read `this.back()`, and that one
     // word is the whole of `GAP-W1-ui-journal-search-view-has-no-exit`: one press of confirm on
@@ -730,7 +757,37 @@ export class UISystem {
   }
 
   /** `back` inside a screen: leaves search/index first, then the screen. */
+  /**
+   * Is there a record here whose description could be opened? T4 round 8.
+   *
+   * Separate from `_examine()` so `state()` can advertise the affordance WITHOUT performing it,
+   * and so the toggle cannot be entered on a screen with nothing selected — a reading view over
+   * `null` is a control that is drawn and does nothing, which `CRITIC-DOCTRINE` §1.2b calls a
+   * hard fail and rates worse than an absent control.
+   */
+  _canExamine(ctx) {
+    if (this.mode !== 'container') return false;
+    const f = this.focus.container;
+    const from = f.side === 0 ? this._invRows(ctx) : this._containerRows(ctx);
+    return !!from[f.side === 0 ? f.rowIdx : f.otherIdx];
+  }
+
+  /** Toggle the container's reading view. The whole of C7's route, and it is three lines. */
+  _examine(ctx) {
+    if (!this._canExamine(ctx)) return false;
+    this.focus.container.read = !this.focus.container.read;
+    return this.focus.container.read;
+  }
+
   backOrSub() {
+    // T4 round 8. Back leaves the READING VIEW before it leaves the screen, for exactly the
+    // reason the journal's search view does (the `backOrSub()` call site's own comment): a view
+    // you can enter and can only leave by leaving the whole screen is the shape of
+    // `GAP-W1-ui-journal-search-view-has-no-exit`, and it would be a new instance of it.
+    if (this.mode === 'container' && this.focus.container.read) {
+      this.focus.container.read = false;
+      return this.mode;
+    }
     const j = this.focus.journal;
     if (this.mode === 'journal' && j.view === 'search') {
       if (j.query.length) { j.query = j.query.slice(0, -1); return this.mode; }

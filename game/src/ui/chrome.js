@@ -219,14 +219,46 @@ export function screen(S, id, title, subtitle, material, alpha, footerLines) {
   setPaper(material);
   const r = screenRect(S, id);
   const seed = idHash(id) & 0xffff;
+  const hh = 54 * s;
+  // ---- T4 round 8: THE GROUND COLOUR IS DECLARED, NOT GUESSED AT FROM THE CONTENT -------------
+  //
+  // `RI-UIX09` D2 is "the fraction of the panel's rect whose pixels differ from the panel's own
+  // modal background colour by dE > 6", and the item NEVER SAYS HOW THE MODAL COLOUR IS TAKEN.
+  // The r7 critic found what that costs: on level-up two faithful readings of the same capture —
+  // the shipped 5-bit-bucket modal averaged inside its bucket, `[220,217,204]`, and an exact-colour
+  // modal, `[223,223,216]` — give **0.1494 (fail)** and **0.1625 (pass)**, because level-up's modal
+  // bucket holds 7,673 pixels against a runner-up of 5,525. A screen's verdict flips on an
+  // unspecified implementation detail. `ARBITRATION` S65(2) rules the fix: pin the reference
+  // instead of re-deriving it from the pixels, and the S61 band collapses to the threshold sweep.
+  //
+  // WHAT S65(2) SUGGESTED DOES NOT WORK, AND SAYING SO IS THE POINT (rule 0b, and S63's lesson
+  // that a mechanism asserted from the shape of a number is not a mechanism). It says to take the
+  // ground colour "from `getUIState().materials`". `materials` is a list of NAMES; the colour
+  // behind it is `theme.js`'s palette — but `panel()` paints clay as `clay_dark` under a 0.55
+  // `chitin_dark` slip and the whole panel is drawn at `CALM_ALPHA` = **0.94**, i.e. six per cent
+  // of the world shows through. A palette lookup would give a colour the screen never contains.
+  //
+  // SO THE PIN IS A DECLARED GROUND PROBE: a rect the LAYOUT guarantees carries only ground, so an
+  // instrument takes the modal of THAT and content can never outvote it. It is the gutter between
+  // the header's rule (`r[1] + hh - 4`, a 2.2-wide stroke with 1.1 of jitter, so its ink stops by
+  // `hh - 0.7`) and the inner box (`r[1] + hh + 10`, where every screen's content begins), inset 40
+  // units from each side to clear `rootLashing`'s wound fibre (which reaches ~11.5 units in from
+  // the panel edge). Five units tall, so it is 5 x (w-80) px of pure painted ground: 2,000 px on the
+  // 480-wide container, 800 px at 1280x720. It is published in ABSOLUTE device px, the same units
+  // `rect` is in, so a tool crops it without knowing anything about `s`.
+  const probe = [r[0] + 40 * s, r[1] + hh + 4 * s, r[2] - 80 * s, 5 * s];
   S.el({
     id: id + '.panel', kind: 'panel', rect: r, opacity: alpha, material,
-    meta: { area_frac: +((r[2] * r[3]) / (S.W * S.H)).toFixed(4) },
+    meta: {
+      area_frac: +((r[2] * r[3]) / (S.W * S.H)).toFixed(4),
+      ground_probe: probe.map((v) => +v.toFixed(2)),
+      ground_material: material,
+      screen_alpha: alpha,
+    },
   }, (c) => {
     panel(c, material, r[0], r[1], r[2], r[3], s, seed, 1);
     rootLashing(c, r[0], r[1], r[2], r[3], s, seed);
   });
-  const hh = 54 * s;
   S.el({
     id: id + '.header', kind: 'panel_header',
     rect: [r[0], r[1], r[2], hh], text: title, opacity: alpha,
