@@ -16,8 +16,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   zero motion.
 - **The water, round four** — the fade works; it just does nothing in the one region we kept testing
   it in.
-- **Judging the container screen** — round seven closed the density regression and found a third
-  defect nobody had reported.
+- **Judging the container screen** — the header collision is closed and the description now has a way
+  to be read in full.
 
 ## If you play right now, expect this
 
@@ -42,21 +42,23 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
 - **The menus are denser *and* readable now.** Sizing each panel to its contents cleared all five
   density failures and then made the text collide — level-up drew name, value and gauge into the same
   pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel onto the world. Both are
-  now **0**. The columns had been sized as *fractions* of the row, which was right at the old wide
-  panel and collided at the new narrow one, because font sizes are fixed pixels.
+  now **0**.
 - **The menus were judged independently and FAILED at 2 of 10 — three times — though each round closes
   real defects.** The reflow work was confirmed by the judge: level-up's rows read at both sizes and
   the journal runs **0 of 19** blocks off the page. The container was the failure: its description
   **declared 137 characters and drew 100** — ten words gone with no "…" — and **all seven rows declared
-  a gold price and none drew one**. Both were fixed, and the fix then broke the weight column (`11.5` →
-  `11…`), which is not a shortened label but a wrong number. **Now: no numeric column truncates at all,
-  the density regression is not just repaired but better than before it broke, and a third defect
+  a gold price and none drew one**. Both were fixed, and the fix broke the weight column (`11.5` →
+  `11…`) — a wrong number, not a shortened label. **Now: no numeric column truncates, the density is
+  better than before it broke, and a third defect
   nobody had reported is fixed** — the item's condition was being drawn 24 units outside its own box
   and clipped away entirely on every conditioned item.
   **Three of the checks meant to catch this could not fail.** One read the text the screen *declared*
-  rather than what it *drew*; one was written as a literal `true`; and the legibility pass calls the
-  container clean **while two headers are printed through the first row**, because it only looks inside
-  one row band. A judge found that last one by cropping the picture at 2× and looking.
+  rather than what it *drew*; one was written as a literal `true`; and the legibility pass called the
+  container clean **while two headers were printed through the first row**, because it only looked
+  inside one row band — a judge found that by cropping the picture at 2× and looking. All three now
+  assert real numbers and were proven to go red on the broken build first. **The collision itself is
+  fixed**, and long descriptions finally have somewhere to be read: a reading view opens over the
+  lists, and all **45 of 45** items now show their full text.
 - **⚠ A measurement scare, and the answer was the opposite of what I told you.** I said a filed
   verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce **exactly**.
   The four "isolated" copies compared had all quietly measured **the same live tree** — the tools work
@@ -139,8 +141,6 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   counts them **emits no images**, so four rounds argued about the number blind. Someone finally dumped
   the frames and looked: the two largest "cracks" are **daylight between a hanging forearm and the
   body, capped by the greatsword's crossguard** — you can see the crossguard. Not holes.
-- **The last independent look at the player is still the live verdict:** no waist, no shoulder line,
-  shield and sword as planks. A critic is re-judging it now.
 - **Still owed on characters:** none of this has been photographed in the game yet. And there is a
   measured reason the foot work kept photographing as "no change" — the three camera stands used for
   character captures offer **at most 34 mm of ground height difference between the two feet**, so a
@@ -156,7 +156,7 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   present on four, noticed on only two** — and on one the phrase **did nothing when pressed**. So it
   works and is liked *where it lands*, and it lands on about half of conversations. **Placement is the
   work now**, not more links. Both bugs the judges hit are fixed.
-- Some buildings still overlap each other; 24 doors still open into another building.
+- Some buildings overlap; 24 doors open into another building.
 
 ## Why the game doesn't look better — answered today, and it's one number
 
