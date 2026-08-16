@@ -28,11 +28,20 @@ import zlib from 'node:zlib';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '../..');
+// BOTH `--k=v` AND `--k v`, because this repo contains tools of each kind and mixing them up cost
+// this round its motion frames: `f10-r11c-crowd-look.mjs` parses `--k v`, so a `--out=...` was
+// silently dropped and the run shot 24 default frames into the wrong directory (HAZARDS §17 —
+// read an inherited tool's constants). A parser that accepts both cannot be got wrong that way.
 const args = {};
-for (const a of process.argv.slice(2)) {
-  if (!a.startsWith('--')) continue;
-  const [k, v] = a.slice(2).split('=');
-  args[k] = v === undefined ? true : v;
+{
+  const argv = process.argv.slice(2);
+  for (let i = 0; i < argv.length; i++) {
+    if (!argv[i].startsWith('--')) continue;
+    const body = argv[i].slice(2);
+    const eq = body.indexOf('=');
+    if (eq >= 0) { args[body.slice(0, eq)] = body.slice(eq + 1); continue; }
+    args[body] = (argv[i + 1] !== undefined && !argv[i + 1].startsWith('--')) ? argv[++i] : true;
+  }
 }
 
 /** Minimal PNG reader — 8-bit RGB/RGBA, non-interlaced, which is what the capture writes. */

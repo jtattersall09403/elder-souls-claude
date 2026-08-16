@@ -1,0 +1,38 @@
+{
+ "tool": "tools/visual/f10-r12-motion-pixels.mjs",
+ "dir": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r12/look",
+ "threshold_channel_delta": 1,
+ "what_this_is": "ONE FIXED CAMERA, frames at increasing sim-frame offsets. The camera pose is identical across the pair by construction, so any changed pixel is the scene.",
+ "no_appearance_claim": "SwiftShader. W1-30-EVIDENCE §4 admits geometry/composition/determinism and refuses appearance; this is a geometry statement.",
+ "CONTROL_frame_against_itself": {
+  "pixels": 2073600,
+  "changed": 0,
+  "changed_pct": 0,
+  "mean_abs_delta": 0,
+  "worst_channel_delta": 0
+ },
+ "pairs": [
+  {
+   "a": "motion-t000.png",
+   "b": "motion-t024.png",
+   "pixels": 2073600,
+   "changed": 42186,
+   "changed_pct": 2.0344,
+   "mean_abs_delta": 0.3815,
+   "worst_channel_delta": 111
+  }
+ ],
+ "consecutive": [
+  {
+   "a": "motion-t000.png",
+   "b": "motion-t024.png",
+   "pixels": 2073600,
+   "changed": 42186,
+   "changed_pct": 2.0344,
+   "mean_abs_delta": 0.3815,
+   "worst_channel_delta": 111
+  }
+ ],
+ "CONTROL_ok": true,
+ "pass": true
+}
