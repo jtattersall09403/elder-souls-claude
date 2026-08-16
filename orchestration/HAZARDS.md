@@ -840,6 +840,25 @@ the sha — otherwise the arms of your experiment differ by whatever a neighbour
 briefing told them not to, and one did it after a direct message telling it to stop. **So the rule has
 been rewritten as a prohibition, because the advisory version demonstrably does not work.**
 
+**13a. A WAIT KEYED ON A PROCESS *PATTERN* OUTLIVES YOU AND CANNOT BE SATISFIED.** Added 2026-08-16
+after one dead agent's watchers fired **six times over 25 minutes**, costing the orchestrator six turns
+for zero information. Three distinct failures in that one batch, all worth avoiding:
+
+- **One waited on "any `f10-r12` process to clear".** Its own instruments had been adopted by two
+  sibling agents by then, so **the condition could never become true** — a wait keyed on a name matches
+  whoever else picks up your tool, which in a healthy fleet is the expected outcome, not the exception.
+- **One `pgrep -f <tool>` matched the agent's own waiter shell**, so it answered "running" when the
+  agent wanted "finished" and vice versa. That one produced a **published claim that had to be
+  retracted** — the round reported a sweep "killed by its own timeout" when the sweep was alive and
+  simply had not logged yet.
+- **One reported `completed` because the watcher it was chained to had been killed** — a chained wait
+  inherits a success signal from its parent's *death*, not from any artefact arriving.
+
+**The rule: wait on a PID you started, or on a FILE you expect to exist — never on a name.** `kill -0
+<pid>` answers the question `pgrep -f` cannot. And prefer the file: a run is finished when its report
+is on disk, and that check stays true after you are gone, cannot be confused by a sibling, and is the
+same evidence the next reader will use.
+
 > **You may not end a turn waiting on a `Monitor`, a background task, or a poll loop. If a result has
 > not arrived by the time you would otherwise stop, land what you have and record the missing piece as
 > `"unmeasured, because X"`.**
