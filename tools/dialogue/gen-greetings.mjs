@@ -193,14 +193,36 @@ const STANCE = {
     friendly: ['The House knows your name and spells it right.', 'Come to the factor house at Helstrom. Ask for the back room.', 'Wine, and the good chair, and no counting.', 'Whatever you want off this wagon, name it.', 'You are a friend of the House. We do not spend that phrase often.'],
   },
   'RG-BWC': {
-    // W1-DIALOGUE-AUTHORING-LEAK: the fourth `cold` stance below used to read 'Say it in one
-    // line.' — an authoring instruction to the writer, shipping as if a Blackwood Company
-    // mercenary said it to the player. Replaced with an in-world line that reuses the writ
-    // motif this reaction group already establishes elsewhere (`blackwood-company-camp`'s
-    // greeting in `game/data/npcs/mainline.json`: "Our writ is out of Leyawiin and it says
-    // nothing about the Stone Wastes."). See CHECK_PATTERNS below — it would have caught this.
+    // W1-DIALOGUE-AUTHORING-LEAK, round 1: the fourth `cold` stance below used to read 'Say it
+    // in one line.' — an authoring instruction to the writer, shipping as if a Blackwood
+    // Company mercenary said it to the player.
+    //
+    // ROUND 2 REWRITE, and the round-1 replacement is what is being corrected here, not the
+    // leak. Round 1 wrote 'The writ says nothing about talk.' The critic measured it and it
+    // did not earn the faction: re-derived this turn against the round-1 shipped file —
+    //   for (const p of pools) for (const l of p.lines) if (/\bwrit\b/i.test(l)) tally[p.reaction_group]++
+    // returned **30 lines containing `writ`: RG-LEDGER 25, RG-BWC 5** — the writ-house clerks,
+    // whose own ADDRESS fragment is *"Name, and what the writ says under it."* The word is the
+    // clerks' 5:1 and the replacement was its only intruder; it transplanted natively into
+    // RG-LEDGER, RG-COURT and RG-EMPIRE, and it dropped exactly the possessive and provenance
+    // that make `blackwood-company-camp`'s own line Company-specific: *"**Our** writ is out of
+    // **Leyawiin** and it says nothing about the Stone Wastes."*
+    //
+    // The replacement below names two Company-proper referents — **the Company** and
+    // **Leyawiin**, the outfit and where its money comes from — matching the three sibling
+    // cold stances, which name **Contract**, **the Company** and **the factor**. It uses no
+    // `writ`, so the clerks keep their word: after regeneration, `writ` is 25 lines, 25 of
+    // them RG-LEDGER, and `Leyawiin` is 5 lines, all RG-BWC (both re-derived 2026-08-16).
+    //
+    // Precision, because the guard is stricter than the reading: `tools/dialogue/
+    // check-greeting-voice.mjs` derives which tokens are exclusive to one reaction group and
+    // finds **`leyawiin`** exclusive to RG-BWC — but NOT `company`, because RG-NAGA's *"We
+    // have eaten better company."* uses the common noun. That is exactly why the line carries
+    // a provenance and not only the outfit's name: one referent that nobody else can say.
+    // That check also keeps round 1's rejected line as a permanent negative control and fails
+    // if the predicate ever accepts it.
     hostile: ["The Company's got your description. It is not flattering.", 'You cost us a contract! That gets settled.', "Nothing here's for sale to you.", 'Walk on.', "We do not hire, we do not talk, and we do not say it twice."],
-    cold: ['Contract business only.', "The Company is not recruiting today.", 'Take it to the factor.', 'The writ says nothing about talk.', "We are working."],
+    cold: ['Contract business only.', "The Company is not recruiting today.", 'Take it to the factor.', 'Company time, and Leyawiin bought it.', "We are working."],
     neutral: ["Company business. What's yours?", "We're hiring for the north road. Can you hold a line?", 'Ask. But the terms are the terms.', 'You look like work. Are you work?', 'Say what you want.'],
     warm: ["Sit with us. Pay talk's better sitting.", "The Company can use you, and it'll say so plainly.", 'Ask about the contract. Ask about the pay clause first.', "There's stew. It's Company stew, so lower your expectations.", "You haven't lied to us yet."],
     friendly: ["You're on the books whether you signed or not.", 'Anything the Company knows about this stretch, you can have.', "Full share. And there'll be no argument about it.", "We told the factor about you and he wrote it down. That's how they say thank you.", 'Whatever you need, and no paper.'],
@@ -297,12 +319,33 @@ function build() {
   };
 }
 
-const doc = build();
-if (process.argv.includes('--check')) {
-  const prev = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
-  const same = prev && JSON.stringify(prev) === JSON.stringify(doc);
-  process.stdout.write(`${same ? 'up to date' : 'STALE'}: ${doc.keying.cells} cells, ${doc.keying.total_lines} lines, ${doc.provenance.distinct_lines} distinct\n`);
-  process.exit(same ? 0 : 20);
+// ---------------------------------------------------------------------------------------
+// IMPORTING THIS FILE MUST NOT WRITE ANYTHING. HAZARDS §31, and it was written from this file.
+// ---------------------------------------------------------------------------------------
+// Until 2026-08-16 the two statements below sat at module top level with no guard, so ANY
+// `import './gen-greetings.mjs'` rewrote `game/data/dialogue/greetings.json` as a side effect
+// of loading. `tools/dialogue/check-authoring-leaks.mjs` imported this module to learn what a
+// leak looks like — and therefore REGENERATED THE FILE IT WAS ABOUT TO SCAN. The critic's
+// control: hand-author the leak back into the shipped file, run the check; it exited 0 and the
+// leak was gone from the file. The check deleted the evidence and reported its absence.
+//
+// The guard below is the root-cause half of the repair (the check no longer imports this file
+// at all — that is the other half, and both are deliberate: either one alone would be enough,
+// and a future edit that removes one should still not be able to resurrect the defect).
+//
+// `process.argv[1]` is the script Node was told to run. If that is not this file, we were
+// imported, and an import gets the tables and `buildPools()` and nothing else.
+const RUN_DIRECTLY = process.argv[1]
+  && path.resolve(process.argv[1]) === path.resolve(fileURLToPath(import.meta.url));
+
+if (RUN_DIRECTLY) {
+  const doc = build();
+  if (process.argv.includes('--check')) {
+    const prev = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : null;
+    const same = prev && JSON.stringify(prev) === JSON.stringify(doc);
+    process.stdout.write(`${same ? 'up to date' : 'STALE'}: ${doc.keying.cells} cells, ${doc.keying.total_lines} lines, ${doc.provenance.distinct_lines} distinct\n`);
+    process.exit(same ? 0 : 20);
+  }
+  fs.writeFileSync(OUT, `${JSON.stringify(doc, null, 2)}\n`);
+  process.stdout.write(`wrote ${OUT}: ${doc.keying.cells} cells, ${doc.keying.total_lines} lines, ${doc.provenance.distinct_lines} distinct\n`);
 }
-fs.writeFileSync(OUT, `${JSON.stringify(doc, null, 2)}\n`);
-process.stdout.write(`wrote ${OUT}: ${doc.keying.cells} cells, ${doc.keying.total_lines} lines, ${doc.provenance.distinct_lines} distinct\n`);
