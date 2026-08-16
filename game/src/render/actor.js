@@ -1845,7 +1845,15 @@ function buildSkeleton(rig, mats, tintHex, skinHex, artFamily='saxhleel', morphS
     // gap. Deleting a floating ornament is not "hiding the defect": the crest is still drawn, at
     // the same place, and `actor-orbit-holes` reports mean silhouette area so a shrunken character
     // cannot pass as a fixed one.
-    for(const s of [-1,1]) addPresentation(s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(.10,10,5,0,Math.PI*2,0,Math.PI*.58),[0,.02,0],[1.15,.58,1],[0,0,s*.16],'shoulder-scale');
+    // ROUND 13 — THIS PIECE READ `M.build` AND NOT `M.shoulders`, AND THE CUT LAYER MADE THAT
+    // VISIBLE. `addPresentation`'s default scale is `M.build`, so the shoulder scale tracked girth
+    // and never tracked shoulder WIDTH — which cost nothing while no character varied the two
+    // independently. The `wiry` cut does exactly that (build x0.90 with shoulders x1.08), so the
+    // deltoid underneath grows by 8% while this plate shrinks by 10%: a ~20% mismatch on the one
+    // silhouette edge a viewer reads first. Found by opening `look/portrait-lilmoth-factor-4-
+    // elder0-b000.png` rather than by any instrument in this round, which is the character
+    // directive's whole point. It now reads BOTH axes, as the skinned deltoid beside it does.
+    for(const s of [-1,1]) addPresentation(s<0?'upperarm_l':'upperarm_r',new THREE.SphereGeometry(.10,10,5,0,Math.PI*2,0,Math.PI*.58),[0,.02,0],[1.15,.58,1],[0,0,s*.16],'shoulder-scale',familyMat,M.build*M.shoulders);
   }else{
     // Civilian clothing needs the same shoulder/chest/waist hierarchy as armour. The old
     // horizontally compressed capsule made every unarmoured NPC read as an egg with limbs,
