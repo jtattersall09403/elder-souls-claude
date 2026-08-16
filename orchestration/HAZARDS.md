@@ -66,6 +66,49 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 24. `RI-VIS04` §3-D2's shadow ablation is ~10× cheaper with a uniform — and the BASE frame you subtract matters more than which form you use
+
+**Claimed by the `F4` round-2 builder, re-derived independently by its critic, 2026-08-16, from that
+round's own banked frames.** `RI-VIS04` §3-D2 specifies `renderer.shadowMap.enabled = false` with every
+material marked `needsUpdate` — correct, because the flag is compiled into the program, and therefore a
+**full-scene shader recompile per arm**. Measured on this box under SwiftShader that is roughly **five
+minutes per swept hour**; F4 r2's first thirteen-hour diagnosis managed one hour in five minutes and was
+killed by its own timeout with nothing written.
+
+**The substitute.** `game/vendor/three/three.core.js` is `REVISION = '180'`, and r180 carries
+`LightShadow.intensity`, which is a **uniform**: the shader computes
+`shadowValue = 1 - intensity * (1 - shadowValue)`, so `sunLight.shadow.intensity = 0` means "fully lit"
+with **no program change**.
+
+**Not assumed — measured at two hours, and reproduced on a second implementation:**
+
+| | 08:00 | 13:00 |
+|---|---:|---:|
+| the two ablation **forms** differ, mean \|Δ\|luma | **0.3368** | **0.1365** |
+| the **same configuration** re-captured differs | **1.0918** | **0.4460** |
+| ratio | **0.31** | **0.31** |
+| `cast_shadow_area@tau8`, `shadowMap` form | 0.10364 | 0.13763 |
+| `cast_shadow_area@tau8`, uniform form | 0.10431 | 0.13801 |
+
+**The stronger statement, which the round did not make and which is the reusable part: swap which
+`base` frame you subtract and the answer moves FOUR TIMES as much as swapping the ablation form.**
+At 08:00 the `shadowMap` form's area@tau8 goes 0.10364 → **0.10630** when measured against
+`base_recheck` instead of `base` — a shift of 0.00266, against 0.00067 between the two forms. So the
+equivalence is not marginal: it sits comfortably inside an error every §3-D2 measurement already
+carries and nobody was reporting.
+
+**Bounded, and the bound is the round's own.** This licenses the cheap form for **area fractions at
+daylight exteriors**. It does **not** license it for anything that turns on individual pixels — the two
+forms are **not** byte-identical (`frames_identical: false`), and it has been checked at two hours, one
+pose, one renderer class. **And restore it explicitly:** `shadow.intensity` is a uniform, so it survives
+a light-intensity restore and will leak silently into every later arm of the same run unless the
+harness's `__restore()` sets it back to 1. That bug was written and caught in this critic's own tool
+before it ran.
+
+Evidence: `corpus/90-verdicts/wave1/artifacts/W1-F4-r2/metrics/ablation-equivalence.json` (the round's)
+and `corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/ablation-form-equivalence-recheck.json`
+(the recheck).
+
 ## 23. The container took four agents at 20:03. Quarantine the orphans on a side ref — do NOT bank them.
 
 **Third restart in one day, and it killed a full fleet mid-round: T4 r7, F10 r11, F4 r2 and the F7 r2
