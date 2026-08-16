@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-16T04:03:16.644Z",
+ "generated": "2026-08-16T04:35:15.741Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
@@ -290,9 +290,7 @@
     "RI-VIS11"
    ],
    "n_ref_items": 2,
-   "never_judged": [
-    "RI-VIS11"
-   ],
+   "never_judged": [],
    "open_gaps": [],
    "n_open_gaps": 0,
    "blocking_gaps": 0,
@@ -301,7 +299,7 @@
     "W1-30A",
     "W1-30S"
    ],
-   "derived_state": "at_bar",
+   "derived_state": "built_below_bar",
    "old_roadmap_home": "V5"
   },
   {
@@ -338,9 +336,7 @@
     "RI-VIS11"
    ],
    "n_ref_items": 2,
-   "never_judged": [
-    "RI-VIS11"
-   ],
+   "never_judged": [],
    "open_gaps": [
     "GAP-W1-03-water-surface-undrawn-and-frozen",
     "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank",
@@ -3186,7 +3182,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 7,
+   "verdicts": 8,
    "best_score_0_10": 5,
    "state": "judged_below_bar"
   },
@@ -3480,7 +3476,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 7,
+   "verdicts": 8,
    "best_score_0_10": 6,
    "state": "judged_at_or_above_bar"
   },
@@ -3500,7 +3496,7 @@
    ],
    "bucket": "build",
    "judged": true,
-   "verdicts": 11,
+   "verdicts": 12,
    "best_score_0_10": 8,
    "state": "judged_at_or_above_bar"
   },
@@ -3621,10 +3617,10 @@
     "F5"
    ],
    "bucket": "build",
-   "judged": false,
-   "verdicts": 0,
-   "best_score_0_10": null,
-   "state": "never_judged"
+   "judged": true,
+   "verdicts": 1,
+   "best_score_0_10": 2,
+   "state": "judged_below_bar"
   },
   {
    "id": "RI-MTH01",

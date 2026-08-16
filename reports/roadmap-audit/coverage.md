@@ -2,7 +2,7 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-16T04:03:16.644Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-16T04:35:15.741Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
@@ -32,9 +32,9 @@
 | `F2` | Shadow, contact and ambient occlusion | RI-VIS03 RI-VIS04 | — | 1 (1) | W1-30 W1-30A W1-30B W1-30S | built_below_bar | V2 |
 | `F3` | Ambient and bounce fill | RI-VIS03 RI-VIS04 | — | 2 (2) | W1-30 W1-30B W1-30S | built_below_bar | V3 |
 | `F4` | Light, sky and atmosphere | RI-VIS04 | — | 4 (3) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
-| `F5` | The frame pipeline | RI-VIS04 RI-VIS11 | RI-VIS11 | 0 (0) | W1-30 W1-30A W1-30S | at_bar | V5 |
+| `F5` | The frame pipeline | RI-VIS04 RI-VIS11 | — | 0 (0) | W1-30 W1-30A W1-30S | built_below_bar | V5 |
 | `F6` | Terrain and vegetation surfaces | RI-WLD15 RI-WLD16 | RI-WLD15 RI-WLD16 | 0 (0) | W1-30 W1-30F | planned_unjudged | V9/V10 |
-| `F7` | The water surface | RI-WLD10 RI-VIS11 | RI-VIS11 | 5 (5) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
+| `F7` | The water surface | RI-WLD10 RI-VIS11 | — | 5 (5) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
 | `F8` | The building kit and settlement silhouette | RI-WLD14 | — | 1 (1) | W1-30-LIBRARY W1-30 W1-30E | built_below_bar | V8 |
 | `F9` | Interiors and practical light | RI-STL01 | — | 1 (1) | W1-30 W1-30G | built_below_bar | partial:V4 |
 | `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 7 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
@@ -210,7 +210,7 @@
 | `RI-WLD07` | 50-world | neutral | W8 | 8 | 6 | judged_at_or_above_bar |
 | `RI-WLD08` | 50-world | morrowind | W10 | 7 | 7 | judged_at_or_above_bar |
 | `RI-WLD09` | 50-world | morrowind | W11 | 3 | 6 | judged_at_or_above_bar |
-| `RI-WLD10` | 50-world | split | W9 F7 | 7 | 5 | judged_below_bar |
+| `RI-WLD10` | 50-world | split | W9 F7 | 8 | 5 | judged_below_bar |
 | `RI-WLD11` | 50-world | morrowind | W9 | 4 | 3 | judged_below_bar |
 | `RI-WLD12` | 50-world | morrowind | W2 | 1 | 5 | judged_below_bar |
 | `RI-WLD13` | 50-world | morrowind | W5 | 5 | 5 | judged_below_bar |
@@ -227,15 +227,15 @@
 | `RI-LOR08` | 60-lore | morrowind | P5 | 0 | — | never_judged |
 | `RI-VIS01` | 70-visual | neutral | I3 | 0 | — | never_judged |
 | `RI-VIS02` | 70-visual | modern-fidelity | I5 | 1 | 0 | judged_below_bar |
-| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 7 | 6 | judged_at_or_above_bar |
-| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 11 | 8 | judged_at_or_above_bar |
+| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 8 | 6 | judged_at_or_above_bar |
+| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 12 | 8 | judged_at_or_above_bar |
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 5 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
 | `RI-VIS08` | 70-visual | modern-fidelity | F10 F11 | 7 | 3 | judged_below_bar |
 | `RI-VIS09` | 70-visual | neutral | I5 | 0 | — | never_judged |
 | `RI-VIS10` | 70-visual | morrowind | F10 I5 | 5 | 2 | judged_below_bar |
-| `RI-VIS11` | 70-visual | modern-fidelity | F7 F5 | 0 | — | never_judged |
+| `RI-VIS11` | 70-visual | modern-fidelity | F7 F5 | 1 | 2 | judged_below_bar |
 | `RI-MTH01` | 80-methods | neutral | I1 | 2 | 6 | judged_at_or_above_bar |
 | `RI-MTH02` | 80-methods | neutral | I1 | 3 | 7 | judged_at_or_above_bar |
 | `RI-MTH03` | 80-methods | neutral | I3 | 2 | 5 | judged_below_bar |
