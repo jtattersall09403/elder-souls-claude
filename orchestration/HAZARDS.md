@@ -233,6 +233,54 @@ or bound by a quantity the fix is expected to change. The same trap waits for an
 "lit subset" (S60's clause (a) repair is derived from a shadow-map ablation for exactly this reason),
 any silhouette or coverage measure, and any density metric scoped to a panel the build may resize.
 
+### 25a. …AND THE NUMBER THAT LOOKS LIKE PROOF OF §25 IS USUALLY CAPTURE ORDINAL. Put your null arm LAST.
+
+**Found 2026-08-16 by the F7 r4 critic, correcting the F7 r4 build's own headline instrument fact.
+This is the trap §25 walks you into once you start measuring it.**
+
+Once you pin the mask, the natural next move is to report `own_mask_delta_pct` — how far each arm's
+own mask sits from the pin — as the size of the §25 confound. Round 4 did exactly that and published
+*"the fix moves its own mask **+23.24%** at threshold 10, where the pin's own replicate moves
+**−1.13%** — a measured 20× effect."*
+
+**It is not the arm. It is where the arm sits in the capture sequence.** In all six runs available —
+five of the build's and one of the critic's — the delta rises **monotonically with capture ordinal**:
+
+```
+dm-edge2, thr10:  prefix −1.66 (o0) → r3 −0.54 → r3-shader +12.97 → fixed +23.24 → no-shorefade +35.67 (o4)
+mine,     thr10:  prefix −1.57 (o0) → r3 +1.60 → band-0.10 +16.10 → … → band-1.20 +45.12 (o7)
+```
+
+**The falsifier is the null arm.** `no-shorefade` switches the shore term off, so its water alpha is
+*identical to the pin arm's* and of every arm it must move the mask **least**. It moves it **most** —
+and it is captured last. In the critic's run the delta climbs between two arms whose only difference
+is 0.10 m of a uniform.
+
+**Why the published replicate did not catch it.** The replicate is taken `PIN → PIN2`, back to back,
+so it measures drift over *one* capture interval; the arms are measured across shader round-trips,
+i.e. over five to eight of them. Measured at the same poses, the mask arm re-entered into the arms
+loop drifts **+19.87% to +61.75% at threshold 6** where its back-to-back replicate reads **+1.18% to
++5.73%.** The band understates by 10–50×, and **the threshold the round's every headline row was
+measured at is the unstable one.**
+
+**Three rules, and the first is nearly free:**
+
+1. **Put a null arm — one you can prove is identical to the baseline — LAST in the sequence.** Its
+   delta is then your real drift band, over the interval your arms actually span. This costs one arm.
+2. **Run the sequence in both orders at one pose** before attributing anything to an arm. If the
+   ordering reverses with the sequence, it is ordinal.
+3. **Publish the band the baseline arm produces at the ordinal you used**, not the one it produces
+   back to back. A replicate taken at a shorter interval than the comparison is not that
+   comparison's noise floor — it is a different measurement wearing its name.
+
+**Generalise past masks.** Anything that drifts monotonically with wall-clock or frame count inside a
+run — canopy animation, a stale reflection target, a settling accumulation buffer, GC pressure, a
+thermal clock — will impersonate a dose–response curve if your arms happen to be ordered by dose.
+**Arms ordered by the size of their parameter are the worst possible order**, and it is the order
+everybody writes by hand. Interleave, or randomise, or at minimum bracket with the baseline at both
+ends. This is `HAZARDS` §22 and §11's family: the thing you did not freeze moved, and it moved in the
+same direction as your hypothesis.
+
 ## 24. `RI-VIS04` §3-D2's shadow ablation is ~10× cheaper with a uniform — and the BASE frame you subtract matters more than which form you use
 
 **Claimed by the `F4` round-2 builder, re-derived independently by its critic, 2026-08-16, from that
