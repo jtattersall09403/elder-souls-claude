@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-DIALOGUE-AUTHORING-LEAK-r2",
+  "piece_title": "Round 2 of the dialogue-and-books guards: repair the checks round 1 proved could not fail, and rewrite the replacement line",
+  "subsystem_paths": ["dialogue.greeting", "dialogue.writing", "lore.book.structure"],
+  "wave": 1,
+  "roadmap_items": ["P1", "T4/content"],
+
+  "critic": {
+    "run_id": "W1-DIALOGUE-AUTHORING-LEAK-r2-CRITIC",
+    "role": "critic.dialogue",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_blind": true,
+    "saw_builder_notes_note": "The brief required reading orchestration/status/W1-DIALOGUE-AUTHORING-LEAK-r2.json first, and no blind stage was reachable (see blind_comparisons). Every figure in this verdict was re-derived by this critic, from a command run or a file opened in this session. The brief's own tables were treated as unverified, per its instruction 'Inherit no number from this brief.'"
+  },
+
+  "build": {
+    "commit_sha": "e1f5c74af45c48df2e979804ef706c3df91ec64d",
+    "branch": "codex/wave1-build-experiment",
+    "piece_commits": ["893afe0f (tools + data)", "35ece705 (status file)"],
+    "working_tree_note": "At judgement time three sibling-owned files were modified in the working tree (game/src/render/actor.js, render/lib/rigs.js, render/renderer.js). None is on this piece's path. Every file this critic mutated for a control was restored with `git checkout --` and re-hashed: greetings.json bfe9064b…, faction-refusals.json bc38265c…, gen-greetings.mjs 3ede5616…, engine.js d462e246…, fold-books.js 610749f4… all match their pre-control values (logs/00-commit.txt and the tail of logs/02-controls.txt)."
+  },
+
+  "contention": {
+    "policy": "HAZARDS §29. `node tools/contention.mjs` was run before every browser launch and its answer recorded.",
+    "at_start": "WAIT — 3 browser instances, load 16.15 over 4 cores = 4.04 per core, at the ceiling. All of jobs 1, 3 and 4 and the whole books arithmetic were therefore done OFFLINE in Node.",
+    "at_browser_launches": "GO — load had fallen to 7.78 (1.95 per core), 2 instances, room for 4 more. Three browser runs were taken at GO, sequentially, never concurrently: the fixed arm, the reverted arm, and the reading-screen capture. None was truncated.",
+    "honest_note": "The brief asked me to work offline unless a browser was genuinely necessary. Two things were: the entity-side perturbation that is this piece's central claim and had no artefact, and RI-MTH07 §C3, which cannot be answered in Node by construction."
+  },
+
+  "what_i_could_not_do": [
+    "THE BLIND GATES. RI-DLG03 step 8 and RI-UIX05 K10 both declare `blind_pair: yes` and neither has ever run. I am a subagent: I cannot spawn subagents and `create_session` is approval-gated, which CLAUDE.md rule 0 forbids. `blind_status: not_possible`, failed closed, both. THE ORCHESTRATOR OWES THESE — and RI-DLG03's is now more than bookkeeping: the defect this whole piece exists to fix was found by a blind judge reading a rendered greeting, and the greeting the player hears today still contains most of the string that judge flagged. Nobody has shown that judge the new one.",
+    "RI-UIX05 K2, K3, K5, K6, K7, K8, K9 — seven legs unmeasured. I measured K1 (reproduced) and K4 (from my own capture). I did not measure line length, leading, font size at three resolutions, contrast ratio, open/turn latency, persistence, the pause rule, the R1–R8 prohibition scan, or the lore-vector budget. 2 of 10, and the item's own ceiling clause is what caps this verdict.",
+    "I did not re-derive the round-1 FIXES (26 book files, manifest 5th, 163 ids, 500 shuffled load orders, the-sap-and-the-ledger's char count). Round 1's critic re-derived all of them and found them true; the brief ruled them settled. I did independently reproduce the two that this round's claims depend on — the 24 textless ids under the naive fold, and 163 ids all carrying text through the real fold.",
+    "The page-count discrepancy I found is UNRESOLVED. `getUIState().book.pages` reports 6 for `the-sap-and-the-ledger` while the reading screen draws '1–2 of 7' in the same session at the same resolution. `crate-tally` draws '1 of 1' correctly, so it is not a systematic off-by-one, and I could not determine cheaply whether the drawn counter includes something the state count does not. Recorded as an observation, not scored.",
+    "I did not orbit any NPC or capture any motion. This piece ships no model and no animation, so the 'stills are not enough' directive's motion clause has nothing to bite on here; the reading surface is a page of text and a still is the right artefact for it. I say this as a judgement, not as an exemption — a critic who disagrees should orbit `blackwood-company-factor` and look at him, which is F10's business rather than this piece's.",
+    "The greetings-side coupling I measured is over ONE of the two RG-BWC NPCs. `town-lilmoth` contains `blackwood-company-factor`; `blackwood-company-camp` is not in that state and I did not hunt for the state that holds it. One derived-path speaker is what RI-MTH07 §C3 asks for; two would have been better.",
+    "I ruled on the two filed corpus proposals but did not apply either, and I did not write a new reference item. See `corpus_extended` for the ruling and the reason.",
+    "`the-drowned-ford` is still uncatalogued in `game/data/books/manifest.json`. Flagged by round 1, re-confirmed by round 2, and now confirmed a third way: it is the only id in my fixed-arm capture that appears ONCE rather than twice in a 325-row ask list built from 163 distinct ids. Still not fixed, still out of scope, recorded so it is not lost a third time."
+  ],
+
+  "headline": "THE GUARDS ARE REPAIRED AND I COULD NOT BREAK THEM ON THE PATH THEY WERE BUILT FOR. All seven controls re-run against the shipped artefacts, and six reproduce exactly — including control D, where the file is now byte-identical after the run (sha256 unchanged) and the leak is still greppable, against round 1's check which deleted the evidence and reported its absence. The piece's strongest claim had NO ARTEFACT — the browser run exists only as prose in the status file — so I ran both arms myself: 1897 -> 1715 pages, and the 21 ids that collapse only under the reverted call site are exactly the Node-predicted 24 minus 3, symmetric difference EMPTY, coupling 1.00, null control 0 of 139. I also closed RI-MTH07 §C3, which neither round attempted. TWO THINGS FAIL. The evidence-mutation tripwire does not do what its own file says: a generator imported at MODULE SCOPE — the idiomatic form of exactly the defect HAZARDS §31 describes — rewrites the file before the tripwire's first fingerprint is taken, and the check exits 0 printing PASS while the leak is deleted. Round 2 tested only the one placement round 1 happened to use. And the greeting the player actually hears was never examined: all five lines `blackwood-company-factor` speaks in the running engine still end or begin with 'Local. Useful.' — the surviving two thirds of the exact string the blind judge flagged.",
+
+  "score": {
+    "overall_0_10": 4,
+    "pass_threshold": 7.0,
+    "pass_threshold_source": "SCORING.md §0 — the wave-1 gate is >= 7.0",
+    "aggregation": "min-over-items, and min-over-axes within each item",
+    "per_item": { "RI-MTH07": 7, "RI-DLG03": 4, "RI-UIX05": 4 },
+    "band_label": "Recognisably attempting the thing",
+    "confidence": "HIGH on everything measured — every control was re-run by me and every browser number was reproduced from a launch I made. LOW on nothing, because nothing is asserted that I did not run.",
+    "why_the_number_moved_down_while_the_work_moved_up": "CRITIC-DOCTRINE §2.4.1 forbids grading on a curve — 'prior versions of our own work are not a bar' — so this verdict scores against the items and not against round 1's 5. Two of the three items are capped by their own stated ceilings, and those ceilings bind whatever the piece did: RI-UIX05 says '<=6 checks passed -> loses outright (ceiling 4)' and 2 of its 10 are measured; RI-DLG03's greeting dimension requires >=70% of greetings to name the settlement and ours is 0.3%. Round 1's RI-UIX05 = 5 was ABOVE that item's own ceiling. On the axis where the two rounds are directly comparable — RI-MTH07, the item round 1 failed this piece on — the score goes 6 -> 7, and it is the only item here that this round could move."
+  },
+  "status": "FAIL",
+  "status_reasons": ["below_threshold", "blind_gate_not_run", "bar_coverage_cap"],
+
+  "biggest_gap": {
+    "gap_id": "W1-DAL-R2-01",
+    "subsystem_path": "dialogue.writing",
+    "severity": "high",
+    "what": "THE DEFECT WAS DIAGNOSED AS ONE THIRD OF ITSELF, TWICE, AND THE OTHER TWO THIRDS STILL SHIP IN EVERY LINE THE NPC SPEAKS. The blind judge's finding, quoted verbatim in the check's own header, was that `\"Say it in one line. Local. Useful.\"` reads like an authoring instruction. Both rounds located the defect entirely in STANCE['RG-BWC'].cold[3] — `'Say it in one line.'` — and neither ever asked what `'Local. Useful.'` was or where it came from. It is ADDRESS['RG-BWC'].saxhleel in `tools/dialogue/gen-greetings.mjs:106`, unchanged by round 1 and unchanged by round 2. I drove `Engine.talkTo('blackwood-company-factor')` in a real browser in `town-lilmoth` and read what he actually says: 'Company time, and Leyawiin bought it. Local. Useful.' / 'Local. Useful. We are working.' / 'Local. Useful. Contract business only.' / 'The Company is not recruiting today. Local. Useful.' / 'Local. Useful. Take it to the factor.' — FIVE OF FIVE, 100% of what this NPC can say to a Saxhleel player, and the composition alternates so the fragment appears as an opener as often as a closer. Where it opens, it reads more like a brief than it did inside the original string. Across the shipped file it is 25 lines. Every other RG-BWC address fragment is a full sentence of speech ('You can read a contract. Sit down.', 'You look like you can carry things.'); this one is two words and a pair of full stops, and it is anomalous inside its own table.",
+    "why_it_matters": "The one instrument that has ever detected this class of defect in this project is a blind judge looking at a rendered greeting, and it detected THIS string. Two rounds of guards, four checks, sixteen thousand scanned strings and seven negative controls were built on top of a diagnosis that nobody tested against the thing that produced it — and none of the four checks can see the residue, because `check-authoring-leaks`'s PATTERNS do not match it and `check-greeting-voice` passes the cell on `leyawiin`/`bought`, which come from the other half of the line. This is the four-line check's own failure mode arriving from the inside: an unchecked premise inherited from a sibling's report, faithfully built upon, reported as success. It is also why the unrun blind gate is a live blocker and not a footnote — the gate is the only thing in the project that could settle whether 'Local. Useful.' still carries the signal, and I cannot spawn it.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/12-greet-in-engine.json (all five lines, driven through Engine.talkTo(), 60 NPCs, nothing hand-fed)",
+      "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/10-voice.txt (25 shipped lines carry it, all RG-BWC/saxhleel; the ADDRESS table beside it)",
+      "tools/dialogue/gen-greetings.mjs:106 — ADDRESS['RG-BWC'].saxhleel = 'Local. Useful.'"
+    ],
+    "remedy": "Rewrite `ADDRESS['RG-BWC'].saxhleel` as a sentence of speech, in the register its four siblings already use — a Company overseer appraising a local Argonian is a good line and it should be written as one. Then regenerate, and put the composed strings — not the STANCE fragment — in front of a fresh blind judge, because the composed string is what the player reads and it is what the original judge was shown. Two cheap standing guards fall out of it: gate the ADDRESS table in `check-greeting-voice.mjs` as well as the STANCE slot, and make the leak check scan the COMPOSED lines rather than only the authored fragments, so a leak that is invisible in either half but present in the join cannot hide."
+  },
+
+  "reference_items": [
+    {
+      "id": "RI-MTH07",
+      "title": "World coupling — proving the model is consumed by the world",
+      "native_scale": "min-over-axes: consumer named / coupling measured / hand-feed audit §C3 / instrumentation honesty / harness fidelity §D",
+      "native_score": "7 of 10",
+      "native_verdict": "PASS. This is the item round 1 failed the piece on and it is the one this round genuinely closed.",
+      "score_0_10": 7,
+      "justification_for_7_or_above": "logs/08-set-identity.txt — a Node-side prediction of 24 textless ids and a browser-side observation of 21 newly-collapsed ids agree with an EMPTY symmetric difference, over two arms I ran myself, with a null control of 0 unexpected movers across the 139 non-collided ids. That is §B's coupling test executed on an entity-side observable, and logs/12-greet-in-engine.json is §C3's derived path executed for the second model.",
+      "measured": "yes",
+      "why_not_ten": "No check ships a `VERIFY` MODE. §D1 asks for one on the harness itself; what exists is a text-level call-site assertion (which the file honestly says a dead-code call site would satisfy) plus a manual replay that will not run again. And the round banked no artefact of the replay it did — every number in its headline existed only as prose until I re-ran it.",
+      "checks": [
+        { "id": "B1-books", "what": "Name the world-side consumer", "result": "pass", "value": "foldBooks() -> Engine._buildUI() -> UISystem book Map -> openMenu('book') -> a drawn spread. DRIVEN end to end this time, not traced: 325 asks, 325 opens, 0 failures, and a photograph of the page.", "evidence": ["logs/06-library-pages-FIXED.json", "frames/book-the-sap-and-the-ledger.png"] },
+        { "id": "B2-books", "what": "Perturb and observe an entity-side quantity", "result": "pass", "value": "coupling 1.00. Fixed arm 1897 pages, min 10 words/page, 15 single-page rows. Call site reverted, foldBooks() left correct: 1715 pages, min 1 word/page, 57 single-page rows. 21 ids collapse only under the revert; predicted 24 minus the 3 that are one page either way (crate-tally, inscription-third-terrace, shore-compass); symmetric difference EMPTY.", "evidence": ["logs/07-library-pages-REVERTED.json", "logs/08-set-identity.txt"] },
+        { "id": "B3-books", "what": "The null control", "result": "pass", "value": "0 of the 139 book ids the manifest does not collide with changed single-page status in either arm. The perturbation moved only what it was supposed to move.", "evidence": ["logs/08-set-identity.txt"] },
+        { "id": "B1-greeting", "what": "Name the world-side consumer", "result": "pass", "value": "greetingFor() <- converse.js:63, called at converse.js:556, reached from Engine.talkTo() (engine.js:2720), exposed at harness/api.js:1113.", "evidence": ["logs/12-greet-in-engine.json"] },
+        { "id": "B2-greeting", "what": "Perturb and observe", "result": "pass", "value": "coupling 1.00, re-derived: the pinned pre-fix blob 8e778d4a through the same consumer lets both RG-BWC NPCs speak the leak; the shipped file lets neither, across 3,535 reachable (NPC, line) pairs over 408 NPCs.", "evidence": ["logs/01-baseline.txt"] },
+        { "id": "C3-handfeed", "what": "THE HAND-FEED AUDIT — is the rule reachable WITHOUT supplying the world facts?", "result": "pass", "value": "CLOSED BY ME; neither round attempted it. Every check in this piece calls greetingFor() with {npcId, reactionGroup, disposition, playerRace, nth} supplied. Engine.talkTo(eid) supplies none of them — it finds the NPC in the live sim, derives disposition via npcDisposition(), derives nth from its own _greetCount. Driven in a browser over all 60 NPCs standing in town-lilmoth, 9 reaction groups: 102 distinct greetings, 0 carrying a leak, and blackwood-company-factor reaches the corrected line. Null control: no non-RG-BWC NPC speaks a Company or Leyawiin line.", "evidence": ["logs/12-greet-in-engine.json", "scripts/greet-in-engine.mjs"] },
+        { "id": "D1", "what": "A partial-world harness must ship a VERIFY that replays through the shipping entry point", "result": "partial", "value": "No check has a VERIFY mode. But the replay §D1 exists to force was actually performed, twice independently, and agrees to the id — and the call-site assertion goes red on the exact revert that was silent in round 1 (bookfold exit 4, leaks exit 2, both reproduced by me).", "evidence": ["logs/02-controls.txt CONTROL C"] },
+        { "id": "D3", "what": "A comment asserting a check is not a check — grep for the claimed verification", "result": "pass", "value": "Round 1's false sentence ('a pass here is a pass for the real consumer') is withdrawn IN THE FILE, with the reason, at tools/books/check-book-fold.mjs:20-27. I read it. No check now claims more than it does; tools/lib/call-site.mjs states its own limit in its header and every caller prints it.", "evidence": ["logs/01-baseline.txt"] },
+        { "id": "instrumentation-honesty", "what": "Trace/scope holes declared rather than presented as implementation", "result": "pass", "value": "Exemplary and better than the corpus norm. The leak check PRINTS its 398 excluded strings under 12 key names on every run; the voice check prints that it gates 1 cell of 300 and prints the other 299 as a census; the status file's `what_i_could_not_do` runs to nine entries and its own headline refuses to claim a pass.", "evidence": ["logs/01-baseline.txt"] }
+      ]
+    },
+    {
+      "id": "RI-DLG03",
+      "title": "Greetings and rumours — disposition banding and diegetic quest discovery",
+      "native_scale": "count of passing dimensions; any automatic fail sinks the item",
+      "native_score": "4 of 10",
+      "native_verdict": "The greeting dimension fails on the item's own first structural fact, and the blind gate has never run.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "checks": [
+        { "id": "greeting-bands", "what": "Bands represented and per-band minimum", "result": "pass", "value": "5 of 5 bands present (hostile/cold/neutral/warm/friendly), 5 lines per band per cell — Tier A on both rows. 300 cells, 1500 lines, 1400 distinct.", "evidence": ["logs/10-voice.txt"] },
+        { "id": "names-the-town", "what": "RI-DLG03 §A fact 1 and step 2 — >=70% of greetings name the settlement", "result": "fail", "hard_fail": false, "value": "0.3%. 5 of 1500 greeting lines contain any of the 152 place names harvested from game/data/world/**, and the only one that appears is Helstrom. The cause is architectural and not this piece's: greetings.json is keyed by (reaction_group x disposition_band x player_race_class) and carries no settlement key at all, so the requirement is unsatisfiable by construction rather than unmet by authoring. Recorded against the seam, not absorbed by this piece — but it is a dimension of an item this piece is judged under and RI-MTH07's own rule is that an unowned cross-piece debt stays scored, not waived.", "evidence": ["logs/11-census.txt"] },
+        { "id": "step7-diegetic-lint", "what": "Regex the whole rumour corpus for banned constructions; any hit is an automatic AR-2 fail", "result": "pass", "value": "THE SCOPE DISAGREEMENT IS SETTLED IN ROUND 2'S FAVOUR. Step 7 says 'the whole RUMOUR corpus', and step 3 defines a rumour entry as one 'under the rumour topic (latest rumors equivalent)' — that is game/data/dialogue/rumours.json, not the whole dialogue corpus. Running the item's regex verbatim I reproduce round 2 exactly and round 1 not at all: rumours.json 926 strings, 4 hits, 1 on 'question'; whole dialogue corpus 14,023 strings, 215 hits, 131 on 'question'. Round 1's 46/45 is reproducible on NONE of the seven surfaces I tried (rumours, topics/**, topic-graph, greetings.json, greetings/, road-directions, and three unions). Of rumours.json's 4 hits, THREE are design-note keys (w1_19_note, w1_19_gen3_note, w1_17_successor_note — prose about the work, never rendered) and the fourth is '...they will take your coin at the gate and your questions at the wall, and the wall does not answer', which is the word 'questions' and is clean diegetic speech. ZERO player-facing rumour lines carry a banned construction. Passed on substance; the instrument defect is real and recorded, and I did NOT apply the amendment that would narrow it.", "evidence": ["logs/09-dlg03-step7.txt"] },
+        { "id": "the-replacement-line", "what": "Could this greeting only belong to this faction? (the standard round 1 failed)", "result": "pass", "value": "YES, for the sentence, and I re-derived every number from the shipped file. `\\bwrit\\b` is 25 lines, 25 of 25 RG-LEDGER — the clerks have their word back and nobody else says it. `Leyawiin` 5 lines, 5 of 5 RG-BWC. `Company` (capitalised) 35 of 35 RG-BWC; lowercase `company` is 40, because RG-NAGA's 'We have eaten better company' uses the common noun — the round declared that against itself and it is true. Of the line's content words, `leyawiin`, `bought`, `contract` and `coin` are exclusive to RG-BWC across all 1,500 lines. And the referent is not merely exclusive, it is CANON: game/data/lore/canon.json CF-064, tier hard-canon, 'The Blackwood Company is a Leyawiin mercenary outfit'. As a piece of writing it does the cold band's job the way RI-DLG03 §A band 2 describes — it answers without welcoming, and it characterises while refusing: 'Company time' is a mercenary saying the clock is not yours, and 'Leyawiin bought it' names who owns the clock. It could not be said by RG-LEDGER (a Black Marsh writ-house), RG-COURT, RG-EMPIRE or RG-DRES (a House does not get bought). This is my judgement, stated as one.", "evidence": ["logs/10-voice.txt"] },
+        { "id": "the-composed-line", "what": "...and is the line the PLAYER hears the line that was judged?", "result": "fail", "hard_fail": false, "value": "No. See biggest_gap. 5 of 5 lines blackwood-company-factor speaks in the running engine carry 'Local. Useful.'", "evidence": ["logs/12-greet-in-engine.json"] },
+        { "id": "step8-blind", "what": "Blind pairing", "result": "fail", "hard_fail": false, "value": "not run — the item's own table scores 'not run' as the failing column. Structurally impossible for a subagent; the orchestrator owes it.", "evidence": [] }
+      ]
+    },
+    {
+      "id": "RI-UIX05",
+      "title": "Books and readable text — pagination, legibility, and reading as a real activity",
+      "native_scale": "checks passed / 10",
+      "native_score": "2 of 10",
+      "native_verdict": "The item's own ceiling clause binds: '<=6 -> loses outright (ceiling 4)'.",
+      "score_0_10": 4,
+      "measured": "partial",
+      "note_on_the_anchor": "Round 1 scored this item 5 with no browser at all, which is above the ceiling the item states for any result at or below 6 of 10. This verdict applies the ceiling. The movement 5 -> 4 is a correction of the anchor, not a finding about the work: the evidence under this item is strictly better than round 1's, and K4 is newly passing.",
+      "checks": [
+        { "id": "K1", "what": "Words per page across the whole corpus — median 120-180, p90 <=240, p10 >=80", "result": "pass", "value": "REPRODUCED EXACTLY from my own launch: n=1897 pages over 325 book opens, median 120, p90 153.4, p10 85, min 10, max 187. Excluding each book's final partial page: median 123, p90 156, p10 90. All three thresholds met, and clear of the 60-320 hard-fail band. I also established something the round did not claim: pagination is VIEWPORT-INDEPENDENT — the-sap-and-the-ledger gives the identical page vector [166,153,151,182,131,160] at 320x240 and at 1280x720 — which is what makes the round's 320x240 measurement legitimate against a bar written for 1920x1080.", "evidence": ["logs/06-library-pages-FIXED.json", "logs/13-book-shot.json"] },
+        { "id": "K4", "what": "Spread and page count (B6, B7) — 1-2 pages, count visible; a scrolling text box is a hard fail", "result": "pass", "value": "NEWLY MEASURED BY ME, from a capture the round said a critic should take. The reading screen is a genuine two-page spread with a gutter, a title, an author line, and a page counter — 'crate tally, three counts' draws '1 of 1', 'The Sap and the Ledger' draws '1-2 of 7'. No scrollbar, no scrolling box, so T7 is clean. Footer reads 'Left and right turn the page. Back closes it. Nobody will summarise this for you.' — which is §C R1 answered in the interface itself.", "evidence": ["frames/book-crate-tally.png", "frames/book-the-sap-and-the-ledger.png"] },
+        { "id": "K2", "what": "Line length, leading, size at three resolutions", "result": "unmeasured", "value": "Not attempted. Fails closed.", "evidence": [] },
+        { "id": "K3", "what": "Contrast >= 7.0:1", "result": "unmeasured", "value": "Not attempted. The captures show dark ink on light parchment and I did not sample a ratio from them, so no number is claimed.", "evidence": [] },
+        { "id": "K5", "what": "Open and turn latency", "result": "unmeasured", "value": "Not attempted.", "evidence": [] },
+        { "id": "K6", "what": "Persistence across close/save/load", "result": "unmeasured", "value": "Not attempted.", "evidence": [] },
+        { "id": "K7", "what": "Pause rule", "result": "unmeasured", "value": "Not attempted.", "evidence": [] },
+        { "id": "K8", "what": "Prohibitions R1-R8", "result": "unmeasured", "value": "Not scanned. One positive observation only: the reading screen's own footer says nobody will summarise the book, and no summary, codex or percentage element appeared in the three captures. That is not the R1-R8 sweep the check asks for.", "evidence": ["frames/book-the-sap-and-the-ledger.png"] },
+        { "id": "K9", "what": "Lore-vector budget", "result": "unmeasured", "value": "Not attempted. One directional fact: the fix moves 21 books from 1 page of the literal word 'undefined' to real prose, which moves this budget the right way.", "evidence": ["logs/08-set-identity.txt"] },
+        { "id": "K10", "what": "Blind layout pair", "result": "fail", "hard_fail": false, "value": "not_possible for a subagent, failed closed. The orchestrator owes it.", "evidence": [] }
+      ]
+    }
+  ],
+
+  "controls_rerun_by_this_critic": {
+    "method": "HAZARDS §31 rule 4 — every control hand-authors the defect into the SHIPPED artefact, not a fixture, then runs all four checks and restores the tree. Exit tuple is leaks/consumer/voice/bookfold. Re-runnable: scripts/controls.sh.",
+    "baseline": { "expected": "0/0/0/0", "observed": "0/0/0/0", "verdict": "reproduces" },
+    "A_guard_deleted_inside_foldBooks": { "expected": "bookfold red", "observed": "0/0/0/1 — the 24 ids come back", "verdict": "reproduces" },
+    "B_leak_at_source_plus_regen": { "expected": "leaks + consumer red", "observed": "1/1/0/0, grep 5 before and 5 after", "verdict": "reproduces" },
+    "B2_leak_at_source_no_regen": { "expected": "leaks red off the source text alone", "observed": "1/0/0/0, shipped greetings.json greps 0 throughout", "verdict": "reproduces — a capability round 1 had only via the import that caused its defect" },
+    "C_call_site_reverted": { "expected": "red — this was round 1's headline failure at all-green", "observed": "2/0/0/4 text-level, AND 1897->1715 pages with 21 ids collapsing at browser level", "verdict": "reproduces, and the browser arm is stronger than the claim" },
+    "D_leak_into_shipped_greetings_json": { "expected": "red AND the evidence must survive", "observed": "1/1/0/0; flagged at .pools[180].lines[3]; grep 1 before and 1 AFTER; sha256 of greetings.json IDENTICAL before and after the run (fad763ee76be3e01 both sides)", "verdict": "reproduces, and the file is genuinely untouched rather than merely re-written to the same bytes — this is the round-1 defect closed at the root" },
+    "E_leak_into_a_faction_refusal_line": { "expected": "leaks red", "observed": "1/0/0/0, flagged at .factions.the_rootkeepers.reputation", "verdict": "reproduces" },
+    "F_round_1s_rejected_line_restored": { "expected": "voice red, leaks green", "observed": "0/1/1/0 — voice exit 1 naming 3 of 5 race cells with no exclusive token, leaks exit 0", "verdict": "reproduces the two exit codes the round reported. It reported only two of four; consumer also goes red (correctly — the corrected line stops being reachable). An incomplete report, not a false one." },
+    "G1_generator_guard_stripped": { "expected": "leaks red, evidence survives", "observed": "1/1/0/0, grep 1 before and 1 after", "verdict": "reproduces" },
+    "G2_round_1_shape_reconstructed": { "expected": "exit 4, the tripwire", "observed": "DEPENDS ENTIRELY ON WHERE THE IMPORT SITS, and the round tested only one placement. Faithful to round 1 (await import inside scanAuthoredSource, which main() calls after the first fingerprint): EXIT 4, tripwire fires — the round's claim is TRUE as it ran it. Idiomatic ESM (a static `import './gen-greetings.mjs'` beside the other imports): EXIT 0, 'PASS' printed, grep 1 -> 0. The leak is deleted and its absence reported. Same for an import at the top of main().", "verdict": "DOES NOT REPRODUCE for the natural placement — see secondary_observations[0]" }
+  },
+
+  "secondary_observations": [
+    {
+      "id": "W1-DAL-R2-02",
+      "severity": "high",
+      "what": "THE EVIDENCE-MUTATION TRIPWIRE CANNOT SEE A MODULE-SCOPE SIDE EFFECT, WHICH IS THE DEFAULT SHAPE OF THE DEFECT IT WAS BUILT FOR. `check-authoring-leaks.mjs`'s header states the tripwire means 'a check that mutates its own evidence can never again report a pass'. That sentence is false. The tripwire takes its `before` fingerprint inside main(); anything that writes BEFORE that runs unseen, and `before == after`, so the check exits 0 printing PASS with the leak already deleted from the file. I demonstrated it three ways: import inside scanAuthoredSource (round 1's actual placement, git show 43d26e6e:...:124) -> exit 4, correct; a static top-level import, which is the ordinary ESM form -> exit 0 and grep 1 -> 0; an import at the top of main() -> exit 0 and grep 1 -> 0. HAZARDS §31 itself describes the defect as 'an UNGUARDED TOP-LEVEL fs.writeFileSync' — module scope — and the guard written from §31 is blind to exactly that.",
+      "how_bad_really": "Bounded, and I am not overstating it. To reach this state you must ALSO strip `RUN_DIRECTLY` from gen-greetings.mjs, so the round's belt-and-braces claim about its two primary repairs survives — I removed both halves to make it happen. What is falsified is the THIRD layer's stated absolute, and the reason it matters is that the third layer is the generic one: it is the guard a future check in another subsystem would copy, and it would carry this hole with it. HAZARDS §31 closes with 'a check is written by the person who already believes the fix works, and tested in the direction they expect' — the round's G2 tested the one placement its predecessor happened to use.",
+      "remedy": "Take the `before` fingerprint at MODULE SCOPE, before any import can have run — or fingerprint from a child process that imports nothing. One line, and it makes the sentence in the header true.",
+      "evidence": ["logs/03-tripwire-placement.txt", "logs/02-controls.txt CONTROL G2"]
+    },
+    {
+      "id": "W1-DAL-R2-03",
+      "severity": "medium",
+      "what": "THE PIECE'S CENTRAL CLAIM HAD NO ARTEFACT. `git show --stat` on both commits (893afe0f, 35ece705) returns 7 tool/data files and 1 status file — no log, no report, no artifacts directory. `tools/harness/critic-w1-library-pages.mjs` only writes with `--out`; `reports/critic-w1-library-pages.json` is still the Aug-7 W1-LIBRARY-r1 file (books_asked 65, total_pages 324) and is untouched in git status. So 1897, 1715, 15, 57, and the 21/24/3 identity existed ONLY as prose. That is HAZARDS §9's shape — a document pointing at something nobody else can see — under a round whose entire subject is instruments that cannot be believed.",
+      "mitigation_found": "Before I had a browser slot I tested the numbers for mutual consistency offline, and they are over-determined: the harness asks 325 ROWS over 163 distinct ids because manifest.json contributes 162 duplicates, so 15 -> 57 single-page rows uniquely selects k=3 of the 24 out of six candidate values (0->63, 1->61, 2->59, 3->57, 4->55, 5->53); and the 182-page drop over 42 rows implies 128.3 words per page against a reported median of 120. Then the browser reproduced all of it exactly. THE NUMBERS WERE TRUE. The defect is that nobody could have known that, and the round's own honesty about everything else makes the omission stranger, not smaller.",
+      "evidence": ["logs/05-arithmetic-crosscheck.txt", "logs/04-books-arithmetic.txt", "logs/06-library-pages-FIXED.json"]
+    },
+    {
+      "id": "W1-DAL-R2-04",
+      "severity": "low",
+      "what": "`getUIState().book.pages` disagrees with the drawn page counter for at least one book. In one session at 1280x720, `the-sap-and-the-ledger` reports pages=6 with a six-entry words-per-page vector summing to its full 943 words, while the screen draws '1-2 of 7'. `crate-tally` draws '1 of 1' correctly, so it is not a uniform off-by-one and I could not cheaply establish whether the drawn count includes a leaf the state count does not. RI-UIX05 T8 exists so a critic can assert what is on screen from getUIState(); where the two disagree, the state is the weaker witness. Flagged for RI-UIX05's owner, not scored here.",
+      "evidence": ["logs/13-book-shot.json", "frames/book-the-sap-and-the-ledger.png"]
+    },
+    {
+      "id": "W1-DAL-R2-05",
+      "severity": "low",
+      "what": "The round names a remaining hole and it is real and slightly larger than described: NPC `lines.greeting` strings in `game/data/npcs/**` are outside every check's scope. `blackwood-company-factor` carries lines.greeting = 'A jar of Cyrodiilic wine, with a note. Tell me when you go down and I will tell you what I know.' — a hand-authored, player-facing string that neither `check-authoring-leaks` (scope is dialogue/ and books/ only) nor `check-greeting-consumer` (greeting-pool path only) reads. The engine did not speak it in my talkTo sweep, so it may be dead data, which is its own question.",
+      "evidence": ["logs/12-greet-in-engine.json", "game/data/npcs/mainline.json"]
+    },
+    {
+      "id": "W1-DAL-R2-06",
+      "severity": "informational",
+      "what": "THE BLIND-PAIR CENSUS, DERIVED THIS TURN, AND THE COMMAND MATTERS. `grep -rl \"blind_pair: yes\" corpus/ --include=*.md | wc -l` returns 111 — but it counts ten doctrine and method documents that merely discuss the field (ARBITRATION.md, CRITIC-DOCTRINE.md, VERDICT-SCHEMA.md, RI-MTH03, JOURNEY-CRITIC-FLEET.md and five others). The figure that means what people use it to mean — reference items DECLARING a blind pair as their gate — is `grep -rlE \"^blind_pair: *yes\" corpus/ --include=RI-*.md | wc -l` = 81, out of `ls corpus/*/RI-*.md | wc -l` = 153 reference items. `grep -rln \"blind_status: *run\" corpus/90-verdicts/ | wc -l` = 3. So the drift the brief noticed (80, 81, 82) is partly real growth and partly two different commands wearing one number; CLAUDE.md rule 0e's own figure of 98 came from the loose command and would read 111 today. 81 of 153 declared, 3 ever run."
+    }
+  ],
+
+  "arbitration": {
+    "ar1": {
+      "status": "not_applicable",
+      "reason": "Nothing this piece touches is reachable from a fight. It changes five greeting strings, one data-fold call path and four checks. Greetings are gated out of COMBAT and books carry RI-UIX05 K7's pause rule; this piece alters neither gate.",
+      "checks": [{ "id": "A10", "what": "Talking mid-fight", "result": "not_applicable", "value": "The COMBAT gate is untouched — no diff in this piece reaches it." }],
+      "evidence": []
+    },
+    "ar2": {
+      "status": "pass",
+      "checks": [
+        { "id": "B3", "what": "Minimal or absent dialogue is a failure, not a placeholder", "result": "pass", "value": "The slot was replaced, not emptied. Driven in the engine: blackwood-company-factor speaks 5 distinct greetings across a 20-talk sweep, and the town's other 59 NPCs speak 102 distinct lines between them with 0 empties and 0 errors.", "evidence": ["logs/12-greet-in-engine.json"] },
+        { "id": "B6", "what": "Item descriptions replacing books/dialogue as the lore vector", "result": "pass", "value": "Improved and now photographed. 21 books move from one page reading the literal word 'undefined' to real prose — 14,364 words that previously reached no player — and the reading screen draws them as a two-page spread with a footer that refuses to summarise them.", "evidence": ["logs/08-set-identity.txt", "frames/book-the-sap-and-the-ledger.png"] },
+        { "id": "RI-DLG03-step7", "what": "Diegetic lint — any hit is AR-2 leakage and an automatic fail", "result": "pass", "value": "0 player-facing violations in the scope the item names. The 4 verbatim hits in rumours.json are 3 design-note keys and one occurrence of the word 'questions' in clean in-world speech. I did NOT apply the filed amendment that would anchor the regex — narrowing the instrument that grades this work, in the round that grades it, is the conflict every guard in this piece exists to prevent.", "evidence": ["logs/09-dlg03-step7.txt"] }
+      ],
+      "evidence": ["logs/09-dlg03-step7.txt"]
+    }
+  },
+
+  "blind_comparisons": [
+    { "reference_item": "RI-DLG03", "gate": "step 8 — 5 of our rumours against 5 from §B, proper nouns stripped, RI-DLG07 protocol", "blind_status": "not_possible", "reason": "A blind gate needs a fresh judge with no project context. I am a subagent: I cannot spawn subagents and create_session is approval-gated, which CLAUDE.md rule 0 forbids. Rule 0e names this as the orchestrator's to close.", "failed_closed": true, "note": "THE ORCHESTRATOR OWES THIS ONE MORE THAN THE USUAL AMOUNT. The defect this piece exists to fix was found by a blind judge, and biggest_gap shows the string that judge flagged is still two thirds present in every line the NPC speaks. A blind judge shown the five COMPOSED lines in logs/12-greet-in-engine.json would settle it in one question." },
+    { "reference_item": "RI-UIX05", "gate": "K10 — blind layout pair, art neutralised; the judge must answer 'a book' rather than 'a box of text'", "blind_status": "not_possible", "reason": "Same structural reason. I now have the capture the pair would need (frames/book-the-sap-and-the-ledger.png at 1280x720) but not the neutralised counterpart or a fresh judge.", "failed_closed": true }
+  ],
+
+  "corpus_extended": {
+    "did_i_extend_the_bar": "No. I ruled on both filed proposals and applied neither, and I wrote no new reference item.",
+    "ruling_on_AMENDMENT-PROPOSAL-DLG03-01": "DO NOT APPLY IT IN THIS ROUND, and the proposal was right to be filed and not applied. Its diagnosis is correct — `\\b(quest|...)` anchors before the alternation, so `\\bquest` matches 'question' — and I reproduced it (215 hits over the dialogue corpus, 131 of them the word 'question'). But anchoring the regex NARROWS what fails, and CRITIC-DOCTRINE §1.3's first guard is 'you may only ADD; never weaken, delete, or relax an existing row'. A critic applying it here would be relaxing the instrument that grades this work in the round that grades it. It should go to arbitration as a corpus edit on its own merits, judged by someone with nothing in this piece.",
+    "ruling_on_NEW-ITEM-PROPOSAL-DLG10-01": "THE HOLE IS REAL AND I CONFIRMED IT INDEPENDENTLY, and the proposal is correctly bounded and correctly unbuilt. Across 153 reference items nothing governs out-of-world text reaching the player, and nothing scores whether a faction's greeting could only be said by that faction (RI-DLG06 and RI-DLG08 are archetype and tone). §1.3's third guard applies exactly: closing this properly is a piece of work, not a pass, so I state the cap it puts on this verdict rather than building it inside a critique. THE CAP, NAMED: the residue in biggest_gap is a defect that no row in the corpus can currently fail, which is why two rounds walked past it — and my own finding of it came from driving the engine and reading the output, not from any item I was handed. That is CRITIC-DOCTRINE §1.3's sentence 'I can see this is bad and no row I have will fail it', and writing it down is the finding.",
+    "near_miss_recorded": "I checked whether RI-MTH07, RI-DLG03 and RI-UIX05 could express what this piece needs to be good at. RI-MTH07 could and did — §C3 caught something two rounds missed. RI-UIX05 could and does, and its ceiling clause is doing real work. RI-DLG03 could NOT express the thing that actually matters here, which is whether the sentence a player hears sounds like a person; that is the DLG10 hole."
+  },
+
+  "artifacts": [
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/01-baseline.txt", "kind": "log", "produced_by": "all four checks at HEAD", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/02-controls.txt", "kind": "log", "produced_by": "bash scripts/controls.sh — all seven controls, re-runnable, restores the tree", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/03-tripwire-placement.txt", "kind": "log", "produced_by": "the three import placements against the shipped tripwire", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/04-books-arithmetic.txt", "kind": "report", "produced_by": "offline re-derivation of the 24, their word counts, and the harness's 325-row ask list", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/05-arithmetic-crosscheck.txt", "kind": "report", "produced_by": "four mutual-consistency tests on the round's unbanked browser numbers, run BEFORE any browser was opened", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/06-library-pages-FIXED.json", "kind": "report", "produced_by": "node tools/harness/critic-w1-library-pages.mjs --out <mine> (§17: NOT the tool's default path, which belongs to W1-LIBRARY-r1)", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/07-library-pages-REVERTED.json", "kind": "report", "produced_by": "the same tool with engine.js's call site reverted; engine.js restored and re-hashed afterwards", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/08-set-identity.txt", "kind": "report", "produced_by": "the Node prediction against both browser arms — the RI-MTH07 coupling and null control", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/09-dlg03-step7.txt", "kind": "report", "produced_by": "RI-DLG03 step 7 verbatim over seven candidate scopes", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/10-voice.txt", "kind": "report", "produced_by": "writ/Leyawiin/Company tallies and the token-ownership map, re-derived from the shipped file", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/11-census.txt", "kind": "report", "produced_by": "the blind-pair census with its commands, and RI-DLG03's names-the-town measurement", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/12-greet-in-engine.json", "kind": "report", "produced_by": "node scripts/greet-in-engine.mjs — RI-MTH07 §C3, 60 NPCs driven through Engine.talkTo()", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/logs/13-book-shot.json", "kind": "report", "produced_by": "node scripts/book-shot.mjs", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/frames/", "kind": "screenshots", "produced_by": "three reading-screen captures at 1280x720 through H.screenshot()", "source": "critic" },
+    { "path": "corpus/90-verdicts/wave1/artifacts/W1-DIALOGUE-AUTHORING-LEAK-r2-critic/scripts/", "kind": "scripts", "produced_by": "this critic; all three are re-runnable and controls.sh restores the tree on exit", "source": "critic" }
+  ],
+
+  "self_audit": {
+    "did_i_inherit_a_number": "No. The brief's table was treated as unverified per its own instruction. Every control was re-run; every browser figure came from a launch I made; the blind-pair census, the writ/Leyawiin/Company tallies, the 24, the step-7 counts and the names-the-town percentage were all derived from a command in this session, and the commands are in the logs.",
+    "where_i_disagreed_with_the_round": "Once, materially: control G2 does not reproduce for the ordinary ESM placement of the import, and the tripwire's stated absolute is false. Once, minor: control F's report gives two of four exit codes.",
+    "where_i_confirmed_the_round_against_my_expectation": "The browser numbers. I went looking for them to be unverifiable — the artefact does not exist — and instead found them over-determined by the harness's duplicate-row structure, then reproduced every one exactly. I record that as plainly as the failure, because a critic that only reports what it broke is as untrustworthy as a builder that only reports what worked.",
+    "did_i_grade_on_a_curve": "I started to, and CRITIC-DOCTRINE §2.4.1 stopped me. My first pass reasoned 'round 1 gave RI-UIX05 a 5, so 4 would look like a regression'. That is the banned reasoning verbatim. The items are the bar; round 1's numbers are not, and one of them was above its own item's ceiling.",
+    "did_a_bar_i_extended_cause_a_pass": "I extended no bar. The DLG10 hole is named and left unbuilt, and it is the reason for a CAP on this verdict, never a reason for a pass.",
+    "what_would_make_this_verdict_wrong": "If `Engine.talkTo()` is not the path the player's input actually reaches — I drove it through the harness verb, not through a keypress, so CRITIC-DOCTRINE §1.2b's 'real input path' clause is met at the engine boundary and not at the input layer. If a fresh blind judge reads the five composed lines and says 'Local. Useful.' is plainly a mercenary appraising a local, biggest_gap shrinks from a defect to an unexamined premise and RI-DLG03 should rise. And if the drawn '1-2 of 7' has a benign explanation, W1-DAL-R2-04 disappears."
+  },
+
+  "gap_closure": [
+    { "gap_id": "W1-DAL-01", "from": "W1-DIALOGUE-AUTHORING-LEAK-CRITIC (round 1)", "status": "CLOSED", "evidence": "Both halves. (1) The check no longer regenerates what it scans: control D leaves greetings.json byte-identical (sha256 fad763ee76be3e01 before and after) with the leak still greppable, and the check exits 1 naming .pools[180].lines[3]. Repaired at the root too — gen-greetings.mjs's write is behind RUN_DIRECTLY. (2) The whitelist is gone: scope inverted from a 6-key allow-list to a 15-key documented denylist, 4,988 -> 16,027 strings scanned, and control E now flags a faction-refusal line at .factions.the_rootkeepers.reputation. Verified by me, not accepted." },
+    { "gap_id": "control-C (round 1's silent revert)", "from": "W1-DIALOGUE-AUTHORING-LEAK-CRITIC (round 1)", "status": "CLOSED", "evidence": "leaks exit 2 and bookfold exit 4 on the reverted call site, plus an entity-side browser perturbation with an empty symmetric difference. Round 1 wrote that it could not show the running engine consumes foldBooks(); it is shown." },
+    { "gap_id": "RI-MTH07 §C3 hand-feed audit", "from": "never attempted by either round", "status": "CLOSED BY THIS CRITIC", "evidence": "logs/12-greet-in-engine.json" }
+  ],
+
+  "not_graded_by_self": "This verdict was produced by a critic who built none of this piece and re-ran every claim it makes. Its two blind gates are unrun and failed closed, and they belong to the orchestrator."
+}
