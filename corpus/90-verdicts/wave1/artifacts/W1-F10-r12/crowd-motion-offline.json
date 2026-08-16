@@ -1,15 +1,13 @@
 {
  "tool": "tools/visual/f10-r12-crowd-motion.mjs",
- "commit": "45d759d604c79493b90d1704169bfd196242c776",
+ "commit": "bfb21f48078be57acab920bd65d226bc2959fdcd",
  "working_tree_dirty_in_game_or_tools": true,
  "dirty_paths": [
-  "M game/src/render/actor.js",
-  " M game/src/render/renderer.js",
-  " M tools/visual/f7-r4-sweep.mjs",
-  "?? tools/ui/t4-r8-critic-c7.mjs",
-  "?? tools/visual/f10-r12-crowd-motion.mjs"
+  "M game/src/render/lib/lighting-recipes.js",
+  " M tools/visual/f10-r12-crowd-motion.mjs",
+  " M tools/visual/f7-r4-sweep.mjs"
  ],
- "generated": "2026-08-16T01:34:36.732Z",
+ "generated": "2026-08-16T01:57:35.336Z",
  "enumerating_command": "readdirSync('game/data/npcs/*.json') -> flatten",
  "population": {
   "files": 18,

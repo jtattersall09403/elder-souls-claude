@@ -686,10 +686,26 @@ if (!args.live) {
     for (const e of Object.keys(snap.npcs)) o[e] = JSON.stringify(snap.npcs[e].rotLocal);
     return o;
   };
-  const cmp = (a, b) => {
+  /**
+   * SPLIT BY VISIBILITY, because the two populations answer different questions and collapsing
+   * them invents a failure. A DRAWN person is advanced every window, so both arms of a
+   * pinned-clock comparison end at the same solve and the bones must be bit-identical. An
+   * INVISIBLE person is never advanced at all (that is the point of the visibility gate), so they
+   * hold whatever clock they were BORN at — and a rebuild is a new birth at a later clock, so
+   * their bones differ by construction. Reporting one merged number would read as "31 of 60" and
+   * look like a stability failure in exactly the population no player can see.
+   */
+  const cmp = (a, b, vis) => {
     const keys = Object.keys(a).filter((k) => k in b);
-    return { compared: keys.length, identical: keys.filter((k) => a[k] === b[k]).length };
+    const drawn = keys.filter((k) => vis && vis[k]);
+    const hidden = keys.filter((k) => !(vis && vis[k]));
+    return {
+      compared: keys.length, identical: keys.filter((k) => a[k] === b[k]).length,
+      DRAWN: { compared: drawn.length, identical: drawn.filter((k) => a[k] === b[k]).length },
+      invisible_never_advanced: { compared: hidden.length, identical: hidden.filter((k) => a[k] === b[k]).length },
+    };
   };
+  const visOf = (snap) => { const o = {}; for (const e of Object.keys(snap.npcs)) o[e] = !!snap.npcs[e].visible && (snap.npcs[e].dist_to_stand_m ?? 1e9) < 200; return o; };
   /** Re-warm to a PINNED clock so both readings sit at the same phase. Every bucket fires once
    *  in any window of STANCE_STAGGER_N frames, so a window that long is enough and no longer. */
   const N = 8;
@@ -700,18 +716,18 @@ if (!args.live) {
   const PIN = A1.frame;
   await pinTo(PIN);
   const base = await READ(STAND.x, STAND.z);
-  const baseId = idOf(base), baseRot = rotOf(base);
+  const baseId = idOf(base), baseRot = rotOf(base), baseVis = visOf(base);
 
   await g.page.evaluate(() => { const R = window.__ENGINE.renderer; for (const [, m] of R.npcMeshes) R.scene.remove(m); R.npcMeshes.clear(); });
   await pinTo(PIN);
   const afterRebuild = await READ(STAND.x, STAND.z);
-  push({ arm: 'L4a REBUILD — every NPC mesh destroyed and rebuilt by syncNPCs', identity: cmp(baseId, idOf(afterRebuild)), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterRebuild)), pinned_sim_frame: PIN });
+  push({ arm: 'L4a REBUILD — every NPC mesh destroyed and rebuilt by syncNPCs', identity: cmp(baseId, idOf(afterRebuild), baseVis), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterRebuild), baseVis), pinned_sim_frame: PIN });
 
   await call('teleport', AWAY.x, AWAY.z); await call('stepFrames', 30);
   await call('teleport', STAND.x, STAND.z);
   await pinTo(PIN);
   const afterTravel = await READ(STAND.x, STAND.z);
-  push({ arm: 'L4b TRAVEL — away to another settlement and back', identity: cmp(baseId, idOf(afterTravel)), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterTravel)), pinned_sim_frame: PIN });
+  push({ arm: 'L4b TRAVEL — away to another settlement and back', identity: cmp(baseId, idOf(afterTravel), baseVis), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterTravel), baseVis), pinned_sim_frame: PIN });
 
   const blob = await call('saveState');
   let l4c = { arm: 'L4c SAVE/RELOAD', note: 'saveState unavailable' };
@@ -720,7 +736,7 @@ if (!args.live) {
     await call('teleport', STAND.x, STAND.z);
     await pinTo(PIN);
     const afterLoad = await READ(STAND.x, STAND.z);
-    l4c = { arm: 'L4c SAVE/RELOAD — saveState() then loadState(), then back to the same stand', load_ok: !(loaded && loaded.__err), identity: cmp(baseId, idOf(afterLoad)), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterLoad)), pinned_sim_frame: PIN };
+    l4c = { arm: 'L4c SAVE/RELOAD — saveState() then loadState(), then back to the same stand', load_ok: !(loaded && loaded.__err), identity: cmp(baseId, idOf(afterLoad), baseVis), bones_at_the_SAME_pinned_clock: cmp(baseRot, rotOf(afterLoad), baseVis), pinned_sim_frame: PIN };
   }
   push(l4c);
   }
