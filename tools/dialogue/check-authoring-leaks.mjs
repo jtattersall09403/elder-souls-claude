@@ -69,6 +69,9 @@ import path from 'node:path';
 import url from 'node:url';
 import crypto from 'node:crypto';
 import { assertCallSites, reportCallSites, stripLineComments } from '../lib/call-site.mjs';
+// ROUND 3: the pattern list moved to a shared module so this scanner and the composed-output
+// scanner cannot drift apart. Re-exported below so existing importers keep working.
+import { PATTERNS as SHARED_PATTERNS, matchAny as sharedMatchAny, KNOWN_LEAK } from '../lib/authoring-patterns.mjs';
 
 const HERE = path.dirname(url.fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..', '..');
@@ -79,35 +82,9 @@ const argv = process.argv.slice(2);
 // "must be" etc.) — this list targets META-INSTRUCTION shapes, not ordinary imperative
 // dialogue ("Leave the grove" is a character talking; "keep it under N words" is a brief to a
 // writer).
-export const PATTERNS = [
-  // Narrowly the leaked imperative, not the bare phrase "in one line" — that phrase also
-  // occurs legitimately in-fiction (a clerk asked to summarise a document "in one line" is a
-  // character being characterised, not a leak); see `the-short-measures.json` books[6].
-  [/\bsay it in one line\b/i, 'authoring brief about line length'],
-  [/\bkeep it (short|brief|tight|concise)\b/i, 'authoring brief about brevity'],
-  [/\bwrite (a|the|your) line\b/i, 'instruction to a writer'],
-  [/\bthis (line|dialogue) should\b/i, 'meta-commentary about the line itself'],
-  [/\bplaceholder\b/i, 'placeholder text'],
-  [/\btodo\b/i, 'todo marker'],
-  [/\bfixme\b/i, 'fixme marker'],
-  [/\blorem ipsum\b/i, 'filler text'],
-  [/\[insert\b/i, 'template bracket'],
-  [/<insert\b/i, 'template bracket'],
-  [/\bTBD\b/, 'todo marker'],
-  [/\bnote to (the )?writer\b/i, 'note to writer'],
-  [/\bwriter'?s? note\b/i, 'note to writer'],
-  [/\bstay in character\b/i, 'instruction to a writer'],
-  [/\bas an ai\b/i, 'model self-reference'],
-  [/\bas the writer\b/i, 'instruction to a writer'],
-  [/\bcharacter limit\b/i, 'authoring brief about length'],
-  [/\bword limit\b/i, 'authoring brief about length'],
-  [/\bword count\b/i, 'authoring brief about length'],
-];
+export const PATTERNS = SHARED_PATTERNS;
 
-function matchAny(text) {
-  for (const [re, why] of PATTERNS) if (re.test(text)) return why;
-  return null;
-}
+const matchAny = sharedMatchAny;
 
 // -----------------------------------------------------------------------------------------
 // SCOPE, INVERTED. Round 1 whitelisted six key names; a leak under any other key was invisible.
@@ -280,7 +257,7 @@ function main() {
 
   if (selfTest) {
     // Prove the PREDICATE can fail. Necessary, never sufficient — see the header, §31 rule 4.
-    const leaked = 'Say it in one line. Local. Useful.';
+    const leaked = KNOWN_LEAK;
     const why = matchAny(leaked);
     if (!why) {
       console.error('SELF-TEST FAILED: the known leaked line no longer matches any pattern.');
