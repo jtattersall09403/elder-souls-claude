@@ -14,8 +14,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   isn't the light at all.
 - **Characters, round eleven** — the crowd. Every NPC in the game stands in one identical pose, and a
   town has 14 different bodies between 408 people.
-- **The water, round three** — two of the four things the bar requires of water were never in the
-  shader at all.
+- **Judging the water, round three** — the two missing pieces are built, and the depth colouring was
+  running backwards.
 - **Judging the container screen** — round seven closed the density regression and found a third
   defect nobody had reported.
 
@@ -57,25 +57,27 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   rather than what it *drew*, so it passed no matter what; another was written as a literal `true`.
   Both now assert real published numbers, and both were proven to go red on a deliberately broken row
   first.
-- **⚠ That measurement scare is closed, and the answer was the opposite.** I said an hour ago that a
-  filed verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce
-  **exactly**. The four "isolated" copies the builder compared had all quietly measured **the same
-  live tree** — the tools work out where the repo is from *their own location on disk*, so copying the
-  game somewhere and running the normal command measures the original, not the copy. Four results
-  agreeing to four decimal places was the tell, and it reads as rigour. The real comparison shows
-  round 6's own change took the container from a pass to a fail. **Everything that was ever proved by
-  "we deleted the fix and the old number came back" is now worth re-checking.**
-- **The water: judged again, and kept — but the bar says we have been fixing the wrong quarter.** The
-  eye-level improvement is real and was confirmed from eight camera angles: at some bearings the pale
-  washed-out sheet becomes deeper teal-green with the reflection confined to the middle distance, and
-  at others the same change buys almost nothing. **The finding that matters: of the four things the
-  standard requires water to do, two are simply not in the code** — the colour does not vary with
-  depth (it is a constant), and there is no fade where water meets land. Two rounds went into tuning
-  the one component that already existed. Round three is building the missing two.
-  **And I have to correct myself again.** I said the leftover stripes were the reflection being drawn
-  at half resolution. Switch the reflection off entirely and **76% of the stripes remain**. The judge
-  then proposed two explanations of its own and killed both by the same test. **After two rounds
-  nobody knows what draws the marsh stripes**, and that is the honest state.
+- **⚠ A measurement scare, and the answer was the opposite of what I told you.** I said a filed
+  verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce **exactly**.
+  The four "isolated" copies compared had all quietly measured **the same live tree** — the tools work
+  out where the repo is from *their own location on disk*, so copying the game elsewhere and running
+  the normal command measures the original. Four results agreeing to four decimals was the tell, and
+  it reads as rigour. **Everything ever proved by "we deleted the fix and the old number came back" is
+  now worth re-checking.**
+- **The water: the depth colouring was running backwards, and now it exists at all.** Two of the four
+  things the standard requires of water were simply not in the code. They are now, from one mechanism:
+  light is absorbed through the water column against **each region's own murkiness value, which reaches
+  the renderer for the first time in this project**. And the reason depth looked absent is better than
+  that — it was *present, unlabelled and inverted*: the old body colour leaned on a term that gets
+  **brighter** the deeper the water.
+  **The first water result a dimmer switch cannot fake.** Every earlier F7 number could be reproduced by
+  simply darkening the picture; this one can't — as murkiness varies the band where water meets land
+  widens 5 → 19 pixels in order, and the fake control moves it *the wrong way*.
+  **Two things against it, both reported by the builder against itself:** in the one region you
+  actually stand in the water is opaque within half a metre of the bank, so the depth colouring is
+  measurably **inert there**; and round two's eye-level shoreline regression is **not repaired**.
+  **Still true: nobody knows what draws the marsh stripes.** Switch the reflection off entirely and 76%
+  of them remain; two further explanations were proposed and killed by the same test.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
 - Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
   its author caught that 93.7% of the gain it was about to claim reproduced with no fix in the tree.
@@ -153,10 +155,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   confirmed their accounts were genuinely distinguishable rather than a coin-flip.
   **The catch is the useful part:** of six people they talked to, the links were **absent on two,
   present on four, noticed on only two** — and on one the phrase **did nothing when pressed**. So it
-  works and is liked *where it lands*, and it lands on about half of conversations; combined with the
-  first NPC you meet having none, most players would never find it. **Placement is the work now**, not
-  more links. Both bugs the judges hit are fixed — the dead phrase was a topic gated to a different
-  kind of person, so a phrase is now only drawn as followable if *this* speaker can answer it.
+  works and is liked *where it lands*, and it lands on about half of conversations. **Placement is the
+  work now**, not more links. Both bugs the judges hit are fixed.
 - Some buildings still overlap each other; 24 doors still open into another building.
 
 ## Why the game doesn't look better — answered today, and it's one number
