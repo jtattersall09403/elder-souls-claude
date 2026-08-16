@@ -1,0 +1,130 @@
+{
+  "tool": "W1-F7-WATER-r4 critic — every number I derived myself, with the command that produced it",
+  "generated": "2026-08-16",
+  "branch": "codex/wave1-build-experiment",
+  "rule": "Nothing here is inherited from the r4 status file, the r3 verdict or my brief. Each block names how it was produced. Where I re-derived a figure the build also published and it agreed, I say CONFIRMED and give my own value.",
+
+  "A_the_shoreline_census_re_derived_in_my_own_code": {
+    "how": "scratch script written by me against game/src/world/field.js's WorldField, reproducing province.js:1531-1562's cell arithmetic from the source I read this turn. It does NOT import tools/visual/f7-r4-shoreline-census.mjs.",
+    "vista-deep-marshes": {
+      "stand": [3123.5, 3715],
+      "regionAt": "deep-marshes",
+      "stands_in_water": true,
+      "within_120m": { "water_cells": 121, "waterline_cells": 47, "waterline_pct": 38.84, "nearest_waterline_m": 17.7, "wet_corners": 418, "q_saturation": 0.2416 },
+      "within_300m": { "water_cells": 675, "waterline_cells": 263, "waterline_pct": 38.96, "nearest_waterline_m": 17.7, "q_saturation": 0.2720 }
+    },
+    "eye-deep-marshes": { "within_120m": { "water_cells": 144, "waterline_cells": 51, "waterline_pct": 35.42, "nearest_waterline_m": 25.9, "q_saturation": 0.3307 } },
+    "vista-western-rootlands": { "within_120m": { "water_cells": 126, "waterline_cells": 93, "waterline_pct": 73.81, "nearest_waterline_m": 20.9, "q_saturation": 0.0000 } },
+    "vista-marauders-coast": { "within_120m": { "water_cells": 121, "waterline_cells": 4, "waterline_pct": 3.31, "nearest_waterline_m": 81.0, "q_saturation": 0.9248 } },
+    "vista-crimson-coast": { "within_120m": { "water_cells": 121, "waterline_cells": 4, "waterline_pct": 3.31, "nearest_waterline_m": 60.5, "q_saturation": 0.9706 } },
+    "ruling": "CONFIRMED to the digit, independently. The Deep Marshes is not shoreless. The two seas are where the depth signal is dead."
+  },
+
+  "B_what_the_shipped_band_actually_covers": {
+    "how": "my own script over the same WorldField. esDepthM = clamp((q-0.43)/0.57,0,1)*1.35 is the exact inverse of province.js's q, so a wet corner's esDepthM IS its depth in metres. esBandM = 1 - smoothstep(0, band, esDepthM), evaluated per wet corner inside the 120 m box.",
+    "why_it_matters": "RI-VIS04 §9's MIN BAR component is a SHORELINE depth fade. A term that is non-zero over most of the water body is not one.",
+    "vista-deep-marshes": {
+      "wet_corners": 418,
+      "depth_percentiles_m": { "p10": 0.211, "p25": 0.518, "p50": 0.824, "p75": 1.341, "p90": 1.634, "max": 2.105 },
+      "by_band": {
+        "0.30": { "mean_esBandM": 0.070, "untouched_pct": 85.4, "in_transition_pct": 14.6, "full_fade_pct": 0.0 },
+        "0.60": { "mean_esBandM": 0.146, "untouched_pct": 70.6, "in_transition_pct": 28.0, "full_fade_pct": 1.4 },
+        "1.20_SHIPPED": { "mean_esBandM": 0.334, "untouched_pct": 34.9, "in_transition_pct": 61.7, "full_fade_pct": 3.3 },
+        "1.35": { "mean_esBandM": 0.381, "untouched_pct": 27.5, "in_transition_pct": 68.2, "full_fade_pct": 4.3 }
+      }
+    },
+    "vista-western-rootlands": {
+      "wet_corners": 280,
+      "depth_percentiles_m": { "p10": 0.058, "p25": 0.190, "p50": 0.375, "p75": 0.655, "p90": 0.901, "max": 1.126 },
+      "by_band": {
+        "0.30": { "mean_esBandM": 0.205, "untouched_pct": 65.0, "in_transition_pct": 30.7, "full_fade_pct": 4.3 },
+        "0.60": { "mean_esBandM": 0.393, "untouched_pct": 35.0, "in_transition_pct": 57.1, "full_fade_pct": 7.9 },
+        "1.20_SHIPPED": { "mean_esBandM": 0.662, "untouched_pct": 1.4, "in_transition_pct": 84.3, "full_fade_pct": 14.3 },
+        "1.35": { "mean_esBandM": 0.711, "untouched_pct": 0.0, "in_transition_pct": 82.9, "full_fade_pct": 17.1 }
+      }
+    },
+    "ruling": "At the shipped 1.20 m the term is non-zero over 65.1% of the Deep Marshes water in frame and over 98.6% of the Western Rootlands water in frame. That is not a shoreline fade; it is a depth-driven transparency multiplier over the whole water body. It is ONE cause for BOTH of the round's symptoms: a fade applied nearly everywhere has almost no edge (no gradient), and it lowers alpha nearly everywhere (the darkening)."
+  },
+
+  "C_the_water_presence_control": {
+    "how": "offline, on the BUILD's OWN banked frames, my own script. Every artifact dir carries a `--water-hidden` frame — the same pose with all 93 water meshes hidden — and nobody scored it. Over the pinned mask rebuilt exactly as maskFrom(PIN, hidden, thr): presence = (L[arm] - L[hidden]) / (L[prefix] - L[hidden]). 1.00 = round 2's water. 0.00 = no water at all.",
+    "why_it_matters": "The build states the disagreement a critic must settle as 'the starting region's water reads as more absent' versus 'the mechanism is now correct'. This turns the first half into a number, and it is threshold-independent where gradient_width_px is not.",
+    "deep-marshes edge-b135": { "thr4": { "prefix": 100.0, "r3": 59.4, "r3_shader": 58.7, "no_shorefade": 89.3, "fixed": 41.1 }, "thr6": { "prefix": 100.0, "r3": 59.5, "r3_shader": 58.8, "no_shorefade": 89.4, "fixed": 41.2 }, "thr10": { "prefix": 100.0, "r3": 59.6, "r3_shader": 59.0, "no_shorefade": 89.5, "fixed": 41.4 } },
+    "deep-marshes edge-b045": { "thr6": { "prefix": 100.0, "r3": 99.3, "fixed": 94.5 }, "thr10": { "prefix": 100.0, "r3": 99.3, "fixed": 94.5 } },
+    "deep-marshes edge-b225": { "thr6": { "prefix": 100.0, "r3": 99.5, "fixed": 82.3 }, "thr10": { "prefix": 100.0, "r3": 99.6, "fixed": 82.3 } },
+    "deep-marshes edge-b315": { "thr6": { "prefix": 100.0, "r3": 100.6, "fixed": 86.5 }, "thr10": { "prefix": 100.0, "r3": 100.6, "fixed": 86.5 } },
+    "western-rootlands edge-b225": { "thr6": { "prefix": 100.0, "r3": 97.2, "fixed": 69.3 } },
+    "worst_pose_for_the_shipped_arm": 41.2,
+    "the_decomposition_the_round_had_the_arms_for_and_did_not_compute": "At edge-b135 the depth COLOUR alone (`no-shorefade`, uWaterShoreFade = 0) leaves 89.4% of the water. Round 3's k-gated ALPHA fade takes it to 59.5%. Round 4's band takes it to 41.2%. So the darkening is 10.6 points of colour and 48.2 points of ALPHA — it is the shoreline alpha term, not the depth colour, and the build's defence that 'the colour half is deliberately untouched' does not reach it."
+  },
+
+  "D_the_band_sweep_the_round_never_ran": {
+    "how": "my own run, `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-sweep.mjs` (a copy of the build's instrument whose ONLY change is four extra uniform arms at 0.10/0.20/0.30/0.45 m), `--site vista-deep-marshes --poses edge-b135 --thresholds 6,10`. Output: `bandsweep-b135/sweep.json`.",
+    "why_it_matters": "The build's sweep covered 0.60 / 1.20 / 1.35 and concluded 'no band constant rescues it — so it is not a tuning problem'. Every one of those sits above the median wet-corner depth in frame (block B), i.e. entirely inside the broad regime.",
+    "table_at_threshold_10_the_only_threshold_whose_mask_arm_is_stable": [
+      { "arm": "prefix (r2)", "band_m": null, "gradient_width_px_closed": 3, "mean_luma": 67.939, "presence_pct": 100.0 },
+      { "arm": "r3", "band_m": 0.0001, "gradient_width_px_closed": 1, "mean_luma": 52.070, "presence_pct": 59.7 },
+      { "arm": "band-0.10", "band_m": 0.10, "gradient_width_px_closed": 34, "mean_luma": 48.464, "presence_pct": 50.6 },
+      { "arm": "band-0.20", "band_m": 0.20, "gradient_width_px_closed": 34, "mean_luma": 47.677, "presence_pct": 48.6 },
+      { "arm": "band-0.30", "band_m": 0.30, "gradient_width_px_closed": 34, "mean_luma": 47.152, "presence_pct": 47.2 },
+      { "arm": "band-0.45", "band_m": 0.45, "gradient_width_px_closed": 34, "mean_luma": 46.523, "presence_pct": 45.6 },
+      { "arm": "band-0.60", "band_m": 0.60, "gradient_width_px_closed": 34, "mean_luma": 45.977, "presence_pct": 44.2 },
+      { "arm": "fixed (SHIPPED)", "band_m": 1.20, "gradient_width_px_closed": 34, "mean_luma": 44.596, "presence_pct": 40.7 }
+    ],
+    "ruling": "**THE WIDTH IS FLAT AT 34 px FROM 0.10 m TO 1.20 m AND THE DARKENING IS MONOTONIC IN THE CONSTANT.** At this pose the constant buys nothing but absence. The shipped 1.20 m is DOMINATED by 0.10 m on the build's own instrument: identical width, ten percentage points more water. 'It is not a tuning problem' is false as stated — what is true is narrower and more interesting: the width is a STEP function of whether a band exists at all, not a function of its size.",
+    "what_i_did_NOT_establish": "I ran this at edge-b135 only. The build's failing pose is edge-b225, where it measured 0.60 / 1.20 / 1.35 all reading 1 px and where I did NOT test 0.10 / 0.20 / 0.30. So I have NOT shown that a small band rescues edge-b225, and nobody should read that into this table."
+  },
+
+  "E_the_instrument_findings_that_cut_against_the_round": {
+    "E1_threshold_6_is_not_stable_and_the_round_says_it_is": {
+      "how": "read off the build's own banked sweep.json files. `prefix` IS the mask arm: its own-mask delta is the instrument re-measuring an unchanged shader through the arms loop.",
+      "prefix_own_mask_delta_pct_at_threshold_6": { "edge-b045": 61.75, "edge-b135": 51.07, "edge-b225": 33.56, "edge-b315": -0.03, "western-rootlands edge-b225": 19.87 },
+      "published_back_to_back_pin_replicate_at_threshold_6": { "edge-b045": 5.73, "edge-b135": 1.18, "edge-b225": 1.33, "edge-b315": 0.12, "western-rootlands edge-b225": 2.15 },
+      "prefix_own_mask_delta_pct_at_threshold_10": { "edge-b045": 0.01, "edge-b135": -1.66, "edge-b225": -0.52, "edge-b315": 0.20 },
+      "ruling": "The published replicate is taken PIN -> PIN2 back to back; the arms are measured across shader round-trips. So the band understates the instability by 10x to 50x. The build's claim that 'thresholds 6 and 10 are stable to about 1-2%' is falsified by rows inside its own artifacts. **Threshold 10 is the only stable threshold on this scene, and every headline row in the status file is a threshold-6 row.**"
+    },
+    "E2_own_mask_delta_tracks_CAPTURE_ORDINAL_not_arm": {
+      "how": "read off the build's own banked sweep.json files, arm order = capture order.",
+      "dm-edge2 thr10": { "prefix(o0)": -1.66, "r3(o1)": -0.54, "r3-shader(o2)": 12.97, "fixed(o3)": 23.24, "no-shorefade(o4)": 35.67 },
+      "dm-edge thr10 (the void run)": { "prefix(o0)": -0.30, "r3(o1)": 10.65, "r3-shader(o2)": 42.91, "fixed(o3)": 56.55, "no-shorefade(o4)": 63.32 },
+      "dm-b045 thr10": { "prefix(o0)": 0.01, "r3(o1)": 11.14, "fixed(o2)": 31.55 },
+      "dm-b225 thr10": { "prefix(o0)": -0.52, "r3(o1)": 3.07, "fixed(o2)": 11.83 },
+      "dm-bandsweep thr6": { "r3(o0)": 34.34, "band-0.60(o1)": 47.35, "fixed(o2)": 52.90, "band-1.35(o3)": 55.59 },
+      "my own run thr10": { "prefix(o0)": -1.57, "r3(o1)": 1.60, "band-0.10(o2)": 16.10, "band-0.20(o3)": 28.71, "band-0.30(o4)": 36.84, "band-0.45(o5)": 41.32, "band-0.60(o6)": 43.78, "fixed(o7)": 45.12 },
+      "the_falsifier": "`no-shorefade` sets uWaterShoreFade = 0. Its water alpha is IDENTICAL to the pin arm's, so of every arm it should move the mask LEAST. It moves it MOST (+35.67% at thr10, +75.67% at thr6) — and it is captured last. In my own eight-arm run the delta rises monotonically across all eight ordinals including between two bands 0.10 m apart.",
+      "ruling": "**`own_mask_delta_pct` in this round is drift accumulating with capture order, not an arm choosing its own pixels.** HAZARDS §25 remains true as a hazard on the r3 critic's original single-frame-pair evidence (a FresnelDelta sign flip and a spurious ShoreDelta pass). Round 4's '+23.24% against a replicate band of -1.13%, a measured 20x effect' does NOT establish it and should not be quoted as the band for §25.",
+      "what_would_settle_it": "One run at the same pose with the arm order REVERSED (fixed, no-shorefade, r3, prefix). If prefix at the last ordinal reads a large positive delta, it is ordinal. I launched exactly that run and killed it by PID when `node tools/contention.mjs` went to 4.53 per core against a ceiling of 4.0. It is owed."
+    },
+    "E3_the_widths_at_the_only_stable_threshold": {
+      "threshold_10_closed_width_prefix_r3_fixed": { "edge-b045": [20, 20, 20], "edge-b135": [5, 1, 33], "edge-b225": [2, 2, 1], "edge-b315": [5, 6, 5], "western-rootlands edge-b225": "NOT RUN at thr10" },
+      "ruling": "At the stable threshold: one large gain (b135), NO CHANGE at b045, and two 1-px moves the wrong way. The status file's second 'improvement', `edge-b045` 15 -> 17, exists only at threshold 6 — where that pose's mask arm drifts +61.75%. At threshold 10 that pose reads 20 / 20 / 20. The acceptance (>= 12 at the worst pose) fails either way, at 1."
+    },
+    "E4_shore_raw_does_not_reproduce_and_the_closed_width_does": {
+      "how": "same pose, same tool, two processes: the build's dm-edge2 and my bandsweep-b135.",
+      "edge-b135 threshold 10": { "closed_width": { "build": { "prefix": 5, "r3": 1, "fixed": 33 }, "mine": { "prefix": 3, "r3": 1, "fixed": 34 } }, "raw_width": { "build": { "prefix": 1, "r3": 1, "fixed": 25 }, "mine": { "prefix": 1, "r3": 33, "fixed": 28 } } },
+      "ruling": "The build names as an overturn condition 'any evidence that the 1 -> 34 result is an artefact of the morphological closing'. **It does not fire, and the opposite is true.** The CLOSED width reproduces across processes on every arm; `shore_raw` — the figure the build offers as the honest r3-comparable one — moved 1 -> 33 on an UNCHANGED arm between two runs, which is the size of the entire headline effect. The raw distance transform is the unreliable half."
+    },
+    "E5_the_frame_time_figures_are_not_in_the_banked_evidence": {
+      "how": "`dm-perf/sweep.json` carries `perf: {}`; grep for 3703 or 5605 across the whole W1-F7-WATER-r4 artifact tree returns nothing.",
+      "ruling": "The conclusion — no frame-time reading is obtainable on this box — is independently supported and I confirm it from source: `game/src/engine.js:9379-9381` declares `renderCpuMs` in `_unmeasurable`, in its own words, 'Tier-H. This container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game'. But the specific numbers the status publishes to prove it are NOT verifiable from the artifacts. This is HAZARDS §18's shape: a report that writes only at the end loses everything when the run dies."
+    }
+  },
+
+  "F_what_i_re_derived_and_CONFIRMED": {
+    "depthWrite": "CONFIRMED false for the whole water family, at source — `game/src/render/visual-foundation.js:689`, `depthWrite: options.depthWrite ?? family!=='water'` — and on all four live materials in the build's banked `gpu_state_before`. The r3 status file's claim that round 3 'lowered alpha on a material with depthWrite on' is corrected.",
+    "the_transparency_sort": "CONFIRMED by re-doing the arithmetic on the banked luma. strip 44.362 -> 42.517 = -1.845 (-4.16%); plane_only 66.945 -> 44.714 = -22.231 (-33.21%); land 76.598 -> 76.030 = -0.568 (-0.74%), inside the 1.18% pin replicate. The wet-bank strip moves 8.0x less, as a fraction, than the water it sits on. **The strongest recorded argument against keeping does not fire.**",
+    "the_stale_HUD_region_label": "CONFIRMED, and visually at 4 of 4 Deep Marshes poses. The build's banked `stand_verification` reads teleport_offset_m 0.00, running-field regionAt = `deep-marshes` at both the deck point and the player, hud_region_name 'The Deep Marshes'. My own offline WorldField returns `deep-marshes` at (3123.5, 3715). The label DRAWN in the frame reads `western-rootlands` in every one of edge-b045/b135/b225/b315. **The field is right and the drawn label is stale.** Three rounds of F7 evidence have been doubted over it; that doubt is withdrawn.",
+    "the_blind_census": "Re-derived with my own commands. `grep -rl 'blind_pair: yes' corpus/ --include=*.md | wc -l` = 106 FILES; restricted to reference items, `| grep -E '/RI-[^/]*\\.md$' | wc -l` = **81**. `grep -rEn '\"blind_status\" *: *\"run\"' corpus/90-verdicts/` = **0**. Enumerating every wave-1 verdict's `blind_comparisons[].status`, the only `done` rows are the ten in `W1-VISUAL-BLIND-PROTOCOL-A-r1/r2`. **81 reference items declare a blind pair; Protocol A is the entire blind-judgement history of this project.** The build's 106/3 is the file count and three false positives; both of us are describing the same fact.",
+    "NormalEnergy_and_the_dither_stipple": "CONFIRMED. Every NormalEnergy row I read is well over the 0.035 band. And the heavy dotted stipple is plainly the dominant texture of our water at every pose I opened, in both regions, on every arm — a fourth round in which somebody names it and nobody writes its reference item. I did not write it either."
+  },
+
+  "G_an_internal_contradiction_in_the_status_file": {
+    "what": "`every_number_the_instruments_emitted.gradient_width_px...pose_set_completeness` says 'Deep Marshes 4 of 4 declared bearings (M12a clause 1 satisfied)'. `method_deviations[2]` says 'only 3 valid poses in the Deep Marshes and 1 in the Western Rootlands. M12a clause 1 is therefore not satisfied in EITHER region and every band in this file fails closed.'",
+    "ruling": "On the artifacts the first is right: all four Deep Marshes bearings have non-void rows with `water_edge_verified.on_screen` true, taken through the corrected protocol (`dm-b045/`, `dm-edge2/`, `dm-b225/`, `dm-b315/`). M12a clause 1 IS satisfied in the Deep Marshes and is NOT satisfied in the Western Rootlands (1 of 4). It does not change any outcome — the worst pose fails the acceptance in both readings — but a critic reading `method_deviations` alone would void the round's whole pose set."
+  },
+
+  "H_carried_forward_per_ARBITRATION_S64": {
+    "what": "The build's banked `gpu_state_before` at the Deep Marshes stand reports 46 wet-bank strips and exactly one distinct strip mesh: `water:shoreline:eastern-rootlands`. There is no `water:shoreline:deep-marshes` mesh anywhere in the resident scene, against 47 waterline cells within 120 m of that stand.",
+    "ruling": "Confirmed from the artifact. It is `game/src/world/province.js`'s file, not F7's, and it is claimed by another piece. Carried as a candidate defect and NOT absorbed."
+  }
+}
