@@ -1,0 +1,244 @@
+{
+ "tool": "f4r4-m6.mjs (fourth independent M6)",
+ "spec": "F4 r4 — pair01 on the source build, both domains",
+ "at": "2026-08-16T04:27:38.408Z",
+ "rows": [
+  {
+   "label": "pair01/crop",
+   "domain": "sealed_judged_crop",
+   "crop": [
+    300,
+    150,
+    512,
+    512
+   ],
+   "frames": {
+    "base": "reports/f4r4/win-pair01/pair01__base.png",
+    "key_off": "reports/f4r4/win-pair01/pair01__key_off.png",
+    "shadows_off": "reports/f4r4/win-pair01/pair01__shadows_off.png",
+    "env_off": "reports/f4r4/win-pair01/pair01__env_off.png"
+   },
+   "m6": {
+    "sky_frac": 0,
+    "shadow_mask_frac": 0.2497,
+    "C_local_med": 0.026691,
+    "C_shadow_med": 0.020112,
+    "retention": 0.7535,
+    "hue_shadow_deg": 111.34,
+    "hue_lit_deg": 102.73,
+    "hue_offset_deg": 8.61,
+    "C_shadow": 13.5385,
+    "C_lit": 19.119,
+    "mean_Yp_shadow": 0.1897,
+    "mean_Yp_lit": 0.4171,
+    "mean_Yp_fg": 0.2729
+   },
+   "verdict": {
+    "profile": "exterior_daylight",
+    "hard_fails": [],
+    "soft_fails": [
+     "hue_offset<profile-min"
+    ],
+    "all_clauses_pass": false
+   },
+   "d3_clause3_sky_honesty": {
+    "what": "SKY_MASK needs a 4-connected component touching row 0; a sealed crop has an arbitrary row 0, so sky inside a crop lands in LIT_MASK. Sky-hue = Cstar>6 AND hue in [200,300) AND Yp>fg P60.",
+    "sky_frac_reported_by_SKY_MASK": 0,
+    "sky_hue_frac_of_LIT_MASK_by_count": 0.0946,
+    "sky_hue_frac_of_LIT_MASK_by_chroma_weight": 0.0629,
+    "hue_lit_deg_sky_excluded": 100.27,
+    "hue_offset_deg_sky_excluded": 11.07,
+    "moves_hue_offset_by_deg": 2.46
+   },
+   "d3_clause1_key_attribution": {
+    "what": "f_key = mean(Yp_base - Yp_key_off) / mean(Yp_base) inside each quartile, key_off captured in the SAME PROCESS as base.",
+    "f_key_SHADOW_MASK": 0.5476,
+    "f_key_LIT_MASK": 0.2311,
+    "test": "f_key(SHADOW) > 0.5 * f_key(LIT)  ->  hue_offset is inapplicable",
+    "inapplicable": true,
+    "frac_SHADOW_MASK_receiving_no_key_below_1_of_255": 0.0309,
+    "frac_LIT_MASK_receiving_no_key_below_1_of_255": 0.137,
+    "auc_key_separates_LIT_from_SHADOW": 0.4483
+   },
+   "d3_clause2_null_control": {
+    "what": "M6 recomputed on the key_off arm — the \"one light source only\" configuration M6 names as its own failure mode. It MUST score lower than the shipped arm.",
+    "key_off_hue_offset_deg": 16.86,
+    "key_off_retention": 0.5822,
+    "key_off_C_shadow": 6.5095,
+    "key_off_mean_Yp_shadow": 0.0745,
+    "shipped_hue_offset_deg": 8.61,
+    "null_scores_higher": true
+   },
+   "hue_offset_status": "inapplicable",
+   "hue_offset_inapplicable_because": [
+    "clause 1: the quartiles are not an illumination split",
+    "clause 2: deleting the key scores HIGHER"
+   ],
+   "d3_2_cast_shadow_area": {
+    "tau1": {
+     "area_frac_of_image": 0.0671,
+     "area_frac_of_fg": 0.0671,
+     "p_cast_given_SHADOW_MASK": 0.1193,
+     "p_cast_given_LIT_MASK": 0.0641
+    },
+    "tau2": {
+     "area_frac_of_image": 0.06,
+     "area_frac_of_fg": 0.06,
+     "p_cast_given_SHADOW_MASK": 0.1108,
+     "p_cast_given_LIT_MASK": 0.0573
+    },
+    "tau4": {
+     "area_frac_of_image": 0.0515,
+     "area_frac_of_fg": 0.0515,
+     "p_cast_given_SHADOW_MASK": 0.0987,
+     "p_cast_given_LIT_MASK": 0.0501
+    },
+    "tau8": {
+     "area_frac_of_image": 0.0416,
+     "area_frac_of_fg": 0.0416,
+     "p_cast_given_SHADOW_MASK": 0.0807,
+     "p_cast_given_LIT_MASK": 0.0375
+    },
+    "tau16": {
+     "area_frac_of_image": 0.03,
+     "area_frac_of_fg": 0.03,
+     "p_cast_given_SHADOW_MASK": 0.0561,
+     "p_cast_given_LIT_MASK": 0.0255
+    }
+   },
+   "s60_clause_a": {
+    "what": "key_off delta >= 2.0 x env_off delta, measured ONLY on the lit subset (shadow-map ablation, tau8) — S60 as repaired.",
+    "lit_subset_frac_of_fg": 0.9584,
+    "key_off_delta": 29.0617,
+    "env_off_delta": 8.3356,
+    "ratio": 3.4865,
+    "bar": 2,
+    "pass": true
+   },
+   "s61_run_floor": {
+    "what": "base re-captured AFTER every other arm — this run's own noise floor. Every arm above is read as a multiple of it.",
+    "mean_abs_luma_delta_255": 1.2841,
+    "hue_offset_deg_recheck": 8.78,
+    "hue_offset_floor_deg": 0.17,
+    "retention_recheck": 0.7731,
+    "retention_floor": 0.0196
+   }
+  },
+  {
+   "label": "pair01/frame",
+   "domain": "full_frame",
+   "crop": null,
+   "frames": {
+    "base": "reports/f4r4/win-pair01/pair01__base.png",
+    "key_off": "reports/f4r4/win-pair01/pair01__key_off.png",
+    "shadows_off": "reports/f4r4/win-pair01/pair01__shadows_off.png",
+    "env_off": "reports/f4r4/win-pair01/pair01__env_off.png"
+   },
+   "m6": {
+    "sky_frac": 0.0472,
+    "shadow_mask_frac": 0.2372,
+    "C_local_med": 0.031666,
+    "C_shadow_med": 0.030305,
+    "retention": 0.957,
+    "hue_shadow_deg": 104.82,
+    "hue_lit_deg": 109.62,
+    "hue_offset_deg": 4.8,
+    "C_shadow": 11.9807,
+    "C_lit": 17.0818,
+    "mean_Yp_shadow": 0.1429,
+    "mean_Yp_lit": 0.4913,
+    "mean_Yp_fg": 0.2757
+   },
+   "verdict": {
+    "profile": "exterior_daylight",
+    "hard_fails": [
+     "hue_offset<6 ONE LIGHT SOURCE ONLY (caps shot at 4)"
+    ],
+    "soft_fails": [],
+    "all_clauses_pass": false
+   },
+   "d3_clause3_sky_honesty": {
+    "what": "SKY_MASK needs a 4-connected component touching row 0; a sealed crop has an arbitrary row 0, so sky inside a crop lands in LIT_MASK. Sky-hue = Cstar>6 AND hue in [200,300) AND Yp>fg P60.",
+    "sky_frac_reported_by_SKY_MASK": 0.0472,
+    "sky_hue_frac_of_LIT_MASK_by_count": 0.2236,
+    "sky_hue_frac_of_LIT_MASK_by_chroma_weight": 0.1594,
+    "hue_lit_deg_sky_excluded": 101.39,
+    "hue_offset_deg_sky_excluded": 3.43,
+    "moves_hue_offset_by_deg": -1.37
+   },
+   "d3_clause1_key_attribution": {
+    "what": "f_key = mean(Yp_base - Yp_key_off) / mean(Yp_base) inside each quartile, key_off captured in the SAME PROCESS as base.",
+    "f_key_SHADOW_MASK": 0.6056,
+    "f_key_LIT_MASK": 0.2353,
+    "test": "f_key(SHADOW) > 0.5 * f_key(LIT)  ->  hue_offset is inapplicable",
+    "inapplicable": true,
+    "frac_SHADOW_MASK_receiving_no_key_below_1_of_255": 0.0279,
+    "frac_LIT_MASK_receiving_no_key_below_1_of_255": 0.1814,
+    "auc_key_separates_LIT_from_SHADOW": 0.5547
+   },
+   "d3_clause2_null_control": {
+    "what": "M6 recomputed on the key_off arm — the \"one light source only\" configuration M6 names as its own failure mode. It MUST score lower than the shipped arm.",
+    "key_off_hue_offset_deg": 7.51,
+    "key_off_retention": 0.6403,
+    "key_off_C_shadow": 4.1045,
+    "key_off_mean_Yp_shadow": 0.0455,
+    "shipped_hue_offset_deg": 4.8,
+    "null_scores_higher": true
+   },
+   "hue_offset_status": "inapplicable",
+   "hue_offset_inapplicable_because": [
+    "clause 1: the quartiles are not an illumination split",
+    "clause 2: deleting the key scores HIGHER"
+   ],
+   "d3_2_cast_shadow_area": {
+    "tau1": {
+     "area_frac_of_image": 0.0885,
+     "area_frac_of_fg": 0.0929,
+     "p_cast_given_SHADOW_MASK": 0.1641,
+     "p_cast_given_LIT_MASK": 0.0769
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0737,
+     "area_frac_of_fg": 0.0773,
+     "p_cast_given_SHADOW_MASK": 0.1359,
+     "p_cast_given_LIT_MASK": 0.0598
+    },
+    "tau4": {
+     "area_frac_of_image": 0.0555,
+     "area_frac_of_fg": 0.0582,
+     "p_cast_given_SHADOW_MASK": 0.0973,
+     "p_cast_given_LIT_MASK": 0.0425
+    },
+    "tau8": {
+     "area_frac_of_image": 0.0405,
+     "area_frac_of_fg": 0.0425,
+     "p_cast_given_SHADOW_MASK": 0.069,
+     "p_cast_given_LIT_MASK": 0.0266
+    },
+    "tau16": {
+     "area_frac_of_image": 0.0268,
+     "area_frac_of_fg": 0.0282,
+     "p_cast_given_SHADOW_MASK": 0.045,
+     "p_cast_given_LIT_MASK": 0.0135
+    }
+   },
+   "s60_clause_a": {
+    "what": "key_off delta >= 2.0 x env_off delta, measured ONLY on the lit subset (shadow-map ablation, tau8) — S60 as repaired.",
+    "lit_subset_frac_of_fg": 0.9575,
+    "key_off_delta": 28.9024,
+    "env_off_delta": 8.9502,
+    "ratio": 3.2293,
+    "bar": 2,
+    "pass": true
+   },
+   "s61_run_floor": {
+    "what": "base re-captured AFTER every other arm — this run's own noise floor. Every arm above is read as a multiple of it.",
+    "mean_abs_luma_delta_255": 1.7495,
+    "hue_offset_deg_recheck": 4.44,
+    "hue_offset_floor_deg": 0.36,
+    "retention_recheck": 0.9647,
+    "retention_floor": 0.0077
+   }
+  }
+ ]
+}
