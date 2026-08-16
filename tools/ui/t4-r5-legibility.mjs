@@ -32,6 +32,33 @@
 //               "would this string fit drawn as literally declared" question either way, which is
 //               why it fires red on round 4's un-wrapped `hint()` and green once `hint()` wraps.
 //
+//   COLLISION   Geometric + pixel, ADDED BY T4 r8. THE CHECK THAT WAS MISSING, AND THE REASON
+//               THIS TOOL REPORTED `overlap=0 -> clean` ON A SCREEN WHOSE SIDE HEADERS WERE
+//               PRINTED ACROSS THE FIRST LIST ROW. The OVERLAP leg below is round 4's
+//               column-run test evaluated INSIDE ONE ROW BAND: it asks "are this row's own
+//               columns separable from each other", and by construction it cannot see two
+//               DIFFERENT elements landing on one another. `RI-UIX06` FD4 is "0 clipping, 0
+//               overlap, 0 overflow", hard-failing on any at 1920x1080, and that is a
+//               LAYOUT-INTEGRITY claim about rects — so the pass/fail leg here is the rect test.
+//
+//               TWO LEGS, AND THEY ARE REQUIRED TO BE ABLE TO DISAGREE. This is the whole design
+//               and it comes from the r7 critic's own finding: at round 6 the container header
+//               and the first row overlapped by 182x12 WITH THE GLYPHS CLEAR OF EACH OTHER, and
+//               at round 7 by 190x20 with the glyphs colliding. A single leg cannot tell those
+//               two apart, and an instrument that cannot tell them apart cannot be trusted to say
+//               which one it is looking at.
+//                 (a) RECT  — a PARTIAL intersection of two text-bearing element rects. Full
+//                     containment is a parent/child relationship (a row inside a panel) and is
+//                     recorded, not flagged. This is the leg that decides the run.
+//                 (b) INK   — the pixel profile of that intersection region and of each of the
+//                     two rects, from the same live capture. Reported as evidence, never as the
+//                     verdict, because ink inside a shared region cannot be attributed to one of
+//                     the two owners without knowing each element's baseline, which the census
+//                     does not declare. What it CAN say, and what the round-6/round-7 pair needs,
+//                     is whether there is any ink in the shared region at all.
+//               `--self-test` runs both legs over fixtures whose expected answers DIFFER and
+//               exits non-zero if any two arms agree where they must not. See `selfTest()`.
+//
 //   OVERLAP     Pixel, and has to be: `row()` declares the RAW joined column text and calls
 //               `ellipsise()` only inside its draw callback (RI-UIX09's own "how we lose" #2 —
 //               "a self-report cannot see a canvas draw"), so the census reports "STRENGTH 12"
@@ -150,6 +177,118 @@ function rowProfile(png, rect, mode, gap) {
   return { separators: seps, runs, span: b - a + 1 };
 }
 
+// ---- COLLISION metric (T4 r8) — two DIFFERENT text-bearing elements printed on one another -----
+//
+// `textBearing` is deliberately narrow and deliberately declared: an element counts only if the
+// census says it is visible, gives it a rect with positive area, and gives it a non-empty `text`.
+// A picture (`item_icon`) landing on a row is a different defect and this leg does not claim to
+// see it. Kept as a pure function of a census array so `selfTest()` can drive it with fixtures.
+const rectBox = (r) => ({ x0: r[0], y0: r[1], x1: r[0] + r[2], y1: r[1] + r[3] });
+function textBearing(els) {
+  return els.filter((e) => e.visible !== false && Array.isArray(e.rect) && e.rect[2] > 0 && e.rect[3] > 0
+    && e.text !== null && e.text !== undefined && String(e.text).trim() !== '');
+}
+/**
+ * Every PARTIAL intersection of two text-bearing rects. `contained` (one rect ≥99% inside the
+ * other) is the parent/child case and is returned flagged rather than dropped, so the report can
+ * show how many pairs were set aside and a reader can check the exclusion did not swallow a real
+ * finding. `EPS` is 1 device px: two rects that share an edge are stacked, not colliding.
+ */
+const COLLIDE_EPS = 1;
+function collisions(els) {
+  const t = textBearing(els);
+  const out = [];
+  for (let i = 0; i < t.length; i++) {
+    for (let j = i + 1; j < t.length; j++) {
+      const a = rectBox(t[i].rect), b = rectBox(t[j].rect);
+      const w = Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0);
+      const h = Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0);
+      if (w <= COLLIDE_EPS || h <= COLLIDE_EPS) continue;
+      const areaA = (a.x1 - a.x0) * (a.y1 - a.y0), areaB = (b.x1 - b.x0) * (b.y1 - b.y0);
+      const inter = w * h;
+      const contained = inter >= Math.min(areaA, areaB) * 0.99;
+      out.push({
+        a: { id: t[i].id, kind: t[i].kind, text: String(t[i].text).slice(0, 40), rect: t[i].rect },
+        b: { id: t[j].id, kind: t[j].kind, text: String(t[j].text).slice(0, 40), rect: t[j].rect },
+        intersection: [+w.toFixed(2), +h.toFixed(2)],
+        region: [Math.max(a.x0, b.x0), Math.max(a.y0, b.y0), w, h],
+        area: Math.round(inter), contained,
+      });
+    }
+  }
+  return out;
+}
+/** Ink pixels (dE_rgb > FG from `mode`) inside a rect, and how many rows carry any. Leg (b). */
+function inkProfile(png, rect, mode) {
+  const [x0, y0, w, h] = rect.map(Math.round);
+  let px = 0, rows = 0;
+  for (let y = y0; y < y0 + h && y < png.height; y++) {
+    let inRow = 0;
+    for (let x = x0; x < x0 + w && x < png.width; x++) {
+      if (x < 0 || y < 0) continue;
+      const i = ((y * png.width) + x) << 2;
+      const dr = png.data[i] - mode[0], dg = png.data[i + 1] - mode[1], db = png.data[i + 2] - mode[2];
+      if (Math.sqrt(dr * dr + dg * dg + db * db) > FG) inRow++;
+    }
+    px += inRow;
+    if (inRow > 0) rows++;
+  }
+  return { ink_px: px, ink_rows: rows, of_rows: Math.min(h, png.height - Math.max(0, y0)) };
+}
+
+/**
+ * SELF-TEST. Rule 4 of the method: a control that has never been seen to fail for the right
+ * reason is not a control. Each fixture below states an expected answer, and the fixtures are
+ * chosen so that a degenerate predicate — "always red", "always green", "any intersection at all
+ * is red", "only exact equality is red" — is killed by at least one of them DISAGREEING with
+ * another. The run exits non-zero if any expectation is missed.
+ *
+ * WHAT THIS WOULD HAVE CAUGHT, stated before it was run: fixture `r7_container_head_over_row`
+ * is the shipped round-7 geometry (header rect 28 tall from the inner top, first row rect
+ * starting 8 below it) and fixture `r6_container_head_over_row` is round 6's (first row 16
+ * below). BOTH are red on leg (a) — the rect test does not distinguish them — which is exactly
+ * why leg (b) exists and why the report carries both. A tool that returned the same verdict for
+ * `stacked_flush` as for those two would be one that cannot see a header at all.
+ */
+function selfTest() {
+  const el = (id, kind, rect, text) => ({ id, kind, rect, text, visible: true });
+  const cases = [
+    { name: 'disjoint_columns', els: [el('a', 'hint', [0, 0, 100, 20], 'A'), el('b', 'hint', [120, 0, 100, 20], 'B')], expect: 0 },
+    { name: 'stacked_flush', els: [el('a', 'panel_header', [0, 0, 100, 28], 'A'), el('b', 'list_row', [0, 28, 100, 34], 'B')], expect: 0 },
+    { name: 'stacked_1px_touch', els: [el('a', 'panel_header', [0, 0, 100, 28], 'A'), el('b', 'list_row', [0, 27, 100, 34], 'B')], expect: 0, why: 'a 1px shared edge is rounding, not a collision (COLLIDE_EPS)' },
+    { name: 'r6_container_head_over_row', els: [el('a', 'panel_header', [0, 0, 198, 28], 'Carried'), el('b', 'list_row', [0, 16, 182, 34], 'Bog-iron m…')], expect: 1, why: 'round 6: 182x12 rect overlap, glyphs clear — leg (a) still red' },
+    { name: 'r7_container_head_over_row', els: [el('a', 'panel_header', [0, 0, 198, 28], 'Carried'), el('b', 'list_row', [0, 8, 182, 34], 'Bog-iron m…')], expect: 1, why: 'round 7: 190x20 rect overlap, glyphs colliding' },
+    { name: 'child_inside_parent', els: [el('p', 'panel', [0, 0, 480, 452], 'Reed Creel'), el('c', 'list_row', [20, 100, 182, 34], 'Bog-iron m…')], expect: 0, why: 'containment is parent/child and must NOT be flagged' },
+    { name: 'no_text_no_finding', els: [el('a', 'item_icon', [0, 0, 100, 28], ''), el('b', 'list_row', [0, 8, 100, 34], 'B')], expect: 0, why: 'the leg is text-vs-text by construction and says so' },
+    { name: 'three_way_pileup', els: [el('a', 'hint', [0, 0, 100, 30], 'A'), el('b', 'hint', [0, 10, 100, 30], 'B'), el('c', 'hint', [0, 20, 100, 30], 'C')], expect: 3, why: 'pairs, not elements — 3 elements mutually overlapping is 3 findings' },
+  ];
+  let bad = 0;
+  const results = cases.map((c) => {
+    const got = collisions(c.els).filter((p) => !p.contained).length;
+    const ok = got === c.expect;
+    if (!ok) bad++;
+    log(`  ${ok ? 'ok  ' : 'FAIL'} ${c.name}: expected ${c.expect}, got ${got}${c.why ? '  — ' + c.why : ''}`);
+    return { ...c, got, ok, els: undefined };
+  });
+  // The arms must be capable of disagreeing: if every fixture returned the same answer the suite
+  // would pass a constant function. Assert the answer set has more than one member.
+  const distinct = new Set(results.map((r) => r.got));
+  if (distinct.size < 2) { log('  FAIL suite is degenerate — every fixture returned the same answer'); bad++; }
+  // And the two container arms must both be red while `stacked_flush` is green: that triple is
+  // what a fix has to move, and it is asserted rather than assumed.
+  const byName = Object.fromEntries(results.map((r) => [r.name, r]));
+  if (!(byName.r6_container_head_over_row.got > 0 && byName.r7_container_head_over_row.got > 0
+        && byName.stacked_flush.got === 0)) { log('  FAIL the round-6/round-7/flush triple does not separate'); bad++; }
+  log(bad ? `SELF-TEST RED: ${bad} failure(s)` : `SELF-TEST OK: ${results.length} fixtures, ${distinct.size} distinct answers`);
+  return { cases: results, failures: bad, distinct_answers: [...distinct] };
+}
+
+if (args.self_test || args['self-test']) {
+  const st = selfTest();
+  writeJson(path.join(OUT, 't4-r5-legibility-selftest.json'), { schema: 'elder-souls/t4-r5-legibility-selftest@1', at: new Date().toISOString(), ...st });
+  process.exit(st.failures ? 1 : 0);
+}
+
 // ---- frame-liveness, invoked as the brief mandates: on every capture, before its numbers count -
 function frameLiveness(dir) {
   try {
@@ -211,7 +350,14 @@ for (const { w, h } of WIDTHS) {
         contents: [{ id: 'reed-cutter', count: 1 }, { id: 'bog-iron-maul', count: 1 }, { id: 'rootweave-cowl', count: 1 }] },
     };
 
+    // T4 r8: `--screens container,levelup` runs a subset. Added because a five-screen sweep at two
+    // viewports is ~12 minutes and a round that needs the container re-measured four times cannot
+    // pay that each time. The DEFAULT is unchanged (all five), so nothing that reads this tool's
+    // report gets a quieter run by accident — a subset run records which screens it asked for.
+    const only = String(args.screens || '').split(',').map((x) => x.trim()).filter(Boolean);
+    report.screens_requested = only.length ? only : Object.keys(OPENERS);
     for (const [name, opener] of Object.entries(OPENERS)) {
+      if (only.length && !only.includes(name)) continue;
       log(`  [${tag}/${name}] opening...`);
       // EVERY STEP IS RACED AGAINST A CLOCK (t4-r2-measure.mjs's own pattern, and the reason it
       // exists: a run without it hung inside `openMenu('levelup')` for six minutes once already).
@@ -245,7 +391,7 @@ for (const { w, h } of WIDTHS) {
       const png = decodePNG(rawPng(r.shot));
 
       const panel = r.elements.find((e) => e.kind === 'panel');
-      const findings = { overflow: [], truncation: [], overlap: [] };
+      const findings = { overflow: [], truncation: [], overlap: [], collision: [] };
 
       // ---- OVERFLOW: any journal_entry or hint rect past its own panel's edge -------------------
       // The census only marks the CURRENT page's blocks `visible`, so checking one page catches
@@ -362,17 +508,38 @@ for (const { w, h } of WIDTHS) {
         }
       }
 
+      // ---- COLLISION: two DIFFERENT text-bearing elements printed on one another ---------------
+      // Leg (a) decides; leg (b) is measured for every finding leg (a) reports and for nothing
+      // else, so the pixel work is bounded by the number of findings rather than by the census.
+      const allPairs = collisions(r.elements);
+      const partials = allPairs.filter((p) => !p.contained);
+      const collideMode = panel ? modal(png, panel.rect) : null;
+      for (const p of partials) {
+        const evidence = collideMode ? {
+          intersection_ink: inkProfile(png, p.region, collideMode),
+          a_rect_ink: inkProfile(png, p.a.rect, collideMode),
+          b_rect_ink: inkProfile(png, p.b.rect, collideMode),
+        } : { note: 'no panel element — leg (b) not measured' };
+        findings.collision.push({ ...p, region: p.region.map((v) => +v.toFixed(2)), ink: evidence });
+      }
+      report.screens[`${tag}/${name}_pairs_considered`] = { text_bearing: textBearing(r.elements).length, intersecting_pairs: allPairs.length, contained_excluded: allPairs.length - partials.length };
+
       const screenReport = {
         mode: r.mode, capture: path.relative(REPO_ROOT, shotPath),
         panel_rect: panel ? panel.rect : null,
-        counts: { journal_entry: r.elements.filter((e) => e.kind === 'journal_entry').length, hint: hints.length, attribute_row: rows.length },
+        counts: { journal_entry: r.elements.filter((e) => e.kind === 'journal_entry').length, hint: hints.length, attribute_row: rows.length, text_bearing: textBearing(r.elements).length },
         findings,
-        clean: findings.overflow.length === 0 && findings.truncation.length === 0 && findings.overlap.length === 0,
+        clean: findings.overflow.length === 0 && findings.truncation.length === 0
+          && findings.overlap.length === 0 && findings.collision.length === 0,
       };
       report.screens[`${tag}/${name}`] = screenReport;
       const bad = !screenReport.clean;
       if (bad) anyFail = true;
-      log(`  [${tag}/${name}] overflow=${findings.overflow.length} truncation=${findings.truncation.length} overlap=${findings.overlap.length} -> ${bad ? 'RED' : 'clean'}`);
+      log(`  [${tag}/${name}] overflow=${findings.overflow.length} truncation=${findings.truncation.length} overlap=${findings.overlap.length} collision=${findings.collision.length} -> ${bad ? 'RED' : 'clean'}`);
+      for (const c of findings.collision.slice(0, 6)) {
+        log(`      '${c.a.text}' [${c.a.id}] x '${c.b.text}' [${c.b.id}] rect ${c.intersection.join('x')}`
+          + `  ink-in-region ${c.ink.intersection_ink ? c.ink.intersection_ink.ink_px + 'px/' + c.ink.intersection_ink.ink_rows + ' rows' : 'n/a'}`);
+      }
     }
   } finally {
     await h1.close();

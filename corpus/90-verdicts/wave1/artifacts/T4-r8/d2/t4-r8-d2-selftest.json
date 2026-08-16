@@ -1,0 +1,52 @@
+{
+  "schema": "elder-souls/t4-r8-d2-selftest@1",
+  "at": "2026-08-16T00:52:48.500Z",
+  "cases": [
+    {
+      "name": "flat_ground_refs_agree",
+      "pass": true,
+      "why": "a ground with one colour has one modal colour under any reading"
+    },
+    {
+      "name": "flat_ground_d2_zero",
+      "pass": true,
+      "why": "nothing differs from itself"
+    },
+    {
+      "name": "bucket_spread_A_and_B_disagree",
+      "pass": true,
+      "why": "binned 123,115,108 vs exact 200,200,200 — if these ever agree here, one reading is calling the other"
+    },
+    {
+      "name": "bucket_spread_B_picks_the_block",
+      "pass": true,
+      "why": "the largest EXACT colour is the flat block"
+    },
+    {
+      "name": "bucket_spread_d2_differs",
+      "pass": true,
+      "why": "D2 A=0.1736 B=0.8264 — the whole defect this tool exists for, reproduced synthetically"
+    },
+    {
+      "name": "probe_beats_content",
+      "pass": true,
+      "why": "content outvotes the ground over the panel rect; the declared probe cannot be outvoted"
+    },
+    {
+      "name": "probe_flips_the_verdict",
+      "pass": true,
+      "why": "D2 vs panel-modal 0.3333 (reports the GROUND as matter — wrong), vs probe 0.6667 (reports the content — right)"
+    },
+    {
+      "name": "threshold_sweep_moves",
+      "pass": true,
+      "why": "dE 5.0 -> 0.8333, dE 7.0 -> 0.75"
+    },
+    {
+      "name": "suite_has_both_outcomes",
+      "pass": true,
+      "why": "at least eight assertions ran"
+    }
+  ],
+  "failures": []
+}

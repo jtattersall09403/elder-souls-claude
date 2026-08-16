@@ -239,7 +239,17 @@ export function drawContainer(S, m) {
   const s = S.s;
   const alpha = m.inCombat ? COMBAT_ALPHA : CALM_ALPHA;
   const title = containerTitle(m.containerName, m.containerKind);
-  const containerHint = 'Confirm moves one thing across. There is no button that decides what is worth keeping.';
+  // T4 round 8. TWO hints, because the screen now has two views — and BOTH ARE WRITTEN TO WRAP TO
+  // THE SAME TWO LINES ON PURPOSE. `fl` feeds `screen()`'s footer reservation, which comes out of
+  // `inner`'s height, so a one-line hint in one view and a two-line hint in the other would make
+  // the panel's inner box change height when the player presses lock-on — every rect on the
+  // screen moving because the caption got shorter. `hintLines()` is measured, not assumed, and
+  // `meta.hint_lines` below publishes what it returned so a check can assert the two agree
+  // instead of trusting this comment.
+  const reading = !!m.read;
+  const containerHint = reading
+    ? 'Back returns to the two lists, and lock on again does the same. Nothing here decides what is worth keeping.'
+    : 'Confirm moves one thing across. Lock on to read the whole description. There is no button that decides what is worth keeping.';
   // T4 round 5 (`ARBITRATION` S58). Measured 457px at 14px body against a 480-wide box's 436px
   // inner width — round 4 drew it as one unwrapped line and it was cut mid-word at the panel edge
   // with no ellipsis (`…what is worth keep`). See `chrome.js` `hintLines()`/`hint()`.
@@ -285,9 +295,36 @@ export function drawContainer(S, m) {
   const numFace = faceOf('bone'), numSz = 15 * s;
   const allRows = [...(m.rows || []), ...(m.containerRows || [])];
   const widestCol = (text) => allRows.reduce((w, it) => Math.max(w, measure(text(it), numFace, numSz)), 0) / s;
-  const wCol = Math.min(usable * 0.34, widestCol((it) => fmt(it.weight)) + 12);
-  const gCol = Math.min(usable * 0.34, widestCol(goldText) + 12);
+  //
+  // T4 round 8 — RESTATING ROUND 7'S CLAIM, WHICH WAS FALSE AS WRITTEN. Round 7 said "no numeric
+  // column can truncate again". The r7 critic drove a hostile record at gold `987654321` through
+  // this same `drawContainer()` and got `98765…`, `truncated: true`. The critic is right and the
+  // build is fine: 0 of 45 shipped records truncate, on both lists, because the widest values in
+  // `game/data/items/carried.json` are far inside the clamp — but that is a property of TODAY'S
+  // DATA, not of the layout. `Math.min` has a ceiling in it and a ceiling can be hit.
+  //
+  // WHICH OF THE TWO THE ROUND CHOSE, and why: **restate it, and publish the quantity that makes
+  // the restatement checkable.** Making it true by construction means letting a numeric column
+  // take whatever it wants, which starves the name column to nothing on exactly the pathological
+  // data the clamp exists to survive — trading a truncated number for a truncated name and a row
+  // that says nothing. So the guarantee is stated as what it is, and `meta.numeric_columns` below
+  // carries the headroom: `clamp - (widest + 12)` per numeric column, in 1080p units. It is >= 0
+  // exactly when no value in EITHER list can truncate, so a check asserts a number instead of
+  // firing a hostile probe, and a data change that eats the headroom turns it negative and is
+  // visible before any glyph is lost.
+  const numClamp = usable * 0.34;
+  const widestW = widestCol((it) => fmt(it.weight));
+  const widestG = widestCol(goldText);
+  const wCol = Math.min(numClamp, widestW + 12);
+  const gCol = Math.min(numClamp, widestG + 12);
   const nCol = usable - wCol - gCol;
+  const numericColumns = {
+    clamp: +numClamp.toFixed(2),
+    weight: { widest: +widestW.toFixed(2), col: +wCol.toFixed(2), headroom: +(numClamp - widestW - 12).toFixed(2) },
+    gold: { widest: +widestG.toFixed(2), col: +gCol.toFixed(2), headroom: +(numClamp - widestG - 12).toFixed(2) },
+    rows_measured: allRows.length,
+  };
+  numericColumns.cannot_truncate = numericColumns.weight.headroom >= 0 && numericColumns.gold.headroom >= 0;
   // THE ROWS STOP AT EIGHT AND THE BOTTOM THIRD BECOMES THE THING YOU ARE ABOUT TO MOVE.
   //
   // Round 1 measured this screen at **0.033** fill, the emptiest panel in the build — two lists of
@@ -306,6 +343,53 @@ export function drawContainer(S, m) {
   // of that. Both sides still scroll past 4 (`windowOf` + `extent`, unchanged below); a 44-item
   // carried list was never going to fit on one page at any panel size, fixed box or not.
   const CROWS = 4;
+  // ---- T4 round 8: THE HEADER HAD NO BAND, SO IT WAS PRINTED ON THE FIRST ROW -----------------
+  //
+  // Round 7's verdict, found by cropping the picture at 2x and reading it, not by any metric:
+  // `Carried` is broken by the Bark token's icon and `Reed Creel` is printed through
+  // `Bog-iron m…`. Round 7 cut `listTop` 16 -> 8 to buy the depiction plate ten units, against a
+  // side-header element whose own rect is 28 units tall — so the header rect and the first row
+  // rect intersected by 190x20, where round 6's 182x12 still left the glyphs clear. `RI-UIX06`
+  // FD4 is "0 clipping, 0 overlap, 0 overflow", hard-failing on any at 1920x1080, and under
+  // `ARBITRATION` S58 the container's 0.1685 does not count at all while a glyph sits on a glyph.
+  //
+  // THE FIX IS THAT THE HEADER GETS A BAND OF ITS OWN AND THE ROWS BEGIN WHERE IT ENDS, and the
+  // three numbers below are derived from the face's own metrics rather than chosen. `glyphs.js`:
+  // cap top is `baseline - size*CAP_EM`, the deepest descender `baseline + size*CAP_EM*(13.2-10)/10`,
+  // and `drawText` strokes at `stem*u` so half a stem is added on each side (bone stem 1.5,
+  // u = size*0.072). At the header's 16px bone that is a cap top 12.38 units above the baseline
+  // and a descender 4.55 below it; `boneRule` draws a 2.2-wide stroke with +-1.1 of jitter about
+  // its y, so it occupies roughly [y-3.3, y+2.2].
+  //
+  //   HEAD_H = 24   the header's own band. Baseline 14 (cap top 1.62 inside the band), rule 20
+  //                 (bottom 22.2, i.e. 1.8 units clear of the band's foot). The 6-unit
+  //                 baseline-to-rule spacing is round 7's own and is kept, so the header looks
+  //                 the same; what changes is that the band it needs is now reserved.
+  //   CROW_H = 32   the CONTAINER's row pitch, split out from the inventory's `ROW_H` (34) which
+  //                 this must not touch — the inventory is a different screen with its own
+  //                 measured D2 and 18 rows. 32 is what pays for HEAD_H without taking anything
+  //                 from the band: the row holds a 28-unit `ICON` at `ry+3` (bottom 31) and text
+  //                 whose ink runs `ry+9.46` to `ry+27.02` at `h*0.70`, so 32 holds both with a
+  //                 unit to spare, and 4 rows a side give back 8 of the 16 units HEAD_H costs.
+  //   BAND_GAP 10 -> 4. Round 7 measured this gap at **91 ink pixels in 8,640, density 0.0105**,
+  //                 the emptiest region on the screen, and took 8 units of it. A further six are
+  //                 available because `container.band.rule` is NOT a horizontal separator: it is
+  //                 `column()`, whose rect is `[x-6, y, 12, h]` and whose draw is a vertical
+  //                 zigzag — called with `w = iw, h = 2*s` it puts a 12x2 tick at `ix` and nothing
+  //                 across the panel. Nothing in this gap needs the room, and that is measured,
+  //                 not assumed. (The tick's mis-use is left alone rather than silently changed:
+  //                 it is not this gap's defect and fixing it would move ink under a preservation
+  //                 clause. Recorded in the round-8 status file as a finding.)
+  //
+  // WHAT IT COSTS AND WHAT IT PRESERVES, arithmetically, at the 480x452 box (`inner` 436x326):
+  // r7 `bh` = 326 - (8 + 4*34 + 10) = 172; r8 `bh` = 326 - (24 + 4*32 + 4) = **170**.
+  // `descLineCap(170, 80, 19)` = 4, the same four description lines round 7 drew (it needs
+  // 168.46, so the margin is 1.54 units — the thing that would remove it is any further growth of
+  // `bandDescTop` or of the header). The depiction plate is preserved at its full 150 by the
+  // `bh - 6*s` clamp below rather than round 7's `bh - 20*s`, which would have starved it to 150
+  // -> 150 here but is one bad round away from doing so.
+  const HEAD_H = 24;
+  const CROW_H = 32;
   // T4 round 5. The 2-line hint (`fl` above) makes `screen()` reserve 20 more units in its footer,
   // which would otherwise come straight out of `ih` and shrink the selected-item depiction plate
   // below — the round-4 comment right above names exactly why that plate's size is what carries
@@ -313,33 +397,55 @@ export function drawContainer(S, m) {
   // before the list rows shrinks by the same amount the footer grew, and the plate stays full size.
   // T4 round 7: the floor drops 16 -> 8. That inner top gap measured 455 ink in 7,680 px,
   // **0.0592**, and eight of its units buy the depiction plate ten more on a side (see `plate`).
-  const listTop = Math.max(8, 26 - (fl - 1) * 20);
+  // T4 round 8: THAT GAP WAS NEVER SPARE — IT WAS THE HEADER'S BAND, and cutting it to 8 printed
+  // `Carried` across `Bog-iron m…`. The list now begins exactly where the header's own rect ends,
+  // whatever the footer does, so the two can never intersect again by construction rather than by
+  // a constant that happens to be big enough. (The old `26 - (fl-1)*20` expression existed to give
+  // the footer's second hint line back out of the top gap; with the header owning the top the
+  // trade is no longer available and the footer keeps its own reservation, which is `screen()`'s
+  // job and not this one's.)
+  const listTop = HEAD_H;
   const sides = [
     { id: 'mine', title: 'Carried', rows: m.rows, idx: m.rowIdx, x: ix },
     { id: 'theirs', title, rows: m.containerRows, idx: m.otherIdx, x: ix + half + GUTTER * s },
   ];
+  // The selected record, hoisted above the loop because the READING VIEW decides whether the rows
+  // are declared at all and it needs to know there is something to read.
+  const selSide0 = m.side === 0 ? m.rows : m.containerRows;
+  const selIdx0 = m.side === 0 ? m.rowIdx : m.otherIdx;
+  const csel = selSide0[selIdx0] || null;
   for (const side of sides) {
     const on = (side.id === 'mine') === (m.side === 0);
     S.el({
       id: `container.${side.id}.head`, kind: 'panel_header',
-      rect: [side.x, iy, half, 28 * s], text: side.title, opacity: alpha, focused: on,
+      rect: [side.x, iy, half, HEAD_H * s], text: side.title, opacity: alpha, focused: on,
+      meta: {
+        band_h: HEAD_H, baseline: 14, rule_y: 20, list_top: listTop, hint_lines: fl, reading,
+        numeric_columns: numericColumns,
+      },
     }, (c, r) => {
-      drawText(c, side.title, r[0], r[1] + 20 * s, faceOf('bone'), 16 * s, on ? ink() : inkDim());
-      boneRule(c, r[0], r[1] + 26 * s, r[2], s, idHash(side.id));
+      drawText(c, side.title, r[0], r[1] + 14 * s, faceOf('bone'), 16 * s, on ? ink() : inkDim());
+      boneRule(c, r[0], r[1] + 20 * s, r[2], s, idHash(side.id));
     });
+    // THE READING VIEW REPLACES THE LISTS; IT DOES NOT SIT ON TOP OF THEM. An overlay would put
+    // its own prose across seven rows of names, which is precisely the class of defect round 8
+    // exists to remove — `RI-UIX06` FD4's "0 overlap" does not have an exception for a panel that
+    // meant to. The two side headers stay so the reader still knows which side they are standing
+    // in; everything below them is the record.
+    if (reading && csel) continue;
     const win = windowOf(side.rows.length, side.idx, CROWS);
     if (side.rows.length > CROWS) {
       extent(S, `container.${side.id}.extent`, side.x + half - 12 * s, iy + listTop * s, 12 * s,
-        CROWS * ROW_H * s, win.from, CROWS, side.rows.length, alpha);
+        CROWS * CROW_H * s, win.from, CROWS, side.rows.length, alpha);
     }
     for (let i = win.from; i < win.to; i++) {
       const it = side.rows[i];
-      const ry = iy + listTop * s + (i - win.from) * ROW_H * s;
+      const ry = iy + listTop * s + (i - win.from) * CROW_H * s;
       // T4 round 4 pitched these as fractions of `half`; T4 round 6 pitches them as fractions of
       // `usable` (`half` minus the icon inset minus the row's own right margin) so the gold column
       // lands inside the row's own declared rect instead of 12 units past it — see `usable` above.
       row(S, `container.${side.id}.row.${it.id}`, 'list_row',
-        side.x, ry, half - 16 * s, ROW_H * s, [
+        side.x, ry, half - 16 * s, CROW_H * s, [
           { text: it.name, w: nCol },
           { text: fmt(it.weight), w: wCol, align: 'right', face: 'bone', size: 15 },
           { text: goldText(it), w: gCol, align: 'right', face: 'bone', size: 15 },
@@ -362,12 +468,58 @@ export function drawContainer(S, m) {
   // T4 round 7: the list/band gap, 18 -> 10. It is the emptiest region on the whole screen —
   // **91 ink pixels in 8,640**, density 0.0105 — so eight of its units are the cheapest matter this
   // panel owns and they go to the band.
-  const BAND_GAP = 10;
-  const by = iy + (listTop + CROWS * ROW_H + BAND_GAP) * s;
-  const bh = ih - (listTop + CROWS * ROW_H + BAND_GAP) * s;
+  // T4 round 8: 10 -> 4, and the six units go to the header's band (see HEAD_H above). What is in
+  // this gap is nothing: `container.band.rule` below is `column()`, a VERTICAL divider helper, so
+  // calling it with `w = iw` and `h = 2*s` draws a 12x2 tick at `ix` rather than a rule across the
+  // panel. The last row's ink stops 5.0 units above its own rect foot (baseline `h*0.70`,
+  // descender +4.6) and the band's name cap top is 6.5 units below the band's own top, so four
+  // units of gap still leave 15.5 units of clear ground between the two nearest glyphs.
+  const BAND_GAP = 4;
+  const by = iy + (listTop + CROWS * CROW_H + BAND_GAP) * s;
+  const bh = ih - (listTop + CROWS * CROW_H + BAND_GAP) * s;
+  // ---- THE READING VIEW — `RI-UIX03` C7's route, `ARBITRATION` S65(1) ------------------------
+  //
+  // One input (`lock_on`, `ui/system.js` `_examine()`) and the whole description is on screen.
+  // The geometry is the band's, moved up to where the lists were and given their height, so the
+  // transition reads as the same panel growing rather than as a second screen: same plate at the
+  // same 150, same fact block through the same `factLayout()`, same 19px body at the same measure.
+  //
+  // THE ARITHMETIC THAT MAKES IT C7 AND NOT ANOTHER ELLIPSIS, at the 480x452 box: the reading
+  // rect is `ih - HEAD_H` = 326 - 24 = **302** tall with its first description baseline at the
+  // same 80, so `descLineCap(302, 80, 19)` = **8**. The r7 critic's own driven histogram of
+  // `description_lines_needed` over all 45 carried records is `{1:2, 3:1, 4:17, 5:23, 6:2}` —
+  // a maximum of **6**. Eight against six is two lines of headroom on the worst record in the
+  // fixture, and `meta.description_complete` publishes the comparison per record rather than
+  // leaving it to this comment. If a longer description is ever added this goes FALSE and a check
+  // fails, which is the point: the claim is falsifiable from `getUIState()` on any item.
+  if (reading && csel) {
+    const rr = [ix + 160 * s, iy + HEAD_H * s, iw - 160 * s, ih - HEAD_H * s];
+    itemIcon(S, 'container.read.depiction', ix, iy + (HEAD_H + 6) * s, 150 * s, 150 * s, csel, alpha,
+      { condition: csel.condition === null || csel.condition === undefined ? null : csel.condition });
+    const readW = rr[2], readDescTop = 80 * s;
+    const readLines = wrap(csel.description || '', faceOf('ink'), BODY.screen * s, readW * 0.94);
+    const readMax = descLineCap(rr[3], readDescTop, BODY.screen * s);
+    const readFacts = factLayout(csel, readW, s);
+    S.el({
+      id: 'container.read', kind: 'detail_panel', rect: rr, opacity: alpha,
+      text: csel.description,
+      meta: {
+        item_id: csel.id, weight: csel.weight, value_gold: csel.value_gold, condition: csel.condition,
+        side: m.side === 0 ? 'mine' : 'theirs', depiction_element: 'container.read.depiction',
+        expanded: true, opened_by: 'lock_on',
+        description_lines_shown: Math.min(readLines.length, readMax),
+        description_lines_needed: readLines.length,
+        description_complete: readLines.length <= readMax,
+        description_truncated: readLines.length > readMax,
+        facts: readFacts.facts.map((ff) => ({ key: ff.key, value: ff.value, x: +ff.x.toFixed(2), w: +ff.w.toFixed(2) })),
+        facts_right: +readFacts.right.toFixed(2), facts_fit: readFacts.right <= readW,
+      },
+    }, (c, r) => drawRecord(c, csel, r, s, readFacts, readLines, readMax, readDescTop));
+    hint(S, 'container.hint', ix, iy + ih + 4 * s, iw, containerHint, alpha);
+    return;
+  }
   const selSide = m.side === 0 ? m.rows : m.containerRows;
   const selIdx = m.side === 0 ? m.rowIdx : m.otherIdx;
-  const csel = selSide[selIdx] || null;
   column(S, 'container.band.rule', ix, by - 10 * s, iw, 2 * s, alpha);
   if (csel) {
     // T4 round 7: the cap rises 140 -> 150, and it is the one number on this screen that pays for
@@ -376,7 +528,14 @@ export function drawContainer(S, m) {
     // 0.1459 overall and a `RI-UIX09` DN4 floor of 0.15. Nothing else here is above the floor
     // except a selected row. 150 is not a free parameter: the band's own text column starts at
     // `ix + 160`, so a wider plate would draw under the name.
-    const plate = Math.min(150 * s, bh - 20 * s);
+    // T4 round 8: the vertical clamp is `bh - 6*s`, not `bh - 20*s`. 150 is the HORIZONTAL cap
+    // (the band's text column starts at `ix + 160`) and the second term is only meant to stop the
+    // plate running out of the band's foot — the plate is drawn at `by + 6*s`, so `bh - 6*s` is
+    // exactly the largest square that fits, and 20 was throwing away 14 units of a quantity
+    // measured at density 0.4028 for nothing. At r8's `bh` = 170 both forms happen to give 150;
+    // the difference is that this one does not silently starve the plate the next time the band
+    // loses height, which is what a preservation clause is for (`ARBITRATION` S59).
+    const plate = Math.min(150 * s, bh - 6 * s);
     itemIcon(S, 'container.band.depiction', ix, by + 6 * s, plate, plate, csel, alpha,
       { condition: csel.condition === null || csel.condition === undefined ? null : csel.condition });
   }
@@ -429,9 +588,10 @@ export function drawContainer(S, m) {
       drawText(c, 'nothing selected', r[0], r[1] + 24 * s, faceOf('ink'), 15 * s, inkDim());
       return;
     }
-    const f = faceOf('ink'), fb = faceOf('bone');
-    drawText(c, csel.name, r[0], r[1] + 22 * s, fb, 20 * s, ink());
-    boneRule(c, r[0], r[1] + 30 * s, r[2] * 0.6, s, 606);
+    // T4 round 8: the body of this callback is now `drawRecord()` at the foot of the file, shared
+    // verbatim with the reading view so the two cannot drift. The commentary below is round 7's
+    // and is kept where it was earned.
+    //
     // T4 round 7. THE THIRD FACT WAS BEING DRAWN OFF THE PANEL AND NOBODY HAD REPORTED IT.
     // `fx += 150` put fact 3 at `r[0] + 300` inside a band whose own rect is `iw - 160` = **276**
     // wide, so `condition` began 24 units past the right edge and `surface.js`'s clip
@@ -445,11 +605,6 @@ export function drawContainer(S, m) {
     // SECOND PASS: the layout comes from `factLayout()` above, which is the SAME object published
     // as `meta.facts` / `meta.facts_right`. It is derived once and drawn once, so the number a
     // check reads and the number a glyph is drawn at cannot differ — the whole point.
-    for (const fact of bandFacts.facts) {
-      drawText(c, fact.key, r[0] + fact.x, r[1] + 44 * s, f, 13 * s, inkDim());
-      drawText(c, fact.value, r[0] + fact.x, r[1] + 60 * s, fb, 15 * s, ink());
-    }
-    const size = BODY.screen * s, lh = size * 1.44, descTop = 80 * s;
     // T4 round 6, RI-UIX06 FD4 (`corpus/90-verdicts/wave1/T4-r5.md`, "container.band clips its own
     // text"). `writeLines()` had no line cap, so a description longer than the band's own declared
     // height (`r[3]`, the SAME rect `surface.js`'s clip is built from) drew lines whose baseline
@@ -476,16 +631,47 @@ export function drawContainer(S, m) {
     // oversight. What this round does is take every line the room genuinely holds — 2 -> **4**,
     // complete for 20 of 45 records where round 6 was complete for none — via `descLineCap()`,
     // which counts from the face's metrics instead of losing a line to a baseline subtraction.
-    const wrapped = wrap(csel.description || '', f, size, r[2] * 0.94);
-    const maxLines = descLineCap(r[3], descTop, size);
-    let shown = wrapped;
-    if (wrapped.length > maxLines) {
-      shown = wrapped.slice(0, maxLines);
-      shown[maxLines - 1] = ellipsise(shown[maxLines - 1], f, size, r[2] * 0.94, { force: true });
-    }
-    writeLines(c, shown, r[0], r[1] + descTop, 'ink', size, lh, ink());
+    //
+    // T4 round 8: C7 NOW HAS A ROUTE AND THE ELLIPSIS HERE IS NO LONGER UNACCOMPANIED. `ARBITRATION`
+    // S65(1) scopes C7 to "the surface a player can reach in one input", with guard (b) — *no
+    // ellipsis without a route* — and one press of `lock_on` opens the reading view above, which
+    // holds 8 lines against a fixture maximum of 6. The resting band still shows only what it
+    // genuinely holds and still publishes the shortfall, which is what S65 asks of it.
+    drawRecord(c, csel, r, s, bandFacts, bandLines, bandMaxLines, bandDescTop);
   });
   hint(S, 'container.hint', ix, iy + ih + 4 * s, iw, containerHint, alpha);
+}
+
+/**
+ * Draw one selected record — plate-less: name, rule, fact block, description — into `r`.
+ *
+ * T4 round 8. THE READING VIEW AND THE RESTING BAND CALL THIS SAME FUNCTION, and that is the
+ * whole reason it exists as a function. `ARBITRATION` S65(1) grants C7 a scope on the condition
+ * that the expansion actually works when driven; an expansion drawn by a second copy of this
+ * layout is one refactor away from disagreeing with the band about what the record says, and the
+ * disagreement would be invisible to `getUIState()` because both would be declaring their own
+ * numbers truthfully. One body, two rects.
+ *
+ * `lines` and `maxLines` are passed IN rather than derived here, because they are the same values
+ * the caller published as `meta.description_lines_needed` / `description_lines_shown` — so the
+ * number a check reads and the number a glyph is drawn at cannot differ. This is `row()`'s
+ * `columns_drawn` rule applied to prose.
+ */
+function drawRecord(c, it, r, s, facts, lines, maxLines, descTop) {
+  const f = faceOf('ink'), fb = faceOf('bone');
+  drawText(c, it.name, r[0], r[1] + 22 * s, fb, 20 * s, ink());
+  boneRule(c, r[0], r[1] + 30 * s, r[2] * 0.6, s, 606);
+  for (const fact of facts.facts) {
+    drawText(c, fact.key, r[0] + fact.x, r[1] + 44 * s, f, 13 * s, inkDim());
+    drawText(c, fact.value, r[0] + fact.x, r[1] + 60 * s, fb, 15 * s, ink());
+  }
+  const size = BODY.screen * s, lh = size * 1.44;
+  let shown = lines;
+  if (lines.length > maxLines) {
+    shown = lines.slice(0, maxLines);
+    shown[maxLines - 1] = ellipsise(shown[maxLines - 1], f, size, r[2] * 0.94, { force: true });
+  }
+  writeLines(c, shown, r[0], r[1] + descTop, 'ink', size, lh, ink());
 }
 
 /**
