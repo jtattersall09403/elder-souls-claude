@@ -13,8 +13,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
   round one, and proved the metric we tuned against reads the wrong pixels.
 - **Judging the crowd, which now breathes** — 27 of 27 townspeople move, replicated across three
   sessions, with the motion visible in pixels rather than only in numbers.
-- **The water, round five** — the fade's setting is twelve times too big, and every number this work
-  has ever published was measured on an unstable setting.
+- **Judging the water, round five** — the setting is corrected, and the round found the bigger cost was
+  somewhere else entirely.
 - **Judging the dialogue and books guards** — the checks that could delete their own evidence have been
   rebuilt, and all seven failure tests now go red when they should.
 
@@ -89,11 +89,14 @@ file order; the new code is invariant in all 500.
   the close-ups were simply shot 5 metres from a stand whose bank is 18 metres off. And I passed on a
   measurement as proof that our tools were mis-measuring; it turned out to be an artefact of *which
   order the pictures were taken in*.
-  **The real finding is worse and more useful: every number this work has ever published was measured
-  on a setting that drifts by up to 62% with nothing changed.** Measured properly, the fade's own
-  control says the shipped version leaves only **41% of the water visible** that was there two rounds
-  ago — and the width it was tuned for doesn't change at all between the shipped setting and one
-  **twelve times smaller**. Round five sets it to the small one.
+  **The real finding is worse and more useful: every number this work had ever published was measured on
+  a setting that drifts by up to 62% with nothing changed.** Round five found a stable one — and then
+  found that the thing eating the water isn't the fade at all: a **multiplier added two rounds ago
+  costs about three times more** than the setting everyone had been arguing about. That's round six.
+  **And the good news is real:** for the first time in this piece's history, a proper control proves the
+  effect **is not just the picture getting darker** — a matched-brightness fake produces no waterline at
+  all where the real one produces 32 pixels. It also finally shot the water **in motion**, five rounds
+  in, and that turned up a new hard failure nobody had measured.
   **Still true: nobody knows what draws the marsh stripes.** Switch the reflection off entirely and 76%
   of them remain; two further explanations were proposed and killed by the same test.
 
