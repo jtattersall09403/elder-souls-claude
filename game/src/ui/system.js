@@ -716,7 +716,16 @@ export class UISystem {
       case 'container': {
         const from = f.container.side === 0 ? this._invRows(ctx) : this._containerRows(ctx);
         const it = from[f.container.side === 0 ? f.container.rowIdx : f.container.otherIdx];
-        if (it) this._queue({ kind: 'transfer', item: it.id, to: f.container.side === 0 ? 'container' : 'player' });
+        if (it) {
+          this._queue({ kind: 'transfer', item: it.id, to: f.container.side === 0 ? 'container' : 'player' });
+          // T4 round 8. TAKING THE THING CLOSES THE READING VIEW. Confirm still works while the
+          // description is open — you should be able to read a thing and then take it — but the
+          // transfer can empty the side you are standing in, and a reading view over a record that
+          // is no longer there falls back to the lists with `read` still set. `back` would then
+          // spend a press clearing an invisible flag and look like a control that does nothing,
+          // which is the failure `_canExamine()` exists to prevent arriving by the back door.
+          f.container.read = false;
+        }
         break;
       }
       case 'journal': {
