@@ -580,11 +580,33 @@ Evidence: `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3-critic/` (`m12redo`
 4. **The pose set must contain at least one `water_edge` pose** — a close, low camera with a real
    water/land boundary in frame. `RI-WLD10` §8's WCI table says where one exists: a region at
    **WCI ≤ 0.05 has no water plane** (report `N/A — region has no water`), and a region at
-   **WCI ≥ 0.80 is drowned and may contain no waterline at all**. The Deep Marshes is WCI **0.86**;
-   three rounds of F7 shot every frame there and **not one frame contains a shoreline**. If no pose
+   **WCI ≥ 0.80 is drowned and may contain no waterline at all**. If no pose
    in the region yields a water/land boundary, that is recorded as `no waterline in region` and the
    shoreline rows are **`inapplicable`, which per `ARBITRATION` S64 must carry the absence forward
    as a finding rather than absorb it** — not as a pass.
+
+   **And you must DERIVE that, not infer it from WCI. ⚠ MY WORKED EXAMPLE WAS FALSE — CORRECTED
+   2026-08-16 BY THE F7 r4 CRITIC. THE CLAUSE STANDS; THE EXAMPLE I USED TO JUSTIFY IT DOES NOT.**
+   I wrote here that *"the Deep Marshes is WCI 0.86; three rounds of F7 shot every frame there and
+   not one frame contains a shoreline"*, and a builder and a critic have now each censused it
+   offline against the same `WorldField` the engine builds, in separate code: within 120 m of the
+   `vista-deep-marshes` stand there are **121 water cells, 47 of them waterline cells (38.84%),
+   the nearest at 17.7 m**, and only **24.16%** of wet corners sit at the depth clamp. **The region
+   is full of shoreline.** What was true was a *pose* fact — round 3's close-ups were shot at
+   4.5–7 m from a stand whose nearest bank is 17.7 m away, so they could not contain one at any
+   bearing. A high WCI means *mostly water*; it does not mean *no waterline*, and the two regions
+   where the depth signal really is dead are the **seas** (Marauder's Coast q-saturation 0.9248,
+   4 waterline cells within 120 m, nearest 81.0 m; Crimson Coast 0.9706, 4, 60.5 m).
+
+   **So the clause gains a method and loses an assumption:** *"no waterline in region"* is a claim
+   about the field and must be established **by a census run before any capture** — count the cells
+   with both a wet and a dry corner within the capture radius, and derive each declared bearing's
+   target from that census rather than choosing close-ups by eye. `WCI` selects where to *look*;
+   it may not stand in for the count. Reference implementations, both offline and browser-free:
+   `tools/visual/f7-r4-shoreline-census.mjs` and the independent re-derivation in
+   `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json` block A.
+   *(This is an ADD under `CRITIC-DOCTRINE` §1.3 — it removes a degree of freedom and relaxes no
+   threshold. It may be the reason a build FAILS and it may never be the reason one PASSES.)*
 
 **The mask is part of the instrument and must be pinned.** Where `WATER_MASK` is derived by
 differencing against a water-hidden frame, **an arm that changes the water's alpha changes the
