@@ -1,0 +1,1091 @@
+{
+  "tool": "f7-r3-sweep",
+  "generated": "2026-08-16T00:19:01.529Z",
+  "commit": "d0be91db015b67c483c16b4b1b27ac980dcbcc87",
+  "seed": 20260814,
+  "site": "eye-western-rootlands",
+  "time_of_day": 13,
+  "canvas": [
+    960,
+    540
+  ],
+  "crop": [
+    200,
+    760,
+    60,
+    480
+  ],
+  "mode": "arms",
+  "reps": 4,
+  "frozen_phase": 11,
+  "null_const_trans": 0.08,
+  "head_expression_asserted": {
+    "r3_depth_block": true,
+    "r2_schlick_weight": true,
+    "shoreline_alpha_line": true,
+    "region_k_uniform": true,
+    "critic_grep_still_zero": true
+  },
+  "refuses_to_measure_if": "the round-3 depth block is not verbatim in game/src/render/water.js — every arm below would then be a fiction",
+  "gpu_state_before": {
+    "water_materials": 55,
+    "distinct": [
+      {
+        "mesh": "water",
+        "region_resolved": null,
+        "uWaterK": 2,
+        "uWaterShoreFade": 1,
+        "phase_frozen": true
+      },
+      {
+        "mesh": "water:eastern-rootlands",
+        "region_resolved": "eastern-rootlands",
+        "uWaterK": 3.2,
+        "uWaterShoreFade": 1,
+        "phase_frozen": true
+      },
+      {
+        "mesh": "water:western-rootlands",
+        "region_resolved": "western-rootlands",
+        "uWaterK": 1.9,
+        "uWaterShoreFade": 1,
+        "phase_frozen": true
+      },
+      {
+        "mesh": "water:stone-wastes",
+        "region_resolved": "stone-wastes",
+        "uWaterK": 1.4,
+        "uWaterShoreFade": 1,
+        "phase_frozen": true
+      }
+    ]
+  },
+  "phase_freeze": {
+    "materials": 11,
+    "frozen_at": 11
+  },
+  "band": [],
+  "arms": {
+    "topdown-120": {
+      "prefix": {
+        "frame": "frames/topdown-120-prefix-o0.png",
+        "water_mask_px": 333474,
+        "water_mask_pct": 64.33,
+        "m12": {
+          "water_px": 333474,
+          "water_frac": 0.64328,
+          "FresnelDelta": 0.00125,
+          "NormalEnergy": null,
+          "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+          "ShoreDelta": 0.02934,
+          "ReflCorr": null,
+          "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+          "TemporalVar": null,
+          "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+          "grazing_rows": [
+            0,
+            134
+          ],
+          "downward_rows": [
+            405,
+            539
+          ],
+          "normal_window": null
+        },
+        "masked": {
+          "water_px_in_crop": 149127,
+          "mean_luma": 113.701,
+          "band_rms": 10.6291,
+          "band_contrast": 0.09348,
+          "lane_bearing_screen_deg": 88,
+          "lane_power": 0.8743,
+          "lane_aniso": 3.79,
+          "lane_power_normalised": 0.000068
+        },
+        "shore": {
+          "profile": [
+            92.848,
+            107.423,
+            114.054,
+            116.085,
+            117.007,
+            117.016,
+            116.832,
+            116.576,
+            116.572,
+            116.61,
+            116.648,
+            116.909,
+            117.05,
+            117.117,
+            117.14,
+            117.109,
+            117.02,
+            116.836,
+            116.897,
+            116.871,
+            116.774,
+            116.748,
+            116.92,
+            116.723,
+            116.599,
+            116.289,
+            116.45,
+            116.538,
+            116.6,
+            116.543,
+            116.333,
+            116.279,
+            116.135,
+            115.689,
+            115.604,
+            115.375,
+            115.261,
+            115.161,
+            115.496,
+            115.456,
+            115.337,
+            115.379,
+            114.892,
+            114.363,
+            114.053,
+            114.562,
+            114.623,
+            114.796
+          ],
+          "near_shore_luma": 100.136,
+          "open_water_luma": 115.496,
+          "span": 15.36,
+          "d10_px": 2,
+          "d90_px": 3,
+          "gradient_width_px": 1,
+          "note": "width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed."
+        },
+        "edits_applied": 5,
+        "materials": 11
+      },
+      "fixed": {
+        "frame": "frames/topdown-120-fixed-o1.png",
+        "water_mask_px": 326273,
+        "water_mask_pct": 62.94,
+        "m12": {
+          "water_px": 326273,
+          "water_frac": 0.62938,
+          "FresnelDelta": 0.01804,
+          "NormalEnergy": null,
+          "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+          "ShoreDelta": 0.02899,
+          "ReflCorr": null,
+          "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+          "TemporalVar": null,
+          "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+          "grazing_rows": [
+            0,
+            134
+          ],
+          "downward_rows": [
+            405,
+            539
+          ],
+          "normal_window": null
+        },
+        "masked": {
+          "water_px_in_crop": 145004,
+          "mean_luma": 106.607,
+          "band_rms": 9.2289,
+          "band_contrast": 0.08657,
+          "lane_bearing_screen_deg": 88,
+          "lane_power": 0.6148,
+          "lane_aniso": 3.45,
+          "lane_power_normalised": 0.000054
+        },
+        "shore": {
+          "profile": [
+            93.231,
+            103.445,
+            107.086,
+            108.381,
+            108.658,
+            108.621,
+            108.424,
+            108.257,
+            108.347,
+            108.645,
+            109.034,
+            109.285,
+            109.444,
+            109.507,
+            109.628,
+            109.667,
+            109.803,
+            110.141,
+            110.442,
+            110.697,
+            110.687,
+            110.801,
+            110.852,
+            110.964,
+            111.06,
+            110.811,
+            111.074,
+            111.344,
+            111.272,
+            111.145,
+            111.047,
+            110.948,
+            110.792,
+            110.576,
+            110.953,
+            110.451,
+            110.662,
+            110.645,
+            111.16,
+            111.146,
+            110.77,
+            110.789,
+            110.688,
+            110.667,
+            110.775,
+            111.166,
+            111.196,
+            110.955
+          ],
+          "near_shore_luma": 98.338,
+          "open_water_luma": 110.953,
+          "span": 12.615,
+          "d10_px": 2,
+          "d90_px": 17,
+          "gradient_width_px": 15,
+          "note": "width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed."
+        },
+        "uniforms": {
+          "water_materials": 55,
+          "distinct": [
+            {
+              "mesh": "water",
+              "region_resolved": null,
+              "uWaterK": 2,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:eastern-rootlands",
+              "region_resolved": "eastern-rootlands",
+              "uWaterK": 3.2,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:western-rootlands",
+              "region_resolved": "western-rootlands",
+              "uWaterK": 1.9,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:stone-wastes",
+              "region_resolved": "stone-wastes",
+              "uWaterK": 1.4,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            }
+          ]
+        }
+      },
+      "no-shorefade": {
+        "frame": "frames/topdown-120-no-shorefade-o2.png",
+        "water_mask_px": 332632,
+        "water_mask_pct": 64.17,
+        "m12": {
+          "water_px": 332632,
+          "water_frac": 0.64165,
+          "FresnelDelta": 0.0036,
+          "NormalEnergy": null,
+          "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+          "ShoreDelta": 0.02608,
+          "ReflCorr": null,
+          "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+          "TemporalVar": null,
+          "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+          "grazing_rows": [
+            0,
+            134
+          ],
+          "downward_rows": [
+            405,
+            539
+          ],
+          "normal_window": null
+        },
+        "masked": {
+          "water_px_in_crop": 148679,
+          "mean_luma": 112.622,
+          "band_rms": 10.5328,
+          "band_contrast": 0.09352,
+          "lane_bearing_screen_deg": 88,
+          "lane_power": 0.9665,
+          "lane_aniso": 4.23,
+          "lane_power_normalised": 0.000076
+        },
+        "shore": {
+          "profile": [
+            93.097,
+            106.973,
+            113.21,
+            115.26,
+            116.106,
+            116.098,
+            115.876,
+            115.497,
+            115.396,
+            115.518,
+            115.686,
+            116.015,
+            116.161,
+            116.189,
+            116.202,
+            116.075,
+            116.029,
+            115.811,
+            115.813,
+            115.963,
+            115.853,
+            115.877,
+            115.766,
+            115.513,
+            115.259,
+            115.052,
+            115.236,
+            115.352,
+            115.344,
+            115.274,
+            115.115,
+            114.832,
+            114.531,
+            114.08,
+            114.214,
+            114.055,
+            114.073,
+            113.92,
+            114.201,
+            114.109,
+            113.796,
+            113.732,
+            113.356,
+            112.991,
+            112.794,
+            113.237,
+            113.044,
+            113.39
+          ],
+          "near_shore_luma": 100.035,
+          "open_water_luma": 114.109,
+          "span": 14.074,
+          "d10_px": 2,
+          "d90_px": 3,
+          "gradient_width_px": 1,
+          "note": "width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed."
+        },
+        "uniforms": {
+          "water_materials": 55,
+          "distinct": [
+            {
+              "mesh": "water",
+              "region_resolved": null,
+              "uWaterK": 2,
+              "uWaterShoreFade": 0,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:eastern-rootlands",
+              "region_resolved": "eastern-rootlands",
+              "uWaterK": 3.2,
+              "uWaterShoreFade": 0,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:western-rootlands",
+              "region_resolved": "western-rootlands",
+              "uWaterK": 1.9,
+              "uWaterShoreFade": 0,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:stone-wastes",
+              "region_resolved": "stone-wastes",
+              "uWaterK": 1.4,
+              "uWaterShoreFade": 0,
+              "phase_frozen": true
+            }
+          ]
+        }
+      },
+      "null-const-trans": {
+        "frame": "frames/topdown-120-null-const-trans-o3.png",
+        "water_mask_px": 333070,
+        "water_mask_pct": 64.25,
+        "m12": {
+          "water_px": 333070,
+          "water_frac": 0.6425,
+          "FresnelDelta": 0.00106,
+          "NormalEnergy": null,
+          "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+          "ShoreDelta": 0.02754,
+          "ReflCorr": null,
+          "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+          "TemporalVar": null,
+          "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+          "grazing_rows": [
+            0,
+            134
+          ],
+          "downward_rows": [
+            405,
+            539
+          ],
+          "normal_window": null
+        },
+        "masked": {
+          "water_px_in_crop": 148951,
+          "mean_luma": 112.935,
+          "band_rms": 10.5028,
+          "band_contrast": 0.093,
+          "lane_bearing_screen_deg": 88,
+          "lane_power": 0.8947,
+          "lane_aniso": 3.8,
+          "lane_power_normalised": 0.00007
+        },
+        "shore": {
+          "profile": [
+            92.814,
+            106.964,
+            113.312,
+            115.339,
+            116.165,
+            116.123,
+            116,
+            115.76,
+            115.828,
+            115.842,
+            115.879,
+            116.113,
+            116.254,
+            116.278,
+            116.295,
+            116.255,
+            116.24,
+            116.052,
+            116.069,
+            116.121,
+            116.04,
+            116.007,
+            116.062,
+            115.875,
+            115.603,
+            115.347,
+            115.5,
+            115.564,
+            115.588,
+            115.491,
+            115.361,
+            115.316,
+            115.041,
+            114.733,
+            114.54,
+            114.199,
+            114.084,
+            114.09,
+            114.262,
+            114.185,
+            113.904,
+            113.82,
+            113.337,
+            112.85,
+            112.574,
+            112.881,
+            112.909,
+            113.085
+          ],
+          "near_shore_luma": 99.889,
+          "open_water_luma": 114.262,
+          "span": 14.373,
+          "d10_px": 2,
+          "d90_px": 3,
+          "gradient_width_px": 1,
+          "note": "width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed."
+        },
+        "edits_applied": 3,
+        "materials": 11
+      },
+      "k-0.35-padomaic": {
+        "frame": "frames/topdown-120-k-0.35-padomaic-o4.png",
+        "water_mask_px": 323314,
+        "water_mask_pct": 62.37,
+        "m12": {
+          "water_px": 323314,
+          "water_frac": 0.62368,
+          "FresnelDelta": 0.00692,
+          "NormalEnergy": null,
+          "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+          "ShoreDelta": 0.01293,
+          "ReflCorr": null,
+          "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+          "TemporalVar": null,
+          "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+          "grazing_rows": [
+            0,
+            134
+          ],
+          "downward_rows": [
+            405,
+            539
+          ],
+          "normal_window": null
+        },
+        "masked": {
+          "water_px_in_crop": 143406,
+          "mean_luma": 103.648,
+          "band_rms": 8.7594,
+          "band_contrast": 0.08451,
+          "lane_bearing_screen_deg": -18,
+          "lane_power": 0.5523,
+          "lane_aniso": 2.97,
+          "lane_power_normalised": 0.000051
+        },
+        "shore": {
+          "profile": [
+            93.144,
+            102.242,
+            105.299,
+            106.057,
+            106.047,
+            105.9,
+            105.656,
+            105.4,
+            105.343,
+            105.374,
+            105.582,
+            105.764,
+            105.755,
+            105.688,
+            105.69,
+            105.526,
+            105.426,
+            105.517,
+            105.583,
+            105.63,
+            105.647,
+            105.711,
+            105.612,
+            105.592,
+            105.446,
+            105.44,
+            105.534,
+            105.466,
+            105.604,
+            105.554,
+            105.491,
+            105.508,
+            105.434,
+            105.618,
+            105.336,
+            105.068,
+            105.235,
+            105.328,
+            105.565,
+            105.631,
+            105.57,
+            105.599,
+            105.547,
+            105.494,
+            105.555,
+            105.719,
+            105.76,
+            105.617
+          ],
+          "near_shore_luma": 97.693,
+          "open_water_luma": 105.547,
+          "span": 7.854,
+          "d10_px": 2,
+          "d90_px": 3,
+          "gradient_width_px": 1,
+          "note": "width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed."
+        },
+        "uniforms": {
+          "water_materials": 55,
+          "distinct": [
+            {
+              "mesh": "water",
+              "region_resolved": null,
+              "uWaterK": 0.35,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:eastern-rootlands",
+              "region_resolved": "eastern-rootlands",
+              "uWaterK": 0.35,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:western-rootlands",
+              "region_resolved": "western-rootlands",
+              "uWaterK": 0.35,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:stone-wastes",
+              "region_resolved": "stone-wastes",
+              "uWaterK": 0.35,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            }
+          ]
+        }
+      },
+      "k-1.4-topal": {
+        "frame": "frames/topdown-120-k-1.4-topal-o5.png",
+        "water_mask_px": 325611,
+        "water_mask_pct": 62.81,
+        "m12": {
+          "water_px": 325611,
+          "water_frac": 0.62811,
+          "FresnelDelta": 0.01654,
+          "NormalEnergy": null,
+          "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+          "ShoreDelta": 0.02551,
+          "ReflCorr": null,
+          "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+          "TemporalVar": null,
+          "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+          "grazing_rows": [
+            0,
+            134
+          ],
+          "downward_rows": [
+            405,
+            539
+          ],
+          "normal_window": null
+        },
+        "masked": {
+          "water_px_in_crop": 144751,
+          "mean_luma": 105.933,
+          "band_rms": 9.1373,
+          "band_contrast": 0.08626,
+          "lane_bearing_screen_deg": -28,
+          "lane_power": 0.4593,
+          "lane_aniso": 2.46,
+          "lane_power_normalised": 0.000041
+        },
+        "shore": {
+          "profile": [
+            93.24,
+            103.339,
+            106.884,
+            107.911,
+            108.132,
+            108.059,
+            107.849,
+            107.614,
+            107.676,
+            107.912,
+            108.233,
+            108.516,
+            108.677,
+            108.699,
+            108.761,
+            108.839,
+            108.866,
+            109.147,
+            109.393,
+            109.604,
+            109.524,
+            109.706,
+            109.762,
+            109.864,
+            109.933,
+            109.672,
+            109.981,
+            110.181,
+            110.146,
+            110.055,
+            109.907,
+            109.722,
+            109.509,
+            109.361,
+            109.79,
+            109.636,
+            109.883,
+            109.934,
+            110.161,
+            110.099,
+            109.858,
+            109.86,
+            109.74,
+            109.845,
+            109.755,
+            110.075,
+            110.066,
+            109.908
+          ],
+          "near_shore_luma": 98.29,
+          "open_water_luma": 109.883,
+          "span": 11.593,
+          "d10_px": 2,
+          "d90_px": 15,
+          "gradient_width_px": 13,
+          "note": "width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed."
+        },
+        "uniforms": {
+          "water_materials": 55,
+          "distinct": [
+            {
+              "mesh": "water",
+              "region_resolved": null,
+              "uWaterK": 1.4,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:eastern-rootlands",
+              "region_resolved": "eastern-rootlands",
+              "uWaterK": 1.4,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:western-rootlands",
+              "region_resolved": "western-rootlands",
+              "uWaterK": 1.4,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:stone-wastes",
+              "region_resolved": "stone-wastes",
+              "uWaterK": 1.4,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            }
+          ]
+        }
+      },
+      "k-2.6-blackwood": {
+        "frame": "frames/topdown-120-k-2.6-blackwood-o6.png",
+        "water_mask_px": 327394,
+        "water_mask_pct": 63.15,
+        "m12": {
+          "water_px": 327394,
+          "water_frac": 0.63155,
+          "FresnelDelta": 0.01888,
+          "NormalEnergy": null,
+          "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+          "ShoreDelta": 0.03203,
+          "ReflCorr": null,
+          "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+          "TemporalVar": null,
+          "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+          "grazing_rows": [
+            0,
+            134
+          ],
+          "downward_rows": [
+            405,
+            539
+          ],
+          "normal_window": null
+        },
+        "masked": {
+          "water_px_in_crop": 145329,
+          "mean_luma": 107.278,
+          "band_rms": 9.3356,
+          "band_contrast": 0.08702,
+          "lane_bearing_screen_deg": 88,
+          "lane_power": 0.8039,
+          "lane_aniso": 4.16,
+          "lane_power_normalised": 0.00007
+        },
+        "shore": {
+          "profile": [
+            93.264,
+            103.654,
+            107.46,
+            108.804,
+            109.214,
+            109.24,
+            109.066,
+            108.848,
+            108.922,
+            109.218,
+            109.675,
+            110.023,
+            110.215,
+            110.385,
+            110.494,
+            110.565,
+            110.712,
+            110.998,
+            111.329,
+            111.601,
+            111.636,
+            111.766,
+            111.91,
+            112.066,
+            112.207,
+            112.028,
+            112.124,
+            112.294,
+            112.33,
+            112.248,
+            112.175,
+            112.072,
+            111.891,
+            111.617,
+            111.64,
+            111.625,
+            111.547,
+            111.553,
+            111.991,
+            112.068,
+            111.577,
+            111.722,
+            111.242,
+            111.065,
+            111.108,
+            111.855,
+            111.981,
+            111.818
+          ],
+          "near_shore_luma": 98.459,
+          "open_water_luma": 111.891,
+          "span": 13.432,
+          "d10_px": 2,
+          "d90_px": 16,
+          "gradient_width_px": 14,
+          "note": "width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed."
+        },
+        "uniforms": {
+          "water_materials": 55,
+          "distinct": [
+            {
+              "mesh": "water",
+              "region_resolved": null,
+              "uWaterK": 2.6,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:eastern-rootlands",
+              "region_resolved": "eastern-rootlands",
+              "uWaterK": 2.6,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:western-rootlands",
+              "region_resolved": "western-rootlands",
+              "uWaterK": 2.6,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:stone-wastes",
+              "region_resolved": "stone-wastes",
+              "uWaterK": 2.6,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            }
+          ]
+        }
+      },
+      "nothing-restore-control": {
+        "frame": "frames/topdown-120-nothing-restore-control-o7.png",
+        "water_mask_px": 326738,
+        "water_mask_pct": 63.03,
+        "m12": {
+          "water_px": 326738,
+          "water_frac": 0.63028,
+          "FresnelDelta": 0.01816,
+          "NormalEnergy": null,
+          "normalReason": "no 128x128 (or larger) square window lies entirely inside WATER_MASK; HFR cannot be computed on a ragged region without windowing artefacts dominating it",
+          "ShoreDelta": 0.02912,
+          "ReflCorr": null,
+          "reflReason": "only 0 paired samples above the far half of the water; need >= 500",
+          "TemporalVar": null,
+          "tvReason": "TemporalVar needs >= 5 stationary frames (--sequence <dir>); a still cannot show whether water moves and no single-frame proxy is honest",
+          "grazing_rows": [
+            0,
+            134
+          ],
+          "downward_rows": [
+            405,
+            539
+          ],
+          "normal_window": null
+        },
+        "masked": {
+          "water_px_in_crop": 145048,
+          "mean_luma": 106.597,
+          "band_rms": 9.2391,
+          "band_contrast": 0.08667,
+          "lane_bearing_screen_deg": 88,
+          "lane_power": 0.5764,
+          "lane_aniso": 3.06,
+          "lane_power_normalised": 0.000051
+        },
+        "shore": {
+          "profile": [
+            93.308,
+            103.437,
+            107.099,
+            108.367,
+            108.68,
+            108.654,
+            108.459,
+            108.27,
+            108.36,
+            108.647,
+            109.022,
+            109.29,
+            109.445,
+            109.533,
+            109.663,
+            109.68,
+            109.772,
+            110.142,
+            110.422,
+            110.636,
+            110.63,
+            110.769,
+            110.838,
+            110.917,
+            111.029,
+            110.793,
+            111.07,
+            111.337,
+            111.301,
+            111.174,
+            111.064,
+            110.952,
+            110.788,
+            110.577,
+            110.943,
+            110.449,
+            110.667,
+            110.647,
+            111.166,
+            111.147,
+            110.785,
+            110.792,
+            110.694,
+            110.674,
+            110.78,
+            111.176,
+            111.204,
+            110.966
+          ],
+          "near_shore_luma": 98.373,
+          "open_water_luma": 110.943,
+          "span": 12.57,
+          "d10_px": 2,
+          "d90_px": 17,
+          "gradient_width_px": 15,
+          "note": "width is the 10%-90% rise distance of mean luma vs distance-from-land inside the water mask. A hard intersection line is 1-2 px. RI-VIS04 §9 TELL names the hard line as the defect; M12 ShoreDelta scores it HIGH, which is why both are printed."
+        },
+        "uniforms": {
+          "water_materials": 55,
+          "distinct": [
+            {
+              "mesh": "water",
+              "region_resolved": null,
+              "uWaterK": 2,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:eastern-rootlands",
+              "region_resolved": "eastern-rootlands",
+              "uWaterK": 3.2,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:western-rootlands",
+              "region_resolved": "western-rootlands",
+              "uWaterK": 1.9,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            },
+            {
+              "mesh": "water:stone-wastes",
+              "region_resolved": "stone-wastes",
+              "uWaterK": 1.4,
+              "uWaterShoreFade": 1,
+              "phase_frozen": true
+            }
+          ]
+        }
+      },
+      "__delta_r2_to_r3": {
+        "FresnelDelta": 0.01679,
+        "ShoreDelta": -0.00035,
+        "gradient_width_px": [
+          1,
+          15
+        ],
+        "mean_luma_pct": -6.24,
+        "lane_power_pct": -29.68,
+        "lane_aniso": [
+          3.79,
+          3.45
+        ],
+        "s52_null_row": {
+          "mean_luma": 112.935,
+          "lane_power": 0.8947,
+          "lane_aniso": 3.8,
+          "ShoreDelta": 0.02754,
+          "gradient_width_px": 1,
+          "why": "a CONSTANT transmittance — the same average lift with no depth and no k. Every metric it moves as far as `fixed` does is a brightness proxy (S52) and is inadmissible in both directions."
+        }
+      }
+    }
+  },
+  "look": {},
+  "pageErrors": [],
+  "gpu_state_after": {
+    "water_materials": 55,
+    "distinct": [
+      {
+        "mesh": "water",
+        "region_resolved": null,
+        "uWaterK": 2,
+        "uWaterShoreFade": 1,
+        "phase_frozen": true
+      },
+      {
+        "mesh": "water:eastern-rootlands",
+        "region_resolved": "eastern-rootlands",
+        "uWaterK": 3.2,
+        "uWaterShoreFade": 1,
+        "phase_frozen": true
+      },
+      {
+        "mesh": "water:western-rootlands",
+        "region_resolved": "western-rootlands",
+        "uWaterK": 1.9,
+        "uWaterShoreFade": 1,
+        "phase_frozen": true
+      },
+      {
+        "mesh": "water:stone-wastes",
+        "region_resolved": "stone-wastes",
+        "uWaterK": 1.4,
+        "uWaterShoreFade": 1,
+        "phase_frozen": true
+      }
+    ]
+  }
+}
