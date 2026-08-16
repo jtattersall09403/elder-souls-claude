@@ -103,14 +103,33 @@ export function installWaterShader(mat) {
     // `uWaterShoreFade` scales ONLY the shoreline alpha term so a control arm can ablate the
     // shore fade without touching the depth colour — the two must be separable for a critic.
     // F7 r4. `uWaterShoreBandM` is the shore band's half-extent IN METRES OF WATER COLUMN. It is
-    // the whole point of round 4 and it is deliberately a uniform, not a literal, so that a
-    // critic can (a) ablate it to 1e-4 and recover round 3 exactly, and (b) sweep it without a
-    // recompile. Default 1.20 m: `tools/visual/f7-r4-shoreline-census.mjs`, run this turn against
-    // the same WorldField the engine builds, finds 71 of 121 water cells within 120 m of the Deep
-    // Marshes deck stand carry a corner shallower than 1.20 m and 72 of 121 carry one shallower
-    // than 1.35 m — so 1.20 m spans effectively the entire graded population province.js can
-    // express, while leaving the deepest 0.15 m of the 1.35 m clamp untouched.
-    uWaterK:{value:waterRegionDiag.fallback_k},uWaterShoreFade:{value:1.0},uWaterShoreBandM:{value:1.20}};mat.userData.waterUniforms=u;
+    // deliberately a uniform, not a literal, so a critic can (a) ablate it to 1e-4 and recover
+    // round 3 exactly, and (b) sweep it without a recompile. THE MECHANISM IS ROUND 4'S AND IS
+    // UNCHANGED — only this number moves.
+    //
+    // F7 r5 — THE DEFAULT GOES 1.20 m -> 0.10 m. Round 4 chose 1.20 m to MAXIMISE the share of the
+    // graded population the band could reach. That is the criterion for a depth TINT and the exact
+    // inverse of what a shoreline band needs, and it is why round 4 was failed at 2/10.
+    //
+    // MEASURED, not argued, and each figure has a tool beside it:
+    //  * `tools/visual/f7-r5-band-census.mjs` (offline, same WorldField the engine builds, run this
+    //    turn): at 1.20 m the band is non-zero over 59.8% of the Deep Marshes wet corners within
+    //    120 m of the deck stand and over 100.0% of the Western Rootlands ones — it had stopped
+    //    being a shoreline fade and become a transparency multiplier over the whole water body.
+    //    At 0.10 m it reaches 3.1% and 18.0%, which is what a shore band looks like.
+    //  * `tools/visual/f7-r5-offline.mjs --mode presence`, over round 4's OWN banked frames: the
+    //    1.20 m default leaves 41.2% of round 2's visible water at deep-marshes edge-b135, scored
+    //    against the frame with all 93 water meshes hidden. Of the 58.6 points lost, the depth
+    //    COLOUR costs 10.5 and this alpha term costs 48.1.
+    //  * `tools/visual/f7-r5-sweep.mjs` at edge-b225 — the pose that actually fails, which nobody
+    //    had ever swept below 0.60 m — with the baseline re-captured between every arm so drift
+    //    cancels: presence 100.4% at 0.10 m, 99.6% at 0.30 m, 96.6% at 0.60 m, and the waterline
+    //    width does not improve at ANY constant. So 1.20 m is DOMINATED, not merely disliked.
+    //
+    // WHAT WOULD SEND IT BACK UP: evidence that 0.10 m loses the waterline width at a pose where
+    // 1.20 m held it. The width is a step function of whether a band exists at all, not of its
+    // size, so that is the falsifier — and it is one number to re-run.
+    uWaterK:{value:waterRegionDiag.fallback_k},uWaterShoreFade:{value:1.0},uWaterShoreBandM:{value:0.10}};mat.userData.waterUniforms=u;
   // Region resolution happens at DRAW time because that is the only place this module can see the
   // mesh, and `province.js:1577` names every water mesh `water:<region_id>` — the same ids
   // `water.json` is keyed by (`field.js:92` builds its own map from `region_id`). Cheap: one
@@ -311,7 +330,7 @@ export function installWaterShader(mat) {
         outgoingLight=mix(outgoingLight,vec3(.055,.064,.048)+outgoingLight*.34,esShore*.76);
         outgoingLight+=vec3(.095,.105,.082)*esFoam;
         #include <opaque_fragment>`);
-  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v18-f7r4-shore-band-m`;animatedWaterMaterials.add(mat);
+  };mat.customProgramCacheKey=()=>`w1-30-water-ripple-reflection-v19-f7r5-shore-band-0p10`;animatedWaterMaterials.add(mat);
 }
 
 /** Drive all live water shaders from the fixed simulation frame. */
