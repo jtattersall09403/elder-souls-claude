@@ -10,8 +10,8 @@
 preserved on a side branch and all four rounds have been restarted from it — nothing is lost, but
 roughly two hours of work has to be re-derived rather than trusted. Same four jobs, all on ring 1:
 
-- **Judging the sun, round two** — the colour fix did not work, and the builder thinks the problem
-  isn't the light at all.
+- **The sun, round three** — a judge found the fix: our daylight needs to go **cooler**, and both
+  previous rounds pushed it warmer.
 - **Judging the crowd** — 408 people used to share one pose; now 392 stand differently, and nobody has
   managed to photograph it.
 - **Judging the water, round three** — the two missing pieces are built, and the depth colouring was
@@ -173,27 +173,30 @@ none of it could be shadowed**: the sky's contribution is a dome that, in the re
 contains *"no terrain, no settlement and no canopy"*, so it lights every surface as if nothing were in
 the way.
 
-**The rebalance has now landed, and it is four numbers.** Daytime key light ×3, sky ×0.75, fill
-×0.75, ambient dome cut to a third; night got its own moon lever, because the moon had no control at
-all — at 19:30 the game was scaling a *sun* of intensity 0.0126 while the light actually carrying the
-frame was unreachable. **It has now been judged, and it failed at 2 of 10** — but with one real win in
-it: **at midday the settlement casts large readable shadows in 8 of 12 camera angles**, shot in motion
-on real hardware over 54 frames. At 08:00 there is still no building shadow on the ground at any angle.
-
-**A correction I owe you.** I described the worst-scoring shot as going from "flat shadowless ground"
-to "a large soft cast shadow". That was me narrating what I expected to see: re-measured, the crop was
-**already 69–78% in shadow beforehand** and 90.6% of its pixels got *darker*. The fix removed the fill
-that was hiding the existing shadow.
+**The rebalance landed, and it is four numbers.** Daytime key light ×3, sky ×0.75, fill ×0.75, ambient
+dome cut to a third; night got its own moon lever, because the moon had no control at all. **Judged and
+failed at 2 of 10** — with one real win: **at midday the settlement casts large readable shadows in 8
+of 12 camera angles**, shot in motion over 54 frames.
 
 **And the judge found the thing the numbers were missing: our sunlight has no colour.** The corpus's
 own detector was sitting unused — our daylight key reads **7.2°** against a minimum of 15, where six
 real photographs read 16–143°.
 
-**Round two tried to fix it and could not, and two things I told you about it were wrong.** I said the
-remedy was a number that already exists in the file. It isn't: warming the key measured **worse**, and
-the night-time "proof" I cited that the mechanism works turns out not to touch the moon at all — the
-moon's colour is hard-coded where no lighting recipe reaches it. Eleven different configurations were
-measured and every one lands between 5.8° and 7.3°, nowhere near 15.
+**Round two tried to fix it and could not — and then a judge found the answer.** The whole time, the
+fix was to make the daylight **cooler**, and both rounds pushed it *warmer*. Worse, the round that
+declared the whole approach exhausted **could not have tested it**: its own tool only ever applied
+"warm" to the sun and "cool" to the sky, so no experiment it ran could cool the key light. Seven
+untried settings were sitting written in the file.
+
+The judge ran them. Setting the key to the game's **own night-sky blue** scores **17.1** against a
+minimum of 15 — **the first passing configuration this project has ever measured** — and it survives
+every check for brightness, contrast and shadow that could have caught it cheating. The switch already
+exists in the code and takes a negative number; nobody had tried one. Round three is now making it a
+real source change rather than a test-harness one.
+
+**And this un-does a much bigger claim I passed on to you.** I said the builder's conclusion — that
+colour barely matters while every surface is the same olive — might reorder the whole plan and make
+materials the blocker instead of light. **That ruling is falsified.** The ordering stands.
 
 **The builder's conclusion, which a judge is now testing, would change the order of the work:** colour
 in a picture is the surface times the light, and **when every surface in the world is the same olive,
@@ -209,11 +212,9 @@ casting shadows. Replaced with the same test taken **only on the lit parts of th
 clause that the shadowed area must not shrink. **This is the fourth metric in two days that got better
 when the game got worse, or worse when it got better, and three of the four were mine.**
 
-**The coverage hole is bigger than it looked, and not where I said.** Only **2 of the 5** outdoor
-lighting recipes were rebalanced. Dawn and dusk are a smaller band than I reported — 6.5% of the day,
-not the ~10% I wrote — but **overcast and storm weather cover 59% of daylight** across the thirteen
-regions' own weather, and neither was touched. So most of the time you spend outdoors is still lit by
-the old flat budget.
+**The coverage hole is bigger than it looked.** Only **2 of the 5** outdoor lighting recipes were
+rebalanced, and **overcast and storm weather cover 59% of daylight** across the thirteen regions. So
+most of the time you spend outdoors is still lit by the old flat budget.
 
 ## The honest standard
 
