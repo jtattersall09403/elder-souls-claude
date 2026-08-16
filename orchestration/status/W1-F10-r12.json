@@ -7,27 +7,17 @@
  "branch": "codex/wave1-build-experiment",
  "base_commit": "caa8b01b",
  "note_on_this_round": "ONE GAP, ONE CHANGE. `W1-F10-r11-CRITIC` closed r10's gap, reproduced r11's whole crowd claim on five denominators, took the first nine pictures in eleven rounds — and then measured 0 of 60 drawn NPCs changing any non-foot bone over 60 frames, worst change exactly 0 radians, against a player control moving 0.011246 m. This round makes the crowd breathe and tries to break its own claim four ways.",
-
  "what_i_could_not_do": [
   "**MY FIRST STAGGER STARVED, AND THE LIVE ARM CAUGHT IT WHILE EVERY OFFLINE ARM SAID GREEN. THIS IS THE FIRST THING A CRITIC SHOULD ATTACK.** The obvious schedule is `if (t % N === bucket) re-solve`. Offline it read 408 of 408 people moving; in the running game it read **2 of 27 drawn NPCs = 7.41% against a 90% bar**. `syncNPCs` runs on a RENDER, and `stepFrames(60)` steps the simulation sixty times and renders ONCE, so the clock went 24 → 84 and exactly one bucket was ever offered a turn — my own artifact's `t_solved` histogram is `{24: 27}` before and `{24: 25, 84: 2}` after, which is the whole diagnosis in two numbers. **Every offline arm advanced the clock by 1, which is the only cadence a modulo schedule survives**, so eight arms agreed about a false premise (HAZARDS §0). Replaced with a per-person WINDOW — has this person's turn come round since they last took it — which is identical to the modulo form when called every frame and starves nobody when it is not. **THE FAILING RUN IS BANKED, NOT DELETED**: `artifacts/W1-F10-r12/live/crowd-motion-live.json` is the 7.41% arm and `live2/` is the same tool after the fix. A new self-test arm 9 (SPORADIC CLOCK, 24 → 84) now fails on the old design and passes on the new one, so the offline suite can see it. **What this says about the round: the number that mattered was only ever obtainable in the browser, and if I had shipped on the offline table I would have shipped a statue with a moving instrument.**",
-
   "**THE BUDGET CLAUSE IS THE ONE PRESERVATION CLAUSE I DID NOT CLOSE, AND I OVER-PARALLELISED MYSELF OUT OF IT.** The critic attached a frame-time budget — *publish the frame time at the Lilmoth stand before and after, and it must not rise more than 5%* — because this is the only remedy in the item with a per-frame cost. I built the pair properly: a control clone at `caa8b01b` (`git archive caa8b01b game tools`, no `.git`, so it records `commit: unknown`) running THE CLONE'S OWN copy of the timing tool per HAZARDS §22, against the same tool on this tree, launched CONCURRENTLY so both arms see the same machine load. **Neither arm finished inside its 600-second foreground ceiling.** The reason is mine and it is not the tool's: I had three browsers and a 408-actor offline solve running at once on a 4-core box, `contention.mjs` said WAIT, and the load average was above 20 — under which 270 SwiftShader frames per arm do not complete. **That is the same failure r11's critic recorded about itself** (*'both capture runs hit their foreground timeout before writing their own report JSON'*), and I had already fixed the artefact half of it — every arm flushes to a `.partial.json` as it lands — but not the cause. HAZARDS §13: I did not end a turn waiting on it. **What I can say without the measurement, marked clearly as arithmetic and not as a reading:** the added per-frame work at this stand is `ceil(27/8) = 4` stance solves — 20 bones, one `updateMatrixWorld` walk, 20 matrix copies into a reused array, and a re-bind of 42 equipment + 7 to 39 presentation + 3 secondary items each — on a frame that already skins 27 rigged actors and draws a stilt town, and it adds ZERO steady-state allocations (round 11's three `Float64Array`s and 20 `Matrix4`s per solve are now scratch and copies). **That is an argument, not a number, and the clause asks for a number.** `--stages=timing` on this tree and `--timing-only` from inside the clone are both wired and both take one command; a critic on a quiet box closes this in ten minutes.",
-
-  "**PICTURES: THREE ORBIT BEARINGS LANDED AND I LOOKED AT ALL THREE; THE MOTION FRAMES DID NOT LAND IN TIME, SO THE MOTION CLAIM IS CARRIED BY BONES AND NOT BY PIXELS.** Banked: `look/orbit-b000.png`, `orbit-b045.png`, `orbit-b090.png` — the Lilmoth crowd at 9 m, UI off, 1280x720, SwiftShader. **What I saw, in my own words, and it is corroboration of arm (b1) and of nothing else.** At b000, four figures stand in a row under a stilt-house overhang and three more out on the open deck toward the water: the two on the left stand close with arms hanging and one head clearly dropped, the two beside them stand squarer with the arms tucked and one shoulder up, and the deck figures lean differently again. At b045 the same row reads from the other side — one figure is stooped forward with the head down while its neighbour is upright — and a fifth stands at the building corner in a cloaked silhouette with the arms at different angles. At b090, a foreground saxhleel stands stooped with the head dropped, the shoulders rolled and the claws separated, against a figure eight metres behind standing square and level. **They are not a chorus line, and you do not need a measurement to see it.** A PORTRAIT ALSO LANDED — `look/portrait-lilmoth-factor-4-elder0-b000.png`, one saxhleel at 3.4 m. **The two arms are at visibly different angles** — the left is bent with the hand up near chest height, the right hangs low with the claws splayed — one shoulder is higher than the other, and the head is tilted off vertical and turned. The snout, the two cranium cone spikes, the amber eye beads, the individually separated claws and a waist break in the tunic all read at that range. The face is otherwise a dark mass with no lid, no orbit rim and no nostril, which is consistent with B4 at 1 of 7 and is r10's carried number, not mine to move. Three things I saw and am NOT scoring: figures stand INSIDE building faces (one buried to the shoulder at b090, one in a window reveal at b045) — placement, not character design, and the r11 critic found the same; at 9 m the bodies read as smooth pale-green tubes with no cloth break at the waist; and **a still cannot show breathing**, which is precisely why the round is scored on `RI-VIS10` C3 (b2)'s bone reader and not on these frames. **I MADE ONE MISTAKE HERE AND IT COST THE MOTION FRAMES.** `f10-r11c-crowd-look.mjs` parses `--k v`, not `--k=v` (HAZARDS §17 — read an inherited tool's constants before you trust it), so my first run silently ignored `--out=`, `--bearings=`, `--subjects=` and `--pbearings=` and shot the full 24-frame default set into `reports/visual-truth/f10-r11c-crowd-look/` — no filed verdict's artefacts were touched, which I checked. The motion frames come LAST in that tool's order, so the timeout cut them. I killed that run BY PID (HAZARDS §10 — never `pkill -f`, three sibling browsers were resident), kept its three real frames, and relaunched narrow; the relaunch was still shooting when the round ended. `tools/visual/f10-r12-motion-pixels.mjs` is written, banked and unrun: point it at a directory of `motion-tNNN.png` frames and it counts changed pixels against a frame-against-itself control.",
-
+  "**PICTURES: THREE ORBIT BEARINGS, ONE 3.4 m PORTRAIT AND TWO MOTION FRAMES LANDED AND I LOOKED AT ALL OF THEM — BUT ONLY TWO MOTION FRAMES OF FOUR, SO THE PIXEL EVIDENCE IS ONE PAIR AND NOT A SEQUENCE.** Banked: `look/orbit-b000.png`, `orbit-b045.png`, `orbit-b090.png` — the Lilmoth crowd at 9 m, UI off, 1280x720, SwiftShader. **What I saw, in my own words, and it is corroboration of arm (b1) and of nothing else.** At b000, four figures stand in a row under a stilt-house overhang and three more out on the open deck toward the water: the two on the left stand close with arms hanging and one head clearly dropped, the two beside them stand squarer with the arms tucked and one shoulder up, and the deck figures lean differently again. At b045 the same row reads from the other side — one figure is stooped forward with the head down while its neighbour is upright — and a fifth stands at the building corner in a cloaked silhouette with the arms at different angles. At b090, a foreground saxhleel stands stooped with the head dropped, the shoulders rolled and the claws separated, against a figure eight metres behind standing square and level. **They are not a chorus line, and you do not need a measurement to see it.** A PORTRAIT ALSO LANDED — `look/portrait-lilmoth-factor-4-elder0-b000.png`, one saxhleel at 3.4 m. **The two arms are at visibly different angles** — the left is bent with the hand up near chest height, the right hangs low with the claws splayed — one shoulder is higher than the other, and the head is tilted off vertical and turned. The snout, the two cranium cone spikes, the amber eye beads, the individually separated claws and a waist break in the tunic all read at that range. The face is otherwise a dark mass with no lid, no orbit rim and no nostril, which is consistent with B4 at 1 of 7 and is r10's carried number, not mine to move. Three things I saw and am NOT scoring: figures stand INSIDE building faces (one buried to the shoulder at b090, one in a window reveal at b045) — placement, not character design, and the r11 critic found the same; at 9 m the bodies read as smooth pale-green tubes with no cloth break at the waist; and a still cannot show breathing — **but a PAIR of stills from one fixed camera can, and this is the strongest single artefact in the round.** `tools/visual/f10-r12-motion-pixels.mjs` over `motion-t000.png` and `motion-t024.png` (same `pos`, same `look`, same fov, 24 sim frames apart): **42,186 changed pixels of 2,073,600 = 2.0344% of the frame**, mean absolute channel delta 0.3815, worst channel delta 111 — against a **required-to-disagree control of the frame compared with ITSELF at exactly 0 changed pixels**, which is what says the capture is deterministic and the 42,186 is the scene rather than the renderer. So the crowd's breathing is now shown in radians, in metres AND in pixels. What I do not have is the rest of the sequence: the tool shoots t000/t024/t048/t072 and the run was cut after two, so I have ONE pair and cannot show the motion is periodic rather than a single step. **I MADE ONE MISTAKE HERE AND IT COST THE MOTION FRAMES.** `f10-r11c-crowd-look.mjs` parses `--k v`, not `--k=v` (HAZARDS §17 — read an inherited tool's constants before you trust it), so my first run silently ignored `--out=`, `--bearings=`, `--subjects=` and `--pbearings=` and shot the full 24-frame default set into `reports/visual-truth/f10-r11c-crowd-look/` — no filed verdict's artefacts were touched, which I checked. The motion frames come LAST in that tool's order, so the timeout cut them. I killed that run BY PID (HAZARDS §10 — never `pkill -f`, three sibling browsers were resident), kept its three real frames, and relaunched narrow; the relaunch produced the two motion frames above and was still shooting when the round ended, so t048 and t072 are missing. To stop the same trap recurring, both tools I wrote this round now accept `--k=v` AND `--k v`.",
   "**RI-VIS10's OTHER SEVENTEEN CHECKS DID NOT MOVE AND I SCORED NONE OF THEM.** I measured C3 arm (b2) and its four S59 preservation clauses and nothing else. **B1, C4 and D4 still need a fresh judge no builder or critic can spawn (`CLAUDE.md` rule 0e) — the orchestrator has now owed these for FOUR verdicts and this is the fifth round to record it.** D1's garment vocabulary still does not exist; D2 and D5 remain the cheapest unrun censuses in the item for the fourth round running; E1 is still 14 drawn bodies for 408 records; E3 has no child and no stoop axis. **C2 and E4 I deliberately did not touch, and the brief is right that the instrument is the work**: `f10-silhouette.mjs:117` poses through `poseFromRig`, so C2 cannot see the static path at all, and E4's tuple is `(characterId, race)` with no pose in it. Writing a `--static-stance` arm on the silhouette tool is a real piece of work and I chose the gap over it. A critic may reasonably rule that choice wrong — the counter-argument is that C2 is the check `RI-VIS10`'s own scoring names as one of the four whose failure keeps a piece out of the 7-8 band, and it has now been unmeasurable-on-this-path for two rounds.",
-
   "**RI-VIS08 WAS NOT RUN AND I MAKE NO FIDELITY CLAIM.** This is an `art-direction` piece against `RI-VIS10`. The standing FIDELITY 3/10 is the standing verdict's number and not mine.",
-
   "**EVERY FRAME AND EVERY BROWSER MEASUREMENT IN THIS ROUND IS SWIFTSHADER** — `ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)), SwiftShader driver)`. `W1-30-EVIDENCE` §4 admits that for geometry, layout, composition, determinism and census, which is what a bone-matrix read and a changed-pixel count are, and refuses it for any appearance claim. I rented no Pod and **no appearance claim is made anywhere in this file**.",
-
   "**I DID NOT FIX THE 29 PEOPLE AT THE WORLD ORIGIN, ONLY DIAGNOSED THEM AND STOPPED PAYING FOR THEM.** See `job_2`. The full fix — `syncNPCs` not building or posing a mesh for somebody who is not in the world — is a renderer lifecycle change with streaming and perception implications and it is not F10's gap. REVERSIBLE, and here is what would overturn it: a critic finding an NPC that becomes visible with a one-frame pop, which is the cost the cheap half could have bought.",
-
   "**I PROCEEDED PAST `contention.mjs` RETURNING WAIT ONCE**, for the first live run, with two sibling browsers resident. It is declared here because `contention.mjs` asks you to declare it. Every later run waited for GO."
  ],
-
  "headline": "Every person in Black Marsh now breathes, on their own phase and at their own rate, and the same person still stands the same way. RI-VIS10 C3 arm (b2) — 0 of 60 drawn NPCs changing a non-foot bone, worst change exactly 0 radians, for as long as this item has existed — reads 27 of 27 drawn and 31 of 31 visible in the running game, with the player control still moving in the same session; arm (b1) holds at 27 of 27; and round 11's whole 408-row offline table reproduces BYTE-IDENTICAL at t = 0, so the variety it earned was preserved rather than re-rolled.",
-
  "implementation_leads": {
   "file_read": "orchestration/IMPLEMENTATION-LEADS.md — `#f10--characters-and-creatures`, `How a mapped builder uses this file`, and `Existing Elder authorities the adapters must preserve`, all read this turn.",
   "the_authority_this_round_sits_under": "`game/src/render/actor.js` consumes the existing combat rig and Three skeleton. Everything below is inside that authority: no second rig, no second animator, no second copy of the stance. The crowd is advanced through the PLAYER'S OWN `idle_ready` archetype and `idle_loop` LoopClip, handed down live by `renderer.js:_anyStance`.",
@@ -51,24 +41,20 @@
   ],
   "nothing_was_copied_or_adapted": "No external source was copied, vendored or adapted in this round, so there is no pin, licence or attribution to carry beside any code. Both findings are `declined`."
  },
-
  "job_1_the_crowd_breathes": {
   "the_gap_as_the_critic_measured_it": "0 of 60 drawn NPCs change any non-foot bone rotation over 60 frames; the worst change across the whole crowd is exactly 0 radians; the player control moves 0.011246 m over the same interval. `poseStatic` solved each stance ONCE (`if (A.staticStance === undefined)`) and each person's place in the 96-frame breathing loop was a per-person CONSTANT.",
-
   "the_change_in_four_lines": [
    "`renderer.js:_anyStance` now carries a CLOCK: `this._stanceArg.t = sim.frame | 0`. `sim.frame` and not a render counter — it is the fixed-step simulation's own tick (`sim/step.js:214`), so a person's pose is a pure function of (eid, sim frame) and does not drift with how many frames the browser managed to draw. `poseLocomotion` advances the player's own `_loopFrame` once per sim step (`combat/actor.js:371`), so the crowd breathes at the player's rate.",
    "`applyStaticStance` takes `(S, name, stance, t, prev)`. The loop frame is `V.loopFrame + t * V.loopRate`; `prev.variation` is REUSED rather than re-derived, so a re-solve cannot deal anybody a new hand; and the numeric root drop is re-solved WITH the pose (S59 clause (c)) rather than left at the phase it was first solved at.",
    "`stanceVariationFor` gains ONE field, `loopRate` in 0.82..1.22, **drawn LAST from the same seeded stream**. That is load-bearing, not tidiness: every earlier field consumes the same draws it did in round 11, which is why r11's banked 408-row table reproduces byte-identically at t = 0.",
    "`poseStatic` re-solves on a staggered cadence and re-binds the presentation meshes on the same beat, because horns, crests, garments and secondaries hang off the POSED frame and a few millimetres of rhythmic drift reads worse than a static offset."
   ],
-
   "the_trap_the_brief_named_and_how_it_is_answered": {
    "the_trap": "a crowd that all breathes IN STEP is a new kind of copy — §F#6 arriving in the time axis instead of the spatial one.",
    "phase": "already per-person and seeded (95 of 96 loop frames occupied at t = 0). Preserved exactly.",
    "rate": "NEW, and it is the field that makes the OFFSETS THEMSELVES move. With one shared period a crowd advanced by a common clock is a rigid formation whose every pairwise phase gap is frozen for the life of the world. Self-test arm 4b requires the gaps to change between t = 0 and t = 6000, and **arm 4c is its required-to-disagree control**: with every rate pinned to 1.0 the same gaps must come back FROZEN, so 4b cannot be satisfied by any advance at all.",
    "stagger_bucket": "`stanceBucket(V, N) = V.seed % N`, seeded from the SAME FNV-1a identity hash as the stance, not from array or file order — otherwise the set of people who move together is a property of streaming order, which changes under travel and reload, and neighbours in `sim.npcs` (who are neighbours in the WORLD, since the roster is authored per settlement) would breathe in visible blocks. Arm 3c measures exactly that: the worst single-bucket share of any settlement is **0.2549** (gideon), against a 0.55 bar and a 0.125 chance expectation."
   },
-
   "numbers_offline_over_the_whole_shipped_population": {
    "enumerating_command": "readdirSync('game/data/npcs/*.json') -> flatten. 18 files, 408 records, 408 posed. Derived this turn.",
    "C3_arm_b2_moved_a_non_foot_bone_t0_to_t60": "408 of 408 = 100.00% (bar >= 90%)",
@@ -81,7 +67,6 @@
    "worst_planting_error_at_t60_m": 1.3877787807814457e-17,
    "distinct_lower_ankle_values_at_t60": 1
   },
-
   "numbers_in_the_RUNNING_GAME": {
    "tool_and_stand": "tools/visual/f10-r12-crowd-motion.mjs --live, at the r10 critic's own Lilmoth stand (2785.6, 5047), SwiftShader",
    "C3_arm_b2_DRAWN": "27 of 27 = 100.00% (drawn = visible AND within 200 m of the stand, HAZARDS §26)",
@@ -95,7 +80,6 @@
    "planting_live_lower_ankle_above_ground_m": "0.088203 to 0.091260 over 31 visible, against r11's 0.067407 to 0.104151 and the r10 critic's photographed baseline of 0.089. IT TIGHTENED BY 8x, and that is the root solve re-running with the pose rather than being frozen at the phase it was first solved at.",
    "REPLICATION_and_it_is_replication_not_repetition": "L1, L2 and L3 were produced by THREE SEPARATE BROWSER SESSIONS on this tree — the `live2`, `stability` and `timing-after` runs, each a fresh boot, teleport and warm-up — and all three return DRAWN 27 of 27 = 100.00%, b1 27 of 27 with 27 distinct signatures, and planting 0.088203 to 0.091260. Three independent reads of the same quantity, not one read quoted three times."
   },
-
   "S59_preservation_all_four_clauses_plus_the_budget": {
    "a_variety_must_not_be_traded_for_motion": "PASS. Live 27 of 27 = 100% over the 3 deg bar with 27 distinct signatures; offline 408 of 408 at BOTH clocks with 392 distinct signatures at each; self-test arm 6 holds it at five clocks (t = 0, 17, 60, 481, 6000), 100% at every one.",
    "b_the_same_person_stands_the_same_way": "SPLIT, AND THE CLAUSE AS WRITTEN IS NOT LITERALLY SATISFIABLE — see `the_ruling_i_am_making` below. Measured both ways.",
@@ -103,7 +87,6 @@
    "d_anim_tune_unchanged": "PASS, re-run this turn: **snapIn 0.0000 on all 14** weapon classes, worst snapOut **0.0122 m** (dagger:light), `snap>0.35 m: 0/14`. Bit-identical to r11's table and to the r9 bound.",
    "budget_frame_time": "**NOT MEASURED — THE ONE CLAUSE OF FIVE I DID NOT CLOSE.** Both arms of the before/after pair were built and launched and neither finished inside its foreground ceiling on a box at load 20+. Full account, including what I can say arithmetically and why that is not a substitute, in `what_i_could_not_do` entry 2."
   },
-
   "the_ruling_i_am_making_because_two_clauses_of_one_verdict_are_in_tension": {
    "the_tension": "S59 clause (b) asks that `f10-r11c-stance-probe.mjs`'s REBUILD / TRAVEL / SAVE-RELOAD arms still return 60 of 60 **bit-identical** bone signatures. That probe reads bones at two wall times with frames in between. Arm (b2), filed in the SAME verdict, requires the pose to DIFFER 60 frames apart. **A pose cannot be both time-varying and bit-identical across an interval.** Clause (b) as literally written can only be satisfied by not doing the round.",
    "the_ruling": "THE IDENTITY IS INVARIANT; THE PHASE IS NOT. Clause (b)'s own stated reason is *'a crowd that re-rolls on stream-in is a worse defect than a crowd that is still'* — that is about being dealt a new HAND, not about being at the same point in a breath. So: the seeded record (weight-bearing side, depth, phase offset, rate, head aim, torso twist, stoop, four arm draws, two elbow draws, two splay draws) must be bit-identical across all three attacks, and the BONE ROTATIONS must be bit-identical when the two readings are taken at the same clock.",
@@ -119,14 +102,12 @@
    "what_would_overturn_it": "a critic showing that a person's dealt hand changes across a rebuild, travel or reload — which is the defect clause (b) exists to catch and which the `identity` column is exactly the test for. Or a ruling that a settlement should be frozen when the player is not looking, in which case the answer is to gate the advance on visibility and distance (the visibility half is already built) rather than to delete the advance.",
    "method_deviation_i_am_declaring": "pinning `sim.frame` is a poke at simulation state from the page. It moves the counter back by at most 8 frames inside a measurement session and nothing else reads it in that window, but it IS a state mutation and a critic should know it happened rather than find it."
   },
-
   "the_cost_shape_measured_rather_than_asserted": {
    "per_re_solve": "20 bones posed, one `updateMatrixWorld` walk, 20 matrix copies into the REUSED `posed_local` array, and a presentation re-bind of 42 equipment + 7 (humanoid) to 39 (beast) presentation + 3 secondary items. Counted this turn by building one actor of each art family.",
    "allocation": "ZERO steady-state allocations added. Round 11 allocated three `Float64Array`s and 20 `Matrix4`s per solve, which was free at one solve per actor for the life of the world and would be ~9,200 arrays and ~61,000 matrices per second at this stand once it repeats. The pose scratch is one buffer per distinct bone count (`_STANCE_BUFS`), `posed_local` is copied into rather than cloned, the record is mutated in place, and the secondary bind's quaternion/matrix/vectors are module scratch.",
    "how_many_people_re_solve_per_frame": "at most ceil(n/8) of the DRAWN population — 4 of 27 at this Lilmoth stand, and 0 of the 29 invisible ones, because the advance is gated on `group.visible`."
   }
  },
-
  "job_2_the_crowd_is_27_and_the_29_at_the_origin_are_explained": {
   "the_census_as_it_now_reads": {
    "npc_meshes_at_the_stand": 60,
@@ -134,7 +115,10 @@
    "visible_and_within_200_m_of_the_stand_THE_REAL_CROWD": 27,
    "invisible": 29,
    "invisible_within_5_m_of_the_world_origin": 28,
-   "invisible_ground_y_range_m": [-41.134, -40.725],
+   "invisible_ground_y_range_m": [
+    -41.134,
+    -40.725
+   ],
    "visible_but_far": "4, at 6,016 to 6,027 m from the stand — the r11 critic's '(4906, -594) on ground -33 m'. Not F10's defect, and it is a sharper number than the one in circulation."
   },
   "how_the_denominator_is_now_impossible_to_get_wrong": "the reader publishes ALL THREE denominators on every arm — `all_meshes`, `visible`, `DRAWN` — and the pass is scored on `DRAWN` only. A tool that reports one number cannot be checked; a tool that reports three cannot quietly pick the flattering one.",
@@ -142,19 +126,16 @@
   "what_i_did_about_it": "the cheap and safe half: `syncNPCs` now sets `mesh.visible` BEFORE it poses (it was one line later, so a reader would have got the previous frame's answer), and `poseStatic` does not advance the stance of an actor that is not drawn. That is ~48% of this stand's stance budget no longer spent on figures under the sea, and it changes nothing a player can see.",
   "what_i_did_NOT_do_and_why": "I did not stop the mesh being built, and I did not move the position. Skipping construction for an absent person is a renderer lifecycle change that touches streaming; moving the position touches `sim.npcs`, which stealth cones and `world-collision.js` read. Both are outside F10's gap and neither is measured by anything I ran. Named as a finding rather than left to be discovered."
  },
-
  "job_3_the_harness_gap_r11_filed_does_not_exist_and_i_confirm_it_from_my_own_run": {
   "what_r11_filed": "*'`__HARNESS.camera` and `teleport` speak the SIMULATION's frame and a settlement's people are DRAWN in the cell's, with no method joining the two'*, asked of ring 0 as an `I1`/`I2` blocker.",
   "what_i_measured": "I pointed everything in plain world metres and it worked on the first attempt. The stand (2785.6, 5047) is a `teleport` in sim coordinates; the drawn NPC positions my reader returns are read off `bones[i].matrixWorld` (HAZARDS §26 — read a bone, not the group) and they are in the same frame, which is why `dist_to_stand_m` separates a 27-person crowd from four people 6 km away and from a heap at the origin. No offset was computed anywhere in this round.",
   "the_one_object_that_lies": "`R.playerMesh.position` is (0,0,0) because `poseFromRig` writes bone WORLD matrices and never moves the group. My reader publishes it as `player_group_xz` beside the player's bone-derived position precisely so the next reader sees the discrepancy explained rather than discovering it."
  },
-
  "instruments_written_this_round": [
   "**tools/visual/f10-r12-crowd-motion.mjs** — 15 offline self-test arms and a staged live browser arm (L0 census, L1 arm (b2) with the player control, L2 arm (b1), L3 planting, L4 rebuild/travel/save-reload at a pinned clock, L5 frame time). Every arm has a partner required to disagree with it: 1a/1b (null clock vs live clock), 4b/4c (the gaps move vs the gaps frozen under a pinned rate), 8a/8b (perturb vs unread field). **Arm 2 re-derives round 11's entire banked 408-row artifact and requires every field of every row to match**, which is what turns 'we preserved the variety' from a sentence into a check. **Arm 9 exists because the live arm caught what the offline suite could not** — a clock that jumps 24 -> 84 must re-solve every bucket, and the design this round started with fails it.",
-  "**tools/visual/f10-r12-motion-pixels.mjs** — a bone delta is not a picture. Reads the motion PNGs from ONE FIXED CAMERA and counts changed pixels, with a frame-against-itself control that must read exactly 0 changed pixels or the capture is non-deterministic and every number is noise. A geometry/composition statement only; SwiftShader, so no appearance claim.",
+  "**tools/visual/f10-r12-motion-pixels.mjs** — a bone delta is not a picture. Reads the motion PNGs from ONE FIXED CAMERA and counts changed pixels, with a frame-against-itself control that must read exactly 0 or the capture is non-deterministic and every number is noise. **RUN, AND IT PASSED: control 0 of 2,073,600 changed; t000 vs t024 42,186 changed = 2.0344%, mean |delta| 0.3815, worst channel delta 111.** A geometry/composition statement only; SwiftShader, so no appearance claim. Its argument parser accepts BOTH `--k=v` and `--k v`, written that way because mixing the two conventions is what cost this round its full motion sequence.",
   "**tools/visual/f10-r10c-npc-live.mjs** — the r11 critic found it *'writes no `commit` field, which is precisely the discriminator §22 tells you to read'*. It now writes `commit` / `tree_root` / `dirty_in_game_or_tools`. ADDITIVE ONLY: no measurement in that file changed, its own self-test still passes 3 of 3, and r10's and r11's numbers stand. **Half-verified, and I am saying which half**: a real run in the main tree wrote `commit: 3221f40ea2..., tree_root: /home/user/elder-souls-claude, dirty: true`, which I read out of the artifact. I did **not** run it from inside a control clone, so the other half of §22's discriminator — a clone recording `unknown` — is an argument from the code (`git rev-parse` throws with no `.git`, and the `catch` returns `unknown`) and not a measurement. A critic wanting it measured runs `node <clone>/tools/visual/f10-r10c-npc-live.mjs`."
  ],
-
  "preservation_re_run_this_turn_not_inherited": {
   "anim_tune": "snapIn 0.0000 x14, worst snapOut 0.0122 m (dagger:light), snap>0.35 m: 0/14. (`over declared peak: 1/14` and `recovery>active: 4/14` are pre-existing, in r9's, r10's and r11's verdicts, and still nobody's.)",
   "f10_r10_stance_height": "`rise_vs_before_engine_r10_m` = **0.00000** — the player's hover is still gone. S59 replacement clause (a): `lr_diff_max_m` = **0.00521** against a 0.00600 bar.",
@@ -164,23 +145,25 @@
   "boot_check": "PASS — the engine constructed and the harness answers.",
   "roadmap_coverage_and_readpath": "`node tools/roadmap-coverage.mjs` — all gates green. `node tools/readpath.mjs` — 30/30 probes ok."
  },
-
  "numbers_that_moved_the_wrong_way_or_look_odd_and_are_published_anyway": [
   "**2 of 27 = 7.41%** — my first live arm, the starved modulo stagger. Banked at `artifacts/W1-F10-r12/live/`, not deleted.",
   "**`all_meshes` arm (b2) reads 31 of 60, not 60 of 60.** The 29 that do not move are the invisible heap and that is deliberate. A reader who takes the raw `npc:` denominator will score this round at 51.7% and fail it. HAZARDS §26 says not to, `RI-VIS10` arm (b2)'s own words are 'DRAWN NPCs', and all three denominators are on the page so the argument can be had with numbers.",
   "**The live planting range TIGHTENED 8x** (0.0674..0.1042 -> 0.0882..0.0913). That is a large move for a round that did not touch the planting arithmetic, and the honest reading is that it is the root solve tracking the pose instead of being frozen at the first phase. I did not predict it and I am not claiming credit for it as an improvement without a critic checking the mechanism.",
   "**`distinct_loop_rates` is 392, not 408** — sixteen people share a rate with somebody. Rounding to 1e-6 over a 0.4-wide span makes collisions expected at this population size, and phase offset still separates them; it is reported because a reader counting 392 twice should know the two 392s are different quantities that happen to agree."
  ],
-
  "artifacts": [
   "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/crowd-motion-offline.json (all 408, two clocks, per-person rows)",
   "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/live/crowd-motion-live.json (THE FAILING FIRST RUN — arm (b2) at 7.41%, kept)",
   "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/live2/crowd-motion-live.json (the same tool after the stagger fix — arm (b2) at 100%)",
   "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/stability/crowd-motion-live.json (REBUILD / TRAVEL / SAVE-RELOAD at a pinned clock, plus a second independent read of L1-L3)",
   "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/timing-after/ (the frame-time arm on this tree, plus a THIRD independent read of L1-L3)",
-  "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/look/orbit-b000.png, orbit-b045.png, orbit-b090.png (the Lilmoth crowd, three orbit bearings at 9 m, UI off, SwiftShader — NO APPEARANCE CLAIM)"
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/look/orbit-b000.png, orbit-b045.png, orbit-b090.png (the Lilmoth crowd at 9 m, UI off, 1280x720)",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/look/portrait-lilmoth-factor-4-elder0-b000.png (one saxhleel at 3.4 m)",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/look/motion-t000.png, motion-t024.png (ONE FIXED CAMERA, 24 sim frames apart)",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/motion-pixels.json (42,186 changed pixels, control 0)",
+  "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/self-test.json (15 of 15 arms on the final code)",
+  "ALL FRAMES ARE SWIFTSHADER AND NO APPEARANCE CLAIM IS MADE ANYWHERE."
  ],
-
  "files_touched": [
   "game/src/render/actor.js",
   "game/src/render/renderer.js",
@@ -190,18 +173,14 @@
   "corpus/90-verdicts/wave1/artifacts/W1-F10-r12/",
   "orchestration/status/W1-F10-r12.json"
  ],
-
  "files_claimed": [
   "game/src/render/actor.js",
   "game/src/render/renderer.js",
   "tools/visual/f10-r12-crowd-motion.mjs",
   "tools/visual/f10-r12-motion-pixels.mjs"
  ],
-
  "ownership_note": "`node tools/ownership.mjs --for <file>` run this turn on all three files I started from. `game/src/render/actor.js` and `game/src/render/renderer.js` each return ONE live claim, `W1-30-builder-20260812`, state `builder-native-gpu-remediation-in-progress`, **1.2 days old with its status file last written 2026-08-14 19:54** — the same stale claim r10 and r11 both recorded and proceeded on, for the same reason: it is a GPU remediation piece, not an animation piece. `tools/visual/f10-r10c-npc-live.mjs` returns one claim from `W1-30V`, also last written 2026-08-14 19:54; my change to it is additive and touches no measurement. Recorded so it is arguable rather than assumed, and HAZARDS records the opposite failure too — a piece held back an hour on stale claims a check would have cleared in seconds.",
-
  "banking": "Small increments through `tools/land.mjs --paths a,b,c` (one comma-separated argument, HAZARDS §14c), each verified against the remote blob: 3221f40ea2 (the advance + the offline table), 3245054ec5 (the §22 commit field), 5ab09795a4 (the window stagger + the arm that catches it + the failing run), 6d40ac445f (the live evidence), and this file.",
-
  "reproduce": [
   "node tools/visual/f10-r12-crowd-motion.mjs --self-test                                   # 15 arms",
   "node tools/visual/f10-r12-crowd-motion.mjs --json=/tmp/a.json                            # all 408, two clocks",
@@ -216,7 +195,6 @@
   "node tools/visual/f10-r9c-c3-audit.mjs                                                    # the r9 critic's own, unmodified",
   "node tools/boot-check.mjs"
  ],
-
  "what_the_next_round_should_do_and_why": [
   "**D2 AND D5.** Two closed-list censuses over 32 actors' outfits, no new geometry, no judge, no Pod. They have been the cheapest way to move this item's score for FOUR rounds and nobody has taken them.",
   "**MAKE C2 SEE THE CROWD.** `f10-silhouette.mjs:117` poses through `poseFromRig`, so C2 has been measured on a code path two rounds of stance work could not touch. A `--static-stance` arm that builds the roster through `poseStatic` with the same `{pose, loop}` pair `_anyStance` hands down is the work, and whether a per-person stand moves a 120 px binary mask at all is a genuinely open question worth answering either way.",
