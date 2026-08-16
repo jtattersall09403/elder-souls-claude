@@ -139,6 +139,47 @@ Evidence: `corpus/90-verdicts/wave1/artifacts/W1-F4-r2/metrics/ablation-equivale
 and `corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/ablation-form-equivalence-recheck.json`
 (the recheck).
 
+## 24. `R.playerMesh.position` is (0, 0, 0) and always will be. Do NOT derive a scene→world offset from it — the frames already coincide.
+
+**Found 2026-08-16 by the F10 r11 critic, and it cost F10 r11 its pictures and produced a harness
+"defect" that does not exist.** The round's first admission is that four camera attempts failed, and
+it filed the cause as: *"`__HARNESS.camera` and `teleport` speak the SIMULATION's frame and a
+settlement's people are DRAWN in the cell's, with no method joining the two"*, asking ring 0 for a new
+harness method. **There is no such mismatch. Measured this turn at the Lilmoth stand:**
+
+| quantity | reading |
+|---|---|
+| drawn NPC world **x** − sim **x**, over 60 of 60 matched pairs | min **0.000000**, max **0.000000** |
+| drawn NPC world **z** − sim **z** | min **0.000000**, max **0.000000** |
+| `renderer.province.group.position` / `scene.position` | `(0,0,0)` / `(0,0,0)` |
+| `three.camera.position` vs `sim.camera.pos` | identical to every printed digit |
+
+`render/renderer.js:syncNPCs` writes `drawPos = [n.pos[0], groundResolver(n.pos[0], n.pos[2]),
+n.pos[2]]` — **the simulation's own x and z**, with only the height replaced. `__HARNESS.camera({pos,
+look})` in world metres has always pointed at the drawn crowd.
+
+**The one object that lies, and why.** `R.playerMesh.position` reads **(0, 0, 0)**. It is the only
+actor in the scene whose group is not at its world position, because the player is posed by
+`poseFromRig`, which writes bone **world** matrices directly and never moves the group — while every
+NPC is posed by `poseStatic`, which sets `group.position`. In the round's own artifact the player row
+records `group_xz: [0, 0]` on the same page as a `root` bone at world **(2798.2, 2.66, 5047)**. Taking
+the offset off that one object yields `OFF = (2785.6, 44.378, 5047)` — a pure restatement of the
+teleport target — and the two frames that survived landed back over Lilmoth **only because that offset
+cancelled** against a subject cluster the tool had placed at ≈(0.3, 0.9).
+
+**Read a bone, not the group.** `S.bones[i].matrixWorld` is correct for every actor on both paths.
+If you want an actor's drawn position, that is where it is.
+
+**And the cluster at the origin is a second trap wearing the first one's clothes.** At the Lilmoth
+stand `sim.npcs` holds 60 records and the renderer builds 60 meshes, but **29 of them are
+`mesh.visible === false`, and all 29 sit within 5 m of the world origin on ground y ≈ −41 m**, i.e.
+under the Topal. Four more are visible at ≈(4906, −594) on ground −33 m, outside the province's own
+x extent. **A "densest knot of the crowd" computed over `npc:` meshes finds that heap, not the town** —
+the round's own report says `people_within_9m: 29` and that is the tell. Filter on `o.visible` and on
+distance to the stand before you point anything at a crowd, and **do not use a raw `npc:` mesh count as
+a census denominator**: two consecutive F10 verdicts have reported "60 drawn NPCs" at a stand where the
+drawn-and-in-settlement population is **27**.
+
 ## 23. The container took four agents at 20:03. Quarantine the orphans on a side ref — do NOT bank them.
 
 **Third restart in one day, and it killed a full fleet mid-round: T4 r7, F10 r11, F4 r2 and the F7 r2

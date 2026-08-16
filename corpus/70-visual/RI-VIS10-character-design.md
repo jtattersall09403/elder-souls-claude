@@ -174,6 +174,53 @@ the gameplay camera, and the eight-angle orbit with the whole figure in frame.
 > wrote it. Bounded: arm (b) needs one browser session and a bone read, and the instrument that does
 > it is banked.
 
+> **AMENDED wave 1 (`W1-F10-r11` critic, 2026-08-16) — arm (b) needs arm (a)'s OWN temporal clause,
+> which it was written without. This tightens the item; it relaxes nothing, and it is not the reason
+> anything passes: applying it FAILS the build that prompted it.**
+>
+> C3's original instrument reads *"From the idle at frame 0 and frame 120"* and its pass condition is
+> *"≥ 2 of the 3 exceed 3°, **and the two frames differ**"*. That second clause is the whole
+> difference between a stand and a statue, and **arm (b) above does not carry it.** As written, arm
+> (b) is a cross-sectional census taken at one instant: it asks whether people differ *from each
+> other* and never whether any one of them differs *from themselves a moment later*.
+>
+> **Measured in the RUNNING GAME this turn** (`corpus/90-verdicts/wave1/artifacts/W1-F10-r11-critic/frozen-crowd.json`,
+> at the Lilmoth stand, reading every drawn actor's bone rotations twice, 60 frames — one second —
+> apart): **0 of 60 NPCs change any non-foot bone by any amount. The worst change over the whole
+> crowd is exactly 0 radians.** The required-to-disagree control in the same session is the player,
+> whose bones move **0.011246 m** across the same interval, so the reader can see motion and it is the
+> crowd that has none. The cause is not a defect in the stand: `render/actor.js:poseStatic` solves each
+> person's stance **once** (`if (A.staticStance === undefined)`) and caches it, and the person's
+> position in the 96-frame breathing loop is a per-person **constant** (`loopFrame`). Nothing
+> re-evaluates it. So a settlement of 408 perfectly motionless figures in 392 distinct poses scores
+> **100%** on arm (b) as it stands.
+>
+> **The rule is now: C3 arm (b) passes only if BOTH of these hold.**
+> **(b1)** the cross-sectional census already written above — ≥ 90% of drawn NPCs showing ≥ 2 of 3
+> over 3°; **and**
+> **(b2)** the temporal clause arm (a) has always carried, applied to the crowd: on the same drawn
+> population, **≥ 90% of NPCs must have a measurably different pose at two frames ≥ 60 apart** — the
+> same "the two frames differ" arm (a) requires of the player. Feet are excluded from (b2), because
+> `poseStatic`'s terrain conform rewrites them every frame from the ground and would satisfy the
+> clause without anybody moving.
+>
+> **Why this is the right correction and not a new demand.** §F#6 names the failure as *"a symmetric
+> A-pose with the arms lowered, identical on every NPC"*, and the r10 amendment read that as *identical
+> to each other*. A viewer walking a market notices **both** halves and notices stillness first: a
+> crowd where every person is frozen mid-gesture reads as a waxworks whatever the poses are. This item's
+> §Provenance already warns that **not one of its thresholds has been validated against a measured
+> population**; this one is not a new threshold at all, it is arm (a)'s threshold applied to the arm
+> that inherited everything else from it.
+>
+> **The guards `CRITIC-DOCTRINE` §1.3 requires.** **ADD-only:** (b1) is the r10 amendment verbatim, no
+> threshold moved, nothing relaxed. **Not self-serving, in the direction that matters:** it turns
+> `W1-F10-r11`'s only passing check into a fail and takes RI-VIS10 from 3 of 18 to 2 of 18 on the build
+> that prompted it — a bar a critic extends may be the reason a piece FAILS and may never be the reason
+> one passes. **Bounded:** (b2) costs one browser session and two bone reads, and the instrument is
+> banked and carries a required-to-disagree control. **Reversible:** overturned if a builder shows that
+> per-frame stance evaluation for 408 actors cannot be afforded in a browser budget — in which case the
+> honest answer is a cheap phase advance on the existing one-time solve, not the deletion of (b2).
+
 | **C4** | **It reads at the distance the player sees it** | At 8–10 m, a fresh judge answers *"person, creature, or cannot tell"* and *"which way is it facing"*, per archetype | both correct on ≥ 90% of the roster | facing wrong → the figure has no front/back asymmetry, which at that range is the whole silhouette |
 
 ### §D — Dress: faction, rank and place
