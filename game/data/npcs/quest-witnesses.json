@@ -2,7 +2,7 @@
   "schema": "elder-souls/npcs@1",
   "group": "quest-witnesses",
   "owner": "W1-18",
-  "source": "People named by deceit.revealed_by who previously had no world record. Each has a settlement post and a quest-specific first line.",
+  "source": "People named by deceit.revealed_by who previously had no world record. Each has a settlement post and a quest-specific first line. | 2026-08-16 (F10 r13): 15 of these 16 posts carried invented world coordinates 5.1-9.7 km from the settlement each record names; four of them were the NPCs W1-F10-r11/r12's critics found DRAWN at (4906, -594) on ground -33 m, 6 km out to sea off Lilmoth, unowned for three verdicts. `captain-oreem` (archon, 22.3 m from centre) was the only correct one and is untouched.",
   "npcs": [
     {
       "id": "captain-oreem",
@@ -57,13 +57,7 @@
         "settlement": "blackrose",
         "at_building": null,
         "at_building_name": "Blackrose witness post",
-        "pos": [
-          -3298.3,
-          5,
-          5901.3
-        ],
-        "yaw": 37,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was -3298.3, 5901.3 — 5402 m from blackrose's own centre at 1905.5, 4450 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -88,13 +82,7 @@
         "settlement": "stormhold",
         "at_building": null,
         "at_building_name": "Stormhold witness post",
-        "pos": [
-          853.4,
-          4,
-          -4197.4
-        ],
-        "yaw": 74,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was 853.4, -4197.4 — 5131 m from stormhold's own centre at 2171.5, 761 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -119,13 +107,7 @@
         "settlement": "lilmoth",
         "at_building": null,
         "at_building_name": "Lilmoth witness post",
-        "pos": [
-          4905.1,
-          2,
-          -596.1
-        ],
-        "yaw": 111,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was 4905.1, -596.1 — 6017 m from lilmoth's own centre at 2766.5, 5027.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -150,13 +132,7 @@
         "settlement": "lilmoth",
         "at_building": null,
         "at_building_name": "Lilmoth witness post",
-        "pos": [
-          4906.8,
-          2,
-          -594.8
-        ],
-        "yaw": 148,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was 4906.8, -594.8 — 6016 m from lilmoth's own centre at 2766.5, 5027.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -181,13 +157,7 @@
         "settlement": "helstrom",
         "at_building": null,
         "at_building_name": "Helstrom witness post",
-        "pos": [
-          -5091.5,
-          6,
-          -3593.5
-        ],
-        "yaw": 185,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was -5091.5, -3593.5 — 9727 m from helstrom's own centre at 2262.5, 2773.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -212,13 +182,7 @@
         "settlement": "lilmoth",
         "at_building": null,
         "at_building_name": "Lilmoth witness post",
-        "pos": [
-          4910.2,
-          2,
-          -592.2
-        ],
-        "yaw": 222,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was 4910.2, -592.2 — 6015 m from lilmoth's own centre at 2766.5, 5027.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -243,13 +207,7 @@
         "settlement": "lilmoth",
         "at_building": null,
         "at_building_name": "Lilmoth witness post",
-        "pos": [
-          4911.9,
-          2,
-          -590.9
-        ],
-        "yaw": 259,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was 4911.9, -590.9 — 6014 m from lilmoth's own centre at 2766.5, 5027.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -274,13 +232,7 @@
         "settlement": "stormhold",
         "at_building": null,
         "at_building_name": "Stormhold witness post",
-        "pos": [
-          863.6,
-          4,
-          -4189.6
-        ],
-        "yaw": 296,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was 863.6, -4189.6 — 5120 m from stormhold's own centre at 2171.5, 761 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -305,13 +257,7 @@
         "settlement": "helstrom",
         "at_building": null,
         "at_building_name": "Helstrom witness post",
-        "pos": [
-          -5084.7,
-          6,
-          -3588.3
-        ],
-        "yaw": 333,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was -5084.7, -3588.3 — 9719 m from helstrom's own centre at 2262.5, 2773.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -336,13 +282,7 @@
         "settlement": "helstrom",
         "at_building": null,
         "at_building_name": "Helstrom witness post",
-        "pos": [
-          -5083.0,
-          6,
-          -3587.0
-        ],
-        "yaw": 10,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was -5083.0, -3587.0 — 9717 m from helstrom's own centre at 2262.5, 2773.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -367,13 +307,7 @@
         "settlement": "helstrom",
         "at_building": null,
         "at_building_name": "Helstrom witness post",
-        "pos": [
-          -5081.3,
-          6,
-          -3585.7
-        ],
-        "yaw": 47,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was -5081.3, -3585.7 — 9714 m from helstrom's own centre at 2262.5, 2773.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -398,13 +332,7 @@
         "settlement": "helstrom",
         "at_building": null,
         "at_building_name": "Helstrom witness post",
-        "pos": [
-          -5079.6,
-          6,
-          -3584.4
-        ],
-        "yaw": 84,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was -5079.6, -3584.4 — 9712 m from helstrom's own centre at 2262.5, 2773.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -429,13 +357,7 @@
         "settlement": "blackrose",
         "at_building": null,
         "at_building_name": "Blackrose witness post",
-        "pos": [
-          -3290,
-          5,
-          5890
-        ],
-        "yaw": 90,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was -3290, 5890 — 5391 m from blackrose's own centre at 1905.5, 4450 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -460,13 +382,7 @@
         "settlement": "lilmoth",
         "at_building": null,
         "at_building_name": "Lilmoth witness post",
-        "pos": [
-          4891,
-          2,
-          -589
-        ],
-        "yaw": 90,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was 4891, -589 — 6005 m from lilmoth's own centre at 2766.5, 5027.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     },
     {
@@ -491,13 +407,7 @@
         "settlement": "helstrom",
         "at_building": null,
         "at_building_name": "Helstrom witness post",
-        "pos": [
-          -5088,
-          6,
-          -3588
-        ],
-        "yaw": 90,
-        "note": "W1-18: placed source for a declared reveal route."
+        "note": "W1-18: placed source for a declared reveal route. POS AND YAW REMOVED 2026-08-16 (F10 r13): the authored pos was -5088, -3588 — 9721 m from helstrom's own centre at 2262.5, 2773.5 (game/data/world/pois.json), i.e. open water outside the province's inhabited extent. With no `pos`, engine.js:populateSettlement's door-derived placement puts this person on a real doorstep of a real building in their own town, which is the same derivation tools/world/build-giver-posts.mjs uses for the 39 quest-giver posts."
       }
     }
   ]
