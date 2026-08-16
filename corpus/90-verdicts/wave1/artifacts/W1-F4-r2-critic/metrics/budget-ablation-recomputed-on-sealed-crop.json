@@ -1,0 +1,62 @@
+{
+ "what": "THE ROUND'S HEADLINE LIGHT-BUDGET ABLATION, RECOMPUTED ON MY OWN CODE FROM ITS OWN PNGs. The sealed-crop figures the status file LEADS WITH are in NONE of the round's twelve banked metric files \u2014 those carry `full` only, and the crop numbers live in `reports/`, which HAZARDS \u00a79 says never reaches the remote. Recomputed here while those PNGs still exist, so the round's headline is reproducible off this box. It was not before.",
+ "tool": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/crop-delta.mjs",
+ "metric": "mean |delta| rgb against the arm's own `base`, sealed judged crop [300,150,512,512] and full frame",
+ "arms": {
+  "BEFORE \u2014 landed r1": {
+   "sealed_crop": {
+    "base_recheck": 1.8557,
+    "env_off": 8.1013,
+    "fill_off": 2.0384,
+    "hemi_off": 2.1774,
+    "key_off": 26.3266,
+    "shadows_off_u": 2.4906
+   },
+   "full_frame": {
+    "base_recheck": 2.5028,
+    "env_off": 8.4023,
+    "fill_off": 2.4074,
+    "hemi_off": 2.5208,
+    "key_off": 25.727,
+    "shadows_off_u": 2.8511
+   }
+  },
+  "SHIPPED \u2014 r2 horizon": {
+   "sealed_crop": {
+    "base_recheck": 1.8384,
+    "env_off": 8.2627,
+    "fill_off": 2.0315,
+    "hemi_off": 2.1789,
+    "key_off": 26.2835,
+    "shadows_off_u": 2.4755
+   },
+   "full_frame": {
+    "base_recheck": 2.5025,
+    "env_off": 8.613,
+    "fill_off": 2.4176,
+    "hemi_off": 2.5384,
+    "key_off": 25.7433,
+    "shadows_off_u": 2.8493
+   }
+  },
+  "REFUSED \u2014 horizon + env 0.55": {
+   "sealed_crop": {
+    "base_recheck": 1.7816,
+    "env_off": 12.4488,
+    "fill_off": 1.9613,
+    "hemi_off": 2.1025,
+    "key_off": 25.2872,
+    "shadows_off_u": 2.3859
+   },
+   "full_frame": {
+    "base_recheck": 2.582,
+    "env_off": 13.0276,
+    "fill_off": 2.4304,
+    "hemi_off": 2.5145,
+    "key_off": 24.5374,
+    "shadows_off_u": 2.8729
+   }
+  }
+ },
+ "verdict": "EVERY FIGURE REPRODUCES EXACTLY. BEFORE arm, sealed crop: key_off 26.3266, env_off 8.1013, hemi_off 2.1774, fill_off 2.0384, noise floor (base_recheck) 1.8557 \u2014 the round's five numbers to four decimals. The FULL FRAME, which is what is actually banked, says it harder: hemi_off 2.5208 and fill_off 2.4074 against a floor of 2.5028, i.e. AT OR BELOW it. THE MEASUREMENT IS SOUND. What does not follow from it is the round's sentence \u2014 see light-census-visible-vs-scenewide.json: the hemisphere it switched off is 0.37107 in the frame, not 5.0011, and `unresolvable at 0.371` is not `not a lever` (at 4x the same two lights are worth +1.52 deg)."
+}

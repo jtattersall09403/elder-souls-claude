@@ -1,0 +1,408 @@
+{
+ "at": "2026-08-16T00:03:10.096Z",
+ "what": "THE ARM THAT DECIDES THE ROUND'S RULING, WITH THE S59 GUARD APPLIED TO IT. `x1-moonkey` reached 17.07 deg but dropped mean Yp 8.7% (lit) and 24% (shadow), because the moon colour carries Rec.709 luminance 0.6520 against the shipped key's 0.9441. Here the key's INTENSITY is scaled by 1.4479 so its luminous output is unchanged, and S60 clause (a)'s three companion arms are captured INSIDE that configuration rather than inherited from the shipped one.",
+ "UPPER_BOUND_WARNING": "PAGE-SIDE. `bakeEnvironmentProbe()` bakes from the `uSunColour` UNIFORM, which a page-side light recolour does not touch, so in source a bluer key would also blue the probe's sun lobe and pull the shadow quartile toward the lit one. EVERY hue figure here is an UPPER BOUND on the source change. That is why this verdict reports the round's ruling as NOT SUSTAINED rather than as OVERTURNED, and why the remedy insists on a source arm.",
+ "key_luminance_compensation": {
+  "shipped_key": [
+   1,
+   0.94,
+   0.82
+  ],
+  "moon_key": [
+   0.549,
+   0.663,
+   0.847
+  ],
+  "rec709": [
+   0.9440919999999999,
+   0.6520484
+  ],
+  "factor": 1.4479
+ },
+ "served": {
+  "game_dir": "/home/user/elder-souls-claude/game",
+  "sha256_16": {
+   "src/render/lib/lighting-recipes.js": "241690686dca41ac",
+   "src/render/sky.js": "5fd64d937c3c06df"
+  }
+ },
+ "renderer": "SOFTWARE",
+ "resolution": [
+  1920,
+  1080
+ ],
+ "bar": "RI-VIS03 exterior_daylight: hue_offset >= 15 (HARD FAIL < 6); retention >= 0.60 (hard fail < 0.30); C_shadow >= 6; C_local_med >= 0.045 (fail < 0.025). S60 clause (a): lit_ratio >= 2.0. S64: sealed judged crop is the domain, full frame alongside.",
+ "run_noise_floor_deg": 0.17,
+ "M6_sealed_judged_crop": [
+  {
+   "file": "reports/f4r2c/matched/y0-base.png",
+   "hue_offset_deg": 7.35,
+   "hue_shadow_deg": 109.46,
+   "hue_lit_deg": 102.11,
+   "retention": 0.6805,
+   "C_shadow": 12.379,
+   "C_local_med": 0.0245,
+   "mean_Yp_shadow": 0.1714,
+   "mean_Yp_lit": 0.394
+  },
+  {
+   "file": "reports/f4r2c/matched/y0-base-recheck.png",
+   "hue_offset_deg": 7.52,
+   "hue_shadow_deg": 109.3,
+   "hue_lit_deg": 101.78,
+   "retention": 0.6771,
+   "C_shadow": 12.69,
+   "C_local_med": 0.0249,
+   "mean_Yp_shadow": 0.164,
+   "mean_Yp_lit": 0.3898
+  },
+  {
+   "file": "reports/f4r2c/matched/y1-moonkey-lummatched.png",
+   "hue_offset_deg": 17.11,
+   "hue_shadow_deg": 131.27,
+   "hue_lit_deg": 114.17,
+   "retention": 0.6759,
+   "C_shadow": 8.935,
+   "C_local_med": 0.0245,
+   "mean_Yp_shadow": 0.1683,
+   "mean_Yp_lit": 0.3906
+  },
+  {
+   "file": "reports/f4r2c/matched/y2-moonkey-warmamb-amb400-lummatched.png",
+   "hue_offset_deg": 16.42,
+   "hue_shadow_deg": 121.09,
+   "hue_lit_deg": 104.67,
+   "retention": 0.7747,
+   "C_shadow": 10.694,
+   "C_local_med": 0.0268,
+   "mean_Yp_shadow": 0.1815,
+   "mean_Yp_lit": 0.4115
+  }
+ ],
+ "S60_clause_a_measured_INSIDE_the_y1_configuration": {
+  "configuration": "y1-moonkey-lummatched \u2014 key recoloured to sky.js:644 0x8ca9d8 with intensity x1.4478 so Rec.709 luminous output is unchanged",
+  "bar": "S60 clause (a): lit_ratio >= 2.0. S64: the sealed judged crop is the domain; the full frame is reported alongside.",
+  "sealed_judged_crop": {
+   "tau1": {
+    "lit_fraction": 0.93277,
+    "lit_key": 28.2876,
+    "lit_env": 8.1249,
+    "lit_ratio": 3.4816,
+    "cast_shadow_area": 0.06723
+   },
+   "tau2": {
+    "lit_fraction": 0.94032,
+    "lit_key": 28.164,
+    "lit_env": 8.1591,
+    "lit_ratio": 3.4518,
+    "cast_shadow_area": 0.05968
+   },
+   "tau4": {
+    "lit_fraction": 0.9487,
+    "lit_key": 28.0478,
+    "lit_env": 8.1916,
+    "lit_ratio": 3.424,
+    "cast_shadow_area": 0.0513
+   },
+   "tau8": {
+    "lit_fraction": 0.95771,
+    "lit_key": 27.9484,
+    "lit_env": 8.2153,
+    "lit_ratio": 3.402,
+    "cast_shadow_area": 0.04229
+   },
+   "tau16": {
+    "lit_fraction": 0.96871,
+    "lit_key": 27.7953,
+    "lit_env": 8.2487,
+    "lit_ratio": 3.3697,
+    "cast_shadow_area": 0.03129
+   }
+  },
+  "full_frame": {
+   "tau1": {
+    "lit_fraction": 0.91593,
+    "lit_key": 27.2643,
+    "lit_env": 8.3387,
+    "lit_ratio": 3.2696,
+    "cast_shadow_area": 0.08407
+   },
+   "tau2": {
+    "lit_fraction": 0.93135,
+    "lit_key": 27.2806,
+    "lit_env": 8.3989,
+    "lit_ratio": 3.2481,
+    "cast_shadow_area": 0.06865
+   },
+   "tau4": {
+    "lit_fraction": 0.94673,
+    "lit_key": 27.2703,
+    "lit_env": 8.4705,
+    "lit_ratio": 3.2194,
+    "cast_shadow_area": 0.05327
+   },
+   "tau8": {
+    "lit_fraction": 0.96019,
+    "lit_key": 27.2389,
+    "lit_env": 8.5613,
+    "lit_ratio": 3.1817,
+    "cast_shadow_area": 0.03981
+   },
+   "tau16": {
+    "lit_fraction": 0.9733,
+    "lit_key": 27.1446,
+    "lit_env": 8.6383,
+    "lit_ratio": 3.1424,
+    "cast_shadow_area": 0.0267
+   }
+  }
+ },
+ "clause_b_note": "S60 clause (b) (cast-shadow area does not fall) is NOT MEASURED for this configuration and I am recording that rather than comparing across runs. It needs a `shadows_off` arm on the CONTROL in the SAME process, which this battery does not carry \u2014 its `y1-shadows_off` is the y1 configuration's own. Cross-run area comparison is exactly the mistake HAZARDS \u00a712/\u00a722 warn about. Round 3 must capture both.",
+ "readbacks": [
+  {
+   "arm": "y0-base",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.94,
+     0.82
+    ],
+    "sunDirUnit": [
+     0.7203,
+     0.5549,
+     0.4162
+    ],
+    "sunElevationDeg": 33.704,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "sha256": "37d7838de3026a24d43d2ab0279f5f2a455f789f863b9f99caaf9484a26553b9"
+  },
+  {
+   "arm": "y1-moonkey-lummatched",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 9.12177,
+    "sunColour": [
+     0.549,
+     0.663,
+     0.847
+    ],
+    "sunDirUnit": [
+     0.7202,
+     0.555,
+     0.4162
+    ],
+    "sunElevationDeg": 33.711,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "sha256": "deed118b39182091e4f4704e12b6b230f83c210c69c49f5993d748fd389888c6"
+  },
+  {
+   "arm": "y1-shadows_off",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 9.12177,
+    "sunColour": [
+     0.549,
+     0.663,
+     0.847
+    ],
+    "sunDirUnit": [
+     0.7202,
+     0.555,
+     0.4163
+    ],
+    "sunElevationDeg": 33.711,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "sha256": "9eea6b5eb2723166aad20cd64febcb46c1e5b98ff1ead9966e03c1e2fe3bc2af"
+  },
+  {
+   "arm": "y1-key_off",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 0,
+    "sunColour": [
+     0.549,
+     0.663,
+     0.847
+    ],
+    "sunDirUnit": [
+     0.7201,
+     0.5551,
+     0.4163
+    ],
+    "sunElevationDeg": 33.718,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "sha256": "b97b197093178b8983c63c4f232e211dbd6233394e6895f498832a0622a44d61"
+  },
+  {
+   "arm": "y1-env_off",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 9.12177,
+    "sunColour": [
+     0.549,
+     0.663,
+     0.847
+    ],
+    "sunDirUnit": [
+     0.7201,
+     0.5551,
+     0.4164
+    ],
+    "sunElevationDeg": 33.718,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "sha256": "289b25c6452641c5a981473f4552d46159425eeacc581f560e0a177c8bc3bc5b"
+  },
+  {
+   "arm": "y2-moonkey-warmamb-amb400-lummatched",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 9.12177,
+    "sunColour": [
+     0.549,
+     0.663,
+     0.847
+    ],
+    "sunDirUnit": [
+     0.72,
+     0.5552,
+     0.4164
+    ],
+    "sunElevationDeg": 33.724,
+    "hemiTotalSceneWide": 6.1143,
+    "hemiSceneRoot": 1.48428,
+    "hemiRootColour": [
+     1,
+     0.7,
+     0.4
+    ],
+    "ambientTotalSceneWide": 1.0277,
+    "ambientRootColour": [
+     1,
+     0.7,
+     0.4
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "sha256": "efdf79784d58560bedffbace177056f30b24ba1e5fdd1d75f22ebab0d9a2560d"
+  },
+  {
+   "arm": "y0-base-recheck",
+   "liveness": "LIVE",
+   "readback": {
+    "sunIntensity": 6.3,
+    "sunColour": [
+     1,
+     0.94,
+     0.82
+    ],
+    "sunDirUnit": [
+     0.7199,
+     0.5552,
+     0.4164
+    ],
+    "sunElevationDeg": 33.724,
+    "hemiTotalSceneWide": 5.0011,
+    "hemiSceneRoot": 0.37107,
+    "hemiRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "ambientTotalSceneWide": 0.4669,
+    "ambientRootColour": [
+     0.677,
+     0.79,
+     0.944
+    ],
+    "environmentIntensity": 0.35,
+    "hasEnvironment": true,
+    "cfgError": null
+   },
+   "sha256": "127887115078baa683ccfe6413cd299d471a072f0ec3400210456424e8b7e36f"
+  }
+ ]
+}
