@@ -2,13 +2,13 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-16T03:09:52.655Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-16T03:25:22.592Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
 | reference items (`corpus/**/RI-*.md`) | 152 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
-| open gaps (`GAP-LEDGER.json`) | 92 | 0 |
+| open gaps (`GAP-LEDGER.json`) | 100 | 6 |
 | proposed roadmap items | 69 | — |
 
 ## Proposed items
@@ -37,7 +37,7 @@
 | `F7` | The water surface | RI-WLD10 | — | 2 (2) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
 | `F8` | The building kit and settlement silhouette | RI-WLD14 | — | 1 (1) | W1-30-LIBRARY W1-30 W1-30E | built_below_bar | V8 |
 | `F9` | Interiors and practical light | RI-STL01 | — | 1 (1) | W1-30 W1-30G | built_below_bar | partial:V4 |
-| `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 5 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
+| `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 7 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
 | `F11` | Animation quality | RI-WPN05 RI-VIS08 | — | 1 (1) | W1-30 W1-30D | built_below_bar | V7 |
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
@@ -210,7 +210,7 @@
 | `RI-WLD07` | 50-world | neutral | W8 | 8 | 6 | judged_at_or_above_bar |
 | `RI-WLD08` | 50-world | morrowind | W10 | 7 | 7 | judged_at_or_above_bar |
 | `RI-WLD09` | 50-world | morrowind | W11 | 3 | 6 | judged_at_or_above_bar |
-| `RI-WLD10` | 50-world | split | W9 F7 | 6 | 5 | judged_below_bar |
+| `RI-WLD10` | 50-world | split | W9 F7 | 7 | 5 | judged_below_bar |
 | `RI-WLD11` | 50-world | morrowind | W9 | 4 | 3 | judged_below_bar |
 | `RI-WLD12` | 50-world | morrowind | W2 | 1 | 5 | judged_below_bar |
 | `RI-WLD13` | 50-world | morrowind | W5 | 5 | 5 | judged_below_bar |
@@ -227,8 +227,8 @@
 | `RI-LOR08` | 60-lore | morrowind | P5 | 0 | — | never_judged |
 | `RI-VIS01` | 70-visual | neutral | I3 | 0 | — | never_judged |
 | `RI-VIS02` | 70-visual | modern-fidelity | I5 | 1 | 0 | judged_below_bar |
-| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 5 | 6 | judged_at_or_above_bar |
-| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 9 | 8 | judged_at_or_above_bar |
+| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 6 | 6 | judged_at_or_above_bar |
+| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 10 | 8 | judged_at_or_above_bar |
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 5 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
@@ -308,6 +308,7 @@
 | `GAP-W1-character-surface-is-assembled-from-primitives-not-built` | blocking | `render.art.character` | F10 |
 | `GAP-W1-combat-exemplar-has-no-danger` | blocking | `combat.frames.timing` | G7 I1 |
 | `GAP-W1-consumption-sweep-tripwire-is-a-name-grep` | major | `combat.camera.behaviour` | I4 |
+| `GAP-W1-container-headers-print-across-the-first-row` | blocking | `ui.menu.inventory` |  |
 | `GAP-W1-creation-is-an-api-not-a-scene` | blocking | `journey.chargen.diegesis` | C1 |
 | `GAP-W1-crime-enforcement-is-a-free-win` | blocking | `crime.guard.response` | C8 |
 | `GAP-W1-deploy-instruments-point-at-the-tester-not-the-player` | major | `platform.load.ttfp` | T3 |
@@ -315,8 +316,14 @@
 | `GAP-W1-enemy-weapon-volume-still-cannot-reach-and-the-body-pays-its-damage` | major | `combat.hitbox.sweep` | G2 |
 | `GAP-W1-f1-actor-body-shader-does-not-link` | blocking | `render.fidelity.character` | F1 F10 |
 | `GAP-W1-F10-contrapposto-lifted-every-character-off-the-ground` | major | `render.art.character` | F10 |
+| `GAP-W1-F10-the-crowd-breathes-and-there-are-still-fourteen-people-in-it` | major | `render.art.character` | F10 |
+| `GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves` | major | `render.art.character` | F10 |
 | `GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins` | major | `render.art.character` | F10 |
 | `GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour` | blocking | `render.fidelity.ibl` | F4 F3 |
+| `GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero` | blocking | `render.fidelity.ibl` |  |
+| `GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank` | blocking | `render.fidelity.water` |  |
+| `GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k` | blocking | `visual.renderer.water` |  |
+| `GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader` | blocking | `visual.renderer.water` |  |
 | `GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence` | blocking | `visual.renderer.water` | F7 |
 | `GAP-W1-faction-ladders-are-bricked-up-at-rank-5` | blocking | `quests.faction.rankgating` | P7 |
 | `GAP-W1-faction-ladders-are-doors-onto-empty-corridors` | blocking | `quests.faction.escalation` | P7 P8 |
@@ -325,6 +332,7 @@
 | `GAP-W1-input-calibration-outlives-its-pad-on-disconnect` | major | `input.gamepad.lifecycle` | T2 |
 | `GAP-W1-input-discoverability-unmeasured` | major | `input.discoverability` | T2 |
 | `GAP-W1-interior-door-draws-nothing` | blocking | `world.interior.named` | W5 |
+| `GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar` | blocking | `ui.style.diegesis` |  |
 | `GAP-W1-library-martial-single-hand-fingerprint` | major | `lore.register` | P5 P4 |
 | `GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side` | critical | `ui.readables` | P4 |
 | `GAP-W1-library-unreachable-contradiction-pairs` | blocking | `?` | P4 P5 |
