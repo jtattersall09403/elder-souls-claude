@@ -211,6 +211,79 @@ export function knownLightingRecipes() { return [...REGISTRY.keys()].sort(); }
 //
 // REVERT IN ONE STEP: set `env` back to 0.35 and `envGroundBounce` back to 0.38 here, and restore
 // the three `hor` day-end constants in `sky.js` to 0.760 / 0.790 / 0.700.
+//
+// =============================================================================================
+// F4 ROUND 4 — `sky` 0.315 -> 1.26 AND `fill` 0.225 -> 0.90. THIS IS THE ROUND'S ONE CHANGE HERE
+// AND IT IS NOT ABOUT HUE. IT CLOSES AN UNCONDITIONAL HARD FAIL THAT HAS BEEN IN THE BUILD SINCE
+// ROUND 1 AND THAT NO F4 VERDICT HAD EVER RECORDED.
+//
+// `RI-VIS03` M6, in the item's own words: *"Fail: `retention < 0.30` -> CRUSHED BLACKS / NO
+// AMBIENT / NO IBL. In a modern render the shadowed quarter is lit by the environment and still
+// shows material structure; ours is a silhouette."* Unconditional — not the `§3-D3` clause that
+// only fires when cast-shadow area rises. `SCORING.md` §1.1 caps the item at 2 while it stands,
+// which is why three rounds of colour work could not move the score.
+//
+// Measured on the shipped tree by this round, at pair03's sealed judged crop (`retention` 0.2324),
+// and on the ROUND-1 BUILDER'S OWN BANKED CROP by the round-3 critic (0.2321): round 1 pushed this
+// window through the 0.30 line when it cut `sky` 0.42 -> 0.315 and `fill` 0.30 -> 0.225 and `env`
+// 1.00 -> 0.35, and it has not moved since. The round-2 note above is right that those two cuts
+// "bought nothing" on `hue_offset` — and it did not ask what they COST somewhere else.
+//
+// WHY THESE TWO TERMS AND NOT `env`, WHICH IS WHERE 83% OF THE BRIGHTNESS IS. Measured offline
+// first, on round 3's own banked pair03 frames, so the sweep was aimed rather than guessed:
+// in that crop's darkest quartile the KEY owns 0.04% of the brightness, the ENVIRONMENT PROBE owns
+// 83.2%, and the hemisphere + fill together own 16.8% — 1.75 of 255. On that decomposition alone
+// the probe is obviously the lever. **The ablation says it is not**, and this is the round's main
+// finding. Ten page-side arms at pair03, two processes, controls bit-identical across both:
+//
+//   arm                 mean Yp shadow    C_shadow_med   C_local_med   retention   C_shadow
+//   a0-control            0.0409            0.005964       0.025657      0.2324  HARD    3.33
+//   a4-env2               0.0721            0.008290       0.030285      0.2737  HARD    5.89
+//   a10-hemi1-fill8       0.0680            0.010492       0.027823      0.3771          6.44
+//   a2-hemi4-fill4        0.0755            0.011587       0.027983      0.4141          7.50
+//   a11-hemi5-fill2       0.0754            0.011565       0.027967      0.4135          7.48
+//   a9-hemi8-fill1        0.0923            0.014149       0.029389      0.4814         10.19
+//   a3-hemi8-fill8        0.1146            0.017837       0.032617      0.5469         13.07
+//
+// **`env2` and `hemi4-fill4` reach the SAME shadow brightness (0.0721 against 0.0755) and land on
+// OPPOSITE SIDES OF THE HARD FAIL** — 0.2737 against 0.4141. So `retention` is not a function of
+// how bright the shadow is. Read as retention gained per unit of shadow luminance gained, the
+// hemisphere and the fill buy **5.25, 5.34 and 5.25** (arms a2, a10, a11) and the probe buys
+// **1.32**: the two lamp terms are ~4x more efficient than the probe, and — the second thing I got
+// wrong — they are INDISTINGUISHABLE FROM EACH OTHER, so the normal-dependence of a
+// `HemisphereLight` is NOT the mechanism. The numerator/denominator columns are published above
+// rather than a story about them, because S63 forbids narrating a mechanism I have not ablated,
+// and I have ablated which term moves the number and not why.
+//
+// AND THE TERM THAT MOVES IT IS THE ONE THE ACCEPTANCE CANNOT SEE. `RI-VIS04` §2-D2 step 1 found
+// that 0.558 of ambient intensity sits in NEITHER arm of `S60` clause (a) — which compares
+// `key_off` against `env_off`. So raising `sky`/`fill` leaves both arms of the acceptance
+// untouched by construction, while raising `env` moves one of them: at pair01 clause (a) has 3.52
+// on the crop, and `env x2` would put it at ~1.76, under the bar of 2.0. The lever that fixes the
+// hard fail is precisely the lever the acceptance is blind to. That is `S59`'s unpaired-metric
+// family for the fourth time and it is named here rather than worked around.
+//
+// WHY x4 AND NOT x8. x8 reaches `retention` 0.5469 — still short of the 0.60 PROFILE minimum,
+// which is a SOFT fail — for +44% mean frame luminance. x4 clears the HARD fail with 38% margin
+// (0.4141 against 0.30), clears `C_shadow`'s profile minimum outright (7.50 against 6), and costs
+// +20% (mean Yp of the foreground 0.1554 -> 0.1863). Buying a soft fail with a 44% exposure lift
+// is S59's trade and it is refused. `retention` between 0.30 and 0.60 is recorded as a REMAINING
+// SOFT FAIL, not as a pass.
+//
+// NOT FLATTENING, MEASURED RATHER THAN HOPED. The fear round 1 recorded — "the shadow contrast
+// washed out of it" — predicts `C_local_med` FALLING. It rises: 0.025657 -> 0.027983 at x4 and
+// -> 0.032617 at x8. `M6 hue_offset` at this window holds at 24.20 against a shipped 22.70, i.e.
+// the one applicable, passing hue reading in the project is preserved and slightly improved.
+//
+// SCOPE. `overcast-flat` (sky 0.95, fill 0.70) and `storm` (0.70, 0.55) are NOT touched: they are
+// already 2-3x these old values, overcast measures `retention` 0.4657 (a soft fail, not the hard
+// one), and storm has never been photographed by anyone. `dusk-canopy` is not touched either. An
+// unmeasured change is not a kept change.
+//
+// REVERT IN ONE STEP: `sky: 0.315, fill: 0.225` on this line. Nothing else moves with it.
+// TRIPWIRE: if `M6 retention` at pair03's sealed crop is ever < 0.30 again, this change has been
+// reverted or overridden, and `f4r4-m6.mjs` reports it in one number.
+// =============================================================================================
 registerLightingRecipe('noon-marsh', variantOf('exterior', {
   // F4 ROUND 3 LEFT THIS AT 0.00 AFTER MEASURING IT AT 1.00, AND THE ZERO IS THE RESULT. At 1.00
   // the sealed judged crop reads pair01 7.35 -> 15.69 (over the 15 minimum for the first time),
@@ -218,7 +291,7 @@ registerLightingRecipe('noon-marsh', variantOf('exterior', {
   // price of the only one that already passed, and on the full frame two passing windows became
   // none. The long note at the lerp in `sky.js` `apply()` carries the ablation and the reason.
   // Set it to 1.00 to re-run the arm; nothing else has to change.
-  key: 3.00, keyCool: 0.00, sky: 0.315, fill: 0.225, env: 0.35, envGroundBounce: 0.38,
+  key: 3.00, keyCool: 0.00, sky: 1.26, fill: 0.90, env: 0.35, envGroundBounce: 0.38,
   fog: { extinction: 0.90, height: 1.0, inscatter: 0.10 }, exposure: 1.0,
 }));
 
