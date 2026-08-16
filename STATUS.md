@@ -12,8 +12,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
 
 - **Judging the sun, round two** — the colour fix did not work, and the builder thinks the problem
   isn't the light at all.
-- **Characters, round eleven** — the crowd. Every NPC in the game stands in one identical pose, and a
-  town has 14 different bodies between 408 people.
+- **Judging the crowd** — 408 people used to share one pose; now 392 stand differently, and nobody has
+  managed to photograph it.
 - **Judging the water, round three** — the two missing pieces are built, and the depth colouring was
   running backwards.
 - **Judging the container screen** — round seven closed the density regression and found a third
@@ -111,20 +111,19 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
 - **The body is photographed on real hardware and the change is visible.** Eight angles, before and
   after, on an RTX A4500 — the picture the last four judgements were written against. The waist reads
   at player distance.
-- **The player was standing like a shop mannequin — fixed for the player, and NOT for anybody else.**
-  Measured on the pose the game actually draws: shoulder tilt 0.3°, **hip tilt exactly 0.000°**, and
-  frames two seconds apart were the identical stand. A real person's weight sits on one leg. **I told
-  you this moved all 408 NPCs. It does not — it moves the player only**, and the next round found why:
-  the code that poses townspeople never reads the stance layer at all, so **every NPC in the game
-  stands in one identical rest pose**. That is now the biggest single reason a town reads as a crowd of
-  copies, and it is the next job.
-- **The stance was photographed, and it lifted every character in the game off the floor.** Rolling the
-  hips floated one foot; that was levelled properly, but it levelled them **8.9 mm too high**, and the
-  builder's reason for leaving it there turned out to be wrong — the foot-conform code it trusted is a
-  *terrain difference* term that is exactly zero on flat ground, so it cannot absorb a constant. In the
-  running game on real hardware: **frames of the idle loop where both soles are clear of the ground go
-  from 24 of 96 to 68 of 96**, largest gap 2 mm → 11 mm. All 409 characters hover slightly. Being fixed
-  now; the remedy is one line of data.
+- **Everybody in the game stood in one identical pose. Now 392 of 408 stand differently.** Measured on
+  the pose the game actually draws, every NPC had shoulder and hip tilt of **exactly 0.000°** — nobody
+  put their weight on one leg, which is the first thing that makes a crowd read as people. In the
+  running game at Lilmoth, **60 of 60 townspeople now clear the bar** (which asks for 90%), each with a
+  different stance seeded from their own identity so the same person always stands the same way.
+  **Nobody has managed to photograph it.** Four camera attempts failed for one reason, and it is a
+  problem beyond this round: **the camera and the townspeople are being stepped on two different
+  clocks, and nothing joins them** — so the settlement shots come back with no legible people in them.
+  A judge is now trying to get the picture or prove the harness can't.
+- **A side-effect of that pose, found and closed: it lifted everyone 8.9 mm off the floor.** In the
+  running game, frames where both soles were clear of the ground went **24 of 96 → 68 of 96**. Fixed,
+  photographed, and now solved numerically per person — worst planting error across all 408 people is
+  effectively zero.
 - **The eye had a pupil worth literally zero pixels — now it has one, and it reads in conversation.**
   The pupil existed the whole time and rendered **0 pixels at every camera angle on 4 of 5 face
   shapes**, and the cause was not the eye: **the snout was in front of it.** Moved 6 mm out and 12 mm
