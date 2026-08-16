@@ -447,6 +447,133 @@ if (args.live) {
   const f1 = await readFrame();
   await call('stepFrames', 37);
   const f2 = await readFrame();
+
+  // ── PICTURES, because `CLAUDE.md`'s character directive says statistics are not enough ──────
+  //
+  // *"Builders and critics both look at our actual game, in motion. Orbit the camera around the
+  // character, multiple angles. Stills are not enough."* Sixty distinct pose signatures is a
+  // number; whether a market square reads as people or as a chorus line is a look. Three bearings
+  // around the densest knot of the crowd, whole figures in frame, UI off, both arms shot by the
+  // SAME tool (HAZARDS §22: a control clone must run its own copy, so this file is copied into
+  // the clone and run from there — the GAME is the only thing that differs).
+  //
+  // SOFTWARE RENDERER, and that is declared rather than hidden: `W1-30-EVIDENCE` §4 admits
+  // SwiftShader for geometry, layout, composition and census and refuses it for antialiasing,
+  // bloom, AO, IBL or any appearance claim. "Do these people stand in different postures" is a
+  // geometry and composition question and is inside that admission. Nothing here claims a look.
+  const shots = [];
+  if (args.shots) {
+    const pts = (f1.npcs || []).map((r) => r.group_xz).filter(Boolean);
+    if (pts.length) {
+      // The densest knot, not the mean: the mean of a scattered settlement lands in a wall.
+      let best = pts[0]; let bestN = -1;
+      for (const p of pts) {
+        const n = pts.filter((q) => Math.hypot(q[0] - p[0], q[1] - p[1]) < 9).length;
+        if (n > bestN) { bestN = n; best = p; }
+      }
+      const near = pts.filter((q) => Math.hypot(q[0] - best[0], q[1] - best[1]) < 9);
+      const cx = near.reduce((s, q) => s + q[0], 0) / near.length;
+      const cz = near.reduce((s, q) => s + q[1], 0) / near.length;
+      const gy = await g.page.evaluate(([x, z]) => {
+        const R = window.__ENGINE && window.__ENGINE.renderer;
+        const v = R && (R.groundResolver ? R.groundResolver(x, z) : (R.groundAt ? R.groundAt(x, z, undefined, R.cell) : 0));
+        return Number.isFinite(v) ? v : 0;
+      }, [cx, cz]);
+      // ── SCENE SPACE IS NOT WORLD SPACE, AND THE FIRST THREE FRAMES THIS TOOL TOOK WERE OF AN
+      // EMPTY SKY BECAUSE OF IT. The renderer draws a rebased scene — at the Lilmoth stand the
+      // player's own mesh sits at scene (0, 0) while the simulation has it at world (2785.6,
+      // 5047) — but `__HARNESS.camera({pos, look})` is an ENGINE call and takes WORLD metres. A
+      // camera placed at the scene centroid was therefore parked 3.9 km from the crowd, and the
+      // frame it returned was a horizon: a picture of nothing that would have passed any
+      // "the file is 2 MB and not uniform" liveness check. Solved by measuring the offset off the
+      // one object whose position is known in both frames — the player — rather than assuming
+      // the two spaces coincide.
+      // The offset is MEASURED off objects that exist in both spaces, not derived from the camera.
+      // `__HARNESS.listNPCs()` returns each person's WORLD position; the drawn mesh's own
+      // `group.position` is its SCENE position and its name is `npc:<eid>`. Every matched pair
+      // gives the same difference, so the agreement across pairs is itself the check — an offset
+      // taken from the gameplay camera's `look` was wrong by the camera's own look-ahead and put
+      // the subject out of frame, which is how this arrived.
+      // THE OFFSET, AND THE TWO WRONG ANSWERS IT TOOK TO FIND IT — recorded because the next
+      // person to point a camera in this engine will hit the same wall.
+      //   • `__HARNESS.listNPCs()` returns positions in the SAME frame as `group.position`, so the
+      //     difference between them is (0, ·, 0) over all 60 matched pairs. That looks like proof
+      //     the frames coincide and it is not: both are the drawn cell's frame.
+      //   • `__HARNESS.teleport` and `__HARNESS.camera` take the SIMULATION's frame, in which the
+      //     Lilmoth stand is (2785.6, 5047) while the same people are drawn at (≈0, ≈0). A
+      //     teleport computed off the drawn positions put the player in open sea, photographed.
+      // So the offset is taken from the one pair whose value is known in both frames by
+      // construction — the player, teleported to a stand this tool chose — and the vertical from
+      // the gameplay camera's own look height above the player's drawn ground.
+      const state = await call('camera', {});
+      const cam = state && state.__ok ? state.__ok : null;
+      const pScene = f1.player && f1.player.group_xz ? f1.player.group_xz : [0, 0];
+      const pGround = f1.player && Number.isFinite(f1.player.ground) ? f1.player.ground : 0;
+      const OFF = [STAND.x - pScene[0], cam && cam.look ? (cam.look[1] - (pGround + 1.0)) : 0, STAND.z - pScene[1]];
+      const offSpread = null;
+      const diffs = [];
+      await call('setUIVisible', false);
+      // ── WHAT THE FRAMES ARE OF, and this is the second thing this run had to correct. An orbit
+      // around the crowd's centroid put the camera inside a warehouse twice out of three — Lilmoth
+      // is a dense stilt town and an unoccluded 13 m standoff over a market square does not exist
+      // in it. So the subjects are the PEOPLE, one frame each: the six drawn NPCs nearest the
+      // densest knot, framed head-to-foot from a fixed world bearing at a fixed standoff, named in
+      // the filename. That is also the better evidence for the claim being made — the question is
+      // whether these individuals stand differently from each other, and six figures at 3.2 m
+      // answer it where a wide shot of a town square does not.
+      const D = Number(args.dist ?? 16);
+      const EY = Number(args.eye ?? 7);
+      const subjects = (f1.npcs || [])
+        .filter((r) => r.group_xz)
+        .map((r) => ({ r, d: Math.hypot(r.group_xz[0] - best[0], r.group_xz[1] - best[1]) }))
+        .sort((a, b) => a.d - b.d)
+        .slice(0, Number(args.subjects ?? 6));
+      // ── THE CAMERA IS THE GAME'S OWN, AND THAT IS THE THIRD CORRECTION THIS RUN FORCED.
+      // Two posed-camera attempts produced a horizon and then a warehouse wall, because
+      // `__HARNESS.camera({pos})` and the drawn scene do not agree about which frame a settlement
+      // cell is in — the offset measured off 60 matched (world, scene) NPC pairs comes back
+      // (0, 35.387, 0), i.e. the horizontal axes coincide and the VERTICAL does not, which no
+      // amount of arithmetic in this file is entitled to paper over. So the shot is taken the way
+      // a player takes it: `teleport` the player next to the subject and let the game's own
+      // third-person rig frame it. Nothing here poses a camera, so nothing here can pose it wrong,
+      // and the frame is literally what the owner sees standing in that spot.
+      // ── AND THE FOURTH CORRECTION: SIX BEARINGS, NOT FOUR PORTRAITS. Framing an individual at a
+      // 3.2 m standoff put the camera inside a wall on 4 of 4 subjects — Lilmoth's people stand in
+      // shopfronts and under awnings and there is no 3 m clear sightline to most of them. A wide
+      // orbit at 16 m and 7 m of eye height clears the roofs on the bearings that face open water
+      // or the square, and the ones that do not are published as what they are rather than
+      // retaken until they flatter. Every frame's camera is in the row beside it.
+      for (const bearing of String(args.bearings ?? '0,60,120,180,240,300').split(',').map(Number)) {
+        const rad = (bearing * Math.PI) / 180;
+        const pos = [cx + Math.sin(rad) * D + OFF[0], gy + EY + OFF[1], cz + Math.cos(rad) * D + OFF[2]];
+        const look = [cx + OFF[0], gy + 1.0 + OFF[1], cz + OFF[2]];
+        const r = await call('camera', { pos, look, fov: 55 });
+        await call('stepFrames', 2);
+        const file = join(OUT, `crowd-b${String(bearing).padStart(3, '0')}.png`);
+        // `__HARNESS.screenshot()` — the game's own `renderNow()` + canvas read, which is what
+        // every capture tool here uses. Playwright's `page.screenshot` waits on the compositor
+        // and times out at 30 s under SwiftShader when the box has three other browsers on it.
+        const shot = await call('screenshot');
+        let bytes = null;
+        if (shot && shot.__ok) {
+          const buf = Buffer.from(String(shot.__ok).replace(/^data:image\/png;base64,/, ''), 'base64');
+          writeFileSync(file, buf);
+          bytes = buf.length;
+        }
+        shots.push({
+          bearing, standoff_m: D, eye_height_m: EY, file, bytes, camera_ok: !!(r && r.__ok),
+          pos: pos.map((v) => +v.toFixed(3)), look_at: look.map((v) => +v.toFixed(3)),
+          scene_to_world_offset: OFF.map((v) => +v.toFixed(3)),
+          offset_pairs: diffs.length,
+          offset_max_disagreement_m: offSpread === null ? null : +offSpread.toFixed(4),
+          nearest_people: subjects.map((x) => ({ name: x.r.name, c3: [x.r.a_shoulder_line_tilt_deg, x.r.b_hip_line_tilt_deg, x.r.c_elbow_difference_deg] })),
+          people_within_9m: near.length,
+        });
+      }
+      await call('camera', { mode: 'gameplay' });
+      await call('setUIVisible', true);
+    }
+  }
   await g.close();
 
   const rowsL = f1.npcs || [];
@@ -503,6 +630,7 @@ if (args.live) {
       pass: rowsL.length > 0 && ok2 / rowsL.length >= 0.9,
     },
     distinct_pose_signatures: new Set(rowsL.map((r) => r.pose_sig)).size,
+    shots,
     player: f1.player,
     arms: [
       { arm: 'L1 the three numbers are identical read in WORLD space and in the ACTOR frame (frame invariance, measured not argued)', ok: l1 },
