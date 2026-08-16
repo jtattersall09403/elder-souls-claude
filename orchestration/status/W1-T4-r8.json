@@ -219,6 +219,15 @@
     }
   ],
 
+  "a_branch_repair_I_made_that_is_not_T4s": {
+    "what": "`game/src/render/water.js` did not parse. F7 round 4 (commit 17e6fc02) wrote a comment INSIDE the shader's JS TEMPLATE LITERAL containing backticks — ``esTrans``, ``esDepth``, ``esBandM``, ``uWaterShoreBandM``, ``esShoreT``, ``esDepthM`` — which terminates the literal at line 267. `node --check game/src/render/water.js` -> `SyntaxError: missing ) after argument list`.",
+    "the_blast_radius": "`window.__HARNESS` never appeared. EVERY browser-driven tool on the branch was dead, not only mine: two of my own runs failed with `pageerror: missing ) after argument list` after the commit landed mid-flight.",
+    "what_I_did": "Swapped the backticks for apostrophes on the SEVEN comment lines inside the literal (lines 170-313). No logic, no shader source, no uniform touched: `git diff --stat` is 7 insertions, 7 deletions, all in `//` comments. `node --check` then passes. Banked on its own, immediately, with a headline naming the cause, so the F7 owner sees exactly what changed and why.",
+    "why_I_touched_someone_else_s_file": "`node tools/ownership.mjs --for game/src/render/water.js`, run this turn: 'nobody live has declared this file.' And a branch that does not boot blocks every agent on it, so leaving it for its author to notice costs the fleet the interval. If F7 disagrees with the edit, reverting it is one `git revert` of a 14-line commit.",
+    "the_hazard_worth_adding": "A shader written as a JS template literal cannot contain a backtick ANYWHERE, including in its comments — and this codebase's house style puts identifiers in backticks in every comment it writes, so the collision is structural rather than a slip. A `node --check` over `game/src/**/*.js` costs under a second and would have caught it before the bank. Nothing in the repo runs one.",
+    "what_it_did_NOT_affect": "Every T4 r8 number in this file was measured BEFORE that commit landed, on runs that completed with real output. The two runs it killed — the five-screen legibility sweep's 1280x720 leg and the shots tool's 1280x720 leg — were re-run after the repair."
+  },
+
   "evidence": {
     "legibility_before_r7": "/home/user/t4r7c-delivered/_r8before2/t4-r5-legibility.json (worktree at a2ef1e5c, its own copy of the tool)",
     "legibility_after_container": "corpus/90-verdicts/wave1/artifacts/T4-r8/legibility-after/t4-r5-legibility.json",
