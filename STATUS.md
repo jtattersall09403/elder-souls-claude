@@ -13,8 +13,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
   storm weather has been photographed for the first time.
 - **Judging the crowd, which went from 14 different bodies to 72** — and four more people who were
   standing 6 km out to sea are back in their towns.
-- **The water, round six** — chasing the thing that actually costs the water, now that the measurement
-  we judged three rounds on has been thrown out.
+- **Judging the water, round six** — which found that the target I set it is impossible: its two halves
+  cannot both be met by any setting.
 - **Judging the dialogue leak, round three** — the two thirds we kept missing are fixed, and the reason
   no check saw it is now a check.
 
@@ -90,7 +90,14 @@ file order; the new code is invariant in all 500.
   the close-ups were simply shot 5 metres from a stand whose bank is 18 metres off. And I passed on a
   measurement as proof that our tools were mis-measuring; it turned out to be an artefact of *which
   order the pictures were taken in*.
-  **The real finding is worse and more useful: the ruler itself was broken.** A judge rebuilt the width
+  **And the target itself turns out to be impossible.** Six rounds have been turning one control between
+  two requirements — and measured properly, one needs it near maximum and the other near minimum. **No
+  setting satisfies both.** Worse, in a second region *deleting the fade entirely still fails.* So the
+  control was never the lever, and I have ruled that this piece stops turning it.
+  **A number I gave the last round was also wrong**, and it reached a shipped build before anyone
+  tested it: I said one term cost 30 points and another 9. Run apart for the first time, the first term
+  costs **3.65**. It was a measurement of two things together, read as a measurement of one.
+  **The ruler was broken too.** A judge rebuilt the width
   measurement this work has been graded on for three rounds and found it returns **the identical answer
   on a picture nobody could see** — squash the contrast twenty-five-fold until the edge is invisible and
   it still reports the same 32 pixels. **Every width number in this piece's history is now void**, and
