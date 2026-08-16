@@ -608,6 +608,79 @@ Evidence: `corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3-critic/` (`m12redo`
    *(This is an ADD under `CRITIC-DOCTRINE` §1.3 — it removes a degree of freedom and relaxes no
    threshold. It may be the reason a build FAILS and it may never be the reason one PASSES.)*
 
+#### M12b — the shoreline is a CONTRAST, and it needs the water-hidden control. `gradient_width_px` is retired.
+*(ADDED 2026-08-16 by the F7 r6 builder under `CRITIC-DOCTRINE` §1.3, `provenance: constructed`.
+**This is an ADD: it removes a degree of freedom and relaxes no threshold. It FAILS the build that
+wrote it — the F7 r6 shipped arm retains 28.43% of the water's own shoreline contrast at
+`edge-b135` — and by its own construction below it may NEVER be the reason a build PASSES.**)*
+
+**Why the row that was here is gone.** `ARBITRATION` **S67** retired F7's `gradient_width_px ≥ 12`
+clause: the measure is `d90 − d10` on a **span-normalised** luma profile, so it is **exactly
+invariant under any rescaling of that profile**. Compressing a real arm's profile 25×, from 7.66
+luma levels of contrast to 0.31 — invisible to a viewer — returns the identical width. Three rounds
+of F7 were judged on it and every width number in the piece's history is inadmissible.
+
+**What the width divides out is the only part that is a picture.** `span = open_water_luma −
+near_shore_luma` over the pinned mask's distance bins. It is not scale-invariant, so a
+brightness-only null *can* falsify it — which is the property the width lacked.
+
+**But a bare `span` is inadmissible for the same reason a bare `NormalEnergy` is** (`RI-VIS11` §3):
+it is a property of a region of screen as much as of a shader. A bank casts shade, a shoreline strip
+mesh sits on the boundary, and the bins nearest land carry both. **Every `water_edge` capture in this
+project already banks the control and no round ever measured it** — the `--water-hidden` frame is
+the identical pixels with every water mesh removed. Run the same profile over it, through the same
+pinned mask and the same distance bins:
+
+```
+span_water_minus_hidden        = span(arm)  −  span(water-hidden frame)
+shore_contrast_retained_pct    = 100 × span_water_minus_hidden(arm)
+                                     / span_water_minus_hidden(unchanged baseline arm)
+```
+
+**The clause, and it is a PRESERVATION clause under `ARBITRATION` S59 — never an achievement one:**
+
+1. **Publish `shore_contrast_retained_pct` at a NAMED threshold, with the unchanged arm's own drift
+   band beside it**, measured from interleaved re-captures of that arm at the ordinals the arms
+   occupy (`HAZARDS` §25a rule 3), never from a back-to-back replicate.
+2. **A build whose retained contrast falls outside that band, downward, has traded the water's own
+   shoreline away** and must say what it bought. Min over the declared M12a pose set.
+3. **It may never be cited as a pass.** The measure is **maximised by deleting the shore fade
+   entirely** — measured, `no-shorefade` scores 90.49% against every fading arm below it. A clause a
+   feature's *deletion* wins is S59/S60's exact failure shape, and stating that here is the only
+   thing that stops the next round tuning to it.
+4. **`gradient_width_px` may still be reported and may not gate anything**, ever, in either
+   direction.
+
+**The numbers that license this clause, all derived 2026-08-16, no figure inherited.**
+
+- **The drift run S67 said nobody had done.** Over **33 interleaved captures of one unchanged arm**,
+  across 6 runs, 4 poses, 2 regions, 5 commits and 2 processes, `shore_contrast_retained_pct` drifts
+  **0.31 – 1.36 percentage points** (thresholds 6/10/16). Tool: `tools/visual/f7-r6-offline.mjs
+  --mode spanctl`, offline over banked frames, whose re-implementation reproduces `sweep.json`'s own
+  published `span` on **60 of 60** rows.
+- **It survives the matched-luminance null the width failed.** At `edge-b135` a brightness-only arm
+  matched to within **0.41 luma** of the arm under test retains **58.22%**; the arm retains
+  **27.80%** — a 30.4-point separation against a 0.78-point band. On the same pair the retired width
+  read **32 px for the arm and refused to measure the null**, i.e. the width's "pass" was an
+  amplitude coincidence.
+- **It reproduces across a changed scene.** The same shipped arm measured in two processes at two
+  commits, with the world's NPC population changed between them, reads **40.90 / 33.75 / 27.61%** and
+  **40.98 / 33.84 / 28.43%** at thresholds 6/10/16.
+
+**Two limits, stated because they bound what the clause can carry.**
+
+- **It is threshold-conditional ON ARMS and threshold-stable on nulls.** One arm reads
+  **40.98 / 33.84 / 28.43%** across thresholds 6/10/16 — a 12.6-point spread, far outside the
+  0.7-point band — while the brightness-only null family reads within **1.1 points** across the same
+  thresholds. So the threshold must be declared and a number may never be carried between thresholds.
+  **`presence` is strictly better on this axis** (the same arm reads 50.49 / 50.63 / 50.77) and this
+  clause does not displace it.
+- **Nothing here measures whether the shoreline looks right.** Both admissible measures — `presence`
+  and this one — are **monotone increasing in the shore fade's alpha multiplier**, so both are
+  maximised by having no fade at all. **F7 has no instrument that can prefer a fade to no fade**, and
+  that is a hole this item does not close. Closing it is a look question and belongs to a blind pair
+  (`blind_pair` and `CLAUDE.md` rule 0e), not to another statistic.
+
 **The mask is part of the instrument and must be pinned.** Where `WATER_MASK` is derived by
 differencing against a water-hidden frame, **an arm that changes the water's alpha changes the
 mask**, so the two arms are then scored over different pixel sets. Measured: at one pose the
