@@ -1,0 +1,223 @@
+{
+  "task_id": "W1-F4-r4",
+  "role": "builder",
+  "roadmap_item": "F4 — light, sky and atmosphere (ring 1), round 4",
+  "at": "2026-08-16",
+  "branch": "codex/wave1-build-experiment",
+  "base_commit_pinned_at_start": "7b90d23e",
+  "commits_landed": ["7242d9dfc2", "20fedbd56d", "c2439837f9", "181bfd10af"],
+  "served_source_sha256_16_at_capture": {
+    "game/src/render/lib/lighting-recipes.js": "3afa2b36e94cd589 (AFTER my change; 6d9dead3800eed86 BEFORE)",
+    "game/src/render/sky.js": "8cfc715a2fcd9c7f (UNCHANGED by me — I edited no line of sky.js)"
+  },
+  "renderer_class": "SOFTWARE (SwiftShader) for every frame in this round, as in every F4 round before it. No absolute appearance claim is made anywhere below; every claim is a differential between arms captured in the same process or between two processes whose controls are shown to be bit-identical.",
+
+  "WHAT_I_COULD_NOT_DO_STATED_FIRST": {
+    "1_I_DID_NOT_BUILD_THE_THREE_CASCADES_AND_SECTION_3_MIN_BAR_IS_STILL_NOT_MET": {
+      "what": "`RI-VIS04` §3's MIN BAR is `3 cascades × 2048², PCF 3×3 minimum, shadow distance ≥ 150 m`. My brief named this and the retention hard fail together as 'the work'. I closed the retention hard fail and I did NOT build the cascades.",
+      "what_I_did_instead": "VERIFIED the MIN BAR live rather than leaving it UNVERIFIED for a fourth round, and corrected my own instrument when it got the count wrong. Read off the running scene at four orbit angles at 08:00: shadow-casting directional lights whose PARENT CHAIN IS VISIBLE = **1**, `mapSize` **4096**, fitted extent **285.691 m**, texel **0.06975 m**, `shadow.camera.far` **725.691**, `shadowMap.type` **PCFSoftShadowMap**, `shadowDistance` **150**, `moon.castShadow` **false**.",
+      "clause_by_clause": {
+        "3 cascades": "NOT MET — one map.",
+        "2048² per cascade": "N/A while there is one map; that map is 4096².",
+        "PCF 3×3 minimum": "MET — `PCFSoftShadowMap`, read live and confirmed at `game/src/render/renderer.js:89`.",
+        "shadow distance ≥ 150 m": "MET — 150."
+      },
+      "why_I_stopped": "three.js has no cascaded shadow map, so real CSM here means N co-directional lights plus a global override of the `lights_fragment_begin` shader chunk to mask every cascade but the fragment's own — a seam into EVERY material in the game, on a shared tree, with three other agents driving browsers off it. `HAZARDS.md` §26 records that one backtick in a shader template literal killed every browser tool on the branch. I judged that shipping an unverified whole-scene shader patch was worse than shipping a verified hard-fail fix plus an honest 'not built'. That judgement is mine and a critic should feel free to overturn it.",
+      "what_the_next_round_inherits_rather_than_re_deriving": "The design is worked out and the blockers are named: (a) three.js sorts shadow-casting lights first (`shadowCastingAndTexturingLightsFirst`), so cascade lights added first at scene root occupy directional indices 0..N-1 deterministically and `UNROLLED_LOOP_INDEX` can select them; (b) the split distances must be GLSL CONSTANTS baked at install time, because `cloneUniforms` copies values and a shared per-frame uniform does not reach materials already compiled; (c) weights `w0 = 1-smoothstep(s0±b)`, `w1 = smoothstep(s0±b)*(1-smoothstep(s1±b))`, `w2 = smoothstep(s1±b)` sum to exactly 1, which is what stops N lights being N× the light — the failure `sky.js:701` predicts as 'a step in the shadow STRENGTH at each split'; (d) a fragment outside a fitted box returns 1.0 (lit) from three's own frustum test, so `R.shadow`'s per-recipe distance multiplier can keep scaling the FIT while the splits stay constant. Texel density at splits [20 m, 60 m, 150 m] would go 0.0698 → about 0.0117 m in the near cascade, a 6× improvement in exactly the band the player looks at.",
+      "cost_of_not_doing_it": "§3 is scored against an unmet MIN BAR. It is not a hard fail and it did not cap this item; the retention clause did."
+    },
+    "2_no_hardware": "Every frame is SwiftShader. `launchForCapture` was not given `--require-hardware` because no hardware path was available to me on this box. This is the fourth consecutive F4 round with no hardware capture and it is a standing hole in the item, not a fact about this round.",
+    "3_windows_I_did_not_measure_on_the_new_build": "pair02, pair04 and pair05 were NOT re-captured. I measured pair01 and pair03 in full (five arms each, both domains). pair05 is a night window (`day = 0` at 19:30, recipe `night-moon`) which my change cannot reach by construction — `noon-marsh` is the only recipe I touched — but that is an argument, not a capture, and I am labelling it as one. pair02 and pair04 have no such argument and are simply unmeasured.",
+    "4_overcast_not_re_measured": "`overcast-flat` is untouched by my change, so round 3's overcast numbers (`retention` 0.4657, `hue_offset` 10.90 crop / 7.52 frame, cast area 0.00001, S60 clause (a) 0.048) should still hold — but I did not re-photograph it, so that is inference from the diff, not measurement.",
+    "5_orbit_ablation_lost_half": "`--mode orbit --ablate` was killed by my own 580 s foreground ceiling after completing yaw 000 (4 arms). **yaw 270 has no arms.** So the §2-D3 validation of the orbit exists at ONE angle, not two, and the second angle is the one the round-3 critic called the most textbook lit/shadow composition of the four.",
+    "6_storm_cause_not_ablated": "I photographed storm for the first time and it fails badly (below). I did NOT ablate WHY. The obvious candidate is that `storm` declares `fog.extinction: 2.10` on top of `fogDensity 0.0180` while its key sits at intensity 0.0616 — but `ARBITRATION.md` S63 forbids narrating a mechanism I have not run the arm for, and I have not. It is named as a candidate and nothing more. I also did not read back `sky.rain.visible`, so I cannot say whether the absence of visible precipitation in the storm frame is a rendering failure or a contrast failure.",
+    "7_blind_gate": "`RI-VIS04` declares `blind_pair: no`, so no gate is owed on the item. A critic cannot spawn a fresh judge (`create_session` is approval-gated; `CLAUDE.md` rule 0 forbids it; rule 0e places it with the orchestrator). `blind_status: not_possible`, scored 0, fail-closed.",
+    "8_contention": "`node tools/contention.mjs` was run before every browser launch and is recorded in each manifest. The FIRST reading of the session was **WAIT** — 4 browser instances, load 16.12 over 4 cores = 4.03 per core, at or over the ceiling — and I did not launch on it. Every launch below was made on a **GO**. I also pruned `reports/runpod-gpu/runs` per HAZARDS §5a before starting: 16 directories older than 8 h, disk 95% → 91%.",
+    "9_two_capture_runs_hit_my_own_ceiling": "The first ambient sweep died at 4 of 7 arms and the orbit ablation at 4 of 8 captures, both to `timeout 580`. On this box a 1920×1080 SwiftShader capture with an arm restore costs about 110 s, so five arms is what fits in one foreground run. That is a measurement of the box, and it is why the sweep is split across two processes below.",
+    "10_I_also_piped_a_long_capture_through_tail_once": "HAZARDS §13 warns that this buffers the whole pipeline and makes a healthy run look hung. I did it on the first sweep and lost the interim log. Every later run writes to a file."
+  },
+
+  "IMPLEMENTATION_LEADS_DISPOSITIONS": {
+    "read": "`orchestration/IMPLEMENTATION-LEADS.md#f4--light-sky-and-atmosphere` names exactly ONE candidate. Verified by reading the file this turn.",
+    "three-gpu-pathtracer": {
+      "disposition": "declined",
+      "and_this_time_upstream_WAS_opened": "My brief recorded that round 3's disposition was honest but 'opened no upstream source'. I fetched four files from the pinned commit `3c6cda19d1788d7d93705eee704328e66823c845` this turn: `README.md` (17,560 B), `LICENSE` (1,072 B), `package.json` (2,103 B) and `src/core/WebGLPathTracer.js` (12,098 B). `src/core/PhysicalPathTracingMaterial.js` returned 404 at that path and the GitHub contents API is not enabled for this session, so I could not enumerate `src/` — a limit, stated.",
+      "registry_claims_verified_against_upstream_rather_than_against_ourselves": "`package.json` at the pin reads `version 0.0.24`, `license MIT`, peers `three >=0.180.0`, `three-mesh-bvh >=0.7.4`, `xatlas-web ^0.1.0` — the registry's pin, licence and peer list are correct verbatim. `LICENSE` is MIT, Copyright (c) 2021 Garrett Johnson. The registry's boundary quote 'instanced geometry as unsupported' is upstream's README line 581 verbatim.",
+      "THE_DECISIVE_REASON_AND_IT_IS_ONE_THE_REGISTRY_DOES_NOT_CARRY": "Upstream's own Gotchas list says **'Only MeshStandardMaterial and MeshPhysicalMaterial are supported.'** F4's subject is the sky and the air. This build's sky is a `THREE.ShaderMaterial` (`sky.js` `SKY_VERT`/`SKY_FRAG` on a BackSide sphere), its precipitation is a `LineBasicMaterial`, and its atmosphere is a custom `HeightFog`. A path-traced frame of this scene would therefore be a frame **with no sky and no atmosphere in it** — it would omit precisely the thing the item exists to judge. That is a stronger and more specific decline than 'M6 runs on our raster pixels', and it comes from opened source rather than from our own file.",
+      "two_further_upstream_facts_worth_recording": "(1) `WebGLPathTracer.js:12` gates on `renderer.extensions.get('EXT_float_blend')`, and every capture in this item is SwiftShader — whether the oracle would run at all on this box is untested. (2) `WebGLPathTracer.js:108` constructs `PathTracingRenderer(renderer)` on the SAME `WebGLRenderer` and line 143 calls `this._renderer.render(scene, camera)`, so it takes the shipped renderer over rather than sitting beside it.",
+      "recommended_registry_correction": "The candidate's **Boundary** line names instancing and `setScene` cost but NOT the material restriction, which is the clause that actually decides F4. Adding it would save the next mapped builder the fetch.",
+      "rule_4": "`IMPLEMENTATION-LEADS.md` rule 4: 'a `declined` finding completes the evaluation. It creates no follow-on work by itself.'"
+    }
+  },
+
+  "WHAT_LANDED": {
+    "one_change_one_line": "`game/src/render/lib/lighting-recipes.js`, recipe `noon-marsh`: `sky` 0.315 → **1.26** and `fill` 0.225 → **0.90**. `env` stays at 0.35, `key` stays at 3.00, `keyCool` stays at 0.00, `envGroundBounce` stays at 0.38. No other recipe is touched. `sky.js` is not touched at all.",
+    "revert_in_one_step": "Set `sky: 0.315, fill: 0.225` on that line. Nothing else moves with it.",
+    "tripwire": "If `M6 retention` at pair03's sealed judged crop is ever below 0.30 again, this change has been reverted or overridden. `f4r4-m6.mjs` reports it in one number.",
+    "tools_added": [
+      "`corpus/90-verdicts/wave1/artifacts/W1-F4-r4/tools/f4r4-m6.mjs` — a FOURTH independent implementation of `RI-VIS03` M6, with `RI-VIS04` §2-D3's three clauses built in as a GATE rather than a footnote.",
+      "`corpus/90-verdicts/wave1/artifacts/W1-F4-r4/tools/f4r4-capture.mjs` — modes `ambient`, `windows`, `weather`, `orbit` (with `--ablate`), `walk`, `shadowfit`."
+    ],
+    "fourth_implementation_cross_check": "The round-3 critic wrote of its own M6 that 'a fourth implementation is the cheap way to falsify me'. Mine, run over round 3's own banked frames, reproduces every figure: pair01 crop `hue_offset` **7.35**, `retention` **0.6805**, `C_shadow` **12.3791**, `f_key` **0.6535 / 0.2633**, AUC **0.4388** (critic: 0.439), null control **11.38**; pair03 crop **22.70 / 0.2324 / 3.3299**, `mean_Yp_shadow` **0.0409**, cast area@τ8 **0.7700**. TWO SMALL DISAGREEMENTS, BOTH MINE AND BOTH STATED: my sky-hue heuristic gives the sky-excluded pair01 reading **9.97** where the critic reports 9.99, and sky as 9.48% of `LIT_MASK` where the critic reports 9.61% — different heuristics for the same idea. And my S60 clause (a) reads pair01 crop **3.5174** where round 3's tool reads 3.2588, because I compute the delta as mean |ΔYp|×255 and round 3's computes mean |ΔRGB|; S60 names no unit, mine is declared, and the pass/fail does not turn on it at any window."
+  },
+
+  "JOB_1 — THE HARD FAIL THAT CAPPED THE ITEM, AND IT IS CLOSED": {
+    "the_clause": "`RI-VIS03` M6, verbatim: *'Fail: `retention < 0.30` → crushed blacks / no ambient / no IBL. In a modern render the shadowed quarter is lit by the environment and still shows material structure; ours is a silhouette.'* Unconditional — not the §3-D3 clause that only fires when cast-shadow area rises. `SCORING.md` §1.1 caps the item at 2 while it stands.",
+    "pair03_sealed_judged_crop_BEFORE_and_AFTER": {
+      "retention": "0.2324 → **0.4138**  (hard fail at 0.30 CLEARED with 38% margin; profile minimum 0.60 NOT reached — this remains a SOFT fail and I am not calling it a pass)",
+      "C_shadow": "3.3299 → **7.5046**  (profile minimum 6 — CLEARED)",
+      "mean_Yp_shadow": "0.0409 → 0.0755",
+      "hue_offset_deg": "22.70 → **24.21**  (profile minimum 15 — PASSES, and it was passing before)",
+      "shadow_mask_frac": "0.2497 (≥ 0.03 — passes)",
+      "hard_fails_now": "NONE",
+      "soft_fails_now": "retention < profile minimum"
+    },
+    "pair03_full_frame_BEFORE_and_AFTER": {
+      "retention": "0.4567 → **0.6380** — over the 0.60 PROFILE minimum, not merely over the hard-fail line",
+      "C_shadow": "3.8244 → **7.6479**",
+      "hue_offset_deg": "18.54 → 18.87",
+      "hard_fails_now": "NONE", "soft_fails_now": "NONE"
+    },
+    "how_the_lever_was_chosen_and_the_prior_it_falsified": {
+      "step_1_offline_decomposition_pointed_ONE_WAY": "Measured on round 3's own banked pair03 frames, no browser needed — in that crop's darkest quartile, mean Yp × 255: base **10.43**, `key_off` **10.43**, `env_off` **1.75**, `shadows_off` **58.15**. So the KEY owns **0.04%** of that quartile's brightness, the ENVIRONMENT PROBE owns **83.2%**, the hemisphere + fill own **16.8%**. On that decomposition the probe is obviously the lever.",
+      "step_2_the_ablation_said_IT_IS_NOT": "Ten page-side arms at pair03 across two processes. The two controls are **bit-identical between separate processes** — `retention` 0.2324, `C_shadow_med` 0.005964, `C_local_med` 0.025657 to six decimal places — so this run's own floor on every M6 number is **0.0000**.",
+      "table": [
+        {"arm": "a0-control",      "mean_Yp_shadow": 0.0409, "C_shadow_med": 0.005964, "C_local_med": 0.025657, "retention": 0.2324, "C_shadow": 3.33,  "hue": 22.70, "verdict": "HARD FAIL"},
+        {"arm": "a4-env2",         "mean_Yp_shadow": 0.0721, "C_shadow_med": 0.008290, "C_local_med": 0.030285, "retention": 0.2737, "C_shadow": 5.89,  "hue": 21.57, "verdict": "STILL HARD FAIL"},
+        {"arm": "a10-hemi1-fill8", "mean_Yp_shadow": 0.0680, "C_shadow_med": 0.010492, "C_local_med": 0.027823, "retention": 0.3771, "C_shadow": 6.44,  "hue": 23.72, "verdict": "clears"},
+        {"arm": "a2-hemi4-fill4",  "mean_Yp_shadow": 0.0755, "C_shadow_med": 0.011587, "C_local_med": 0.027983, "retention": 0.4141, "C_shadow": 7.50,  "hue": 24.20, "verdict": "clears — CHOSEN"},
+        {"arm": "a11-hemi5-fill2", "mean_Yp_shadow": 0.0754, "C_shadow_med": 0.011565, "C_local_med": 0.027967, "retention": 0.4135, "C_shadow": 7.48,  "hue": 24.35, "verdict": "clears"},
+        {"arm": "a9-hemi8-fill1",  "mean_Yp_shadow": 0.0923, "C_shadow_med": 0.014149, "C_local_med": 0.029389, "retention": 0.4814, "C_shadow": 10.19, "hue": 23.85, "verdict": "clears"},
+        {"arm": "a3-hemi8-fill8",  "mean_Yp_shadow": 0.1146, "C_shadow_med": 0.017837, "C_local_med": 0.032617, "retention": 0.5469, "C_shadow": 13.07, "hue": 20.94, "verdict": "clears"}
+      ],
+      "THE_RESULT": "`env2` and `hemi4-fill4` reach the SAME shadow brightness — 0.0721 against 0.0755, a 5% difference — and land on OPPOSITE SIDES OF THE HARD FAIL, 0.2737 against 0.4141. **`retention` is not a function of how bright the shadow is.** Read as retention gained per unit of shadow luminance gained, the two lamp terms buy **5.25, 5.34 and 5.25** (arms a2, a10, a11) and the probe buys **1.32** — the lamps are about 4× more efficient than the probe.",
+      "AND_MY_SECOND_PRIOR_WAS_ALSO_FALSIFIED": "I expected the HemisphereLight to beat the flat AmbientLight, because a hemisphere's contribution depends on the surface normal and a flat ambient's does not, so the hemisphere ought to add structure rather than a constant. Arms a9 (hemi only) and a10 (fill only) are indistinguishable per unit of shadow luminance — 4.84 and 5.34. **Normal-dependence is NOT the mechanism.** I have ablated WHICH term moves the number and I have NOT ablated WHY, and per S63 I am not going to narrate one; both the numerator and the denominator are published above so the next reader can take it further.",
+      "why_x4_and_not_x8": "x8 reaches `retention` 0.5469 — still short of the 0.60 profile minimum, which is a SOFT fail — for +44% mean frame luminance. x4 clears the HARD fail with 38% margin, clears `C_shadow` outright, and costs +20% (`mean_Yp_fg` 0.1554 → 0.1863). Buying a soft fail with a 44% exposure lift is S59's trade and I refused it."
+    },
+    "the_preservation_clause_S59_and_it_was_stated_BEFORE_the_capture": {
+      "prediction": "`RI-VIS04` §2-D2 step 1 established that 0.558 of ambient intensity sits in NEITHER arm of S60 clause (a), which compares `key_off` against `env_off`. So raising `sky`/`fill` must leave BOTH arms untouched by construction, and clause (a) must not move.",
+      "measured": "pair03 crop **0.5030 → 0.5001** (−0.6%); pair03 frame **2.7003 → 2.5720**; pair01 crop **3.5174 → 3.4865**; pair01 frame **3.2828 → 3.2293**. The prediction holds: clause (a) is essentially unmoved at four window/domain pairs, and the two that passed still pass.",
+      "the_uncomfortable_corollary_named_rather_than_worked_around": "The term that fixes the hard fail is precisely the term the acceptance criterion cannot see. Had I used the lever the brightness decomposition pointed at — `env` — clause (a) at pair01 would have gone from 3.52 to about 1.76 and FAILED. So S60 clause (a) pushes ambient DOWN and `RI-VIS03` M6's retention clause pushes it UP, and the only lever that satisfies both is the one neither arm measures. **That is `S59`'s unpaired-metric family for the fifth time in this item** and it is a live defect in the acceptance, not a fact about this build.",
+      "S60_clause_b_cast_shadow_area_preservation": "pair03 τ8 **0.7700 → 0.7694**; pair01 τ8 **0.0427 → 0.0416**. Both moves are the same order as HAZARDS §24's measured base-frame error (0.00266 at 08:00), so both are recorded **UNRESOLVED**, not as preserved and not as fallen. Same call round 3's critic made at pair01 for the same reason.",
+      "flattening_predicted_and_not_observed": "Round 1's note recorded the fear as 'the shadow contrast washed out of it', which predicts `C_local_med` FALLING. It rises: pair03 0.025657 → 0.027983 at ×4 (and 0.032617 at ×8). pair01 crop 0.026691. The frame gained local contrast rather than losing it."
+    },
+    "and_I_looked_at_it": "`frames/pair03-BEFORE-base-crop.png` against `frames/pair03-AFTER-base-crop.png`. Before, the lower two-thirds of the crop is a near-black mass — the paving slabs, the dashed seam lines and the ground variation are simply gone. After, the same ground reads as olive-green stone with the slabs, the seams and the texture all visible. That is the sentence `RI-VIS03` M6 writes for `retention` — 'still shows material structure; ours is a silhouette' — and it is now the other way round. A SEPARATE DEFECT VISIBLE IN BOTH AND NOT MINE TO FIX: the shadowed ground carries heavy dither speckle in both arms."
+  },
+
+  "JOB_2 — SECTION 2-D3, APPLIED AS A GATE, INCLUDING WHERE IT COSTS ME": {
+    "what_I_did_not_do": "I did not tune a light against `M6 hue_offset`. The only number I moved was chosen against `retention`, which is unconditional. `hue_offset` is reported everywhere and used to justify nothing.",
+    "clause_1_key_attribution": [
+      {"window": "pair03 / crop",  "f_key_SHADOW": 0.0008, "f_key_LIT": 0.1022, "auc": 0.7285, "inapplicable": false, "note": "the one window whose quartiles ARE an illumination split — and it stayed one after my change"},
+      {"window": "pair03 / frame", "f_key_SHADOW": 0.1002, "f_key_LIT": 0.3203, "auc": 0.8081, "inapplicable": false},
+      {"window": "pair01 / crop",  "f_key_SHADOW": 0.5476, "f_key_LIT": 0.2311, "auc": 0.4483, "inapplicable": true,  "note": "INVERTED — the 'shadow' mask is the more key-lit of the two"},
+      {"window": "pair01 / frame", "f_key_SHADOW": 0.6056, "f_key_LIT": 0.2353, "auc": 0.5547, "inapplicable": true},
+      {"window": "orbit 08:00 yaw 000 / centre512", "f_key_SHADOW": 0.4663, "f_key_LIT": 0.2554, "auc": 0.6407, "inapplicable": true},
+      {"window": "orbit 08:00 yaw 000 / frame",     "f_key_SHADOW": 0.5914, "f_key_LIT": 0.2113, "auc": 0.4681, "inapplicable": true},
+      {"window": "storm pair03 / crop",  "f_key_SHADOW": 0.0000, "f_key_LIT": 0.0002, "inapplicable": true, "note": "there is no key to attribute — see JOB 4"},
+      {"window": "storm pair03 / frame", "f_key_SHADOW": 0.0048, "f_key_LIT": 0.0007, "inapplicable": true}
+    ],
+    "clause_2_null_control_published_beside_every_reading": [
+      {"window": "pair03 / crop",  "shipped": 24.21, "key_off": 21.63, "null_higher": false, "note": "the null behaves as M6 says it must — the ONLY window/domain in this round where it does"},
+      {"window": "pair03 / frame", "shipped": 18.87, "key_off": 20.90, "null_higher": true},
+      {"window": "pair01 / crop",  "shipped": 8.61,  "key_off": 16.86, "null_higher": true},
+      {"window": "pair01 / frame", "shipped": 4.80,  "key_off": 7.51,  "null_higher": true},
+      {"window": "orbit y000 / centre512", "shipped": 0.96, "key_off": 10.33, "null_higher": true},
+      {"window": "orbit y000 / frame",     "shipped": 1.10, "key_off": 13.91, "null_higher": true},
+      {"window": "storm / crop",  "shipped": 0.39, "key_off": 0.41, "null_higher": true},
+      {"window": "storm / frame", "shipped": 0.29, "key_off": 0.44, "null_higher": true}
+    ],
+    "clause_3_sky_honesty_on_crops": [
+      {"window": "pair03 / crop", "SKY_MASK_sky_frac": 0.0009, "sky_hue_share_of_LIT_MASK": 0.0021, "hue_offset": 24.21, "sky_excluded": 24.29},
+      {"window": "pair01 / crop", "SKY_MASK_sky_frac": 0.0000, "sky_hue_share_of_LIT_MASK": 0.0946, "hue_offset": 8.61,  "sky_excluded": 11.07, "note": "SKY_MASK reports NO sky while 9.5% of LIT_MASK is sky-blue — the instrument defect §2-D3 clause 3 exists for, reproduced on a fourth implementation"},
+      {"window": "pair01 / frame","SKY_MASK_sky_frac": 0.0472, "sky_hue_share_of_LIT_MASK": 0.2236, "hue_offset": 4.80,  "sky_excluded": 3.43}
+    ],
+    "THE_FINDING_THAT_MATTERS_MOST_AND_IT_IS_AGAINST_THREE_ROUNDS_OF_NARRATIVE": {
+      "what": "**No round of F4 and no F4 critic had ever captured a `key_off` arm at an orbit pose.** Every 'the morning is where this build fails' claim — including the round-3 critic's headline '8 of 8 below the 6° hard fail at 08:00' and my own re-measurement of 7 of 8 — rests on readings that `RI-VIS04` §2-D3 does not permit to be quoted as a pass OR as a hard fail without one. I captured it, at 08:00 yaw 000, four arms in one process.",
+      "result": "`f_key(SHADOW_MASK)` **0.4663 / 0.5914** against `f_key(LIT_MASK)` **0.2554 / 0.2113** — the quartiles are **INVERTED**, the same defect as pair01. And the null control reads **10.33 / 13.91** against a shipped **0.96 / 1.10**: deleting the sun scores TEN TIMES HIGHER.",
+      "and_it_kills_a_shadow_area_defence_a_second_time": "This pose carries `cast_shadow_area@τ8` = **0.0595 of foreground**, twice §3-D2's 0.03 floor. So it is not a low-shadow-area window, and S66's withdrawn part (a) would have admitted it as a valid reading. Area is not the predicate; which pixels the quartiles select is — now confirmed with a key ablation rather than with a shadow ablation.",
+      "so_what_the_08_00_readings_ACTUALLY_ARE": "`inapplicable`. **Not a hard fail and not a pass.** Per S64 the absence is carried forward as a candidate defect, and it is a real one: a pose at 08:00 whose darkest quartile receives MORE key light than its brightest is a pose that cannot show whether the environment lights the shadows. What it is NOT is evidence that the morning is fine.",
+      "run_floor": "This window's own S61 floor: mean |Δluma| 1.4048 / 0.8159 of 255, `hue_offset` floor **0.04° / 0.13°**. Every hue figure above clears its floor by two orders of magnitude."
+    },
+    "WHERE_2_D3_COSTS_ME_AND_I_AM_NOT_HIDING_BEHIND_IT": "At **pair01's full frame** `hue_offset` fell **6.37 → 4.80** across my change. Below 6 is `RI-VIS03` M6's 'one light source only' hard fail. **§2-D3 marks that reading `inapplicable` on both clauses, so the hard fail does not fire — but the raw number moved the wrong way, my change moved it, and the only thing standing between this round and a fresh hard fail is an amendment the round-3 critic wrote three hours earlier.** A critic should treat that as the strongest thing against this round. What I can say in mitigation is measured, not argued: pair01's quartiles were already inverted BEFORE my change (`f_key` 0.6535 / 0.2633 on round 3's own frames), so the reading was inapplicable in both arms and I did not make it inapplicable. What I cannot say is that the frame got better there."
+  },
+
+  "JOB_3 — I PHOTOGRAPHED THE TREE I SHIPPED": {
+    "what_round_3_did": "Round 3's final tree was never photographed at a judged window; its critic had to do it, and found the r2 and r3 trees produced BYTE-IDENTICAL PNGs.",
+    "what_I_did": "Every capture in this round records `served` sha256 for both lighting files in its own manifest (HAZARDS §22). The BEFORE arms are round 3's banked frames at `lighting-recipes.js` **6d9dead3800eed86**; every AFTER capture served **3afa2b36e94cd589**, which is the sha of the file in `HEAD` now. `sky.js` served **8cfc715a2fcd9c7f** throughout, before and after, because I changed no line of it.",
+    "and_the_change_is_not_a_no_op": "pair03 crop `retention` 0.2324 → 0.4138 against a two-process control floor of **0.0000**. Round 3's change could not make this claim; this one can."
+  },
+
+  "JOB_4 — COVERAGE: THE HOLE IS BIGGER THAN THE INHERITED FIGURE, AND STORM IS NOW PHOTOGRAPHED": {
+    "the_59_1_percent_figure_re_derived_and_it_is_WRONG": {
+      "how": "Parsed the `WEATHER` table out of `game/src/render/sky.js` and applied `recipeForConditions()`'s own thresholds (`storm` if `rain >= 0.8 || overcast >= 0.94`; `overcast-flat` if `overcast >= 0.50`), this turn, in one command.",
+      "result": "**43** weather states are declared, not 20. **7** route to `storm` (storm, heavy_rain, sea_squall, downpour, gale, hail, ash_storm) and **23** route to `overcast-flat`. **30 of 43 = 69.8%**, not 59.1%.",
+      "the_honest_caveat_which_the_inherited_figure_also_lacked": "That is a fraction of DECLARED STATES, not of daylight TIME. States are not equiprobable and I did not measure the transition table, so a time-weighted figure is unmeasured. Both the old number and mine are state counts wearing a time claim, and neither should be quoted as 'x% of daylight' without the weather-transition data."
+    },
+    "STORM_PHOTOGRAPHED_FOR_THE_FIRST_TIME_BY_ANYONE": {
+      "context": "Three rounds and three critics; nobody had ever taken a storm frame. Five arms, pair03's pose, 13:00, `setWeather('storm')`, recipe confirmed `storm` on the readback, `sunIntensity` 0.0616, `environmentIntensity` 1.15.",
+      "crop": {"retention": 0.1885, "C_shadow": 11.4379, "mean_Yp_shadow": 0.2522, "mean_Yp_fg": 0.3925, "hue_offset_deg": 0.39, "hard_fails": ["retention<0.30", "hue_offset<6"]},
+      "frame": {"retention": 0.5024, "C_shadow": 8.5245, "mean_Yp_fg": 0.2885, "hue_offset_deg": 0.29, "hard_fails": ["hue_offset<6"], "soft_fails": ["retention<profile-min"]},
+      "cast_shadow_area_tau8": "**0.0006** of foreground on the crop, 0.0012 on the frame, against §3-D2's floor of 0.03. **Storm has no cast shadow at all.** §3 is ABSENT in this recipe by its own DETECT.",
+      "S60_clause_a": "0.003 crop / 0.0145 frame against a bar of 2.0. As with `overcast-flat`, the key is not a bar this recipe can express (`storm` declares `key: 0.22` over a weather `sunIntensity` of 0.28, giving a live key of 0.0616 against an `env` of 1.15) — `inapplicable` per S64, with the absence carried forward, which is the same call round 3 made for overcast and I confirm the reasoning.",
+      "AND_THE_THING_NO_METRIC_IN_THE_BATTERY_SAYS_DIRECTLY": "**Storm renders BRIGHTER than clear noon.** `mean_Yp_fg` 0.2885 on the storm frame against 0.1863 on the clear-noon frame after my change (0.1554 before it). I opened it (`frames/storm-pair03-full-half.png`): it is a flat, pale, milky scene with no darkness, no shadow, no drama and no visible precipitation. A storm you could mistake for an overexposed afternoon is a defect the owner would see in the first second, and it is not the defect any number in this round was chasing.",
+      "why_I_did_not_FIX_it": "See `what_I_could_not_do` item 6. I have measured storm at ONE window, ONE hour, ONE renderer class. Round 1 changed four multipliers off one window's reading and that is what produced the hard fail this round spent itself closing. I am not repeating it."
+    },
+    "the_rest_of_the_coverage_position": "`overcast-flat` has exactly one sample in the project's history (round 3's) and I did not add a second. `dusk-canopy` has never been measured at its own hour by anyone. pair02, pair04 and pair05 are unmeasured on this build. Under §2-D2 step 4 and S64 an unmeasured quantity counts as ABSENT, not as unknown, and I am recording it that way rather than arguing the recipes are untouched."
+  },
+
+  "JOB_5 — MOTION AND MANY ANGLES": {
+    "the_directive": "`CLAUDE.md`: 'Builders and critics both look at our actual game, in motion. Orbit the camera around the character, multiple angles, motion sequences. Stills are not enough.' Round 3 shipped zero moving frames and zero orbit angles and was marked 3 for it.",
+    "driven_walk_13_00_through_the_shipped_input_pipeline": {
+      "liveness": "5 of 5 LIVE; displacement measured per frame (HAZARDS §16): 0 → 0.267 → 0.960 → 1.653 → 2.347 m. The input path is alive, not a still picture of a walk.",
+      "full_frame": [
+        {"f": 0, "hue": 13.56, "retention": 1.2178, "C_shadow": 9.2223},
+        {"f": 1, "hue": 13.81, "retention": 1.2198, "C_shadow": 9.2977},
+        {"f": 2, "hue": 14.64, "retention": 1.1805, "C_shadow": 9.1492},
+        {"f": 3, "hue": 15.43, "retention": 1.2148, "C_shadow": 8.9246, "PASSES_WHOLE_PROFILE": true},
+        {"f": 4, "hue": 15.03, "retention": 1.2644, "C_shadow": 8.8694, "PASSES_WHOLE_PROFILE": true}
+      ],
+      "centre512_HUD_free_domain": "`[704,284,512,512]`, clear of every HUD element: hue 9.81 / 6.76 / 11.27 / 10.24 / 9.32, retention 0.886–0.959, C_shadow 8.04–8.80. Reported beside the frame because these frames carry the HUD and M6 weights hue by chroma.",
+      "so": "**2 of 5 moving frames pass `RI-VIS03` M6's entire `exterior_daylight` profile on the full frame** — reproducing the round-3 critic's headline finding on the NEW build. NOT A PAIRED COMPARISON: my per-frame displacement differs from the critic's (2.347 m total against 1.707 m), so these are different poses and the walk is not a before/after."
+    },
+    "orbit_08_00_four_angles": {
+      "hue_offset_centre512_then_frame": [
+        {"yaw": 0,   "centre512": 0.96, "frame": 1.10, "retention": [0.9769, 0.6533], "C_shadow": [11.14, 13.12]},
+        {"yaw": 90,  "centre512": 3.95, "frame": 6.50, "retention": [0.8564, 0.6047], "C_shadow": [11.78, 12.80]},
+        {"yaw": 180, "centre512": 4.02, "frame": 5.99, "retention": [0.8471, 0.9473], "C_shadow": [8.45, 11.40]},
+        {"yaw": 270, "centre512": 0.16, "frame": 5.26, "retention": [0.9085, 0.6211], "C_shadow": [12.39, 12.62]}
+      ],
+      "raw_reading": "7 of 8 below 6°, against the round-3 critic's 8 of 8 on the old build.",
+      "BUT": "See JOB 2. At the one angle where I captured the arms, the quartiles are inverted and the null scores ten times higher, so these readings are `inapplicable` — neither the 7 nor the 8 is a hard-fail count anybody may quote. The other three angles have no arms at all and are `UNVERIFIED`, which under §2-D2's overturn clause counts as absent.",
+      "what_IS_solid_at_08_00": "`retention` 0.60–0.98 and `C_shadow` 8.45–13.12 at all eight window/domain pairs — every one clears both the hard fail and the profile minimum. Those are unconditional statistics and they do not depend on §2-D3."
+    }
+  },
+
+  "MY_RULINGS_AND_WHAT_WOULD_OVERTURN_THEM": {
+    "R1": "**The lever is `sky`/`fill`, not `env`** — because at matched shadow brightness they land on opposite sides of the hard fail (0.4141 vs 0.2737) and because `env` is in one arm of S60 clause (a) while they are in neither. **Overturned** if a fifth M6 implementation disagrees, or if a hardware capture reverses the sign, or if a per-material ablation shows the probe/lamp difference is an artefact of the PMREM mip chain under SwiftShader specifically.",
+    "R2": "**×4 and not ×8.** **Overturned** by any evidence that `retention` between 0.30 and 0.60 blocks the wave-1 gate on its own, in which case ×8 (0.5469) is the next step and it still does not reach 0.60 — which would mean the ambient rig is not the whole answer and the shadow's own contents need a second term.",
+    "R3": "**Storm is measured and NOT fixed this round.** **Overturned** by anyone with the budget to run a fog-extinction arm at storm; the candidate is named in `what_I_could_not_do` item 6 and it is a candidate, not a finding.",
+    "R4": "**The 08:00 orbit readings are `inapplicable`, not failures.** **Overturned** if a `key_off` arm at yaw 090 or 180 shows `f_key(SHADOW) < 0.5 × f_key(LIT)` there — in which case those angles ARE readable and 08:00 really does hard-fail on hue at a validated pose. This is the single cheapest test that would move the item and it is two captures.",
+    "R5": "**S60 clause (a) and `RI-VIS03` M6's retention clause pull in opposite directions**, and the only lever satisfying both is one neither arm of the acceptance measures. I am not proposing a replacement criterion — I am a builder and S59/S60/S63/S65 are a record of what happens when a criterion is written without running its arms. I am recording the collision with the four measured ratios above so an arbiter can rule on it."
+  },
+
+  "THINGS_I_GOT_WRONG_IN_FLIGHT_AND_FIXED": [
+    "My offline decomposition made me expect the environment probe to be the lever. The ablation says it is about a quarter as efficient as the lamps. Recorded in source rather than quietly dropped.",
+    "I then expected the HemisphereLight to beat the AmbientLight because of normal-dependence. Arms a9 and a10 say they are indistinguishable. Also recorded.",
+    "My own `__shadowRig()` instrument reported `cascade_count: 5` because it counted every shadow-casting directional light in the graph — four of them are 1024-map lights inside HIDDEN groups. That is exactly the `RI-VIS04` §2-D2 step-1 error (a scene-wide sum quoted as the rig, wrong by 13×), committed in my own tool while reading the item that names it. Fixed to filter on `chain_visible`, with both counts published so the correction is legible.",
+    "The same function read `shadowMap.type` off `R.renderer` and got `null`, so my first pass could not verify the MIN BAR's PCF clause at all. The WebGLRenderer is `R.three` on this wrapper. Fixed, re-read live: `PCFSoftShadowMap`.",
+    "I piped a 10-minute capture through `| tail` on the first run, which buffers the whole pipeline — the exact trap HAZARDS §13 names. Every later run writes to a file."
+  ],
+
+  "evidence": {
+    "metrics": "corpus/90-verdicts/wave1/artifacts/W1-F4-r4/metrics/ — pair03-AFTER.json, pair01-AFTER.json, storm-pair03.json, orbit-ablate-y000.json, motion-m6.json, plus the capture manifests sweep-pair03.json, sweep2-pair03.json, win-pair03.json, win-pair01.json, storm-pair03.json, walk-t13.json, orbit-t8.json, orbit-ablate.json",
+    "frames": "corpus/90-verdicts/wave1/artifacts/W1-F4-r4/frames/ — pair03 BEFORE/AFTER crops with their key_off, env_off and shadows_off arms; pair01 AFTER crops; the storm frame; walk f04; orbit y000 base and key_off",
+    "tools": "corpus/90-verdicts/wave1/artifacts/W1-F4-r4/tools/f4r4-m6.mjs and f4r4-capture.mjs",
+    "reproduce_the_headline": "node corpus/90-verdicts/wave1/artifacts/W1-F4-r4/tools/f4r4-m6.mjs <spec.json> with windows pointing at reports/f4r4/win-pair03 (AFTER) and reports/f4r3/before-pair03 (BEFORE), crop [1100,150,512,512]",
+    "note_on_reports": "Full-resolution PNGs live under `reports/`, which is gitignored and does NOT reach the remote (HAZARDS §9). Everything a verdict needs to cite has been copied into the artifacts directory: sealed 512×512 crops at full resolution, and half-scale versions of the full frames."
+  },
+
+  "files_claimed": ["game/src/render/lib/lighting-recipes.js", "corpus/90-verdicts/wave1/artifacts/W1-F4-r4/**", "orchestration/status/W1-F4-r4.json"],
+  "files_touched": ["game/src/render/lib/lighting-recipes.js (one line of values plus its note)", "corpus/90-verdicts/wave1/artifacts/W1-F4-r4/** (new)", "orchestration/status/W1-F4-r4.json (new)"],
+  "ownership_note": "`node tools/ownership.mjs --for game/src/render/lib/lighting-recipes.js` returned one live piece, W1-F4-r3 — the round this one supersedes. `--for game/src/render/sky.js` returned W1-F4-r3 plus W1-30-builder-20260812 with an UNDECLARED OVERLAP warning; I did not touch sky.js, so that overlap is untouched.",
+  "self_grading_note": "I have not scored this round and I will not. A fresh critic follows. The two things I would point it at first are the pair01 full-frame `hue_offset` regression 6.37 → 4.80 that only §2-D3 keeps from being a hard fail, and the fact that I did not build the cascades."
+}
