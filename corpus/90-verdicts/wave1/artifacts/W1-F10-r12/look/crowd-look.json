@@ -1,0 +1,1948 @@
+{
+  "tool": "tools/visual/f10-r11c-crowd-look.mjs",
+  "generated": "2026-08-16T02:16:35.547Z",
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "stand": {
+    "x": 2785.6,
+    "z": 5047
+  },
+  "THE_FRAME_QUESTION": {
+    "matched_pairs": 60,
+    "drawn_minus_sim_x": {
+      "min": -0.000444,
+      "max": 0.0005
+    },
+    "drawn_minus_sim_z": {
+      "min": -0.00048,
+      "max": 0.00048
+    },
+    "drawn_minus_sim_y": {
+      "min": -41.143,
+      "max": 2.307
+    },
+    "province_group_pos": [
+      0,
+      0,
+      0
+    ],
+    "scene_pos": [
+      0,
+      0,
+      0
+    ],
+    "three_camera_pos": [
+      2800.3599,
+      4.3776,
+      5046.0557
+    ],
+    "sim_camera_pos": [
+      2800.3599,
+      4.3776,
+      5046.0557
+    ],
+    "player_mesh_group_pos": [
+      0,
+      0,
+      0
+    ],
+    "player_root_bone_world": [
+      2800.265,
+      2.661,
+      5046.944
+    ],
+    "verdict": "the horizontal frames are IDENTICAL; only the player MESH GROUP is at the origin, because poseFromRig writes bone world matrices"
+  },
+  "population_at_this_stand": {
+    "npc_meshes_in_scene": 60,
+    "drawn_visible_true": 31,
+    "NOT_drawn_visible_false": 29,
+    "undrawn_all_within_5m_of_world_origin": false,
+    "undrawn_ground_y": {
+      "min": -41.134,
+      "max": -40.718
+    },
+    "drawn_at_this_settlement": 27,
+    "drawn_but_off_map": [
+      {
+        "eid": "npc-eleen",
+        "xz": [
+          4906.8,
+          -594.8
+        ],
+        "ground": -33.387
+      },
+      {
+        "eid": "npc-ineve-corrano",
+        "xz": [
+          4911.9,
+          -590.9
+        ],
+        "ground": -33.077
+      },
+      {
+        "eid": "npc-skara-hull-chalk",
+        "xz": [
+          4910.2,
+          -592.2
+        ],
+        "ground": -33.274
+      },
+      {
+        "eid": "npc-widow-tesla-vor",
+        "xz": [
+          4891,
+          -589
+        ],
+        "ground": -32.924
+      }
+    ],
+    "note": "C3 arm (b) says \"DRAWN NPCs of the largest settlement\". The 60-row denominator used by W1-F10-r10-CRITIC and W1-F10-r11 counts meshes, not drawn figures."
+  },
+  "C3_arm_b_recomputed_by_denominator": {
+    "all_60_meshes": "60 of 60",
+    "drawn_only_31": "31 of 31",
+    "drawn_and_at_lilmoth_27": "27 of 27",
+    "undrawn_29": "29 of 29"
+  },
+  "knot": {
+    "cx": 2801.567,
+    "cz": 5032.782,
+    "n": 11,
+    "cy": 2.608
+  },
+  "shots": [
+    {
+      "file": "orbit-b000.png",
+      "bytes": 3651277,
+      "camera_ok": true,
+      "pos": [
+        2801.567,
+        5.008,
+        5041.782
+      ],
+      "look": [
+        2801.567,
+        3.708,
+        5032.782
+      ],
+      "kind": "orbit",
+      "bearing": 0,
+      "dist_m": 9,
+      "eye_m": 2.4,
+      "knot_n": 11,
+      "subjects": [
+        {
+          "eid": "dockmaster-weeja-sen",
+          "c3": [
+            5.3468,
+            -4.9168,
+            1.4628
+          ]
+        },
+        {
+          "eid": "harbourmistress-tesh",
+          "c3": [
+            5.7302,
+            -4.954,
+            12.4744
+          ]
+        },
+        {
+          "eid": "lilmoth-cook-5-sibling0",
+          "c3": [
+            6.3077,
+            -4.9364,
+            18.0368
+          ]
+        },
+        {
+          "eid": "lilmoth-factor-4-elder0",
+          "c3": [
+            5.6176,
+            -4.8405,
+            14.5908
+          ]
+        },
+        {
+          "eid": "lilmoth-keeper-apothecary",
+          "c3": [
+            6.2779,
+            -4.4096,
+            0.416
+          ]
+        },
+        {
+          "eid": "lilmoth-keeper-customs",
+          "c3": [
+            6.3728,
+            -5.0941,
+            12.2188
+          ]
+        },
+        {
+          "eid": "lilmoth-keeper-ledger-house",
+          "c3": [
+            4.4875,
+            -4.1555,
+            0.5178
+          ]
+        },
+        {
+          "eid": "rootkeeper-under-the-temple",
+          "c3": [
+            5.7581,
+            -5.1646,
+            5.4806
+          ]
+        },
+        {
+          "eid": "shipwright-oleen",
+          "c3": [
+            -6.1463,
+            5.1613,
+            14.3504
+          ]
+        },
+        {
+          "eid": "spellwright-lilmoth",
+          "c3": [
+            5.6647,
+            -5.4204,
+            13.745
+          ]
+        }
+      ]
+    },
+    {
+      "file": "orbit-b090.png",
+      "bytes": 3596918,
+      "camera_ok": true,
+      "pos": [
+        2810.567,
+        5.008,
+        5032.782
+      ],
+      "look": [
+        2801.567,
+        3.708,
+        5032.782
+      ],
+      "kind": "orbit",
+      "bearing": 90,
+      "dist_m": 9,
+      "eye_m": 2.4,
+      "knot_n": 11,
+      "subjects": [
+        {
+          "eid": "dockmaster-weeja-sen",
+          "c3": [
+            5.3468,
+            -4.9168,
+            1.4628
+          ]
+        },
+        {
+          "eid": "harbourmistress-tesh",
+          "c3": [
+            5.7302,
+            -4.954,
+            12.4744
+          ]
+        },
+        {
+          "eid": "lilmoth-cook-5-sibling0",
+          "c3": [
+            6.3077,
+            -4.9364,
+            18.0368
+          ]
+        },
+        {
+          "eid": "lilmoth-factor-4-elder0",
+          "c3": [
+            5.6176,
+            -4.8405,
+            14.5908
+          ]
+        },
+        {
+          "eid": "lilmoth-keeper-apothecary",
+          "c3": [
+            6.2779,
+            -4.4096,
+            0.416
+          ]
+        },
+        {
+          "eid": "lilmoth-keeper-customs",
+          "c3": [
+            6.3728,
+            -5.0941,
+            12.2188
+          ]
+        },
+        {
+          "eid": "lilmoth-keeper-ledger-house",
+          "c3": [
+            4.4875,
+            -4.1555,
+            0.5178
+          ]
+        },
+        {
+          "eid": "rootkeeper-under-the-temple",
+          "c3": [
+            5.7581,
+            -5.1646,
+            5.4806
+          ]
+        },
+        {
+          "eid": "shipwright-oleen",
+          "c3": [
+            -6.1463,
+            5.1613,
+            14.3504
+          ]
+        },
+        {
+          "eid": "spellwright-lilmoth",
+          "c3": [
+            5.6647,
+            -5.4204,
+            13.745
+          ]
+        }
+      ]
+    },
+    {
+      "file": "portrait-lilmoth-factor-4-elder0-b000.png",
+      "bytes": 4354787,
+      "camera_ok": true,
+      "pos": [
+        2800.96,
+        4.272,
+        5035.69
+      ],
+      "look": [
+        2800.96,
+        3.622,
+        5032.29
+      ],
+      "kind": "portrait",
+      "eid": "lilmoth-factor-4-elder0",
+      "bearing": 0,
+      "dist_m": 3.4,
+      "c3": [
+        5.6176,
+        -4.8405,
+        14.5908
+      ]
+    },
+    {
+      "file": "motion-t000.png",
+      "bytes": 3551004,
+      "camera_ok": true,
+      "pos": [
+        2807.931,
+        5.008,
+        5039.146
+      ],
+      "look": [
+        2801.567,
+        3.708,
+        5032.782
+      ],
+      "kind": "motion",
+      "frame_offset": 0,
+      "step": 2
+    },
+    {
+      "file": "motion-t024.png",
+      "bytes": 3549705,
+      "camera_ok": true,
+      "pos": [
+        2807.931,
+        5.008,
+        5039.146
+      ],
+      "look": [
+        2801.567,
+        3.708,
+        5032.782
+      ],
+      "kind": "motion",
+      "frame_offset": 24,
+      "step": 24
+    },
+    {
+      "file": "motion-t048.png",
+      "bytes": 3549169,
+      "camera_ok": true,
+      "pos": [
+        2807.931,
+        5.008,
+        5039.146
+      ],
+      "look": [
+        2801.567,
+        3.708,
+        5032.782
+      ],
+      "kind": "motion",
+      "frame_offset": 48,
+      "step": 24
+    },
+    {
+      "file": "motion-t072.png",
+      "bytes": 3550327,
+      "camera_ok": true,
+      "pos": [
+        2807.931,
+        5.008,
+        5039.146
+      ],
+      "look": [
+        2801.567,
+        3.708,
+        5032.782
+      ],
+      "kind": "motion",
+      "frame_offset": 72,
+      "step": 24
+    }
+  ],
+  "rows": [
+    {
+      "eid": "blackwood-company-factor",
+      "visible": true,
+      "drawn_world": [
+        2750.14,
+        2.674,
+        5031.89
+      ],
+      "sim_pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "head_world": [
+        2750.121,
+        4.313,
+        5031.881
+      ],
+      "ground": 2.68,
+      "c3": [
+        -4.9211,
+        3.9768,
+        11.525
+      ]
+    },
+    {
+      "eid": "dockmaster-weeja-sen",
+      "visible": true,
+      "drawn_world": [
+        2804.61,
+        2.484,
+        5032.94
+      ],
+      "sim_pos": [
+        2804.61,
+        0.37,
+        5032.94
+      ],
+      "head_world": [
+        2804.615,
+        4.123,
+        5032.932
+      ],
+      "ground": 2.491,
+      "c3": [
+        5.3468,
+        -4.9168,
+        1.4628
+      ]
+    },
+    {
+      "eid": "harbourmistress-tesh",
+      "visible": true,
+      "drawn_world": [
+        2800.35,
+        2.677,
+        5028.79
+      ],
+      "sim_pos": [
+        2800.35,
+        0.37,
+        5028.79
+      ],
+      "head_world": [
+        2800.432,
+        4.308,
+        5028.838
+      ],
+      "ground": 2.68,
+      "c3": [
+        5.7302,
+        -4.954,
+        12.4744
+      ]
+    },
+    {
+      "eid": "lilmoth-apothecary-12",
+      "visible": false,
+      "drawn_world": [
+        -4.362,
+        -40.918,
+        -2.001
+      ],
+      "sim_pos": [
+        -4.361556,
+        0,
+        -2.00052
+      ],
+      "head_world": [
+        -4.42,
+        -39.284,
+        -2.032
+      ],
+      "ground": -40.908,
+      "c3": [
+        7.7868,
+        -6.3966,
+        4.2176
+      ]
+    },
+    {
+      "eid": "lilmoth-archivist-ledger",
+      "visible": false,
+      "drawn_world": [
+        4.11,
+        -40.984,
+        1.84
+      ],
+      "sim_pos": [
+        4.11,
+        0,
+        1.84
+      ],
+      "head_world": [
+        4.139,
+        -39.347,
+        1.8
+      ],
+      "ground": -40.98,
+      "c3": [
+        -4.8674,
+        4.0773,
+        17.5746
+      ]
+    },
+    {
+      "eid": "lilmoth-cook-1",
+      "visible": true,
+      "drawn_world": [
+        2793.34,
+        2.677,
+        5046.46
+      ],
+      "sim_pos": [
+        2793.34,
+        7.37,
+        5046.46
+      ],
+      "head_world": [
+        2793.405,
+        4.31,
+        5046.504
+      ],
+      "ground": 2.68,
+      "c3": [
+        -5.4147,
+        5.0822,
+        4.0022
+      ]
+    },
+    {
+      "eid": "lilmoth-cook-1-partner0",
+      "visible": false,
+      "drawn_world": [
+        3.738,
+        -40.835,
+        3.077
+      ],
+      "sim_pos": [
+        3.73786,
+        0,
+        3.077
+      ],
+      "head_world": [
+        3.71,
+        -39.199,
+        3.115
+      ],
+      "ground": -40.828,
+      "c3": [
+        -5.4683,
+        4.6624,
+        12.6246
+      ]
+    },
+    {
+      "eid": "lilmoth-cook-5",
+      "visible": false,
+      "drawn_world": [
+        1.46,
+        -40.956,
+        -2.26
+      ],
+      "sim_pos": [
+        1.46,
+        0,
+        -2.26
+      ],
+      "head_world": [
+        1.473,
+        -39.318,
+        -2.237
+      ],
+      "ground": -40.951,
+      "c3": [
+        4.7881,
+        -3.9715,
+        2.3156
+      ]
+    },
+    {
+      "eid": "lilmoth-cook-5-sibling0",
+      "visible": true,
+      "drawn_world": [
+        2799.55,
+        2.672,
+        5034.65
+      ],
+      "sim_pos": [
+        2799.55,
+        7.37,
+        5034.65
+      ],
+      "head_world": [
+        2799.528,
+        4.309,
+        5034.619
+      ],
+      "ground": 2.68,
+      "c3": [
+        6.3077,
+        -4.9364,
+        18.0368
+      ]
+    },
+    {
+      "eid": "lilmoth-factor-0",
+      "visible": false,
+      "drawn_world": [
+        -1.45,
+        -41.143,
+        -0.09
+      ],
+      "sim_pos": [
+        -1.45,
+        0,
+        -0.09
+      ],
+      "head_world": [
+        -1.513,
+        -39.509,
+        -0.12
+      ],
+      "ground": -41.134,
+      "c3": [
+        -6.9356,
+        6.1048,
+        6.6956
+      ]
+    },
+    {
+      "eid": "lilmoth-factor-0-child0",
+      "visible": true,
+      "drawn_world": [
+        2784.37,
+        2.676,
+        5059.4
+      ],
+      "sim_pos": [
+        2784.37,
+        0.37,
+        5059.4
+      ],
+      "head_world": [
+        2784.348,
+        4.311,
+        5059.459
+      ],
+      "ground": 2.68,
+      "c3": [
+        4.4754,
+        -5.3274,
+        18.5228
+      ]
+    },
+    {
+      "eid": "lilmoth-factor-0-partner1",
+      "visible": false,
+      "drawn_world": [
+        -2.515,
+        -41.003,
+        1.618
+      ],
+      "sim_pos": [
+        -2.5155,
+        0,
+        1.61814
+      ],
+      "head_world": [
+        -2.529,
+        -39.367,
+        1.667
+      ],
+      "ground": -40.993,
+      "c3": [
+        -6.2093,
+        5.2608,
+        19.2538
+      ]
+    },
+    {
+      "eid": "lilmoth-factor-4",
+      "visible": false,
+      "drawn_world": [
+        -1.79,
+        -40.94,
+        -2.34
+      ],
+      "sim_pos": [
+        -1.79,
+        0,
+        -2.34
+      ],
+      "head_world": [
+        -1.82,
+        -39.303,
+        -2.318
+      ],
+      "ground": -40.933,
+      "c3": [
+        5.9548,
+        -6.0523,
+        9.3392
+      ]
+    },
+    {
+      "eid": "lilmoth-factor-4-elder0",
+      "visible": true,
+      "drawn_world": [
+        2800.96,
+        2.672,
+        5032.29
+      ],
+      "sim_pos": [
+        2800.96,
+        7.37,
+        5032.29
+      ],
+      "head_world": [
+        2800.984,
+        4.302,
+        5032.38
+      ],
+      "ground": 2.68,
+      "c3": [
+        5.6176,
+        -4.8405,
+        14.5908
+      ]
+    },
+    {
+      "eid": "lilmoth-factor-4-sibling1",
+      "visible": true,
+      "drawn_world": [
+        2776.64,
+        2.668,
+        5061.79
+      ],
+      "sim_pos": [
+        2776.64,
+        7.073606,
+        5061.79
+      ],
+      "head_world": [
+        2776.72,
+        4.298,
+        5061.753
+      ],
+      "ground": 2.68,
+      "c3": [
+        7.2899,
+        -6.5042,
+        14.2368
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-apothecary",
+      "visible": true,
+      "drawn_world": [
+        2799.18,
+        2.674,
+        5032.83
+      ],
+      "sim_pos": [
+        2799.18,
+        7.37,
+        5032.83
+      ],
+      "head_world": [
+        2799.231,
+        4.307,
+        5032.886
+      ],
+      "ground": 2.68,
+      "c3": [
+        6.2779,
+        -4.4096,
+        0.416
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-customs",
+      "visible": true,
+      "drawn_world": [
+        2800.24,
+        2.671,
+        5033.91
+      ],
+      "sim_pos": [
+        2800.24,
+        7.37,
+        5033.91
+      ],
+      "head_world": [
+        2800.282,
+        4.306,
+        5033.96
+      ],
+      "ground": 2.68,
+      "c3": [
+        6.3728,
+        -5.0941,
+        12.2188
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-healer",
+      "visible": false,
+      "drawn_world": [
+        -1.815,
+        -40.755,
+        3.734
+      ],
+      "sim_pos": [
+        -1.81532,
+        0,
+        3.73412
+      ],
+      "head_world": [
+        -1.881,
+        -39.127,
+        3.811
+      ],
+      "ground": -40.743,
+      "c3": [
+        -7.563,
+        6.7405,
+        1.7638
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-inn-drowned",
+      "visible": true,
+      "drawn_world": [
+        2787.85,
+        2.676,
+        5059.18
+      ],
+      "sim_pos": [
+        2787.85,
+        7.37,
+        5059.18
+      ],
+      "head_world": [
+        2787.944,
+        4.307,
+        5059.17
+      ],
+      "ground": 2.68,
+      "c3": [
+        5.0718,
+        -4.8684,
+        7.4538
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-inn-stilt",
+      "visible": false,
+      "drawn_world": [
+        -3.429,
+        -40.724,
+        2.986
+      ],
+      "sim_pos": [
+        -3.42908,
+        0,
+        2.98564
+      ],
+      "head_world": [
+        -3.343,
+        -39.093,
+        3.003
+      ],
+      "ground": -40.718,
+      "c3": [
+        -6.624,
+        5.813,
+        10.6762
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-ledger-house",
+      "visible": true,
+      "drawn_world": [
+        2798.81,
+        2.676,
+        5035.59
+      ],
+      "sim_pos": [
+        2798.81,
+        7.37,
+        5035.59
+      ],
+      "head_world": [
+        2798.85,
+        4.313,
+        5035.569
+      ],
+      "ground": 2.68,
+      "c3": [
+        4.4875,
+        -4.1555,
+        0.5178
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-market",
+      "visible": false,
+      "drawn_world": [
+        -2.406,
+        -41.083,
+        0.937
+      ],
+      "sim_pos": [
+        -2.40632,
+        0,
+        0.93744
+      ],
+      "head_world": [
+        -2.423,
+        -39.447,
+        0.989
+      ],
+      "ground": -41.073,
+      "c3": [
+        7.115,
+        -5.3457,
+        6.8568
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-pawn",
+      "visible": false,
+      "drawn_world": [
+        1.194,
+        -41.104,
+        -1.064
+      ],
+      "sim_pos": [
+        1.19436,
+        0,
+        -1.0643
+      ],
+      "head_world": [
+        1.172,
+        -39.467,
+        -1.032
+      ],
+      "ground": -41.095,
+      "c3": [
+        -6.3067,
+        5.184,
+        5.4438
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-rootpost",
+      "visible": false,
+      "drawn_world": [
+        -1.831,
+        -40.728,
+        4.798
+      ],
+      "sim_pos": [
+        -1.83086,
+        0,
+        4.79766
+      ],
+      "head_world": [
+        -1.878,
+        -39.094,
+        4.851
+      ],
+      "ground": -40.722,
+      "c3": [
+        6.276,
+        -4.7164,
+        14.5048
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-scribe",
+      "visible": true,
+      "drawn_world": [
+        2783.48,
+        2.675,
+        5060.6
+      ],
+      "sim_pos": [
+        2783.48,
+        0.37,
+        5060.6
+      ],
+      "head_world": [
+        2783.424,
+        4.309,
+        5060.646
+      ],
+      "ground": 2.68,
+      "c3": [
+        -5.0942,
+        4.0701,
+        8.2
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-shrine",
+      "visible": false,
+      "drawn_world": [
+        3.514,
+        -40.938,
+        -2.04
+      ],
+      "sim_pos": [
+        3.51354,
+        0,
+        -2.0396
+      ],
+      "head_world": [
+        3.489,
+        -39.3,
+        -2.053
+      ],
+      "ground": -40.931,
+      "c3": [
+        5.78,
+        -4.6956,
+        1.4538
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-smithy",
+      "visible": true,
+      "drawn_world": [
+        2794.32,
+        2.673,
+        5055.93
+      ],
+      "sim_pos": [
+        2794.32,
+        0.37,
+        5055.93
+      ],
+      "head_world": [
+        2794.335,
+        4.309,
+        5055.987
+      ],
+      "ground": 2.68,
+      "c3": [
+        -6.5578,
+        5.643,
+        4.0296
+      ]
+    },
+    {
+      "eid": "lilmoth-keeper-yard",
+      "visible": true,
+      "drawn_world": [
+        2794.17,
+        2.676,
+        5054.61
+      ],
+      "sim_pos": [
+        2794.17,
+        0.37,
+        5054.61
+      ],
+      "head_world": [
+        2794.196,
+        4.315,
+        5054.619
+      ],
+      "ground": 2.68,
+      "c3": [
+        4.9222,
+        -4.8355,
+        3.9694
+      ]
+    },
+    {
+      "eid": "lilmoth-legionary-10",
+      "visible": false,
+      "drawn_world": [
+        -1.541,
+        -41.112,
+        0.826
+      ],
+      "sim_pos": [
+        -1.54132,
+        0,
+        0.8256
+      ],
+      "head_world": [
+        -1.491,
+        -39.476,
+        0.825
+      ],
+      "ground": -41.103,
+      "c3": [
+        -5.7198,
+        5.6273,
+        3.8492
+      ]
+    },
+    {
+      "eid": "lilmoth-legionary-10-partner0",
+      "visible": true,
+      "drawn_world": [
+        2783.73,
+        2.674,
+        5059.96
+      ],
+      "sim_pos": [
+        2783.73,
+        0.37,
+        5059.96
+      ],
+      "head_world": [
+        2783.777,
+        4.304,
+        5060.045
+      ],
+      "ground": 2.68,
+      "c3": [
+        6.5548,
+        -4.4816,
+        0.35
+      ]
+    },
+    {
+      "eid": "lilmoth-legionary-11",
+      "visible": true,
+      "drawn_world": [
+        2784.1,
+        2.671,
+        5060.23
+      ],
+      "sim_pos": [
+        2784.1,
+        0.37,
+        5060.23
+      ],
+      "head_world": [
+        2784.095,
+        4.308,
+        5060.205
+      ],
+      "ground": 2.68,
+      "c3": [
+        6.7213,
+        -5.7427,
+        20.2336
+      ]
+    },
+    {
+      "eid": "lilmoth-legionary-13",
+      "visible": false,
+      "drawn_world": [
+        -1.011,
+        -41.108,
+        -1.091
+      ],
+      "sim_pos": [
+        -1.01098,
+        0,
+        -1.09116
+      ],
+      "head_world": [
+        -1.005,
+        -39.472,
+        -1.039
+      ],
+      "ground": -41.098,
+      "c3": [
+        6.4764,
+        -5.9029,
+        10.1088
+      ]
+    },
+    {
+      "eid": "lilmoth-mudborn-shrine",
+      "visible": false,
+      "drawn_world": [
+        3.99,
+        -40.979,
+        1.98
+      ],
+      "sim_pos": [
+        3.99,
+        0,
+        1.98
+      ],
+      "head_world": [
+        4.015,
+        -39.342,
+        1.949
+      ],
+      "ground": -40.973,
+      "c3": [
+        -5.7219,
+        4.8082,
+        3.4836
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-6",
+      "visible": true,
+      "drawn_world": [
+        2793.8,
+        2.673,
+        5043.2
+      ],
+      "sim_pos": [
+        2793.8,
+        7.37,
+        5043.2
+      ],
+      "head_world": [
+        2793.828,
+        4.31,
+        5043.222
+      ],
+      "ground": 2.68,
+      "c3": [
+        -5.5228,
+        6.0343,
+        21.443
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-6-apprentice1",
+      "visible": false,
+      "drawn_world": [
+        1.45,
+        -40.818,
+        4.7
+      ],
+      "sim_pos": [
+        1.45,
+        0,
+        4.7
+      ],
+      "head_world": [
+        1.538,
+        -39.187,
+        4.668
+      ],
+      "ground": -40.812,
+      "c3": [
+        -5.8919,
+        3.9759,
+        13.693
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-6-lodger0",
+      "visible": false,
+      "drawn_world": [
+        3.746,
+        -41.043,
+        -0.133
+      ],
+      "sim_pos": [
+        3.7462,
+        0,
+        -0.13318
+      ],
+      "head_world": [
+        3.76,
+        -39.405,
+        -0.126
+      ],
+      "ground": -41.034,
+      "c3": [
+        6.037,
+        -6.2472,
+        14.5492
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-8",
+      "visible": true,
+      "drawn_world": [
+        2788.82,
+        2.67,
+        5057.7
+      ],
+      "sim_pos": [
+        2788.82,
+        6.9696,
+        5057.7
+      ],
+      "head_world": [
+        2788.918,
+        4.295,
+        5057.767
+      ],
+      "ground": 2.68,
+      "c3": [
+        -8.6552,
+        6.1538,
+        18.6706
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-8-apprentice1",
+      "visible": false,
+      "drawn_world": [
+        -1.45,
+        -41.032,
+        -1.75
+      ],
+      "sim_pos": [
+        -1.45,
+        0,
+        -1.75
+      ],
+      "head_world": [
+        -1.386,
+        -39.403,
+        -1.668
+      ],
+      "ground": -41.025,
+      "c3": [
+        -5.2427,
+        4.6227,
+        2.6484
+      ]
+    },
+    {
+      "eid": "lilmoth-priest-8-lodger0",
+      "visible": false,
+      "drawn_world": [
+        2.458,
+        -40.8,
+        3.304
+      ],
+      "sim_pos": [
+        2.45796,
+        0,
+        3.30374
+      ],
+      "head_world": [
+        2.44,
+        -39.165,
+        3.238
+      ],
+      "ground": -40.794,
+      "c3": [
+        5.5099,
+        -5.854,
+        0.0924
+      ]
+    },
+    {
+      "eid": "lilmoth-rootkeepers",
+      "visible": true,
+      "drawn_world": [
+        2719.51,
+        2.676,
+        5040.13
+      ],
+      "sim_pos": [
+        2719.51,
+        2.68,
+        5040.13
+      ],
+      "head_world": [
+        2719.499,
+        4.315,
+        5040.126
+      ],
+      "ground": 2.68,
+      "c3": [
+        4.3345,
+        -3.8607,
+        7.531
+      ]
+    },
+    {
+      "eid": "lilmoth-scribe-2",
+      "visible": true,
+      "drawn_world": [
+        2781.85,
+        2.674,
+        5061.74
+      ],
+      "sim_pos": [
+        2781.85,
+        0.37,
+        5061.74
+      ],
+      "head_world": [
+        2781.857,
+        4.313,
+        5061.765
+      ],
+      "ground": 2.68,
+      "c3": [
+        4.826,
+        -4.084,
+        7.0176
+      ]
+    },
+    {
+      "eid": "lilmoth-scribe-2-elder0",
+      "visible": false,
+      "drawn_world": [
+        -1.498,
+        -41.082,
+        -1.267
+      ],
+      "sim_pos": [
+        -1.497632,
+        0,
+        -1.26748
+      ],
+      "head_world": [
+        -1.512,
+        -39.445,
+        -1.231
+      ],
+      "ground": -41.076,
+      "c3": [
+        5.6554,
+        -5.2918,
+        14.9466
+      ]
+    },
+    {
+      "eid": "lilmoth-scribe-2-sibling1",
+      "visible": false,
+      "drawn_world": [
+        1.668,
+        -40.835,
+        3.538
+      ],
+      "sim_pos": [
+        1.66764,
+        0,
+        3.53792
+      ],
+      "head_world": [
+        1.62,
+        -39.199,
+        3.564
+      ],
+      "ground": -40.826,
+      "c3": [
+        -6.084,
+        5.518,
+        9.9086
+      ]
+    },
+    {
+      "eid": "lilmoth-smith-9",
+      "visible": false,
+      "drawn_world": [
+        2.78,
+        -40.889,
+        2.7
+      ],
+      "sim_pos": [
+        2.78,
+        0,
+        2.7
+      ],
+      "head_world": [
+        2.866,
+        -39.259,
+        2.668
+      ],
+      "ground": -40.88,
+      "c3": [
+        7.8858,
+        -5.3479,
+        16.866
+      ]
+    },
+    {
+      "eid": "lilmoth-smith-9-sibling0",
+      "visible": false,
+      "drawn_world": [
+        -1.565,
+        -41.026,
+        -1.795
+      ],
+      "sim_pos": [
+        -1.56522,
+        0,
+        -1.795
+      ],
+      "head_world": [
+        -1.509,
+        -39.391,
+        -1.769
+      ],
+      "ground": -41.017,
+      "c3": [
+        -6.0008,
+        4.9938,
+        13.5308
+      ]
+    },
+    {
+      "eid": "lilmoth-weaver-3",
+      "visible": false,
+      "drawn_world": [
+        3.7,
+        -40.995,
+        -1.36
+      ],
+      "sim_pos": [
+        3.7,
+        0,
+        -1.36
+      ],
+      "head_world": [
+        3.726,
+        -39.361,
+        -1.297
+      ],
+      "ground": -40.985,
+      "c3": [
+        6.9607,
+        -6.006,
+        0.8252
+      ]
+    },
+    {
+      "eid": "lilmoth-weaver-3-sibling0",
+      "visible": true,
+      "drawn_world": [
+        2792.27,
+        2.672,
+        5056.72
+      ],
+      "sim_pos": [
+        2792.27,
+        0.37,
+        5056.72
+      ],
+      "head_world": [
+        2792.321,
+        4.307,
+        5056.763
+      ],
+      "ground": 2.68,
+      "c3": [
+        5.5342,
+        -5.1364,
+        8.311
+      ]
+    },
+    {
+      "eid": "lilmoth-weaver-7",
+      "visible": false,
+      "drawn_world": [
+        4.5,
+        -41,
+        1.3
+      ],
+      "sim_pos": [
+        4.5,
+        0,
+        1.3
+      ],
+      "head_world": [
+        4.541,
+        -39.365,
+        1.322
+      ],
+      "ground": -40.991,
+      "c3": [
+        -6.7117,
+        6.9181,
+        5.6042
+      ]
+    },
+    {
+      "eid": "lilmoth-weaver-7-sibling0",
+      "visible": false,
+      "drawn_world": [
+        1.641,
+        -40.839,
+        4.133
+      ],
+      "sim_pos": [
+        1.640798,
+        0,
+        4.13298
+      ],
+      "head_world": [
+        1.668,
+        -39.201,
+        4.14
+      ],
+      "ground": -40.835,
+      "c3": [
+        4.678,
+        -4.3754,
+        11.1794
+      ]
+    },
+    {
+      "eid": "lilmoth-wharf-cutters",
+      "visible": true,
+      "drawn_world": [
+        2810,
+        1.821,
+        5028
+      ],
+      "sim_pos": [
+        2810,
+        0.4,
+        5028
+      ],
+      "head_world": [
+        2809.988,
+        3.456,
+        5027.942
+      ],
+      "ground": 1.83,
+      "c3": [
+        6.5267,
+        -5.2716,
+        2.0608
+      ]
+    },
+    {
+      "eid": "lilmoth-yard-brothers",
+      "visible": true,
+      "drawn_world": [
+        2773.66,
+        2.673,
+        5068.55
+      ],
+      "sim_pos": [
+        2773.66,
+        2.68,
+        5068.55
+      ],
+      "head_world": [
+        2773.644,
+        4.311,
+        5068.533
+      ],
+      "ground": 2.68,
+      "c3": [
+        -5.7876,
+        5.8066,
+        6.9124
+      ]
+    },
+    {
+      "eid": "miredancer-omu-ei",
+      "visible": false,
+      "drawn_world": [
+        -1.7,
+        -41.003,
+        1.689
+      ],
+      "sim_pos": [
+        -1.70022,
+        0,
+        1.68904
+      ],
+      "head_world": [
+        -1.617,
+        -39.372,
+        1.71
+      ],
+      "ground": -40.997,
+      "c3": [
+        6.5226,
+        -5.9356,
+        11.8118
+      ]
+    },
+    {
+      "eid": "miredancer-sap-speaker",
+      "visible": false,
+      "drawn_world": [
+        -2.26,
+        -41.066,
+        -1.287
+      ],
+      "sim_pos": [
+        -2.26,
+        0,
+        -1.28732
+      ],
+      "head_world": [
+        -2.199,
+        -39.431,
+        -1.278
+      ],
+      "ground": -41.058,
+      "c3": [
+        6.8778,
+        -4.9509,
+        9.4038
+      ]
+    },
+    {
+      "eid": "npc-eleen",
+      "visible": true,
+      "drawn_world": [
+        4906.8,
+        -33.399,
+        -594.8
+      ],
+      "sim_pos": [
+        4906.8,
+        2,
+        -594.8
+      ],
+      "head_world": [
+        4906.814,
+        -31.762,
+        -594.812
+      ],
+      "ground": -33.387,
+      "c3": [
+        -6.7281,
+        6.9081,
+        16.7538
+      ]
+    },
+    {
+      "eid": "npc-ineve-corrano",
+      "visible": true,
+      "drawn_world": [
+        4911.9,
+        -33.083,
+        -590.9
+      ],
+      "sim_pos": [
+        4911.9,
+        2,
+        -590.9
+      ],
+      "head_world": [
+        4911.863,
+        -31.446,
+        -590.901
+      ],
+      "ground": -33.077,
+      "c3": [
+        5.6562,
+        -5.4411,
+        7.8006
+      ]
+    },
+    {
+      "eid": "npc-skara-hull-chalk",
+      "visible": true,
+      "drawn_world": [
+        4910.2,
+        -33.278,
+        -592.2
+      ],
+      "sim_pos": [
+        4910.2,
+        2,
+        -592.2
+      ],
+      "head_world": [
+        4910.139,
+        -31.647,
+        -592.265
+      ],
+      "ground": -33.274,
+      "c3": [
+        5.2155,
+        -4.7335,
+        8.8164
+      ]
+    },
+    {
+      "eid": "npc-widow-tesla-vor",
+      "visible": true,
+      "drawn_world": [
+        4891,
+        -32.934,
+        -589
+      ],
+      "sim_pos": [
+        4891,
+        2,
+        -589
+      ],
+      "head_world": [
+        4891.032,
+        -31.297,
+        -589.009
+      ],
+      "ground": -32.924,
+      "c3": [
+        6.0909,
+        -5.6005,
+        0.9914
+      ]
+    },
+    {
+      "eid": "rootkeeper-under-the-temple",
+      "visible": true,
+      "drawn_world": [
+        2806.61,
+        1.944,
+        5029.81
+      ],
+      "sim_pos": [
+        2806.61,
+        0.37,
+        5029.81
+      ],
+      "head_world": [
+        2806.687,
+        3.577,
+        5029.81
+      ],
+      "ground": 1.947,
+      "c3": [
+        5.7581,
+        -5.1646,
+        5.4806
+      ]
+    },
+    {
+      "eid": "shipwright-oleen",
+      "visible": true,
+      "drawn_world": [
+        2798.95,
+        2.671,
+        5035.19
+      ],
+      "sim_pos": [
+        2798.95,
+        7.37,
+        5035.19
+      ],
+      "head_world": [
+        2799.031,
+        4.3,
+        5035.253
+      ],
+      "ground": 2.68,
+      "c3": [
+        -6.1463,
+        5.1613,
+        14.3504
+      ]
+    },
+    {
+      "eid": "spellwright-lilmoth",
+      "visible": true,
+      "drawn_world": [
+        2797.975,
+        2.673,
+        5036.6
+      ],
+      "sim_pos": [
+        2797.9749,
+        2.68,
+        5036.6
+      ],
+      "head_world": [
+        2797.881,
+        4.302,
+        5036.572
+      ],
+      "ground": 2.68,
+      "c3": [
+        5.6647,
+        -5.4204,
+        13.745
+      ]
+    }
+  ]
+}
