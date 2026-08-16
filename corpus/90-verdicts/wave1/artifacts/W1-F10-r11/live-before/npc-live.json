@@ -1,0 +1,1448 @@
+{
+  "tool": "f10-r10c-npc-live.mjs",
+  "generated": "2026-08-15T22:59:16.450Z",
+  "renderer": {
+    "renderer_string": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "hardware": false,
+    "software_renderer": true,
+    "unknown": false,
+    "class": "SOFTWARE",
+    "evidence_class": "SOFTWARE — valid for geometry, layout, composition, determinism and census. NOT valid for antialiasing, bloom, AO, IBL or any appearance claim (W1-30-EVIDENCE §4).",
+    "reason": "the reported renderer names a software rasteriser: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "decided_from": "renderer-string",
+    "hardware_requested": false,
+    "fell_back": false,
+    "renderer_source": "live page WEBGL_debug_renderer_info",
+    "backend": null,
+    "backend_attempts": [],
+    "chromium_args": [
+      "--force-color-profile=srgb",
+      "--font-render-hinting=none",
+      "--disable-lcd-text",
+      "--disable-skia-runtime-opts",
+      "--hide-scrollbars",
+      "--mute-audio",
+      "--disable-background-timer-throttling",
+      "--disable-renderer-backgrounding",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-partial-raster",
+      "--run-all-compositor-stages-before-draw",
+      "--disable-new-content-rendering-timeout",
+      "--enable-unsafe-swiftshader",
+      "--use-gl=angle",
+      "--use-angle=swiftshader"
+    ]
+  },
+  "stand": {
+    "x": 2785.6,
+    "z": 5047
+  },
+  "teleport_ok": true,
+  "counts": {
+    "npcs_drawn": 60,
+    "enemies_drawn": 1,
+    "npc_mesh_map_size": 60
+  },
+  "player": {
+    "kind": "player",
+    "name": "player",
+    "rigged": true,
+    "civilian": false,
+    "static_presentation_bound": false,
+    "pos": [
+      0,
+      0,
+      0
+    ],
+    "ground": -41.1478,
+    "hip_line_dy_m": -0.018289,
+    "shoulder_line_dy_m": 0.047948,
+    "foot_l_y": 2.762916,
+    "foot_r_y": 2.763987,
+    "pose_sig": "55096a43",
+    "bone_count": 20
+  },
+  "npc_pose_signatures": {
+    "distinct": 50,
+    "modal_sig": "a9a4dcac",
+    "modal_count": 8,
+    "all": [
+      [
+        "d581dc91",
+        2
+      ],
+      [
+        "afb609ce",
+        1
+      ],
+      [
+        "4bdb656c",
+        1
+      ],
+      [
+        "799c3ad6",
+        1
+      ],
+      [
+        "2f9849b9",
+        1
+      ],
+      [
+        "a9a4dcac",
+        8
+      ],
+      [
+        "f9adba62",
+        1
+      ],
+      [
+        "34cc058b",
+        1
+      ],
+      [
+        "51af3f4a",
+        1
+      ],
+      [
+        "d14798a9",
+        2
+      ],
+      [
+        "b7cf6dbd",
+        1
+      ],
+      [
+        "431b3fd7",
+        1
+      ],
+      [
+        "9db4eea7",
+        1
+      ],
+      [
+        "d38e90e4",
+        2
+      ],
+      [
+        "22e90f8a",
+        1
+      ],
+      [
+        "767c0ad9",
+        1
+      ],
+      [
+        "9e0bcc12",
+        1
+      ],
+      [
+        "f83bc662",
+        1
+      ],
+      [
+        "abe8ddea",
+        1
+      ],
+      [
+        "3b5de008",
+        1
+      ],
+      [
+        "a83b28f6",
+        1
+      ],
+      [
+        "e317ff31",
+        1
+      ],
+      [
+        "76542fee",
+        1
+      ],
+      [
+        "daea0d79",
+        1
+      ],
+      [
+        "96e43f3a",
+        1
+      ],
+      [
+        "f4c483e2",
+        1
+      ],
+      [
+        "8a03e66",
+        1
+      ],
+      [
+        "45a792e7",
+        1
+      ],
+      [
+        "38b6243d",
+        1
+      ],
+      [
+        "e9973c77",
+        1
+      ],
+      [
+        "b1f969a3",
+        1
+      ],
+      [
+        "d195bac4",
+        1
+      ],
+      [
+        "feba033c",
+        1
+      ],
+      [
+        "a4bc19fe",
+        1
+      ],
+      [
+        "8823a916",
+        1
+      ],
+      [
+        "32ddaa4e",
+        1
+      ],
+      [
+        "98c6d6b9",
+        1
+      ],
+      [
+        "6e883d11",
+        1
+      ],
+      [
+        "4806ce37",
+        1
+      ],
+      [
+        "21ba5a87",
+        1
+      ],
+      [
+        "3d8168f2",
+        1
+      ],
+      [
+        "ac853937",
+        1
+      ],
+      [
+        "87a51123",
+        1
+      ],
+      [
+        "a27a413e",
+        1
+      ],
+      [
+        "992843f5",
+        1
+      ],
+      [
+        "7bb6040f",
+        1
+      ],
+      [
+        "fd9c4969",
+        1
+      ],
+      [
+        "a2354ab3",
+        1
+      ],
+      [
+        "c7ec5ae2",
+        1
+      ],
+      [
+        "c6be8b72",
+        1
+      ]
+    ]
+  },
+  "npc_hip_line_dy_m": {
+    "max_abs": 0,
+    "distinct": [
+      0
+    ]
+  },
+  "npc_shoulder_line_dy_m": {
+    "max_abs": 0,
+    "distinct": [
+      0
+    ]
+  },
+  "player_vs_npc": {
+    "player_sig": "55096a43",
+    "differs_from_modal_npc": true,
+    "player_hip_line_dy_m": -0.018289,
+    "player_shoulder_line_dy_m": 0.047948
+  },
+  "npcs": [
+    {
+      "kind": "npc",
+      "name": "npc:blackwood-company-factor",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2750.14,
+        2.68,
+        5031.89
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "d581dc91",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:dockmaster-weeja-sen",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2804.61,
+        2.491,
+        5032.94
+      ],
+      "ground": 2.4905,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.577669,
+      "foot_r_y": 2.564984,
+      "pose_sig": "afb609ce",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:harbourmistress-tesh",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2800.35,
+        2.68,
+        5028.79
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "4bdb656c",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-apothecary-12",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -4.355,
+        -40.892,
+        -2.135
+      ],
+      "ground": -40.8921,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.787765,
+      "foot_r_y": -40.802916,
+      "pose_sig": "799c3ad6",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-archivist-ledger",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        4.11,
+        -40.98,
+        1.84
+      ],
+      "ground": -40.98,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.885818,
+      "foot_r_y": -40.899165,
+      "pose_sig": "2f9849b9",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-cook-1",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2793.34,
+        2.68,
+        5046.46
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a9a4dcac",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-cook-1-partner0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        3.85,
+        -40.817,
+        3.153
+      ],
+      "ground": -40.8167,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.721198,
+      "foot_r_y": -40.714649,
+      "pose_sig": "f9adba62",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-cook-5",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        1.46,
+        -40.951,
+        -2.26
+      ],
+      "ground": -40.9505,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.873063,
+      "foot_r_y": -40.866271,
+      "pose_sig": "34cc058b",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-cook-5-sibling0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2799.55,
+        2.68,
+        5034.65
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "d581dc91",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-factor-0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.45,
+        -41.134,
+        -0.09
+      ],
+      "ground": -41.1336,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -41.041999,
+      "foot_r_y": -41.042019,
+      "pose_sig": "51af3f4a",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-factor-0-child0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2784.37,
+        2.68,
+        5059.4
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "d14798a9",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-factor-0-partner1",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -2.61,
+        -40.976,
+        1.715
+      ],
+      "ground": -40.9762,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.874441,
+      "foot_r_y": -40.878357,
+      "pose_sig": "b7cf6dbd",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-factor-4",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.79,
+        -40.933,
+        -2.34
+      ],
+      "ground": -40.9335,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.833668,
+      "foot_r_y": -40.862487,
+      "pose_sig": "431b3fd7",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-factor-4-elder0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2800.96,
+        2.68,
+        5032.29
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "9db4eea7",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-factor-4-sibling1",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2776.64,
+        2.68,
+        5061.79
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "d38e90e4",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-apothecary",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2799.18,
+        2.68,
+        5032.83
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a9a4dcac",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-customs",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2800.24,
+        2.68,
+        5033.91
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "d14798a9",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-healer",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.772,
+        -40.748,
+        3.862
+      ],
+      "ground": -40.7482,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.65373,
+      "foot_r_y": -40.661511,
+      "pose_sig": "22e90f8a",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-inn-drowned",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2787.85,
+        2.68,
+        5059.18
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "767c0ad9",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-inn-stilt",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -3.549,
+        -40.703,
+        3.047
+      ],
+      "ground": -40.7035,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.587426,
+      "foot_r_y": -40.634195,
+      "pose_sig": "9e0bcc12",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-ledger-house",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2798.81,
+        2.68,
+        5035.59
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "d38e90e4",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-market",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -2.272,
+        -41.079,
+        0.92
+      ],
+      "ground": -41.0786,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.985328,
+      "foot_r_y": -40.981541,
+      "pose_sig": "f83bc662",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-pawn",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        1.277,
+        -41.085,
+        -1.171
+      ],
+      "ground": -41.0849,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.999435,
+      "foot_r_y": -41.000164,
+      "pose_sig": "abe8ddea",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-rootpost",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.966,
+        -40.719,
+        4.789
+      ],
+      "ground": -40.7187,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.627026,
+      "foot_r_y": -40.621114,
+      "pose_sig": "3b5de008",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-scribe",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2783.48,
+        2.68,
+        5060.6
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a83b28f6",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-shrine",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        3.644,
+        -40.929,
+        -2.007
+      ],
+      "ground": -40.929,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.825184,
+      "foot_r_y": -40.845186,
+      "pose_sig": "e317ff31",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-smithy",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2794.32,
+        2.68,
+        5055.93
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "76542fee",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-keeper-yard",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2794.17,
+        2.68,
+        5054.61
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a9a4dcac",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-legionary-10",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.676,
+        -41.099,
+        0.836
+      ],
+      "ground": -41.0992,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -41.003734,
+      "foot_r_y": -41.017516,
+      "pose_sig": "daea0d79",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-legionary-10-partner0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2783.73,
+        2.68,
+        5059.96
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a9a4dcac",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-legionary-11",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2784.1,
+        2.68,
+        5060.23
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "96e43f3a",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-legionary-13",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.143,
+        -41.094,
+        -1.121
+      ],
+      "ground": -41.0937,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -41.006276,
+      "foot_r_y": -41.010311,
+      "pose_sig": "f4c483e2",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-mudborn-shrine",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        3.99,
+        -40.973,
+        1.98
+      ],
+      "ground": -40.9725,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.879741,
+      "foot_r_y": -40.892592,
+      "pose_sig": "8a03e66",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-priest-6",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2793.8,
+        2.68,
+        5043.2
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a9a4dcac",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-priest-6-apprentice1",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        1.45,
+        -40.812,
+        4.7
+      ],
+      "ground": -40.8116,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.725999,
+      "foot_r_y": -40.726796,
+      "pose_sig": "45a792e7",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-priest-6-lodger0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        3.87,
+        -41.026,
+        -0.186
+      ],
+      "ground": -41.0257,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.939789,
+      "foot_r_y": -40.928218,
+      "pose_sig": "38b6243d",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-priest-8",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2788.82,
+        2.68,
+        5057.7
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "e9973c77",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-priest-8-apprentice1",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.45,
+        -41.025,
+        -1.75
+      ],
+      "ground": -41.0246,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.947713,
+      "foot_r_y": -40.933058,
+      "pose_sig": "b1f969a3",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-priest-8-lodger0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2.441,
+        -40.805,
+        3.438
+      ],
+      "ground": -40.8053,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.706529,
+      "foot_r_y": -40.716007,
+      "pose_sig": "d195bac4",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-rootkeepers",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2719.51,
+        2.68,
+        5040.13
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "feba033c",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-scribe-2",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2781.85,
+        2.68,
+        5061.74
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a4bc19fe",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-scribe-2-elder0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.483,
+        -41.087,
+        -1.133
+      ],
+      "ground": -41.0875,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.995214,
+      "foot_r_y": -41.006391,
+      "pose_sig": "8823a916",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-scribe-2-sibling1",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        1.755,
+        -40.83,
+        3.641
+      ],
+      "ground": -40.8301,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.739211,
+      "foot_r_y": -40.743801,
+      "pose_sig": "32ddaa4e",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-smith-9",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2.78,
+        -40.88,
+        2.7
+      ],
+      "ground": -40.8796,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.775438,
+      "foot_r_y": -40.810553,
+      "pose_sig": "98c6d6b9",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-smith-9-sibling0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.531,
+        -41,
+        -1.925
+      ],
+      "ground": -41.0003,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.925704,
+      "foot_r_y": -40.899543,
+      "pose_sig": "6e883d11",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-weaver-3",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        3.7,
+        -40.985,
+        -1.36
+      ],
+      "ground": -40.9849,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.904946,
+      "foot_r_y": -40.891849,
+      "pose_sig": "4806ce37",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-weaver-3-sibling0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2792.27,
+        2.68,
+        5056.72
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a9a4dcac",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-weaver-7",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        4.5,
+        -40.991,
+        1.3
+      ],
+      "ground": -40.9906,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.895678,
+      "foot_r_y": -40.897502,
+      "pose_sig": "21ba5a87",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-weaver-7-sibling0",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        1.665,
+        -40.837,
+        4
+      ],
+      "ground": -40.8369,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.745787,
+      "foot_r_y": -40.746639,
+      "pose_sig": "3d8168f2",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-wharf-cutters",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2810,
+        1.83,
+        5028
+      ],
+      "ground": 1.83,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 1.92,
+      "foot_r_y": 1.92,
+      "pose_sig": "a9a4dcac",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:lilmoth-yard-brothers",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2773.66,
+        2.68,
+        5068.55
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "ac853937",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:miredancer-omu-ei",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -1.727,
+        -40.973,
+        1.821
+      ],
+      "ground": -40.9735,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.862062,
+      "foot_r_y": -40.898876,
+      "pose_sig": "87a51123",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:miredancer-sap-speaker",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        -2.389,
+        -41.051,
+        -1.327
+      ],
+      "ground": -41.0506,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -40.971028,
+      "foot_r_y": -40.956053,
+      "pose_sig": "a27a413e",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:npc-eleen",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        4906.8,
+        -33.387,
+        -594.8
+      ],
+      "ground": -33.3874,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -33.290361,
+      "foot_r_y": -33.291542,
+      "pose_sig": "992843f5",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:npc-ineve-corrano",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        4911.9,
+        -33.077,
+        -590.9
+      ],
+      "ground": -33.0767,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -33.000404,
+      "foot_r_y": -32.98078,
+      "pose_sig": "7bb6040f",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:npc-skara-hull-chalk",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        4910.2,
+        -33.274,
+        -592.2
+      ],
+      "ground": -33.2741,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -33.199185,
+      "foot_r_y": -33.180404,
+      "pose_sig": "fd9c4969",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:npc-widow-tesla-vor",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        4891,
+        -32.924,
+        -589
+      ],
+      "ground": -32.9241,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": -32.827749,
+      "foot_r_y": -32.811882,
+      "pose_sig": "a2354ab3",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:rootkeeper-under-the-temple",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2806.61,
+        1.947,
+        5029.81
+      ],
+      "ground": 1.9475,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.035108,
+      "foot_r_y": 2.024829,
+      "pose_sig": "c7ec5ae2",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:shipwright-oleen",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2798.95,
+        2.68,
+        5035.19
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "c6be8b72",
+      "bone_count": 20
+    },
+    {
+      "kind": "npc",
+      "name": "npc:spellwright-lilmoth",
+      "rigged": false,
+      "civilian": true,
+      "static_presentation_bound": true,
+      "pos": [
+        2797.975,
+        2.68,
+        5036.6
+      ],
+      "ground": 2.68,
+      "hip_line_dy_m": 0,
+      "shoulder_line_dy_m": 0,
+      "foot_l_y": 2.77,
+      "foot_r_y": 2.77,
+      "pose_sig": "a9a4dcac",
+      "bone_count": 20
+    }
+  ],
+  "error": null,
+  "live_self_test": [
+    {
+      "arm": "the reader can tell a posed actor from a rest one (player sig != modal NPC sig)",
+      "ok": true
+    },
+    {
+      "arm": "the reader returns a NON-ZERO hip tilt for at least one actor (it is not stuck at 0)",
+      "ok": true
+    },
+    {
+      "arm": "at least 5 NPCs were actually drawn (an empty crowd proves nothing)",
+      "ok": true
+    }
+  ],
+  "live_self_test_pass": true
+}

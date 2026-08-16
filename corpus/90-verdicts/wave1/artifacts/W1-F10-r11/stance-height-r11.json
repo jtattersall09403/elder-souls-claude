@@ -1,0 +1,299 @@
+{
+  "tool": "f10-r10-stance-height.mjs",
+  "role": "W1-F10 r10 builder — locating the hover and testing whether rotation alone can remove it",
+  "generated": "2026-08-15T22:54:35.013Z",
+  "item": "RI-VIS10 §C3 / W1-F10-r9-CRITIC biggest_gap",
+  "arms": {
+    "before": "tools/visual/f10-r9c-baseline-clips.json.txt (f3d20968^) — the r9 critic's own baseline blob",
+    "after": "game/data/combat/clips.json (shipped)",
+    "engine_r9": "poseLocomotion WITHOUT stance-layer root offset (pre-r10)",
+    "engine_r10": "poseLocomotion WITH stance-layer root offset"
+  },
+  "addPose_consumes_root_offset": true,
+  "dead_data_found": {
+    "idle_ready.root_offset.y": {
+      "y": [
+        [
+          0,
+          -0.00796
+        ],
+        [
+          3,
+          -0.00796
+        ]
+      ]
+    },
+    "block_hold.root_offset.y": {
+      "y": [
+        [
+          0,
+          0
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    },
+    "note": "Both are read by nothing on the pre-r10 engine: addPose iterates `tracks` only."
+  },
+  "A_states": {
+    "IDLE": {
+      "before_r9baseline_engine_r9": {
+        "frames": 96,
+        "lower_ankle_y_mean": 0.08374,
+        "lower_ankle_y_min": 0.07774,
+        "lower_ankle_y_max": 0.09,
+        "lr_diff_max_m": 0.00109,
+        "lr_diff_mean_m": 0.00054
+      },
+      "after_shipped_engine_r9": {
+        "frames": 96,
+        "lower_ankle_y_mean": 0.0917,
+        "lower_ankle_y_min": 0.08566,
+        "lower_ankle_y_max": 0.09887,
+        "lr_diff_max_m": 0.00521,
+        "lr_diff_mean_m": 0.0026
+      },
+      "after_shipped_engine_r10": {
+        "frames": 96,
+        "lower_ankle_y_mean": 0.08374,
+        "lower_ankle_y_min": 0.0777,
+        "lower_ankle_y_max": 0.09091,
+        "lr_diff_max_m": 0.00521,
+        "lr_diff_mean_m": 0.0026
+      },
+      "rise_vs_before_engine_r9_m": 0.00796,
+      "rise_vs_before_engine_r10_m": 0,
+      "root_drop_that_would_zero_the_rise_m": -0.00796
+    },
+    "IDLE_GUARD": {
+      "before_r9baseline_engine_r9": {
+        "frames": 96,
+        "lower_ankle_y_mean": 0.08374,
+        "lower_ankle_y_min": 0.07774,
+        "lower_ankle_y_max": 0.09,
+        "lr_diff_max_m": 0.00109,
+        "lr_diff_mean_m": 0.00054
+      },
+      "after_shipped_engine_r9": {
+        "frames": 96,
+        "lower_ankle_y_mean": 0.08277,
+        "lower_ankle_y_min": 0.07672,
+        "lower_ankle_y_max": 0.09,
+        "lr_diff_max_m": 0.00528,
+        "lr_diff_mean_m": 0.00264
+      },
+      "after_shipped_engine_r10": {
+        "frames": 96,
+        "lower_ankle_y_mean": 0.08277,
+        "lower_ankle_y_min": 0.07672,
+        "lower_ankle_y_max": 0.09,
+        "lr_diff_max_m": 0.00528,
+        "lr_diff_mean_m": 0.00264
+      },
+      "rise_vs_before_engine_r9_m": -0.00097,
+      "rise_vs_before_engine_r10_m": -0.00097,
+      "root_drop_that_would_zero_the_rise_m": 0.00097
+    },
+    "WALK": {
+      "before_r9baseline_engine_r9": {
+        "frames": 44,
+        "lower_ankle_y_mean": 0.10135,
+        "lower_ankle_y_min": 0.07772,
+        "lower_ankle_y_max": 0.13829,
+        "lr_diff_max_m": 0.08176,
+        "lr_diff_mean_m": 0.06257
+      },
+      "after_shipped_engine_r9": {
+        "frames": 44,
+        "lower_ankle_y_mean": 0.11665,
+        "lower_ankle_y_min": 0.0868,
+        "lower_ankle_y_max": 0.16023,
+        "lr_diff_max_m": 0.10794,
+        "lr_diff_mean_m": 0.06376
+      },
+      "after_shipped_engine_r10": {
+        "frames": 44,
+        "lower_ankle_y_mean": 0.10869,
+        "lower_ankle_y_min": 0.07884,
+        "lower_ankle_y_max": 0.15227,
+        "lr_diff_max_m": 0.10794,
+        "lr_diff_mean_m": 0.06376
+      },
+      "rise_vs_before_engine_r9_m": 0.0153,
+      "rise_vs_before_engine_r10_m": 0.00734,
+      "root_drop_that_would_zero_the_rise_m": -0.0153
+    },
+    "WALK_GUARD": {
+      "before_r9baseline_engine_r9": {
+        "frames": 44,
+        "lower_ankle_y_mean": 0.10135,
+        "lower_ankle_y_min": 0.07772,
+        "lower_ankle_y_max": 0.13829,
+        "lr_diff_max_m": 0.08176,
+        "lr_diff_mean_m": 0.06257
+      },
+      "after_shipped_engine_r9": {
+        "frames": 44,
+        "lower_ankle_y_mean": 0.10135,
+        "lower_ankle_y_min": 0.07772,
+        "lower_ankle_y_max": 0.13829,
+        "lr_diff_max_m": 0.08176,
+        "lr_diff_mean_m": 0.06257
+      },
+      "after_shipped_engine_r10": {
+        "frames": 44,
+        "lower_ankle_y_mean": 0.10135,
+        "lower_ankle_y_min": 0.07772,
+        "lower_ankle_y_max": 0.13829,
+        "lr_diff_max_m": 0.08176,
+        "lr_diff_mean_m": 0.06257
+      },
+      "rise_vs_before_engine_r9_m": 0,
+      "rise_vs_before_engine_r10_m": 0,
+      "root_drop_that_would_zero_the_rise_m": 0
+    },
+    "RUN": {
+      "before_r9baseline_engine_r9": {
+        "frames": 30,
+        "lower_ankle_y_mean": 0.11389,
+        "lower_ankle_y_min": 0.07758,
+        "lower_ankle_y_max": 0.17333,
+        "lr_diff_max_m": 0.12225,
+        "lr_diff_mean_m": 0.09185
+      },
+      "after_shipped_engine_r9": {
+        "frames": 30,
+        "lower_ankle_y_mean": 0.13104,
+        "lower_ankle_y_min": 0.08675,
+        "lower_ankle_y_max": 0.19764,
+        "lr_diff_max_m": 0.15357,
+        "lr_diff_mean_m": 0.09222
+      },
+      "after_shipped_engine_r10": {
+        "frames": 30,
+        "lower_ankle_y_mean": 0.12308,
+        "lower_ankle_y_min": 0.07879,
+        "lower_ankle_y_max": 0.18968,
+        "lr_diff_max_m": 0.15357,
+        "lr_diff_mean_m": 0.09222
+      },
+      "rise_vs_before_engine_r9_m": 0.01715,
+      "rise_vs_before_engine_r10_m": 0.00919,
+      "root_drop_that_would_zero_the_rise_m": -0.01715
+    },
+    "RUN_GUARD": {
+      "before_r9baseline_engine_r9": {
+        "frames": 30,
+        "lower_ankle_y_mean": 0.11389,
+        "lower_ankle_y_min": 0.07758,
+        "lower_ankle_y_max": 0.17333,
+        "lr_diff_max_m": 0.12225,
+        "lr_diff_mean_m": 0.09185
+      },
+      "after_shipped_engine_r9": {
+        "frames": 30,
+        "lower_ankle_y_mean": 0.11389,
+        "lower_ankle_y_min": 0.07758,
+        "lower_ankle_y_max": 0.17333,
+        "lr_diff_max_m": 0.12225,
+        "lr_diff_mean_m": 0.09185
+      },
+      "after_shipped_engine_r10": {
+        "frames": 30,
+        "lower_ankle_y_mean": 0.11389,
+        "lower_ankle_y_min": 0.07758,
+        "lower_ankle_y_max": 0.17333,
+        "lr_diff_max_m": 0.12225,
+        "lr_diff_mean_m": 0.09185
+      },
+      "rise_vs_before_engine_r9_m": 0,
+      "rise_vs_before_engine_r10_m": 0,
+      "root_drop_that_would_zero_the_rise_m": 0
+    },
+    "SPRINT": {
+      "before_r9baseline_engine_r9": {
+        "frames": 22,
+        "lower_ankle_y_mean": 0.12947,
+        "lower_ankle_y_min": 0.07794,
+        "lower_ankle_y_max": 0.21515,
+        "lr_diff_max_m": 0.16651,
+        "lr_diff_mean_m": 0.12409
+      },
+      "after_shipped_engine_r9": {
+        "frames": 22,
+        "lower_ankle_y_mean": 0.14816,
+        "lower_ankle_y_min": 0.08725,
+        "lower_ankle_y_max": 0.24102,
+        "lr_diff_max_m": 0.20202,
+        "lr_diff_mean_m": 0.12357
+      },
+      "after_shipped_engine_r10": {
+        "frames": 22,
+        "lower_ankle_y_mean": 0.1402,
+        "lower_ankle_y_min": 0.07929,
+        "lower_ankle_y_max": 0.23306,
+        "lr_diff_max_m": 0.20202,
+        "lr_diff_mean_m": 0.12357
+      },
+      "rise_vs_before_engine_r9_m": 0.01869,
+      "rise_vs_before_engine_r10_m": 0.01073,
+      "root_drop_that_would_zero_the_rise_m": -0.01869
+    },
+    "SPRINT_GUARD": {
+      "before_r9baseline_engine_r9": {
+        "frames": 22,
+        "lower_ankle_y_mean": 0.12947,
+        "lower_ankle_y_min": 0.07794,
+        "lower_ankle_y_max": 0.21515,
+        "lr_diff_max_m": 0.16651,
+        "lr_diff_mean_m": 0.12409
+      },
+      "after_shipped_engine_r9": {
+        "frames": 22,
+        "lower_ankle_y_mean": 0.12947,
+        "lower_ankle_y_min": 0.07794,
+        "lower_ankle_y_max": 0.21515,
+        "lr_diff_max_m": 0.16651,
+        "lr_diff_mean_m": 0.12409
+      },
+      "after_shipped_engine_r10": {
+        "frames": 22,
+        "lower_ankle_y_mean": 0.12947,
+        "lower_ankle_y_min": 0.07794,
+        "lower_ankle_y_max": 0.21515,
+        "lr_diff_max_m": 0.16651,
+        "lr_diff_mean_m": 0.12409
+      },
+      "rise_vs_before_engine_r9_m": 0,
+      "rise_vs_before_engine_r10_m": 0,
+      "root_drop_that_would_zero_the_rise_m": 0
+    }
+  },
+  "C_rotation_only": {
+    "before": {
+      "knee_l_interior_deg": 171.8699,
+      "knee_r_interior_deg": 171.8699,
+      "hip_l_y": 0.94,
+      "hip_r_y": 0.94,
+      "ankle_l_y": 0.09,
+      "ankle_r_y": 0.09,
+      "hip_line_tilt_deg": 0
+    },
+    "after": {
+      "knee_l_interior_deg": 155.3739,
+      "knee_r_interior_deg": 171.8699,
+      "hip_l_y": 0.93144,
+      "hip_r_y": 0.94887,
+      "ankle_l_y": 0.09887,
+      "ankle_r_y": 0.09887,
+      "hip_line_tilt_deg": 5
+    },
+    "reading": "A leg can only be SHORTENED by rotation (a knee bend), and shortening RAISES its foot. Lengthening requires straightening, so the headroom for lowering a foot is capped by how far each knee is from 180 deg. If a knee already reads ~180, that foot cannot be lowered at all by rotation, and the rise is unreachable by remedy (B) — a root translation is then REQUIRED.",
+    "headroom": {
+      "knee_l_deg_from_straight": 24.6261,
+      "knee_r_deg_from_straight": 8.1301
+    }
+  }
+}
