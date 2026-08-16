@@ -139,7 +139,13 @@ Evidence: `corpus/90-verdicts/wave1/artifacts/W1-F4-r2/metrics/ablation-equivale
 and `corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/metrics/ablation-form-equivalence-recheck.json`
 (the recheck).
 
-## 24. `R.playerMesh.position` is (0, 0, 0) and always will be. Do NOT derive a scene→world offset from it — the frames already coincide.
+## 26. `R.playerMesh.position` is (0, 0, 0) and always will be. Do NOT derive a scene→world offset from it — the frames already coincide.
+
+*(Renumbered from 24 by the orchestrator on 2026-08-16: the F4 r2 critic filed its own §24 in the same
+hour and the F7 r3 finding landed as §25. **Three agents have now collided on a section number in this
+append-only file in two days.** Before you pick one, run `grep -n "^## [0-9]" orchestration/HAZARDS.md`
+and take the next free integer — and if a verdict already cites your old number, say so where you
+renumber, as here.)*
 
 **Found 2026-08-16 by the F10 r11 critic, and it cost F10 r11 its pictures and produced a harness
 "defect" that does not exist.** The round's first admission is that four camera attempts failed, and

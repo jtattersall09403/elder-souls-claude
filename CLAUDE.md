@@ -120,8 +120,17 @@ Sonnet — while the model-choice policy that would fix it has been written down
 
 ## 0e. Spawning blind judges is the ORCHESTRATOR's job, and nobody else can do it.
 
-**Re-measured 2026-08-16 (the count grows as items land): `grep -rl "blind_pair: yes" corpus/
---include=*.md | wc -l` returns **103**. Verdicts that have ever RUN one: still **0**.**
+**Re-measured 2026-08-16, and the widely-quoted number was ALWAYS WRONG. `grep -rl "blind_pair: yes"
+corpus/ --include=*.md | wc -l` returns **105 FILES — but only 81 of them are reference items.** The
+other 24 are verdicts and doctrine *quoting the string*, so the figure **inflates every time it is
+cited**, which is exactly why five agents reported 98, 100, 101, 102 and 103 over two days. The honest
+count is:**
+
+```sh
+grep -rl "blind_pair: yes" corpus/ --include=*.md | grep -E '/RI-[^/]*\.md$' | wc -l   # → 81
+```
+
+**81 reference items declare a blind pair. Verdicts that have ever RUN one: still 0.****
 
 **Derive that second number carefully — three agents got it wrong in one night**, reporting 98, 100,
 101, 102 and "1 verdict records a run". A plain grep for `blind_status.*run` matches **prose that
