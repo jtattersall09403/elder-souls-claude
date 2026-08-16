@@ -1,21 +1,96 @@
 {
   "task_id": "W1-F7-r5",
-  "title": "F7 — the water surface, round 5. Round 4 failed at 2/10 with every headline row measured at an unstable threshold. This round re-derives at a threshold it has SHOWN to be stable, removes ordinal drift from the instrument rather than measuring it, scores the water-hidden control nobody had scored, sweeps the band below 0.60 m at the pose that actually fails, and shoots the motion five rounds have owed.",
+  "title": "F7 — the water surface, round 5. Round 4 failed at 2/10 with EVERY headline row measured at a threshold its own instrument shows to be unstable. This round finds a threshold that IS stable and says how it knows, removes ordinal drift from the instrument instead of measuring it, scores the water-hidden control nobody had scored, sweeps the band below 0.60 m at the pose that actually fails, shoots the motion five rounds have owed, and writes the reference item four critics have owed.",
   "roadmap_item": "F7",
-  "state": "IN PROGRESS — this file is written incrementally as runs land. Do not read it as final until `state` says delivered-awaiting-critic.",
-  "verdict_this_answers": "corpus/90-verdicts/wave1/W1-F7-WATER-r4.json (FAIL at 2/10, down from 3). Its biggest_gap is GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank; its ruling is KEEP the mechanism, set the default to 0.10 m, and its acceptance is `gradient_width_px >= 12` at the WORST pose of a complete 4-bearing Deep Marshes set at THRESHOLD 10, AND `presence >= 90%` at every pose in both regions, AND the mask control run in BOTH orders.",
+  "state": "IN PROGRESS — written incrementally as runs land. Not final until `state` reads delivered-awaiting-critic.",
+  "verdict_this_answers": "corpus/90-verdicts/wave1/W1-F7-WATER-r4.json (FAIL at 2/10, down from 3). biggest_gap GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank. Its ruling: KEEP the mechanism, set the default to 0.10 m, verify it at edge-b225 which nobody had swept below 0.60 m, report `presence` on every row, and run the mask control in BOTH orders.",
   "branch": "codex/wave1-build-experiment",
+
   "what_i_could_not_do": [
-    "PLACEHOLDER — this section is written LAST and FIRST in the file, per the brief. Nothing below it is a claim until it is filled in."
+    "PLACEHOLDER — written LAST, published FIRST. Until this reads as prose, nothing below it is a claim."
   ],
+
+  "job_1_the_threshold_and_the_drift": {
+    "the_finding_that_outranks_the_build": "Round 4's every headline row is a threshold-6 row, and threshold 6's mask drifts +19.9% to +61.8% on an UNCHANGED arm. The r4 critic's remedy was to move to threshold 10. **Measured over a longer ordinal span than either round had, threshold 10 is NOT stable either** — see the table below. The stable threshold on this scene is **16**.",
+    "how_this_round_measures_stability_differently": "Rounds 3 and 4 took the pin twice, BACK TO BACK, and published that as the noise floor of a comparison spanning five to eight shader round-trips. HAZARDS §25a says in as many words that a replicate taken at a shorter interval than the comparison is not that comparison's noise floor. So this round re-captures the UNCHANGED baseline arm BEFORE AND AFTER EVERY ARM, and publishes the spread of the baseline's own repeated captures across the ordinals the arms actually occupy. That spread is printed beside every number by `tools/visual/f7-r5-report.mjs`.",
+    "and_it_does_more_than_measure_the_drift_it_removes_it": "Each arm is scored against the MEAN OF ITS TWO FLANKING BASELINES — one capture interval away on each side instead of eight — so monotonic drift cancels to first order by construction. This is HAZARDS §25a rule 1 in its strongest form: instead of putting one proven-identical null arm LAST to size the drift, the proven-identical null (`prefix` itself) is captured BETWEEN EVERY PAIR of arms and subtracted."
+  },
+
+  "job_3_presence_re_derived_in_my_own_code_before_i_built_on_it": {
+    "why_first": "The r4 critic offered `presence` as a standing measure and I am forbidden to inherit a number from a brief. So before spending a browser second I re-derived it offline over ROUND 4's own banked frames, in my own script (`tools/visual/f7-r5-offline.mjs --mode presence`), which imports nothing of the critic's.",
+    "definition": "presence = (L[arm] - L[hidden]) / (L[baseline] - L[hidden]) over the pinned mask. 0% = the frame with all 93 water meshes hidden. 100% = the baseline arm. Every artifact in this piece has carried a `--water-hidden` frame since round 2 and no round scored it.",
+    "IS_IT_THRESHOLD_INDEPENDENT_MEASURED_YES": {
+      "method": "the same arms scored at thresholds 4, 6, 10 and 16 at deep-marshes edge-b135",
+      "spread_in_percentage_points_across_all_four_thresholds": {
+        "fixed": 0.59, "no-shorefade": 0.52, "r3": 0.47, "r3-shader": 0.52, "prefix": 0.3, "PIN2-prefix": 0.17,
+        "null-const-trans-ocal0": 0.59, "null-const-trans-ocal1": 0.56, "null-const-trans-ocal2": 0.55
+      },
+      "reading": "**Every arm moves by less than 0.6 percentage points across a 4x range of the mask threshold.** `gradient_width_px` over the same frames moves from 5 to 33. So `presence` is the one quantity in this piece that does not depend on the choice that has been destabilising it, and it is computed from a frame already being captured. Adopted as a standing measure."
+    },
+    "I_REPRODUCE_THE_R4_CRITICS_FIVE_NUMBERS_EXACTLY": {
+      "note": "and the reproduction taught me something the critic did not publish — WHICH baseline capture is the denominator changes the answer by ~3.3 points.",
+      "against_the_PIN_capture": { "edge-b135 fixed": 39.81, "edge-b045 fixed": 91.6, "edge-b225 fixed": 79.75, "edge-b315 fixed": 86.45, "western-rootlands edge-b225 fixed": 67.36 },
+      "against_the_prefix_ARM_capture_which_is_what_the_critic_used": { "edge-b135 fixed": 41.2, "edge-b045 fixed": 94.53, "edge-b225 fixed": 82.34, "edge-b315 fixed": 86.46, "western-rootlands edge-b225 fixed": 69.35 },
+      "the_critics_published_row": "41.2 / 94.5 / 82.3 / 86.5 / 69.3 — identical to my second row at every pose. CONFIRMED in independent code.",
+      "the_thing_that_was_not_published_and_matters": "`PIN`, `PIN2` and `prefix-o0` are three captures of ONE unchanged arm and they read 100 / 98.01 / 96.69 percent of each other at edge-b135. **So in round 4's protocol an arm that changed NOTHING scores 3.31 points below the pin**, and every published `presence` figure carries up to ~3.3 pp of drift that nobody had a band for. The finding survives it — 41.2% is not 90% by any margin — but the number needed its band and did not have one. My interleaved protocol removes it rather than quoting it."
+    },
+    "THE_DECOMPOSITION_CONFIRMED_IN_MY_OWN_ARITHMETIC": {
+      "at deep-marshes edge-b135, threshold 10, normalised to the prefix arm": { "prefix": 100, "no-shorefade (depth COLOUR alone, alpha term off)": 89.46, "r3": 59.64, "r3-shader": 58.98, "fixed (SHIPPED)": 41.4 },
+      "so of the 58.6 points the shipped default loses": "**the depth colour costs 10.5 and the shoreline ALPHA term costs 48.1.** The r4 build's defence — 'the colour half is deliberately untouched' — does not reach the cost, because the cost is not the colour. The r4 critic put these at 10.6 and 48.2; mine are 10.5 and 48.1 from my own script. CONFIRMED."
+    },
+    "AND_I_LOOKED_AT_IT_BECAUSE_A_NUMBER_IS_NOT_A_PICTURE": "I opened `dm-edge2/frames/edge-b135--prefix-o0.png`, `--fixed-o3.png` and `--water-hidden.png` side by side. **Round 2's frame has an obvious pale teal sheet across the whole marsh floor with a visible waterline against the dark bank on the left. Round 4's shipped frame does not — it is very nearly the water-hidden frame with a faint blue wash.** The measurement and the picture agree completely, and this is the clearest statement of why the shipped default is rejected: a player at the pose the game starts near cannot see that there is water there."
+  },
+
+  "job_4_what_i_checked_rather_than_inherited": {
+    "the_band_coverage_mechanism_re_derived_offline_in_my_own_tool": {
+      "tool": "tools/visual/f7-r5-band-census.mjs — offline against the same `WorldField` the engine builds, province.js's cell arithmetic re-derived from source read this turn, depths CLAMPED at 1.35 m because that is all province.js's `q` can express. It does NOT import the r4 census tool.",
+      "method_difference_i_must_declare": "The r4 critic's figures are 'in frame' (derived from captures). Mine are 'within a 120 m radius of the deck stand' (derived from the field). **They are different populations and the digits differ; I publish mine and do not reconcile them by argument.**",
+      "share_of_wet_corners_the_band_TOUCHES": {
+        "deep-marshes (1030 wet corners, median depth 1.026 m, 33.4% at the q-clamp)": { "0.05 m": 1.55, "0.10 m": 3.11, "0.20 m": 7.57, "0.30 m": 10.87, "0.60 m": 24.56, "1.20 m SHIPPED": 59.81, "1.35 m": 64.95 },
+        "western-rootlands (584 wet corners, median depth 0.337 m, 0% at the q-clamp)": { "0.05 m": 8.39, "0.10 m": 17.98, "0.20 m": 30.65, "0.30 m": 44.35, "0.60 m": 75.34, "1.20 m SHIPPED": 100.0, "1.35 m": 100.0 }
+      },
+      "the_ruling_this_supports": "**At the shipped 1.20 m the term acts on 59.8% of Deep Marshes water and 100% of Western Rootlands water inside the capture radius — it is a transparency multiplier over the water body, not a shoreline band. At 0.10 m it acts on 3.1% and 18.0%, which is what a shore band looks like.** The r4 build chose 1.20 m explicitly to MAXIMISE coverage; that is the criterion for a depth tint and the exact inverse of what a shoreline band needs. Mechanism confirmed, in my own code, from the field.",
+      "and_the_two_seas_confirmed_dead": "marauders-coast q-saturation **91.13%** (24 waterline cells of 289), crimson-coast **90.24%** (26 of 290), both with median depth at the 1.35 m clamp. At 1.20 m the band touches 6.79% and 8.68% of their wet corners. No shader reading province.js's vertex colour can fade there at any band or any k, and that is a province.js limit, not a water.js one."
+    },
+    "the_r4_status_contradicts_itself_and_the_artifacts_settle_it": {
+      "the_contradiction": "`pose_set_completeness` says the Deep Marshes set is 4 of 4 and M12a clause 1 satisfied; `method_deviations[2]` says only 3 poses are valid and clause 1 is satisfied in NEITHER region.",
+      "how_i_resolved_it": "I enumerated every r4 sweep.json's pose records rather than reading either sentence. `dm-edge2/edge-b135`, `dm-b045/edge-b045`, `dm-b225/edge-b225`, `dm-b315/edge-b315` are ALL `void=false` with `water_edge_verified.on_screen=true`.",
+      "ruling": "**`pose_set_completeness` is right and `method_deviations[2]` is wrong.** The Deep Marshes set is 4 of 4 and M12a clause 1 IS satisfied there. The deviation's other half is right: the Western Rootlands set is 1 of 4 (`wr-edge` holds `edge-b225` only) and fails closed."
+    },
+    "the_stale_HUD_label_confirmed_by_my_own_eyes": "Every frame I opened at the `vista-deep-marshes` stand draws `western-rootlands` in the corner, while my tool's in-process `stand_verification` reads `teleport_offset_m: 0.00` and the RUNNING field's `regionAt` returns `deep-marshes` for both the deck point and the player. **Read the field block, never the drawn label.** It is not F7's file and I did not fix it."
+  },
+
+  "job_5_the_reference_item_four_critics_owed_and_it_corrects_them": {
+    "written": "corpus/70-visual/RI-VIS11-water-surface-micro-detail.md — 'Water surface micro-detail: when ripple becomes stipple'. Homed in the roadmap under F7 and F5 by editing `tools/roadmap-coverage.mjs` (CLAUDE.md rule 0c: fix the generator, not the markdown); `node tools/roadmap-coverage.mjs` now reports **all gates green**.",
+    "and_it_falsifies_the_name_everybody_has_been_using": {
+      "the_test": "An ordered dither is a FIXED function of screen position, so every pixel sharing an (x mod 4, y mod 4) phase gets the same offset. Bucket the masked pixels by that phase and the sixteen means separate systematically under a dither and agree under anything else. Also the 2x2 parity contrast.",
+      "measured_over_round_4s_own_frames": {
+        "edge-b135 fixed — water phase_spread_lsb": 0.528, "edge-b135 fixed — LAND control phase_spread_lsb": 1.278,
+        "edge-b135 prefix — water": 0.613, "edge-b135 prefix — LAND control": 1.144,
+        "western-rootlands edge-b225 fixed — water": 0.275, "western-rootlands edge-b225 fixed — LAND control": 1.518,
+        "parity_contrast_lsb on water, every arm": "0.027 to 0.059"
+      },
+      "ruling": "**The phase signature is under two thirds of an 8-bit level on water and is two to five times LARGER on the land the water shader never touches. There is no ordered dither on our water.** Four verdicts have now inherited that diagnosis from each other. This is ARBITRATION S63's family — a mechanism stated once and travelling as established because nobody ran the ablation."
+    },
+    "what_IS_there_and_it_is_real": {
+      "mean_abs_dY_between_adjacent_pixels_over_the_water_mask_at_edge-b135": { "water hidden (bed and bank, SAME pixels)": 4.788, "round-2 water (prefix)": 7.173, "shipped round-4 water (fixed)": 6.167, "land control elsewhere in frame": 9.638 },
+      "the_ratio_adjacent_over_two_apart": { "water": "0.915 to 0.926", "land control": "0.732" },
+      "reading": "The water ADDS ~50% more pixel-to-pixel energy than the same pixels carry with the water hidden, so the energy is the shader's. And the water's ratio sits at ~0.92 where land's is ~0.73 — on a resolved surface the difference between two pixels GROWS with separation, so water's energy is concentrated at the finest scale the pixel grid can carry. **That is the signature of a signal sampled past its Nyquist limit.** The candidate cause is in F7's own source and is not a mystery: `water.js:304-306` adds procedural terms at 4.7, 13.7 and 26.3 radians per world metre with no mip chain, no derivative filtering and no distance rolloff.",
+      "what_i_did_NOT_establish": "That those three terms ARE the cause. I have shown the defect is aliasing-class rather than dithering-class and named a candidate; I have not ablated the three terms. RI-VIS11 says so in its own provenance note and sets `confidence: medium`.",
+      "and_it_is_visible": "In the orbit frames the same dotted patterning is plainly on the TREES and the bank as much as on the water, which is what a screen-wide sampling artefact looks like and is not what a water-shader dither would look like."
+    },
+    "why_this_matters_to_F7_specifically": "`NormalEnergy` is the ONE M12 sub-metric F7 passes, in three rounds running, and it is high-frequency energy over a water window. RI-VIS11 §3 gates it: a `NormalEnergy` pass is only admissible where supersampled high-frequency energy survives at >= 70%; below 45% the row is `inapplicable` and per ARBITRATION S64 that carries the absence forward as a finding rather than absorbing it."
+  },
+
   "files_claimed": [
     "game/src/render/water.js",
     "tools/visual/f7-r5-sweep.mjs",
     "tools/visual/f7-r5-offline.mjs",
     "tools/visual/f7-r5-band-census.mjs",
+    "tools/visual/f7-r5-report.mjs",
     "corpus/70-visual/RI-VIS11-water-surface-micro-detail.md",
     "orchestration/status/W1-F7-r5.json",
     "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/"
   ],
-  "declared_overlap": "`node tools/ownership.mjs --for game/src/render/water.js`, run this turn: 'nobody live has declared this file'. `--for tools/visual/f7-r4-sweep.mjs` reports `tools/visual/` claimed as a DIRECTORY by W1-30V [running], so — exactly as rounds 3 and 4 did — I ADDED files there and edited none of theirs. I edited `tools/roadmap-coverage.mjs` to home RI-VIS11 (CLAUDE.md rule 0c: fix the generator, not the markdown); it is not claimed."
+  "declared_overlap": "`node tools/ownership.mjs --for game/src/render/water.js`, run this turn: 'nobody live has declared this file'. `--for tools/visual/f7-r4-sweep.mjs` reports `tools/visual/` claimed as a DIRECTORY by W1-30V [running] — so, exactly as rounds 3 and 4 did, I ADDED files there and edited none of theirs. I also edited `tools/roadmap-coverage.mjs` to home RI-VIS11; it is not claimed by anyone."
 }
