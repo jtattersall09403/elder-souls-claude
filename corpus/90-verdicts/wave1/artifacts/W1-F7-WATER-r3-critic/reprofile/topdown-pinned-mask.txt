@@ -1,0 +1,33 @@
+
+### mask threshold |dRGB| > 6
+arm                        ownMaskPx  ownW  ownD90 | pinnedW pinnedD90  pinNear  pinOpen
+prefix                       456053     4      6 |       3         5    52.73   75.221
+fixed                        455490     5      7 |       5         7   51.566    75.29
+no-shorefade                 455943     3      5 |       3         5   52.645   75.343
+null-const-trans             455593     3      5 |       3         5   51.846   73.412
+k-2.6-blackwood              455344     7      9 |       7         9   50.842   75.087
+k-1.4-topal                  454438    13     15 |      14        16   49.463   74.142
+k-0.35-padomaic              451091    19     21 |      19        21   44.903   65.016
+nothing-restore-control      455607     5      7 |       5         7    51.57   75.295
+
+### mask threshold |dRGB| > 4
+arm                        ownMaskPx  ownW  ownD90 | pinnedW pinnedD90  pinNear  pinOpen
+prefix                       458618     4      6 |       3         5   50.908   75.278
+fixed                        458065     5      7 |       5         7   49.883   75.279
+no-shorefade                 458463     4      6 |       4         6    50.84   75.384
+null-const-trans             458181     4      6 |       3         5   50.104   73.433
+k-2.6-blackwood              458013     6      8 |       7         9    49.22   75.094
+k-1.4-topal                  457232    15     17 |      14        16   47.956   74.188
+k-0.35-padomaic              454265    19     21 |      19        21     43.8   65.037
+nothing-restore-control      458260     5      7 |       5         7   49.888   75.279
+
+### mask threshold |dRGB| > 10
+arm                        ownMaskPx  ownW  ownD90 | pinnedW pinnedD90  pinNear  pinOpen
+prefix                       452385     4      6 |       3         5   55.099   75.342
+fixed                        451847     5      7 |       5         7   53.704   75.433
+no-shorefade                 452352     4      6 |       3         5   54.991    75.44
+null-const-trans             451934     3      5 |       3         5   54.123   73.506
+k-2.6-blackwood              451461     9     11 |       9        11   52.901   75.353
+k-1.4-topal                  450482    14     16 |      13        15   51.372   74.252
+k-0.35-padomaic              446014    18     20 |      19        21   46.334   65.416
+nothing-restore-control      451891     5      7 |       5         7   53.709    75.44
