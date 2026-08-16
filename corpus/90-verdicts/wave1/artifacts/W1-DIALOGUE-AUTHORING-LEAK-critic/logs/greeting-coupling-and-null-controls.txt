@@ -1,0 +1,19 @@
+live RG-BWC NPCs in mainline.json: blackwood-company-factor (Corvus Aldeyn, disp 25); blackwood-company-camp (the Company's camp, disp 20)
+
+PERTURBATION (same consumer, same NPCs, only greetings.json swapped):
+  pre-fix  : distinct leaked lines reachable = 10
+  post-fix : distinct leaked lines reachable = 0
+  coupling = |0 - 10| / |0 - 10| = 1.00
+
+NULL CONTROL A — an NPC in a different reaction group must be unchanged:
+  255 (npc x race) cells outside RG-BWC checked; changed = 0 (clean)
+
+NULL CONTROL B — RG-BWC outside the cold band must be unchanged:
+  40 cells at dispositions 5/40/60/85 checked; changed = 0 (clean)
+
+PROBE IS DRIVING A LIVE CELL (not a stub) — the cold-band lines Corvus Aldeyn now speaks:
+    "The writ says nothing about talk. Local. Useful."
+    "Local. Useful. We are working."
+    "Local. Useful. Contract business only."
+    "The Company is not recruiting today. Local. Useful."
+    "Local. Useful. Take it to the factor."

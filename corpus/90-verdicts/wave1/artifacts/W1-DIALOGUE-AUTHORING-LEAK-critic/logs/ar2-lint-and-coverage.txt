@@ -1,0 +1,16 @@
+=== AR-2 / RI-DLG03 step-7 diegetic lint ===
+greeting+rumour lines checked : 1857
+item regex as written         : 46 hits  <-- unanchored: \b(quest|... matches "question"
+word-anchored reading         : 5 hits
+    game/data/dialogue/greetings.json .pools[220].lines[3] "Take the marker. It floats when nothing else does. One of the drowned ones, then."
+    game/data/dialogue/greetings.json .pools[221].lines[3] "Take the marker. It floats when nothing else does. The river brought it and the river will want it back."
+    game/data/dialogue/greetings.json .pools[222].lines[3] "Take the marker. It floats when nothing else does. Ash and salt. Nothing grows in either."
+    game/data/dialogue/greetings.json .pools[223].lines[3] "Take the marker. It floats when nothing else does. Paper. It burns."
+    game/data/dialogue/greetings.json .pools[224].lines[3] "Take the marker. It floats when nothing else does. Something with dry feet."
+
+=== check-authoring-leaks.mjs coverage ===
+strings its TEXT_KEYS whitelist reaches under dialogue/ + books/ : 4988
+   ...of which live in greetings.json, the file it REGENERATES  : 1500 (30.1%)
+spoken faction-refusal strings it cannot see at all             : 59
+   under keys                                                  : speaker_note, reputation, attribute, skill_1, skill_2, world_state, welcome, rivalry_locked, not_joinable.house_dres, not_joinable.shadowscale_order, not_joinable.deep_kin
+factions with a spoken refusal voice                            : 7

@@ -1,0 +1,46 @@
+
+==================================================================
+BASELINE — all three checks on the tree as landed at 43d26e6e
+==================================================================
+check-authoring-leaks   EXIT=0  (expect 0)
+check-greeting-consumer EXIT=0  (expect 0)
+check-book-fold         EXIT=0  (expect 0)
+
+==================================================================
+CONTROL A — delete the guard INSIDE foldBooks(). The old number must come back.
+==================================================================
+FIXED arm (real foldBooks(), the actual game consumer): 24 book(s) with no text
+FAIL: 24 book(s) would render as "undefined" text in the reading UI.
+check-book-fold EXIT=1  (expect 1 — control PASSES if this is 1)
+
+==================================================================
+CONTROL B — reintroduce the leak at the authored source. Both dialogue checks must fail.
+==================================================================
+check-authoring-leaks   EXIT=1  (expect 1)
+check-greeting-consumer EXIT=1  (expect 1)
+
+==================================================================
+CONTROL C — revert engine.js's CALL SITE to the old inline fold; leave foldBooks() correct.
+==================================================================
+This is the coupling control: the game ships the defect again, foldBooks() is still right.
+check-book-fold         EXIT=0  (expect 1 if the check guards the game; it returns 0)
+check-authoring-leaks   EXIT=0
+check-greeting-consumer EXIT=0
+
+==================================================================
+CONTROL D — hand-author the leak straight into the SHIPPED greetings.json (no generator).
+==================================================================
+occurrences of the leak in the shipped file BEFORE the check: 1
+check-authoring-leaks   EXIT=0  (expect 1; it returns 0)
+occurrences AFTER the check ran:                            0
+-> the check REGENERATES the file it scans, so it erased the defect and reported its absence.
+
+==================================================================
+CONTROL E — hand-author the leak into a SPOKEN faction-refusal line (key not in TEXT_KEYS).
+==================================================================
+injected into factions.the_rootkeepers.reputation — spoken by FactionRefusals.speak()
+check-authoring-leaks   EXIT=0  (expect 1; it returns 0)
+
+==================================================================
+DONE — tree restored
+==================================================================

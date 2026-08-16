@@ -1,0 +1,38 @@
+books/*.json entries in index.json: 26
+manifest.json position (1-based): 5
+distinct file-keys in data.books: 26 (collision if < 26)
+
+--- REAL load order ---
+OLD fold: total ids 163 | textless 24
+NEW fold: total ids 163 | textless 0
+
+the textless ids under the OLD fold:
+  1. a-practical-handling-of-the-marsh-fevers
+  2. a-progress-i
+  3. a-progress-ii
+  4. a-progress-iii
+  5. crate-tally
+  6. inscription-third-terrace
+  7. ledger-and-journal-of-andrel-vorin
+  8. ledger-leaf
+  9. nine-stanzas-upon-the-drowning
+ 10. on-the-tally-stones
+ 11. pilots-chart-book
+ 12. sealed-letter-stormhold
+ 13. shore-compass
+ 14. the-blessings-of-the-coast
+ 15. the-egg-speaks-twice
+ 16. the-house-built-in-fear
+ 17. the-house-built-in-reverence
+ 18. the-oliis-bargain
+ 19. the-sap-and-the-ledger
+ 20. the-stone-nests-i
+ 21. the-stone-nests-ii
+ 22. the-stone-nests-iii
+ 23. valus-survey-fragment
+ 24. what-the-water-took
+
+--- 500 shuffled load orders ---
+NEW foldBooks() differed from baseline in: 0 of 500 => order-independent: true
+OLD fold differed from baseline in: 500 of 500
+OLD fold textless-count range across shuffles: 0 .. 162
