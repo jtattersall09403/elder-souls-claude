@@ -1,0 +1,198 @@
+{
+ "what": "M6/M2/M7 RE-IMPLEMENTED FROM RI-VIS03 \u00a70 AND \u00a7M6 PSEUDOCODE BY THIS CRITIC, WITHOUT OPENING tools/visual/f4c-analyse.mjs \u2014 the instrument that carries BOTH prior rounds' hard fail. The r1 critic named a re-implementation as the cheap way to falsify it; the r2 builder REUSED it instead (correct for comparability), which left it unfalsified across two rounds. Agreement below is therefore evidence rather than a shared bug.",
+ "tool": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/m6-independent.mjs",
+ "bar": "RI-VIS03 exterior_daylight: hue_offset >= 15 deg, HARD FAIL below 6",
+ "AGREEMENT_WITH_THE_ROUNDS_INSTRUMENT": {
+  "sealed crop, landed r1": {
+   "round": 7.16,
+   "mine": 7.18
+  },
+  "sealed crop, shipped r2": {
+   "round": 7.32,
+   "mine": 7.34
+  },
+  "sealed crop, REFUSED env-0.55 arm": {
+   "round": 7.25,
+   "mine": 7.27
+  },
+  "plate REF-ER steam-dyules-2764066988": {
+   "round": 96.08,
+   "mine": 96.1
+  },
+  "plate REF-ER steam-neulyiaa-2772935437": {
+   "round": 16.06,
+   "mine": 16.99
+  },
+  "plate REF-ER steam-neulyiaa-2774897392": {
+   "round": 12.49,
+   "mine": 12.38
+  },
+  "C_shadow, sealed crop before/after": {
+   "round": [
+    14.146,
+    12.377
+   ],
+   "mine": [
+    14.148,
+    12.379
+   ]
+  },
+  "shadow_mask_frac, sealed crop before": {
+   "round": 0.2458,
+   "mine": 0.2458
+  }
+ },
+ "THE_FULL_FRAME_THE_ROUND_NEVER_MEASURED_ON_THE_SHIPPED_ARM": {
+  "why": "S64 requires the full frame reported alongside the sealed crop ALWAYS. `M6-fullframe-before-after.json` carries TWO rows \u2014 the BEFORE arm and the REFUSED env-0.55 arm. THE ARM THAT SHIPPED IS NOT IN IT. Measured here from the round's own captures.",
+  "finding": "THE SHIPPED CHANGE MOVED THE FULL FRAME 3.75 -> 6.38 deg (+70%), LIFTING IT FROM BELOW THE 6 deg HARD-FAIL LINE TO ABOVE IT, while the sealed crop moved 7.18 -> 7.34 (+0.16, which is INSIDE the 0.17-0.22 deg run-to-run noise I measured twice). A 16x divergence between the two domains, which S64 says is itself a finding \u2014 and the round asserted the opposite ('the crop and the frame AGREE \u2014 no divergence'). THIS CORRECTION RUNS IN THE BUILD'S FAVOUR.",
+  "rows": [
+   {
+    "file": "reports/f4r2/budget-landed/pair01/base.png",
+    "W": 1920,
+    "H": 1080,
+    "sky_frac": 0.0472,
+    "shadow_mask_frac": 0.2369,
+    "C_local_med": 0.0294,
+    "retention": 0.9672,
+    "hue_shadow_deg": 99.69,
+    "hue_lit_deg": 103.44,
+    "hue_offset_deg": 3.75,
+    "C_shadow": 11.6,
+    "mean_Yp_shadow": 0.1235,
+    "mean_Yp_lit": 0.4664
+   },
+   {
+    "file": "reports/f4r2/budget-r2horizon/pair01/base.png",
+    "W": 1920,
+    "H": 1080,
+    "sky_frac": 0.0472,
+    "shadow_mask_frac": 0.2381,
+    "C_local_med": 0.0293,
+    "retention": 0.9415,
+    "hue_shadow_deg": 102.37,
+    "hue_lit_deg": 108.75,
+    "hue_offset_deg": 6.38,
+    "C_shadow": 10.279,
+    "mean_Yp_shadow": 0.1235,
+    "mean_Yp_lit": 0.4658
+   },
+   {
+    "file": "reports/f4r2/budget-r2/pair01/base.png",
+    "W": 1920,
+    "H": 1080,
+    "sky_frac": 0.0472,
+    "shadow_mask_frac": 0.2382,
+    "C_local_med": 0.0304,
+    "retention": 0.8533,
+    "hue_shadow_deg": 105.11,
+    "hue_lit_deg": 109.61,
+    "hue_offset_deg": 4.51,
+    "C_shadow": 10.911,
+    "mean_Yp_shadow": 0.1415,
+    "mean_Yp_lit": 0.4871
+   }
+  ]
+ },
+ "THE_TWO_BANKED_FRAMES_NAMED_AFTER_R2_ARE_DIFFERENT_ARMS": {
+  "finding": "frames/AFTER-r2__pair01-crop.png measures 7.27 \u2014 it is the REFUSED env-0.55 arm, a configuration that is NOT IN THE TREE. frames/pair01__AFTER-r2__judged-crop.png measures 7.34 \u2014 that one is the shipped build. Nothing in the names distinguishes them. HAZARDS \u00a717's family: a verdict's cited artefacts must mean what they say.",
+  "rows": [
+   {
+    "file": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2/frames/AFTER-r2__pair01-crop.png",
+    "W": 512,
+    "H": 512,
+    "sky_frac": 0,
+    "shadow_mask_frac": 0.2492,
+    "C_local_med": 0.0256,
+    "retention": 0.6868,
+    "hue_shadow_deg": 110.44,
+    "hue_lit_deg": 103.16,
+    "hue_offset_deg": 7.27,
+    "C_shadow": 12.674,
+    "mean_Yp_shadow": 0.1856,
+    "mean_Yp_lit": 0.4187
+   },
+   {
+    "file": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2/frames/BEFORE-landed__pair01-crop.png",
+    "W": 512,
+    "H": 512,
+    "sky_frac": 0,
+    "shadow_mask_frac": 0.2458,
+    "C_local_med": 0.0245,
+    "retention": 0.681,
+    "hue_shadow_deg": 106.05,
+    "hue_lit_deg": 98.87,
+    "hue_offset_deg": 7.18,
+    "C_shadow": 14.148,
+    "mean_Yp_shadow": 0.1714,
+    "mean_Yp_lit": 0.3945
+   },
+   {
+    "file": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2/frames/pair01__AFTER-r2__judged-crop.png",
+    "W": 512,
+    "H": 512,
+    "sky_frac": 0,
+    "shadow_mask_frac": 0.2488,
+    "C_local_med": 0.0245,
+    "retention": 0.6805,
+    "hue_shadow_deg": 109.46,
+    "hue_lit_deg": 102.11,
+    "hue_offset_deg": 7.34,
+    "C_shadow": 12.379,
+    "mean_Yp_shadow": 0.1714,
+    "mean_Yp_lit": 0.394
+   }
+  ]
+ },
+ "S59_MATCHED_LUMINANCE_VERIFIED_TWO_WAYS": {
+  "arithmetic": "three.core.js:6309 sets workingColorSpace = LinearSRGBColorSpace, so Rec.709 on the raw triple is the right computation. (0.760,0.790,0.700) = 0.777124; (0.677,0.790,0.944) = 0.777095; delta -2.9e-5. The round quotes 0.77706 -> 0.77707: those digits do not reproduce and the true movement is a FALL, not a rise. Immaterial to the claim, which HOLDS.",
+  "empirical": "mean Yp on the SHADOW quartile 0.1714 -> 0.1714 and on the LIT quartile 0.3945 -> 0.3940, sealed crop. The lever genuinely cannot have bought hue with brightness."
+ },
+ "reference_plates_on_my_code": [
+  {
+   "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-dyules-2764066988.jpg",
+   "W": 1920,
+   "H": 1080,
+   "sky_frac": 0,
+   "shadow_mask_frac": 0.2498,
+   "C_local_med": 0.0321,
+   "retention": 0.4347,
+   "hue_shadow_deg": 199.4,
+   "hue_lit_deg": 103.3,
+   "hue_offset_deg": 96.1,
+   "C_shadow": 5.702,
+   "mean_Yp_shadow": 0.0762,
+   "mean_Yp_lit": 0.729
+  },
+  {
+   "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-neulyiaa-2772935437.jpg",
+   "W": 3840,
+   "H": 2160,
+   "sky_frac": 0.0008,
+   "shadow_mask_frac": 0.2497,
+   "C_local_med": 0.0759,
+   "retention": 0.769,
+   "hue_shadow_deg": 72.38,
+   "hue_lit_deg": 89.37,
+   "hue_offset_deg": 16.99,
+   "C_shadow": 9.199,
+   "mean_Yp_shadow": 0.1279,
+   "mean_Yp_lit": 0.5874
+  },
+  {
+   "file": "corpus/70-visual/refs/modern/exterior_daylight/REF-ER__steam-neulyiaa-2774897392.jpg",
+   "W": 3840,
+   "H": 2160,
+   "sky_frac": 0,
+   "shadow_mask_frac": 0.25,
+   "C_local_med": 0.0714,
+   "retention": 0.9374,
+   "hue_shadow_deg": 108.01,
+   "hue_lit_deg": 95.63,
+   "hue_offset_deg": 12.38,
+   "C_shadow": 6.372,
+   "mean_Yp_shadow": 0.1538,
+   "mean_Yp_lit": 0.7263
+  }
+ ],
+ "population_note": "The round measured 8 plates and reported the population as n=8. `ls corpus/70-visual/refs/modern/exterior_daylight/ | wc -l` returns 43. The 8 are all REF-ER; no REF-RD plate was measured by either round. The round is right that the population is not uniformly above 15 (one of its 8 reads 12.49) and right not to present it as though it were \u2014 but the population it characterises is 8 of 43."
+}

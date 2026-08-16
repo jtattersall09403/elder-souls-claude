@@ -1,0 +1,23 @@
+{
+ "what": "THE ROUND'S INSTRUMENT CLAIM, RE-DERIVED FROM ITS OWN FRAMES ON MY OWN CODE \u2014 AND A STRONGER FORM OF IT.",
+ "claim": "three r180's `LightShadow.intensity` is a UNIFORM, so it gives RI-VIS04 \u00a73-D2's ablation without the full-scene shader recompile that `renderer.shadowMap.enabled = false` forces (measured at ~5 minutes per swept hour under SwiftShader).",
+ "reproduced": {
+  "08:00": {
+   "two_forms_differ_meanAbsLuma": 0.3368,
+   "same_config_recaptured_differs": 1.0918,
+   "ratio": 0.31,
+   "area_tau8_shadowMap": 0.10364,
+   "area_tau8_uniform": 0.10431
+  },
+  "13:00": {
+   "two_forms_differ_meanAbsLuma": 0.1365,
+   "same_config_recaptured_differs": 0.446,
+   "ratio": 0.31,
+   "area_tau8_shadowMap": 0.13763,
+   "area_tau8_uniform": 0.13801
+  }
+ },
+ "THE_STRONGER_FORM_THE_ROUND_DID_NOT_STATE": "Swap which `base` frame you subtract and the shadowMap form's area@tau8 moves 0.10364 -> 0.10630 at 08:00, a shift of 0.00266 \u2014 FOUR TIMES the 0.00067 between the two ablation FORMS. THE CHOICE OF BASE FRAME MATTERS MORE THAN THE CHOICE OF ABLATION FORM. So the equivalence is not marginal; it is comfortably inside a source of error every \u00a73-D2 measurement already carries.",
+ "recommendation": "This belongs in HAZARDS.md and RI-VIS04 \u00a73-D2 should name the uniform form as a permitted implementation, citing this equivalence. Bound, as the round said: it licenses the cheap form for AREA FRACTIONS at daylight exteriors and not for anything that turns on individual pixels \u2014 the two forms are NOT byte-identical (`frames_identical: false`).",
+ "checked_by": "corpus/90-verdicts/wave1/artifacts/W1-F4-r2-critic/tools/crop-delta.mjs family, over reports/f4r2/equiv-landed/{t8,t13}/"
+}
