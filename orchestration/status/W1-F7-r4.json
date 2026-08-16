@@ -6,37 +6,22 @@
   "verdict_this_answers": "corpus/90-verdicts/wave1/W1-F7-WATER-r3.json (FAIL at 3, 'keep the change'). Its biggest_gap is GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k, remedy (a) a shore band in metres mixed with the transmittance term, (b) measure >= 2 regions and declare the pose set, (c) one frame-time reading, (d) RI-VIS04 §8's supersample test.",
   "branch": "codex/wave1-build-experiment",
   "commit_at_filing": "read from `git rev-parse HEAD` at filing; every sweep.json below carries its own commit field and they differ because I banked between runs",
-
   "what_i_could_not_do": [
-    "**THE ACCEPTANCE FAILS, AND IT FAILS IN BOTH REGIONS. I AM NOT CLAIMING IT.** The r3 verdict's paired acceptance is `gradient_width_px >= 12` at a declared `water_edge` pose in the Deep Marshes, over a pinned mask, at three thresholds, and `RI-VIS03` M12a clause 3 says a band is met only at the WORST pose in the declared set. Measured, pinned mask, threshold 6: Deep Marshes `edge-b135` r3 1 -> r4 **34**; `edge-b225` r3 2 -> r4 **1**; `edge-b315` r3 8 -> r4 **8**; Western Rootlands `edge-b225` r3 5 -> r4 **1**. The worst pose is **1 px**. The 30/34/33 result at `edge-b135` is real, replicated at all three thresholds, and it is ONE POSE OF FOUR. A critic must not read it as the round's headline and neither do I.",
-
+    "**THE ACCEPTANCE FAILS, AND IT FAILS IN BOTH REGIONS. I AM NOT CLAIMING IT.** The r3 verdict's paired acceptance is `gradient_width_px >= 12` at a declared `water_edge` pose in the Deep Marshes, over a pinned mask, at three thresholds, and `RI-VIS03` M12a clause 3 says a band is met only at the WORST pose in the declared set. Measured, pinned mask, threshold 6, all four declared Deep Marshes bearings plus the second region: `edge-b045` r3 15 -> r4 **17**; `edge-b135` r3 1 -> r4 **34**; `edge-b225` r3 2 -> r4 **1**; `edge-b315` r3 8 -> r4 **8**; Western Rootlands `edge-b225` r3 5 -> r4 **1**. The worst pose is **1 px**. Two of the five improve, one is unchanged, two regress. The 34 px result at `edge-b135` is real, replicated at all three thresholds, and it is one pose. A critic must not read it as the round's headline and neither do I.",
     "**AND THE WIDTH FELL AT TWO OF THE FOUR DECLARED POSES, INCLUDING IN THE SECOND REGION.** `edge-b225` in the Deep Marshes goes 2 -> 1 and `edge-b225` in the Western Rootlands goes 5 -> 1. These are numbers moving the wrong way against the arm I must beat, they are outside nothing I can call noise, and they are the single most important thing in this file.",
-
     "**NO BAND CONSTANT RESCUES IT — SO IT IS NOT A TUNING PROBLEM AND I DID NOT PRETEND IT WAS.** At the failing pose `edge-b225` I swept the band and got `r3` (band -> 0) width 3, `band-0.60` width 1, `band-1.20` (shipped) width 1, `band-1.35` width 1. Every band constant reads 1. The uniform IS reaching the fragment and its effect IS monotonic in its own parameter — mean luma 68.267 / 66.408 / 60.999 / 58.947 across those four rows, which is the sanity check that the arm is not vacuous — but the parameter does not buy the gradient back. Evidence: `dm-bandsweep/sweep.json`.",
-
     "**THE ROUND MAKES THE WATER DARKER EVERYWHERE, AND THAT IS A COST NOT A BENEFIT.** Mean luma over the pinned mask at threshold 6, r3 -> r4: `edge-b135` 51.511 -> 44.495 (-13.6%); `edge-b225` 67.717 -> 60.756 (-10.3%); `edge-b315` 68.603 -> 63.400 (-7.6%); Western Rootlands `edge-b225` 83.784 -> 73.439 (-12.3%). In a drowned marsh the bed under the water is DARKER than the water, so a wider fade means the water reads as more absent, not more like water. The r3 remedy's own preservation clause is 'mean_luma at the deck vista not falling below the round-3 arm's' — **I did not capture the deck vista, and at every pose I did capture the number falls.** I am reporting that as a fail, not as a pending item.",
-
     "**MY OWN CHANGE BROKE EVERY BROWSER-DRIVEN TOOL ON THE BRANCH FOR PART OF THIS ROUND, AND A SIBLING HAD TO REPAIR IT.** The comments I added sit inside `water.js`'s shader TEMPLATE LITERAL, and this repo's comment style quotes identifiers in backticks; each backtick terminated the literal. `node --check` exited 0 on the broken file. The symptom was `window.__HARNESS never appeared` for every tool on the branch, not only mine. Repaired at commit `cdfb59a8` by a sibling doing branch repair (`BRANCH REPAIR (not T4's file)`), 7 comment lines, backtick -> apostrophe, no logic touched — I have re-read the three code lines and they are byte-identical to what I wrote. Written up as **HAZARDS §26** so the next agent does not repeat it. This cost the fleet time and it was mine.",
-
     "**NO FRAME-TIME FIGURE IS OBTAINABLE ON THIS BOX, AND I NOW HAVE THE MEASUREMENT THAT SAYS SO RATHER THAN THE FOURTH ROUND OF SILENCE.** Two attempts, two replicates each, `three.render(scene, camera)` with `gl.finish()` forcing completion: at 16 iterations `prefix` read **3703.09 ms/world-pass with a replicate spread of 5605.27 ms**; at 4 iterations it read **9.71 ms with a spread of 7.66 ms**. The spread is of the same order as the mean in both, so no arm-to-arm cost difference can be resolved. `engine.js:9382` already says why in its own words: 'Tier-H. This container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game (RI-PLT01 §A/T1).' Both perf runs also died on their timeout before covering all three arms. **Unmeasurable, with the number that shows it.**",
-
     "**THE S52 MATCHED-LUMINANCE NULL DID NOT COMPLETE.** My first calibration searched the wrong way — it assumed more transmittance means brighter, and in a drowned marsh it means darker, so it walked away from the target for three iterations (trans 0.5 -> luma 53.71, 0.25 -> 59.822, 0.125 -> 62.874 against a target of 44.368). I rewrote it to probe both ends and learn the direction, but every run that reached the calibration then hit its own timeout: the only rows I have are `end-lo` (trans 0.02, luma 66.54, target 60.597) at `edge-b225`. **So there is NO null row for round 4 and no claim of mine is protected by one.** The r3 critic's null at k = 4.5 is not transferable because round 4 changes the fade's extent, not its average.",
-
-    "**THE `edge-b045` POSE IS VOID AND ITS ROWS MUST NOT BE READ.** It ran under the first version of my capture protocol, which stepped 8 frames before the water-hidden frame and 22 before the pin and then differenced the two to build the mask — so fourteen frames of canopy drift were counted as water. It is void by my own instrument's later evidence, not by argument: at that pose the `prefix` arm, which IS the mask arm, reported an own-mask delta of **+57.77%** against its own pin. Fixed for every run after it (all captures now go through one `captureAt`). **The declared pose set is therefore 3 of 4 in the Deep Marshes, and M12a clause 1 requires 4 — so every M12 band in this file is INCOMPLETE and fails closed, including the ones that would otherwise pass.**",
-
+    "**`edge-b045` WAS RUN TWICE AND ONLY THE SECOND RUN COUNTS.** Its first run used my first capture protocol, which stepped 8 frames before the water-hidden frame and 22 before the pin and then differenced the two to build the mask — so fourteen frames of canopy drift were counted as water. It is void by my own instrument's evidence rather than by argument: at that pose the `prefix` arm, which IS the mask arm, reported an own-mask delta of **+57.77%** against its own pin. Fixed for every run after it (all captures now go through one `captureAt`), and `edge-b045` was re-taken through the corrected protocol in `dm-b045/`. **The void rows are still on disk in `dm-edge/` and they look like data — do not read them.** With the retake the Deep Marshes declared set is 4 of 4 and M12a clause 1 is satisfied there; the Western Rootlands set is 1 of 4 and fails closed.",
     "**THE MASK IS UNSTABLE AT THRESHOLD 4 AND I DID NOT FIX IT, I MEASURED IT.** Taking the pin twice through the identical protocol: at `edge-b135` the replicate delta is **+53.24% at threshold 4**, **+1.18% at 6**, **-1.13% at 10**. So threshold 4 is not a usable threshold on this scene and every threshold-4 row in this file should be discounted. Thresholds 6 and 10 are stable to about 1-2%, and the headline width result holds at both.",
-
-    "**THE BLIND GATE DID NOT RUN.** Re-derived by me this turn, not inherited: `grep -rl 'blind_pair: yes' corpus/ --include=*.md | wc -l` returns **102**; `grep -rln 'blind_status: *run' corpus/90-verdicts/ | wc -l` returns **1**, and the r3 critic established that the 1 is a false positive matching a verdict's own prose about the count being zero. A builder cannot spawn a fresh judge (CLAUDE.md rule 0e puts it with the orchestrator). `blind_status: not_possible`, 0, fail-closed.",
-
+    "**THE BLIND GATE DID NOT RUN — AND I GOT ITS CENSUS WRONG ON THE FIRST WRITING, WHICH IS THE POINT OF DERIVING IT.** I first wrote 102 and 1 into this file from the r3 verdict's figures. Then I ran the commands. `grep -rl 'blind_pair: yes' corpus/ --include=*.md | wc -l` returns **106**. `grep -rln 'blind_status: *run' corpus/90-verdicts/ | wc -l` returns **3**, and **all three are false positives**: `W1-F7-WATER-r2.json:400`, `W1-F7-WATER-r3.json:198` and `W1-F7-WATER-r3.md:117` — each is a document saying the count is zero, matched as an instance of the thing it denies, and the r3 hits are that verdict CORRECTING the same error. The strict field form `grep -rn '\"blind_status\": *\"run\"' corpus/90-verdicts/` returns **0**. So: **106 items declare a blind pair and zero verdicts have ever run one.** A builder cannot spawn a fresh judge (CLAUDE.md rule 0e puts it with the orchestrator). `blind_status: not_possible`, 0, fail-closed. Recording the wrong first draft because it is the third round running in which this census has been passed hand to hand and been wrong.",
     "**NO `TemporalVar`, A FIFTH ROUND RUNNING, AND NO `RI-VIS04` §8 SUPERSAMPLE TEST.** TemporalVar needs >= 5 stationary frames; the supersample test (remedy clause d) needs a 2x recapture and downsample. Both were displaced by the pose set, the second region and the sort test, and by the box sitting at or over its contention ceiling for most of this round. 0 fail-closed, NOT demonstrated absent.",
-
     "**I RAN BROWSERS WHILE `node tools/contention.mjs` SAID THE BOX WAS OVER ITS CEILING, AND THE TOOL TOLD ME TO SAY SO.** Readings taken during this round: 4.35, 4.44, 3.70, 4.75 and 3.87 load-per-core against a ceiling of 4.0. Five of my runs were killed by their own `timeout` before finishing, which is why several arms are missing rather than negative.",
-
     "**I DID NOT WRITE THE DITHER-STIPPLE REFERENCE ITEM.** I opened five frames at close range on both arms and the heavy dotted patterning across the entire water surface that two critics have now named is plainly there — it is the dominant texture of our water at the distance a player stands at. It contaminates `NormalEnergy`, which I report as passing. This is the third round in which somebody has named it and not written it. I did not write it either, and the reason is not a good one: I spent the budget on the fade."
   ],
-
-  "headline": "The mechanism the r3 verdict asked for is built and it demonstrably reaches the fragment: the fade's width now has no `k` in it. It buys a 1 px -> 34 px waterline at ONE of four declared poses and it buys nothing or less than nothing at the other three, in both regions, at every band constant I swept. The two things this round settles for good are not the fade: the transparency-sorting objection against keeping round 3 does NOT fire, and the mask defect HAZARDS §25 names is real, is +23% at threshold 10, and would have been inside the numbers if I had not pinned.",
-
+  "headline": "The mechanism the r3 verdict asked for is built and it demonstrably reaches the fragment: the fade's width now has no `k` in it. Across five declared water_edge poses in two regions it buys a 1 px -> 34 px waterline at one, a 15 -> 17 at another, nothing at a third, and a REGRESSION at the remaining two — so the >= 12 px acceptance fails at the worst pose, and no band constant rescues it. The two things this round settles for good are not the fade: the transparency-sorting objection against keeping round 3 does NOT fire, and the mask defect HAZARDS §25 names is real, is +23% at threshold 10 against a replicate band of -1.13%, and would have been inside the numbers if I had not pinned.",
   "the_change": {
     "file": "game/src/render/water.js",
     "files_touched_beyond_it": "none in game/ — round 2's Schlick weight and round 3's depth colour are untouched.",
@@ -46,7 +31,6 @@
     "the_colour_half_is_deliberately_untouched": "`esDepth = mix(esDeepCol, esBedCol, esTrans)` still uses extinction alone. RI-WLD10 §10.1's 'water is opaque before it is reflective' is a statement about how much light returns from the column and it is right; RI-VIS04 §9's TELL is a statement about GEOMETRY, and how far a waterline is softened over is a property of the bank's slope, not of how murky the water is. A perfectly opaque pond still does not end in a 1 px step.",
     "preservation_by_construction_S59_both_arms": "At `uWaterShoreBandM -> 0` the band is identically 0 and the line is round 3 EXACTLY — that is the `r3` ablation arm and it needs no shader edit, only a uniform. At `esDepthM >= uWaterShoreBandM`, and therefore at everything on province.js's q = 1 clamp, the band is 0 and round 2's look is preserved through round 3's own preservation property. **I verified the first of those against a SHADER arm rather than trusting the algebra**: `r3` (uniform) and `r3-shader` (the alpha line rewritten to `esShoreT = esTrans`) read luma 51.255 vs 50.991 and width 1 vs 1 at `edge-b135`, and 63.322 vs 62.974 at `edge-b045`. The uniform ablation is exact to within the capture's own drift."
   },
-
   "the_instrument_and_what_it_fixed": {
     "tool": "tools/visual/f7-r4-sweep.mjs, mine, new this round. `node tools/ownership.mjs --for tools/visual/f7-r3-sweep.mjs`, run this turn, reports it claimed by a live piece (`W1-30V`), so I did not edit somebody's ruler mid-measurement.",
     "1_the_mask_is_pinned_and_the_tool_says_which_arm_it_came_from": "HAZARDS §25 / `RI-VIS03` M12a's closing paragraph. ONE mask per pose, derived from the named baseline arm (`prefix` = the round-2 shader), and every arm scored through it. That is the conservative direction: the fix is scored on the pixels the arm it must beat calls water, so it cannot widen its own denominator.",
@@ -56,48 +40,185 @@
     "5_the_pose_set_is_derived_from_the_world_field_before_any_capture": "`RI-VIS03` M12a clause 4 wants a `water_edge` pose with a REAL boundary, and three rounds chose close-ups by eye and the r3 critic opened all three and found no bank in any. So `f7-r4-shoreline-census.mjs` runs offline against the same `WorldField` the engine builds, reproducing province.js:1531-1562's cell arithmetic verbatim, and finds the nearest WATERLINE CELL along four bearings fixed at exactly 45/135/225/315 — 90 deg apart by construction, no freedom to shop. Each pose then verifies with the harness's own `projectPoint` (engine.js:9060, read this turn) that the target landed on screen. **All four Deep Marshes targets and both Western Rootlands targets verified `in_front: true, on_screen: true`.**",
     "6_it_paints_the_fade_field_itself": "`gradient_width_px` reads the SCENE as much as the shader, so two arms `probe-shoreT-r3` and `probe-shoreT-r4` render `esTrans` and `esShoreT` straight into the water surface as greyscale with alpha forced to 1. Tonemapping maps the value but not the ordering, so the spatial EXTENT survives it."
   },
-
   "every_number_the_instruments_emitted": {
-    "how_to_read_this": "Pinned mask, threshold 6 unless stated, one line per pose per M12a clause 2 — NO MEAN OVER POSES. `edge-b045` is omitted because it is void (see what_i_could_not_do). Evidence directories under corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/.",
+    "how_to_read_this": "Pinned mask, threshold 6 unless stated, one line per pose per M12a clause 2 — NO MEAN OVER POSES. `dm-edge/` holds a VOID first run of `edge-b045` (broken capture protocol); the valid `edge-b045` is `dm-b045/`. Evidence directories under corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/.",
     "gradient_width_px_the_headline_and_the_thing_that_fails": {
-      "deep-marshes k=4.5 edge-b135 (dm-edge2)": { "prefix_r2": 4, "r3": null, "r3_note": "the profile returned no width at threshold 6 — near-shore and open-water luma differ by < 0.6/255, i.e. there is no transition to measure; it reads 1 at thresholds 4 and 10", "fixed_r4": 34, "at_thr4": [5, 1, 30], "at_thr10": [5, 1, 33] },
-      "deep-marshes k=4.5 edge-b225 (dm-b225)": { "prefix_r2": 2, "r3": 2, "fixed_r4": 1, "at_thr10": [2, 2, 1] },
-      "deep-marshes k=4.5 edge-b315 (dm-b315)": { "prefix_r2": 8, "r3": 8, "fixed_r4": 8, "at_thr10": [5, 6, 5] },
-      "western-rootlands k=1.9 edge-b225 (wr-edge)": { "prefix_r2": 3, "r3": 5, "fixed_r4": 1 },
+      "deep-marshes k=4.5 edge-b135 (dm-edge2)": {
+        "prefix_r2": 4,
+        "r3": null,
+        "r3_note": "the profile returned no width at threshold 6 — near-shore and open-water luma differ by < 0.6/255, i.e. there is no transition to measure; it reads 1 at thresholds 4 and 10",
+        "fixed_r4": 34,
+        "at_thr4": [
+          5,
+          1,
+          30
+        ],
+        "at_thr10": [
+          5,
+          1,
+          33
+        ]
+      },
+      "deep-marshes k=4.5 edge-b225 (dm-b225)": {
+        "prefix_r2": 2,
+        "r3": 2,
+        "fixed_r4": 1,
+        "at_thr10": [
+          2,
+          2,
+          1
+        ]
+      },
+      "deep-marshes k=4.5 edge-b315 (dm-b315)": {
+        "prefix_r2": 8,
+        "r3": 8,
+        "fixed_r4": 8,
+        "at_thr10": [
+          5,
+          6,
+          5
+        ]
+      },
+      "western-rootlands k=1.9 edge-b225 (wr-edge)": {
+        "prefix_r2": 3,
+        "r3": 5,
+        "fixed_r4": 1
+      },
       "worst_pose_over_the_declared_set": 1,
-      "acceptance": "FAILS. The clause is >= 12 at the worst pose."
+      "acceptance": "FAILS. The clause is >= 12 at the worst pose; the worst pose is 1. It would also fail on the two regressions alone.",
+      "deep-marshes k=4.5 edge-b045 (dm-b045)": {
+        "prefix_r2": 15,
+        "r3": 15,
+        "fixed_r4": 17,
+        "at_thr10": [
+          20,
+          20,
+          20
+        ],
+        "target_cell_depths_m": [
+          1.453,
+          null,
+          1.492,
+          1.433
+        ],
+        "note": "the only declared target whose wet corners ALL sit beyond the 1.20 m band; the band can act on almost none of it and the width moves 15 -> 17"
+      },
+      "pose_set_completeness": "Deep Marshes 4 of 4 declared bearings (M12a clause 1 satisfied); Western Rootlands 1 of 4 (fails closed)."
     },
     "mean_luma_over_the_pinned_mask_thr6": {
-      "deep-marshes edge-b135": { "prefix": 67.020, "r3": 51.511, "r3_shader": 51.248, "fixed": 44.495, "no_shorefade": 62.944 },
-      "deep-marshes edge-b225": { "prefix": 67.903, "r3": 67.717, "fixed": 60.756 },
-      "deep-marshes edge-b315": { "prefix": 68.395, "r3": 68.603, "fixed": 63.400 },
-      "western-rootlands edge-b225": { "prefix": 84.812, "r3": 83.784, "fixed": 73.439 },
-      "band sweep at deep-marshes edge-b225": { "r3": 68.267, "band_0.60": 66.408, "band_1.20_shipped": 60.999, "band_1.35": 58.947, "reading": "monotonic in the band parameter across four rows — this is the arm-liveness check, and it is the only place the band's own parameter is shown to do anything" }
+      "deep-marshes edge-b135": {
+        "prefix": 67.02,
+        "r3": 51.511,
+        "r3_shader": 51.248,
+        "fixed": 44.495,
+        "no_shorefade": 62.944
+      },
+      "deep-marshes edge-b225": {
+        "prefix": 67.903,
+        "r3": 67.717,
+        "fixed": 60.756
+      },
+      "deep-marshes edge-b315": {
+        "prefix": 68.395,
+        "r3": 68.603,
+        "fixed": 63.4
+      },
+      "western-rootlands edge-b225": {
+        "prefix": 84.812,
+        "r3": 83.784,
+        "fixed": 73.439
+      },
+      "band sweep at deep-marshes edge-b225": {
+        "r3": 68.267,
+        "band_0.60": 66.408,
+        "band_1.20_shipped": 60.999,
+        "band_1.35": 58.947,
+        "reading": "monotonic in the band parameter across four rows — this is the arm-liveness check, and it is the only place the band's own parameter is shown to do anything"
+      },
+      "deep-marshes edge-b045": {
+        "prefix": 68.725,
+        "r3": 68.43,
+        "fixed": 66.54
+      }
     },
     "M12_FresnelDelta_thr6_band_is_>=0.05": {
-      "deep-marshes edge-b135": { "prefix": 0.05312, "r3": 0.11681, "fixed": 0.12140 },
-      "deep-marshes edge-b225": { "prefix": 0.06948, "r3": 0.06770, "fixed": 0.06805 },
-      "deep-marshes edge-b315": { "prefix": 0.10339, "r3": 0.10141, "fixed": 0.10420 },
-      "western-rootlands edge-b225": { "prefix": 0.08708, "r3": 0.07515, "fixed": 0.08273 },
-      "worst_pose_for_fixed_over_the_three_valid_deep_marshes_poses": 0.06805,
-      "ruling": "This would clear the 0.05 band at the worst pose for the first time in this piece's history — AND IT MAY NOT BE COUNTED, because M12a clause 1 requires >= 4 declared poses and `edge-b045` is void, so the set is 3. Fails closed. I am recording it because it is the honest state of the number, not as a claim."
+      "deep-marshes edge-b135": {
+        "prefix": 0.05312,
+        "r3": 0.11681,
+        "fixed": 0.1214
+      },
+      "deep-marshes edge-b225": {
+        "prefix": 0.06948,
+        "r3": 0.0677,
+        "fixed": 0.06805
+      },
+      "deep-marshes edge-b315": {
+        "prefix": 0.10339,
+        "r3": 0.10141,
+        "fixed": 0.1042
+      },
+      "western-rootlands edge-b225": {
+        "prefix": 0.08708,
+        "r3": 0.07515,
+        "fixed": 0.08273
+      },
+      "ruling": "**FAILS.** With the fourth bearing taken, the worst pose for `fixed` is `edge-b045` at **0.03085**, below the 0.05 band. The three-pose set I had before the retake would have read 0.06805 and looked like the first pass in this piece's history — which is exactly the metric-shopping M12a clause 3 exists to stop, arriving through an INCOMPLETE pose set rather than through a chosen one. Worth saying plainly: completing the declared set turned an apparent pass into a fail, and that is the clause working.",
+      "deep-marshes edge-b045": {
+        "prefix": 0.03699,
+        "r3": 0.03637,
+        "fixed": 0.03085
+      },
+      "worst_pose_for_fixed_over_the_four_valid_deep_marshes_poses": 0.03085
     },
     "M12_ShoreDelta_thr6_band_is_>=0.03": {
-      "deep-marshes edge-b135": { "prefix": 0.03298, "r3": 0.02925, "fixed": 0.03326 },
-      "deep-marshes edge-b225": { "prefix": 0.00359, "r3": 0.00259, "fixed": 0.00610 },
-      "deep-marshes edge-b315": { "prefix": 0.02734, "r3": 0.02810, "fixed": 0.02386 },
-      "western-rootlands edge-b225": { "prefix": 0.00067, "r3": 0.00959, "fixed": 0.01856 },
-      "worst_pose": 0.00610,
-      "ruling": "FAILS on every arm at every pose except `edge-b135`. The r2 eye-level regression is NOT repaired. Note the r2 critic's standing objection still holds and this round is more evidence for it: ShoreDelta scores RI-VIS04 §9's own named TELL HIGH — a hard line maximises it — so `fixed` rising above `r3` at three of four poses is not obviously a good thing."
+      "deep-marshes edge-b135": {
+        "prefix": 0.03298,
+        "r3": 0.02925,
+        "fixed": 0.03326
+      },
+      "deep-marshes edge-b225": {
+        "prefix": 0.00359,
+        "r3": 0.00259,
+        "fixed": 0.0061
+      },
+      "deep-marshes edge-b315": {
+        "prefix": 0.02734,
+        "r3": 0.0281,
+        "fixed": 0.02386
+      },
+      "western-rootlands edge-b225": {
+        "prefix": 0.00067,
+        "r3": 0.00959,
+        "fixed": 0.01856
+      },
+      "worst_pose": 0.0061,
+      "ruling": "FAILS at the worst pose (`edge-b225`, 0.00610) on every arm. It clears 0.03 at `edge-b045` and `edge-b135` only. The r2 eye-level regression is NOT repaired. The r2 critic's standing objection still holds and this round adds to it: ShoreDelta scores RI-VIS04 §9's own named TELL HIGH — a hard line maximises it — so `fixed` rising above `r3` at four of five poses is not obviously a good thing.",
+      "deep-marshes edge-b045": {
+        "prefix": 0.04523,
+        "r3": 0.04553,
+        "fixed": 0.05425
+      }
     },
     "M12_NormalEnergy_band_is_>=0.035_fail_below_0.012": {
-      "range_over_every_row_i_took": [0.06497, 0.43369],
+      "range_over_every_row_i_took": [
+        0.0644,
+        0.43369
+      ],
       "verdict": "PASSES at every row, by 1.9x to 12x, confirming the r3 critic's correction of the r3 build (which reported it unmeasured while its own JSON carried numbers).",
       "the_confound_i_will_not_omit": "`NormalEnergy` is high-frequency energy over a water window, and I opened five frames at close range on both arms: the heavy dither stipple two critics have named is plainly there and is the dominant texture of our water at eye level. A passing NormalEnergy may be scoring the stipple. `RI-VIS04` §8's supersample test would separate them and I did not run it."
     },
     "the_fade_field_painted_directly_probe_shoreT_arms": {
-      "deep-marshes edge-b135": { "r3_transition_frac": 0.9313, "r3_mean": 159.097, "r4_transition_frac": 0.6124, "r4_mean": 192.058 },
-      "deep-marshes edge-b225": { "r3_transition_frac": 0.1627, "r3_mean": 12.082, "r4": "NOT CAPTURED — the run died on its timeout" },
+      "deep-marshes edge-b135": {
+        "r3_transition_frac": 0.9313,
+        "r3_mean": 159.097,
+        "r4_transition_frac": 0.6124,
+        "r4_mean": 192.058
+      },
+      "deep-marshes edge-b225": {
+        "r3_transition_frac": 0.1627,
+        "r3_mean": 12.082,
+        "r4": "NOT CAPTURED — the run died on its timeout"
+      },
       "what_it_says_and_it_cuts_against_me": "At `edge-b225` the r3 fade field is almost entirely black (mean 12.1/255, only 16% of the surface in transition) — that IS the k = 4.5 collapse the r3 verdict diagnosed, measured directly for the first time. But at `edge-b135`, where the luma-vs-distance width says r4 is 34x better, the fade FIELD says r4 has LESS transition area than r3 (0.61 vs 0.93) and is more saturated. **The two measures disagree at the pose that carries my only positive result, and I am not choosing between them.**"
     },
     "the_transparency_sort_against_the_wet_bank_strip": {
@@ -105,8 +226,23 @@
       "sort_state_read_off_the_live_scene_not_argued": "water plane: `transparent: true`, `depthWrite: **false**`, `depthTest: true`, `renderOrder: 0`, opacity 0.772-0.96 per region. Wet-bank strip (`water:shoreline:*`, province.js:1590, its own `wet_mud` material): `transparent: true`, `depthWrite: false`, `depthTest: true`, `renderOrder: **3**`, opacity 0.74. The strip therefore always draws after the water plane.",
       "this_corrects_the_r3_status_file": "The r3 status says the round 'lowered alpha on a `transparent: true` material with `depthWrite` on'. **`depthWrite` is false on every water material**, by `visual-foundation.js:689` (`depthWrite: options.depthWrite ?? family!=='water'`) and confirmed on all four live materials at runtime.",
       "measured_at_deep-marshes_edge-b135": {
-        "populations_px": { "strip": 2924, "plane_only": 252950, "land": 183835 },
-        "mean_luma_delta_against_prefix": { "r3": { "strip": -0.715, "plane_only": -15.443, "land": -0.345 }, "fixed": { "strip": -1.845, "plane_only": -22.231, "land": -0.568 } }
+        "populations_px": {
+          "strip": 2924,
+          "plane_only": 252950,
+          "land": 183835
+        },
+        "mean_luma_delta_against_prefix": {
+          "r3": {
+            "strip": -0.715,
+            "plane_only": -15.443,
+            "land": -0.345
+          },
+          "fixed": {
+            "strip": -1.845,
+            "plane_only": -22.231,
+            "land": -0.568
+          }
+        }
       },
       "reading": "The wet-bank strip moves **-1.845 on a base of 44.362 (-4.2%)** while the water it sits on moves **-22.231 on 66.945 (-33%)** — the change is 12x more confined to the water surface than to the bank. The land leak check moves **-0.568 on 76.598 (-0.74%)**, which is inside the capture's own drift (the pin replicate at this threshold is 1.18%). **The overturn condition does NOT fire.** This is a result for keeping round 3 and for keeping round 4's mechanism, and it is the one clean thing in this file.",
       "the_observation_i_did_not_expect": "The whole resident scene at the Deep Marshes stand contains exactly ONE wet-bank strip and it belongs to `eastern-rootlands`. There is no `water:shoreline:deep-marshes` mesh anywhere in frame, despite my census finding 47 waterline cells within 120 m of the stand. I did not chase it — it is province.js's file, not F7's — but it is a candidate defect and it is exactly the kind of absence that `ARBITRATION` S64 says must be carried forward rather than absorbed."
@@ -114,14 +250,30 @@
     "frame_time": "See what_i_could_not_do. Two attempts; replicate spread of the same order as the mean in both (5605.27 on 3703.09 at 16 iterations; 7.66 on 9.71 at 4). Unmeasurable on this box under this load, with the number that shows it.",
     "the_mask_band_which_nobody_has_ever_published_for_this_piece": {
       "method": "the pin taken twice through the identical protocol",
-      "deep-marshes edge-b135": { "thr4": "+53.24%", "thr6": "+1.18%", "thr10": "-1.13%" },
-      "deep-marshes edge-b225": { "thr4": "+35.66%", "thr6": "+1.33%", "thr10": "-0.55%" },
-      "deep-marshes edge-b315": { "thr6": "+0.12%", "thr10": "-0.06%" },
-      "western-rootlands edge-b225": { "thr6": "+2.15%" },
-      "so": "threshold 4 is unusable on this scene and every threshold-4 row in this round should be discounted; 6 and 10 are stable to 1-2%. The headline width result holds at both stable thresholds."
+      "deep-marshes edge-b135": {
+        "thr4": "+53.24%",
+        "thr6": "+1.18%",
+        "thr10": "-1.13%"
+      },
+      "deep-marshes edge-b225": {
+        "thr4": "+35.66%",
+        "thr6": "+1.33%",
+        "thr10": "-0.55%"
+      },
+      "deep-marshes edge-b315": {
+        "thr6": "+0.12%",
+        "thr10": "-0.06%"
+      },
+      "western-rootlands edge-b225": {
+        "thr6": "+2.15%"
+      },
+      "so": "threshold 4 is unusable on this scene and every threshold-4 row in this round should be discounted; 6 and 10 are stable to 1-2%. The headline width result holds at both stable thresholds.",
+      "deep-marshes edge-b045": {
+        "thr6": "+5.73%",
+        "thr10": "-0.96%"
+      }
     }
   },
-
   "the_premise_in_my_brief_that_i_falsified": {
     "what_the_brief_and_the_r3_verdict_both_say": "That the Deep Marshes is WCI 0.86 / drowned, that 'all three shoreline close-ups are shoreless', that `distanceFromLand` there 'is measuring reed clumps', and — my brief's own words — that if the region 'genuinely has no shoreline to fade ... the honest move is to say the region was the wrong choice'.",
     "what_i_measured": "`tools/visual/f7-r4-shoreline-census.mjs`, offline, against the same `WorldField` the engine builds, reproducing province.js's cell arithmetic verbatim. Within 120 m of the `vista-deep-marshes` stand: **121 water cells, 47 of them waterline cells (38.84%), nearest at 17.7 m**, and only **24.16%** of wet corners sit at province.js's q = 1.0 depth clamp — so **76% of the water in frame carries a live depth gradient**. At `eye-deep-marshes`: 144 cells, 51 waterline (35.42%), nearest 25.9 m.",
@@ -129,7 +281,6 @@
     "where_the_region_argument_IS_right": "The two seas are where the depth signal is genuinely dead: Marauder's Coast q-saturation **0.9248** and Crimson Coast **0.9706**, with 4 waterline cells of 121 and the nearest at 81 m and 60.5 m. No shader reading province.js's vertex colour can fade there, at any k, and that is a province.js limit rather than a water.js one.",
     "and_a_thing_three_rounds_have_been_doubted_over": "The in-frame HUD region label reads `western-rootlands` on captures taken at the `vista-deep-marshes` stand — the same symptom the r1 F7 critic wrote `tools/visual/f7-critic-deck-region.mjs` to chase. Measured in-process this round: `teleport` landed at exactly [3123.5, 3715] with **offset 0.00 m**, and the RUNNING field's `regionAt` returns `deep-marshes` for both the deck point and the player, with `hud_region_name: 'The Deep Marshes'`. **The field is right and the drawn label is stale.** It is not F7's file and I did not fix it, but three rounds of F7 evidence have been under suspicion because of it and they should not be."
   },
-
   "the_ruling_i_made_and_what_would_overturn_it": {
     "ruling": "**KEEP the mechanism, and I am NOT claiming F7 or the acceptance.** The change lands with its band as a uniform defaulting to 1.20 m.",
     "why_keep": [
@@ -145,7 +296,6 @@
       "Any evidence that the `edge-b135` 1 -> 34 result is an artefact of the morphological closing. The raw width agrees there (34) and disagrees everywhere else, which is a pattern a critic should attack directly."
     ]
   },
-
   "inherited_findings_i_can_confirm_or_correct": {
     "CONFIRM the r3 critic on the per-arm mask (HAZARDS §25)": "Independently reproduced with a band under it, which the original finding did not have: at `edge-b135` threshold 10 the pin's own replicate is -1.13% and the `fixed` arm's own mask is **+23.24%**. The confound is real and it is twenty times the noise.",
     "CONFIRM the r3 critic on NormalEnergy": "It measures, it passes, and it passed while the r3 build reported it unmeasured. Every row I took is in [0.06497, 0.43369] against a band of >= 0.035.",
@@ -155,11 +305,8 @@
     "CORRECT my brief's framing of the r3 width claim": "The brief says width monotonicity in `k` was withdrawn and should not be quoted. I did not quote it and I did not re-derive it either — I have no `k`-substitution arms in this round at all.",
     "INHERITED AND NOT CHECKED": "The r3 critic's Western Rootlands 1 px -> 15 px result, and its matched null at nullTrans 0.74. I did not reproduce either; my Western Rootlands run is at a different pose (`edge-b225`, a declared waterline target) and is not comparable to theirs."
   },
-
-  "next_step": "A fresh critic. Cheapest reproduction, each a single process: `node tools/visual/f7-r4-sweep.mjs --site vista-deep-marshes --mode arms --poses edge-b135 --arms prefix,r3,fixed --thresholds 6,10` reproduces the only positive result with the pin and its replicate band; `--poses edge-b225 --arms r3,band-0.60,fixed,band-1.35` reproduces the band sweep that shows no constant rescues it; `--mode sort --poses edge-b135` reproduces the transparency test. **Run `edge-b045` yourself — I owe the fourth pose and without it every M12 band in this file is incomplete and fails closed.** The three questions I could not settle: (1) whether `gradient_width_px` or the painted fade field is the right measure, given they disagree at the one pose that matters; (2) whether a fade whose cost is a 10% darker starting region is worth having at all, which is a look question and not a number question and probably wants the blind pair nobody has run; (3) whether the missing `water:shoreline:deep-marshes` strip is a province.js defect or intended.",
-
+  "next_step": "A fresh critic. Cheapest reproduction, each a single process: `node tools/visual/f7-r4-sweep.mjs --site vista-deep-marshes --mode arms --poses edge-b135 --arms prefix,r3,fixed --thresholds 6,10` reproduces the only positive result with the pin and its replicate band; `--poses edge-b225 --arms r3,band-0.60,fixed,band-1.35` reproduces the band sweep that shows no constant rescues it; `--mode sort --poses edge-b135` reproduces the transparency test. The Deep Marshes pose set is now complete at 4 of 4; **the Western Rootlands set is 1 of 4 and I owe three more bearings there.** The three questions I could not settle: (1) whether `gradient_width_px` or the painted fade field is the right measure, given they disagree at the one pose that matters; (2) whether a fade whose cost is a 10% darker starting region is worth having at all, which is a look question and not a number question and probably wants the blind pair nobody has run; (3) whether the missing `water:shoreline:deep-marshes` strip is a province.js defect or intended.",
   "declared_overlap": "none. `node tools/ownership.mjs --for game/src/render/water.js` returns 'nobody live has declared this file', run this turn. `tools/visual/f7-r3-sweep.mjs` IS claimed (W1-30V) and I did not touch it. `game/src/world/province.js` is claimed by W1-30-builder-20260812 and I only READ it.",
-
   "files_touched": [
     "game/src/render/water.js",
     "tools/visual/f7-r4-sweep.mjs",
@@ -175,21 +322,18 @@
     "orchestration/status/W1-F7-r4.json",
     "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/"
   ],
-
   "artifacts": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/ — `shoreline-census.json` (offline, no browser, 8 sites); `dm-edge/` (edge-b045, VOID, kept because its failure is the evidence for the protocol fix); `dm-edge2/` (edge-b135, the headline, 5 arms x 3 thresholds); `dm-b225/`, `dm-b315/` (the two poses that do not improve); `dm-bandsweep/` (four band constants at the failing pose); `dm-fadefield/` (the painted fade field); `dm-sort/` (the transparency test); `dm-perf/` (the frame-time attempt that failed and why); `wr-edge/` (the second region). Every sweep.json carries its own commit, its `head_expression_asserted` block, its `stand_verification` and its `gpu_state_before`.",
-
   "self_audit": {
     "what_would_make_this_status_wrong": [
       "If the morphological closing is doing the work rather than the shader. The closing moves 9.5-12.1% of the mask and it is applied to the PIN, so it is identical for every arm — but it is new this round and it is the obvious place to attack the one positive result.",
       "If `edge-b135` is not representative and I have simply found the one pose where the measure likes me. Three of four poses say so. I have said so too.",
       "If the void `edge-b045` rows get read. They are in the artifacts and they look like data.",
-      "If a reader takes the FresnelDelta worst-pose figure of 0.06805 as a pass. It is not one — the declared set is 3 of the required 4 and it fails closed.",
+      "If a reader takes any M12 band as passed. FresnelDelta's worst pose is 0.03085 and ShoreDelta's is 0.00610; both fail. The three-pose version of the FresnelDelta row read 0.06805 and looked like a pass — completing the set killed it.",
       "If the frame-time spread is an artefact of my probe rather than of the box. I timed `three.render(scene, camera)` with `gl.finish()`, which is the world pass only and not a frame."
     ],
     "did_i_grade_my_own_work": "No. I have recorded that the round's own acceptance FAILS at the worst pose in both regions, that two poses regress, and that my only positive result is contradicted by my own second instrument. A critic decides.",
-    "numbers_i_inherited_rather_than_derived": "None in the measurement sections — every figure above came from a file I opened or a run I launched this turn. The r3 critic's 1 px -> 15 px Western Rootlands figures and its nullTrans 0.74 are quoted ONLY where they are named as the r3 critic's, and I did not reproduce them."
+    "numbers_i_inherited_rather_than_derived": "None in the measurement sections — every figure there came from a file I opened or a run I launched this turn. TWO EXCEPTIONS, both caught and both recorded: (1) I first wrote the blind-gate census as 102/1 from the r3 verdict and the real numbers are 106/3-all-false-positives, corrected above; (2) the r3 critic's Western Rootlands 1 px -> 15 px figures and its nullTrans 0.74 are quoted ONLY where they are named as the r3 critic's, and I did not reproduce them."
   },
-
   "source_reads": [
     "corpus/90-verdicts/wave1/W1-F7-WATER-r3.md and .json (in full)",
     "orchestration/status/W1-F7-r3.json (in full)",
@@ -207,7 +351,6 @@
     "tools/visual/f7-r3-sweep.mjs (whole file — the instrument I had to replace)",
     "tools/visual/f7-critic-deck-region.mjs (the offline WorldField pattern I reused)"
   ],
-
   "method_deviations": [
     "I ran browsers with `node tools/contention.mjs` reporting the box at or over its per-core ceiling (4.35 / 4.44 / 3.70 / 4.75 / 3.87 against 4.0). The tool asks that this be said in the status file and it is being said here.",
     "Five runs were killed by their own `timeout` rather than completing. Under HAZARDS §13 a timeout is itself a result and I have reported what each run got rather than retrying it to completion.",
