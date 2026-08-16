@@ -13,8 +13,8 @@ work was quarantined on a side branch and every round restarted from it, so noth
   shipped**; the reason reframes three rounds of this work.
 - **Judging the crowd, which now breathes** — 27 of 27 townspeople move, replicated across three
   sessions, with the motion visible in pixels rather than only in numbers.
-- **Judging the water, round four** — the fade is built in metres now; it still fails its own bar, and
-  the builder says so.
+- **The water, round five** — the fade's setting is twelve times too big, and every number this work
+  has ever published was measured on an unstable setting.
 - **Judging the dialogue and books fix** — the authoring leak and the `undefined` book bodies are
   closed; a critic is checking them.
 
@@ -72,33 +72,35 @@ before it. Both carry regression checks proven to fail on the old build and pass
 
 
 
-- **The water: the depth colouring was running backwards, and now it exists at all.** Two of the four
-  things the standard requires of water were simply not in the code. They are now, from one mechanism:
-  light is absorbed through the water column against **each region's own murkiness value, which reaches
-  the renderer for the first time in this project**. And the reason depth looked absent is better than
-  that — it was *present, unlabelled and inverted*: the old body colour leaned on a term that gets
-  **brighter** the deeper the water.
-  **The first water result a dimmer switch cannot fake** — a matched-brightness control reproduces 118%
-  of the luma change and **none** of the widening.
-  **And the judge found why it looked like nothing.** In a second region it is obvious — the band where
-  water meets land goes **1 pixel to 15** — while the region three rounds kept testing is **drowned**:
-  no real bank exists there, and the three "shoreline close-ups" everyone chased contain no shoreline.
-  The fade is real and the test site was wrong. Round four is rebuilding it in metres.
+- **The water: three rounds in, and the honest state is that we still cannot see the fix.** The sea was
+  compositing a **61% mirror at every viewing angle**, including looking straight down where real water
+  reflects 2%; that is fixed and at eye level it reads deeper and less washed-out. Two of the four
+  things the standard requires of water were **never in the code** — depth did not change the colour
+  (the term it leaned on got *brighter* the deeper the water) and there was no fade where water meets
+  land. Both are built.
+
+  **Two things I told you about it were wrong, and judges caught both.** I said the region we test in is
+  drowned with no real bank — it has **47 waterline cells within 120 m, the nearest 17.7 metres away**;
+  the close-ups were simply shot 5 metres from a stand whose bank is 18 metres off. And I passed on a
+  measurement as proof that our tools were mis-measuring; it turned out to be an artefact of *which
+  order the pictures were taken in*.
+  **The real finding is worse and more useful: every number this work has ever published was measured
+  on a setting that drifts by up to 62% with nothing changed.** Measured properly, the fade's own
+  control says the shipped version leaves only **41% of the water visible** that was there two rounds
+  ago — and the width it was tuned for doesn't change at all between the shipped setting and one
+  **twelve times smaller**. Round five sets it to the small one.
   **Still true: nobody knows what draws the marsh stripes.** Switch the reflection off entirely and 76%
   of them remain; two further explanations were proposed and killed by the same test.
-- Shadowed areas crush to black with no detail — a real fix landed, but it is small (**+4.4%**), and
-  its author caught that 93.7% of the gain it was about to claim reproduced with no fix in the tree.
+
 - **The characters were being drawn inside-out — fixed, and confirmed by eye.** Your winding tip was
   right and bigger than the report you sent: **153,344 of 227,850 triangles (67.3%)** had normals
-  disagreeing with winding, body meshes **13 of 13 inverted**. Now zero, photographed over 332 frames.
-  A Gideon market stand of *chrome-and-glass skeletons with black shards jutting from their backs* now
-  holds solid people in coloured clothes.
+  disagreeing with winding. Now zero. A Gideon market stand of *chrome-and-glass skeletons with black
+  shards jutting from their backs* now holds solid people in coloured clothes.
 - **Four more things about the cast, all fixed from one shared body plan.** 44% were on a generic body
-  with **no eye geometry at all** (79 → 260 routed correctly); **everyone was the wrong height** (0 of
-  41 in the 7–8 head band → 41 of 41); the clothing textures were pasted **5.5×
-  too fine**, which averages to a flat colour — a smith who was one tone shoulder-to-ankle now has a
-  sash, cord rings, a hem and a yoke, and *a background NPC gained one nobody targeted*; and the eyes
-  went from cream googly balls to dark sockets.
+  with **no eye geometry at all**; **everyone was the wrong height** (0 of 41 in the correct band → 41
+  of 41); the clothing textures were pasted **5.5× too fine**, which averages to a flat colour; and the
+  eyes went from cream googly balls to dark sockets.
+
 - **People stand on the ground now, and it is photographed.** Positions came from one authored constant
   per settlement, never compared to the terrain: of 31 drawn at Lilmoth, **12 were underground and 15
   in the air, worst 35 m up**. Now zero and zero, confirmed on hardware.
@@ -145,9 +147,7 @@ before it. Both carry regression checks proven to fail on the old build and pass
 - **Some good news:** the character bar now has **12 of its 18 checks published** for the first time,
   and the head-count proportion check went from hard fail to pass — 0 of 41 figures in band, to 41/41.
 
-- **Nothing casts a contact shadow** — *fixed today, not yet judged.* The old "ambient occlusion" turned
-  out to be an edge detector that was structurally blind to exactly this. Real occlusion has replaced
-  it. Shadows still crush to black; that fix is being built now.
+
 - **Dialogue: the topic links work, and were preferred — the first real quality judgement this project
   has ever completed.** Two people played two builds blind — ours, and one with the inline links
   removed but every topic still reachable from the list. **Both preferred ours**, and a third reader
