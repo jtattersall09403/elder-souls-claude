@@ -1,0 +1,329 @@
+{
+  "schema": "elder-souls/t4-r7-critic-headers@1",
+  "at": "2026-08-16T00:12:19.927Z",
+  "label": "after-r7",
+  "repo_root": "/home/user/t4r7c-delivered",
+  "commit": "a2ef1e5cf620dc268203babc500dd99b2551435e",
+  "data": {
+    "panel_rect": [
+      720,
+      314,
+      480,
+      452
+    ],
+    "n_text_elements": 17,
+    "elements": [
+      {
+        "id": "hud.heal",
+        "kind": "heal_charges",
+        "rect": [
+          42,
+          118,
+          110,
+          24
+        ],
+        "text": "5"
+      },
+      {
+        "id": "hud.equipload",
+        "kind": "equip_load",
+        "rect": [
+          1758,
+          852,
+          120,
+          24
+        ],
+        "text": "LIGHT"
+      },
+      {
+        "id": "hud.prompt",
+        "kind": "interact_prompt",
+        "rect": [
+          860,
+          830,
+          200,
+          32
+        ],
+        "text": "Sesh-Anaat"
+      },
+      {
+        "id": "hud.bearing",
+        "kind": "bearing_dial",
+        "rect": [
+          1616,
+          942,
+          96,
+          96
+        ],
+        "text": "S"
+      },
+      {
+        "id": "hud.place",
+        "kind": "place_name",
+        "rect": [
+          42,
+          950,
+          520,
+          36
+        ],
+        "text": "thorn-hall"
+      },
+      {
+        "id": "container.header",
+        "kind": "panel_header",
+        "rect": [
+          720,
+          314,
+          480,
+          54
+        ],
+        "text": "Reed Creel"
+      },
+      {
+        "id": "container.mine.head",
+        "kind": "panel_header",
+        "rect": [
+          742,
+          378,
+          206,
+          28
+        ],
+        "text": "Carried"
+      },
+      {
+        "id": "container.mine.row.hist-bark-token",
+        "kind": "list_row",
+        "rect": [
+          742,
+          386,
+          190,
+          34
+        ],
+        "text": "Bark token  0.1  —"
+      },
+      {
+        "id": "container.mine.row.black-water-draught",
+        "kind": "list_row",
+        "rect": [
+          742,
+          420,
+          190,
+          34
+        ],
+        "text": "Black-water draught  0.4  30"
+      },
+      {
+        "id": "container.mine.row.bog-iron-maul",
+        "kind": "list_row",
+        "rect": [
+          742,
+          454,
+          190,
+          34
+        ],
+        "text": "Bog-iron maul  11.5  96"
+      },
+      {
+        "id": "container.mine.row.boiled-hide-jack",
+        "kind": "list_row",
+        "rect": [
+          742,
+          488,
+          190,
+          34
+        ],
+        "text": "Boiled hide jack  4.2  55"
+      },
+      {
+        "id": "container.theirs.head",
+        "kind": "panel_header",
+        "rect": [
+          972,
+          378,
+          206,
+          28
+        ],
+        "text": "Reed Creel"
+      },
+      {
+        "id": "container.theirs.row.bog-iron-maul",
+        "kind": "list_row",
+        "rect": [
+          972,
+          386,
+          190,
+          34
+        ],
+        "text": "Bog-iron maul  11.5  96"
+      },
+      {
+        "id": "container.theirs.row.reed-cutter",
+        "kind": "list_row",
+        "rect": [
+          972,
+          420,
+          190,
+          34
+        ],
+        "text": "Reed-cutter  3.0  42"
+      },
+      {
+        "id": "container.theirs.row.rootweave-cowl",
+        "kind": "list_row",
+        "rect": [
+          972,
+          454,
+          190,
+          34
+        ],
+        "text": "Rootweave cowl  0.6  18"
+      },
+      {
+        "id": "container.band",
+        "kind": "detail_panel",
+        "rect": [
+          902,
+          532,
+          276,
+          172
+        ],
+        "text": "A palm-sized disc of Hist bark with three notche"
+      },
+      {
+        "id": "container.hint",
+        "kind": "hint",
+        "rect": [
+          742,
+          708,
+          436,
+          46
+        ],
+        "text": "Confirm moves one thing across. There is no butt"
+      }
+    ],
+    "pairs": [
+      {
+        "a": {
+          "id": "container.mine.head",
+          "kind": "panel_header",
+          "text": "Carried",
+          "rect": [
+            742,
+            378,
+            206,
+            28
+          ]
+        },
+        "b": {
+          "id": "container.mine.row.hist-bark-token",
+          "kind": "list_row",
+          "text": "Bark token  0.1  —",
+          "rect": [
+            742,
+            386,
+            190,
+            34
+          ]
+        },
+        "intersection": [
+          190,
+          20
+        ],
+        "area": 3800,
+        "contained": false
+      },
+      {
+        "a": {
+          "id": "container.theirs.head",
+          "kind": "panel_header",
+          "text": "Reed Creel",
+          "rect": [
+            972,
+            378,
+            206,
+            28
+          ]
+        },
+        "b": {
+          "id": "container.theirs.row.bog-iron-maul",
+          "kind": "list_row",
+          "text": "Bog-iron maul  11.5  96",
+          "rect": [
+            972,
+            386,
+            190,
+            34
+          ]
+        },
+        "intersection": [
+          190,
+          20
+        ],
+        "area": 3800,
+        "contained": false
+      }
+    ]
+  },
+  "collisions": [
+    {
+      "a": {
+        "id": "container.mine.head",
+        "kind": "panel_header",
+        "text": "Carried",
+        "rect": [
+          742,
+          378,
+          206,
+          28
+        ]
+      },
+      "b": {
+        "id": "container.mine.row.hist-bark-token",
+        "kind": "list_row",
+        "text": "Bark token  0.1  —",
+        "rect": [
+          742,
+          386,
+          190,
+          34
+        ]
+      },
+      "intersection": [
+        190,
+        20
+      ],
+      "area": 3800,
+      "contained": false
+    },
+    {
+      "a": {
+        "id": "container.theirs.head",
+        "kind": "panel_header",
+        "text": "Reed Creel",
+        "rect": [
+          972,
+          378,
+          206,
+          28
+        ]
+      },
+      "b": {
+        "id": "container.theirs.row.bog-iron-maul",
+        "kind": "list_row",
+        "text": "Bog-iron maul  11.5  96",
+        "rect": [
+          972,
+          386,
+          190,
+          34
+        ]
+      },
+      "intersection": [
+        190,
+        20
+      ],
+      "area": 3800,
+      "contained": false
+    }
+  ]
+}
