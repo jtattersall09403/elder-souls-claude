@@ -2,7 +2,7 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-16T00:18:10.447Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-16T00:56:16.986Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
@@ -210,7 +210,7 @@
 | `RI-WLD07` | 50-world | neutral | W8 | 8 | 6 | judged_at_or_above_bar |
 | `RI-WLD08` | 50-world | morrowind | W10 | 7 | 7 | judged_at_or_above_bar |
 | `RI-WLD09` | 50-world | morrowind | W11 | 3 | 6 | judged_at_or_above_bar |
-| `RI-WLD10` | 50-world | split | W9 F7 | 5 | 5 | judged_below_bar |
+| `RI-WLD10` | 50-world | split | W9 F7 | 6 | 5 | judged_below_bar |
 | `RI-WLD11` | 50-world | morrowind | W9 | 4 | 3 | judged_below_bar |
 | `RI-WLD12` | 50-world | morrowind | W2 | 1 | 5 | judged_below_bar |
 | `RI-WLD13` | 50-world | morrowind | W5 | 5 | 5 | judged_below_bar |
@@ -227,8 +227,8 @@
 | `RI-LOR08` | 60-lore | morrowind | P5 | 0 | — | never_judged |
 | `RI-VIS01` | 70-visual | neutral | I3 | 0 | — | never_judged |
 | `RI-VIS02` | 70-visual | modern-fidelity | I5 | 1 | 0 | judged_below_bar |
-| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 4 | 6 | judged_at_or_above_bar |
-| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 8 | 8 | judged_at_or_above_bar |
+| `RI-VIS03` | 70-visual | modern-fidelity | I3 F2 F3 | 5 | 6 | judged_at_or_above_bar |
+| `RI-VIS04` | 70-visual | modern-fidelity | F5 F2 F3 F4 | 9 | 8 | judged_at_or_above_bar |
 | `RI-VIS05` | 70-visual | morrowind | F13 | 0 | — | never_judged |
 | `RI-VIS06` | 70-visual | neutral | I3 | 5 | 5 | judged_below_bar |
 | `RI-VIS07` | 70-visual | morrowind | F13 | 1 | 4 | judged_below_bar |
@@ -247,14 +247,14 @@
 | `RI-PLT03` | 85-platform | neutral | T3 | 3 | 2 | judged_below_bar |
 | `RI-UIX01` | 86-ui | souls | G6 | 1 | 0 | judged_below_bar |
 | `RI-UIX02` | 86-ui | morrowind | P3 | 3 | 4 | judged_below_bar |
-| `RI-UIX03` | 86-ui | neutral | C3 T4 | 7 | 6 | judged_at_or_above_bar |
-| `RI-UIX04` | 86-ui | morrowind | P3 T4 | 9 | 7 | judged_at_or_above_bar |
+| `RI-UIX03` | 86-ui | neutral | C3 T4 | 8 | 6 | judged_at_or_above_bar |
+| `RI-UIX04` | 86-ui | morrowind | P3 T4 | 10 | 7 | judged_at_or_above_bar |
 | `RI-UIX05` | 86-ui | morrowind | P4 | 4 | 8 | judged_at_or_above_bar |
-| `RI-UIX06` | 86-ui | neutral | T4 F13 | 7 | 5 | judged_below_bar |
-| `RI-UIX07` | 86-ui | morrowind | T4 | 5 | 5 | judged_below_bar |
+| `RI-UIX06` | 86-ui | neutral | T4 F13 | 8 | 5 | judged_below_bar |
+| `RI-UIX07` | 86-ui | morrowind | T4 | 6 | 5 | judged_below_bar |
 | `RI-UIX08` | 86-ui | morrowind | P1 T4 | 5 | 2 | judged_below_bar |
-| `RI-UIX09` | 86-ui | morrowind | T4 | 5 | 5 | judged_below_bar |
-| `RI-UIX10` | 86-ui | neutral | T4 | 4 | 8 | judged_at_or_above_bar |
+| `RI-UIX09` | 86-ui | morrowind | T4 | 6 | 5 | judged_below_bar |
+| `RI-UIX10` | 86-ui | neutral | T4 | 5 | 8 | judged_at_or_above_bar |
 | `RI-AUD01` | 87-audio | souls | G6 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD02` | 87-audio | modern-fidelity | E9 T3 | 1 | 6 | judged_at_or_above_bar |
 | `RI-AUD03` | 87-audio | morrowind | E9 | 4 | 5 | judged_below_bar |
