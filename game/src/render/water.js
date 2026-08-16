@@ -350,10 +350,11 @@ export function installWaterShader(mat) {
         //     band only   .00            22.44%      -19.02%     <- RI-WLD10 §8's black water
         //     no fade at all             91.18%       90.49%
         //
-        // The metre band ALONE reproduces 36.8 of the union's 40.4 presence points. Removing
-        // either gate recovers 4 to 10 points of the ~40 this term costs. THE GATE IS NOT THE
-        // TERM. The multiplier is, and it is monotone: presence moves ~63 points per unit of
-        // multiplier across four measured values.
+        // The metre band ALONE reproduces 36.76 of the union's 40.41 presence points. Removing the
+        // transmittance gate recovers 3.65 points and removing the band gate recovers 9.89, out of
+        // the 40.41 this term costs. THE GATE IS NOT THE TERM. The multiplier is, and it is
+        // monotone: across the four measured values presence moves 76.1, 65.6 and 61.3 points per
+        // unit of multiplier over the three intervals - nearly linear, slightly concave.
         //
         // THE BOUND THAT FOLLOWS, AND IT IS THE MOST USEFUL THING THIS ROUND HAS. Interpolating
         // between the measured .70 (72.78%) and no-fade (91.18%), presence reaches the acceptance's
