@@ -120,6 +120,24 @@ screen as much as of a shader, and the only thing that makes a water reading mea
 same reading taken over pixels the water shader does not touch, in the same frame. A water figure
 published without its land control is inadmissible here.
 
+**The first measurement ever taken against this section, so the next reader has a worked example.**
+*(F7 r5, deep-marshes `edge-b135`, `tools/visual/f7-r5-sweep.mjs --mode supersample` for the capture
+and `tools/visual/f7-r5-offline.mjs --mode supersample` for the control. Note the sequence: the
+in-browser tool produced the water half **without** the land half, i.e. it did not satisfy this
+clause, and the row was made admissible by computing the control offline from the banked frames
+rather than by publishing it anyway.)*
+
+| arm | water `hf_survival` | **land control** | water − land | water `stipple_ratio` 1× → 2× |
+|---|---:|---:|---:|---|
+| shipped water (`band 0.10`) | **64.95%** | 84.77% | **−19.82 pp** | 0.9368 → 0.8205 |
+| round-2 water (`prefix`) | **64.01%** | 85.85% | **−21.84 pp** | 0.9161 → 0.8001 |
+
+**Read it as the clause intends:** ~85% survival on land is what a mostly-resolved surface looks
+like under 4× supersampling; the water's ~64% is not, and the ~20 pp gap is the part that is
+actually about the water. **Both arms read the same**, so this is a standing property of our water
+and not an artefact of any recent change — which is also why the `unresolved` verdict here is a
+finding about F7's whole water surface rather than about one round's constant.
+
 **And `NormalEnergy` is gated on this.** `RI-VIS03` M12's `NormalEnergy ≥ 0.035` may be reported as
 a **PASS only where `hf_survival_pct ≥ 70%`**. Between 45% and 70% it is `unresolved` and fails
 closed. Below 45% it is recorded `inapplicable — high-frequency energy is predominantly aliasing`,
