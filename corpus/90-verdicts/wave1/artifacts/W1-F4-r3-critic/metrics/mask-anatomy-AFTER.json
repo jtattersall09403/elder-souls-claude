@@ -1,0 +1,871 @@
+{
+ "spec": "AFTER (keyCool 1.00)",
+ "at": "2026-08-16T02:42:24.005Z",
+ "rows": [
+  {
+   "label": "pair01-AFTER/crop",
+   "W": 512,
+   "H": 512,
+   "crop": [
+    300,
+    150,
+    512,
+    512
+   ],
+   "m6": {
+    "sky_frac": 0,
+    "shadow_mask_frac": 0.2443,
+    "C_local_med": 0.0244,
+    "retention": 0.6633,
+    "hue_shadow_deg": 131.66,
+    "hue_lit_deg": 115.97,
+    "hue_offset_deg": 15.69,
+    "C_shadow": 8.8124,
+    "mean_Yp_shadow": 0.1693,
+    "mean_Yp_lit": 0.3877
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.0674,
+     "area_frac_of_fg": 0.0674,
+     "p_cast_given_shadow_quartile": 0.1265,
+     "p_cast_given_lit_quartile": 0.0516,
+     "p_shadow_quartile_given_cast": 0.4582
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0595,
+     "area_frac_of_fg": 0.0595,
+     "p_cast_given_shadow_quartile": 0.1163,
+     "p_cast_given_lit_quartile": 0.045,
+     "p_shadow_quartile_given_cast": 0.477
+    },
+    "tau4": {
+     "area_frac_of_image": 0.0515,
+     "area_frac_of_fg": 0.0515,
+     "p_cast_given_shadow_quartile": 0.1044,
+     "p_cast_given_lit_quartile": 0.0384,
+     "p_shadow_quartile_given_cast": 0.4953
+    },
+    "tau8": {
+     "area_frac_of_image": 0.042,
+     "area_frac_of_fg": 0.042,
+     "p_cast_given_shadow_quartile": 0.0867,
+     "p_cast_given_lit_quartile": 0.027,
+     "p_shadow_quartile_given_cast": 0.5039
+    },
+    "tau16": {
+     "area_frac_of_image": 0.0308,
+     "area_frac_of_fg": 0.0308,
+     "p_cast_given_shadow_quartile": 0.0613,
+     "p_cast_given_lit_quartile": 0.0163,
+     "p_shadow_quartile_given_cast": 0.4867
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.1101,
+    "mean_K_lit_quartile": 0.102,
+    "mean_K_mid": 0.125,
+    "f_key_shadow_quartile": 0.6504,
+    "f_key_lit_quartile": 0.2631,
+    "key_separation_ratio_lit_over_shadow": 0.926,
+    "frac_shadow_quartile_with_K_below_1_255": 0.0311,
+    "frac_lit_quartile_with_K_below_1_255": 0.1334,
+    "auc_K_separates_quartiles": 0.4297
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.1104,
+    "keyed_frac_of_fg": 0.4995,
+    "hue_unkeyed_deg": 165.43,
+    "hue_keyed_deg": 127.16,
+    "hue_offset_physical_deg": 38.27,
+    "mean_Yp_unkeyed": 0.3328,
+    "mean_Yp_keyed": 0.2377,
+    "overlap_unkeyed_with_shadow_quartile": 0.2475
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.0276,
+    "mean_E_lit_quartile": 0.0501,
+    "f_env_shadow_quartile": 0.1629,
+    "f_env_lit_quartile": 0.1291
+   }
+  },
+  {
+   "label": "pair01-AFTER/frame",
+   "W": 1920,
+   "H": 1080,
+   "crop": null,
+   "m6": {
+    "sky_frac": 0.0472,
+    "shadow_mask_frac": 0.2376,
+    "C_local_med": 0.029,
+    "retention": 0.9792,
+    "hue_shadow_deg": 124.01,
+    "hue_lit_deg": 132.45,
+    "hue_offset_deg": 8.44,
+    "C_shadow": 7.3081,
+    "mean_Yp_shadow": 0.1209,
+    "mean_Yp_lit": 0.4617
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.0874,
+     "area_frac_of_fg": 0.0917,
+     "p_cast_given_shadow_quartile": 0.1673,
+     "p_cast_given_lit_quartile": 0.0673,
+     "p_shadow_quartile_given_cast": 0.4551
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0719,
+     "area_frac_of_fg": 0.0755,
+     "p_cast_given_shadow_quartile": 0.1369,
+     "p_cast_given_lit_quartile": 0.0513,
+     "p_shadow_quartile_given_cast": 0.4521
+    },
+    "tau4": {
+     "area_frac_of_image": 0.0549,
+     "area_frac_of_fg": 0.0576,
+     "p_cast_given_shadow_quartile": 0.1003,
+     "p_cast_given_lit_quartile": 0.0353,
+     "p_shadow_quartile_given_cast": 0.4345
+    },
+    "tau8": {
+     "area_frac_of_image": 0.0404,
+     "area_frac_of_fg": 0.0424,
+     "p_cast_given_shadow_quartile": 0.0714,
+     "p_cast_given_lit_quartile": 0.0208,
+     "p_shadow_quartile_given_cast": 0.4193
+    },
+    "tau16": {
+     "area_frac_of_image": 0.0275,
+     "area_frac_of_fg": 0.0288,
+     "p_cast_given_shadow_quartile": 0.047,
+     "p_cast_given_lit_quartile": 0.0102,
+     "p_shadow_quartile_given_cast": 0.4067
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.0885,
+    "mean_K_lit_quartile": 0.1265,
+    "mean_K_mid": 0.1273,
+    "f_key_shadow_quartile": 0.7319,
+    "f_key_lit_quartile": 0.2739,
+    "key_separation_ratio_lit_over_shadow": 1.4295,
+    "frac_shadow_quartile_with_K_below_1_255": 0.0263,
+    "frac_lit_quartile_with_K_below_1_255": 0.1789,
+    "auc_K_separates_quartiles": 0.5561
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.1332,
+    "keyed_frac_of_fg": 0.4989,
+    "hue_unkeyed_deg": 187.29,
+    "hue_keyed_deg": 128.99,
+    "hue_offset_physical_deg": 58.3,
+    "mean_Yp_unkeyed": 0.3698,
+    "mean_Yp_keyed": 0.2426,
+    "overlap_unkeyed_with_shadow_quartile": 0.2263
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.0351,
+    "mean_E_lit_quartile": 0.0382,
+    "f_env_shadow_quartile": 0.2903,
+    "f_env_lit_quartile": 0.0828
+   }
+  },
+  {
+   "label": "pair02-AFTER/crop",
+   "W": 512,
+   "H": 512,
+   "crop": [
+    200,
+    480,
+    512,
+    512
+   ],
+   "m6": {
+    "sky_frac": 0,
+    "shadow_mask_frac": 0.2495,
+    "C_local_med": 0.0197,
+    "retention": 1.3563,
+    "hue_shadow_deg": 113.33,
+    "hue_lit_deg": 118.28,
+    "hue_offset_deg": 4.95,
+    "C_shadow": 8.8943,
+    "mean_Yp_shadow": 0.1642,
+    "mean_Yp_lit": 0.3525
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.001,
+     "area_frac_of_fg": 0.001,
+     "p_cast_given_shadow_quartile": 0.0008,
+     "p_cast_given_lit_quartile": 0.0003,
+     "p_shadow_quartile_given_cast": 0.1976
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0004,
+     "area_frac_of_fg": 0.0004,
+     "p_cast_given_shadow_quartile": 0.0004,
+     "p_cast_given_lit_quartile": 0.0001,
+     "p_shadow_quartile_given_cast": 0.2308
+    },
+    "tau4": {
+     "area_frac_of_image": 0.0001,
+     "area_frac_of_fg": 0.0001,
+     "p_cast_given_shadow_quartile": 0.0001,
+     "p_cast_given_lit_quartile": 0,
+     "p_shadow_quartile_given_cast": 0.4286
+    },
+    "tau8": {
+     "area_frac_of_image": 0,
+     "area_frac_of_fg": 0,
+     "p_cast_given_shadow_quartile": 0,
+     "p_cast_given_lit_quartile": 0,
+     "p_shadow_quartile_given_cast": 1
+    },
+    "tau16": {
+     "area_frac_of_image": 0,
+     "area_frac_of_fg": 0,
+     "p_cast_given_shadow_quartile": 0,
+     "p_cast_given_lit_quartile": 0,
+     "p_shadow_quartile_given_cast": 1
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.1259,
+    "mean_K_lit_quartile": 0.2577,
+    "mean_K_mid": 0.1796,
+    "f_key_shadow_quartile": 0.7668,
+    "f_key_lit_quartile": 0.731,
+    "key_separation_ratio_lit_over_shadow": 2.0472,
+    "frac_shadow_quartile_with_K_below_1_255": 0.0017,
+    "frac_lit_quartile_with_K_below_1_255": 0,
+    "auc_K_separates_quartiles": 0.9993
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.0182,
+    "keyed_frac_of_fg": 0.4981,
+    "hue_unkeyed_deg": 125.15,
+    "hue_keyed_deg": 125.13,
+    "hue_offset_physical_deg": 0.02,
+    "mean_Yp_unkeyed": 0.0559,
+    "mean_Yp_keyed": 0.2916,
+    "overlap_unkeyed_with_shadow_quartile": 0.9969
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.0412,
+    "mean_E_lit_quartile": 0.0397,
+    "f_env_shadow_quartile": 0.2512,
+    "f_env_lit_quartile": 0.1126
+   }
+  },
+  {
+   "label": "pair02-AFTER/frame",
+   "W": 1920,
+   "H": 1080,
+   "crop": null,
+   "m6": {
+    "sky_frac": 0.0472,
+    "shadow_mask_frac": 0.2365,
+    "C_local_med": 0.0297,
+    "retention": 1.1885,
+    "hue_shadow_deg": 125.93,
+    "hue_lit_deg": 135.69,
+    "hue_offset_deg": 9.76,
+    "C_shadow": 7.0698,
+    "mean_Yp_shadow": 0.1281,
+    "mean_Yp_lit": 0.4624
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.108,
+     "area_frac_of_fg": 0.1133,
+     "p_cast_given_shadow_quartile": 0.2934,
+     "p_cast_given_lit_quartile": 0.0566,
+     "p_shadow_quartile_given_cast": 0.6425
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0925,
+     "area_frac_of_fg": 0.0971,
+     "p_cast_given_shadow_quartile": 0.2553,
+     "p_cast_given_lit_quartile": 0.0458,
+     "p_shadow_quartile_given_cast": 0.6524
+    },
+    "tau4": {
+     "area_frac_of_image": 0.078,
+     "area_frac_of_fg": 0.0819,
+     "p_cast_given_shadow_quartile": 0.2205,
+     "p_cast_given_lit_quartile": 0.0345,
+     "p_shadow_quartile_given_cast": 0.6685
+    },
+    "tau8": {
+     "area_frac_of_image": 0.0635,
+     "area_frac_of_fg": 0.0666,
+     "p_cast_given_shadow_quartile": 0.1831,
+     "p_cast_given_lit_quartile": 0.0237,
+     "p_shadow_quartile_given_cast": 0.6819
+    },
+    "tau16": {
+     "area_frac_of_image": 0.0432,
+     "area_frac_of_fg": 0.0453,
+     "p_cast_given_shadow_quartile": 0.1203,
+     "p_cast_given_lit_quartile": 0.0122,
+     "p_shadow_quartile_given_cast": 0.6582
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.0837,
+    "mean_K_lit_quartile": 0.1278,
+    "mean_K_mid": 0.1533,
+    "f_key_shadow_quartile": 0.6532,
+    "f_key_lit_quartile": 0.2764,
+    "key_separation_ratio_lit_over_shadow": 1.5277,
+    "frac_shadow_quartile_with_K_below_1_255": 0.093,
+    "frac_lit_quartile_with_K_below_1_255": 0.2198,
+    "auc_K_separates_quartiles": 0.5408
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.2126,
+    "keyed_frac_of_fg": 0.4999,
+    "hue_unkeyed_deg": 148.98,
+    "hue_keyed_deg": 130.61,
+    "hue_offset_physical_deg": 18.37,
+    "mean_Yp_unkeyed": 0.2948,
+    "mean_Yp_keyed": 0.258,
+    "overlap_unkeyed_with_shadow_quartile": 0.3714
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.0376,
+    "mean_E_lit_quartile": 0.0402,
+    "f_env_shadow_quartile": 0.2934,
+    "f_env_lit_quartile": 0.087
+   }
+  },
+  {
+   "label": "pair03-AFTER/crop",
+   "W": 512,
+   "H": 512,
+   "crop": [
+    1100,
+    150,
+    512,
+    512
+   ],
+   "m6": {
+    "sky_frac": 0.0009,
+    "shadow_mask_frac": 0.2495,
+    "C_local_med": 0.0255,
+    "retention": 0.2334,
+    "hue_shadow_deg": 130.39,
+    "hue_lit_deg": 118.7,
+    "hue_offset_deg": 11.69,
+    "C_shadow": 3.3261,
+    "mean_Yp_shadow": 0.0409,
+    "mean_Yp_lit": 0.3532
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.7931,
+     "area_frac_of_fg": 0.7938,
+     "p_cast_given_shadow_quartile": 1,
+     "p_cast_given_lit_quartile": 0.3687,
+     "p_shadow_quartile_given_cast": 0.3145
+    },
+    "tau2": {
+     "area_frac_of_image": 0.7856,
+     "area_frac_of_fg": 0.7863,
+     "p_cast_given_shadow_quartile": 0.9998,
+     "p_cast_given_lit_quartile": 0.3532,
+     "p_shadow_quartile_given_cast": 0.3175
+    },
+    "tau4": {
+     "area_frac_of_image": 0.7781,
+     "area_frac_of_fg": 0.7788,
+     "p_cast_given_shadow_quartile": 0.9994,
+     "p_cast_given_lit_quartile": 0.3356,
+     "p_shadow_quartile_given_cast": 0.3204
+    },
+    "tau8": {
+     "area_frac_of_image": 0.7688,
+     "area_frac_of_fg": 0.7695,
+     "p_cast_given_shadow_quartile": 0.9977,
+     "p_cast_given_lit_quartile": 0.3161,
+     "p_shadow_quartile_given_cast": 0.3237
+    },
+    "tau16": {
+     "area_frac_of_image": 0.7478,
+     "area_frac_of_fg": 0.7485,
+     "p_cast_given_shadow_quartile": 0.9897,
+     "p_cast_given_lit_quartile": 0.2913,
+     "p_shadow_quartile_given_cast": 0.3302
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0,
+    "mean_K_lit_quartile": 0.044,
+    "mean_K_mid": 0.0017,
+    "f_key_shadow_quartile": 0.0004,
+    "f_key_lit_quartile": 0.1247,
+    "key_separation_ratio_lit_over_shadow": 2438.2763,
+    "frac_shadow_quartile_with_K_below_1_255": 0.9988,
+    "frac_lit_quartile_with_K_below_1_255": 0.5412,
+    "auc_K_separates_quartiles": 0.7327
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.0009,
+    "keyed_frac_of_fg": 0.1471,
+    "hue_unkeyed_deg": 122.34,
+    "hue_keyed_deg": 121.42,
+    "hue_offset_physical_deg": 0.92,
+    "mean_Yp_unkeyed": 0.2722,
+    "mean_Yp_keyed": 0.3558,
+    "overlap_unkeyed_with_shadow_quartile": 0.0083
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.034,
+    "mean_E_lit_quartile": 0.0748,
+    "f_env_shadow_quartile": 0.8318,
+    "f_env_lit_quartile": 0.2119
+   }
+  },
+  {
+   "label": "pair03-AFTER/frame",
+   "W": 1920,
+   "H": 1080,
+   "crop": null,
+   "m6": {
+    "sky_frac": 0.031,
+    "shadow_mask_frac": 0.2421,
+    "C_local_med": 0.0211,
+    "retention": 0.462,
+    "hue_shadow_deg": 127.76,
+    "hue_lit_deg": 123.42,
+    "hue_offset_deg": 4.34,
+    "C_shadow": 3.5032,
+    "mean_Yp_shadow": 0.0465,
+    "mean_Yp_lit": 0.3401
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.3267,
+     "area_frac_of_fg": 0.3371,
+     "p_cast_given_shadow_quartile": 0.8894,
+     "p_cast_given_lit_quartile": 0.1059,
+     "p_shadow_quartile_given_cast": 0.6592
+    },
+    "tau2": {
+     "area_frac_of_image": 0.3087,
+     "area_frac_of_fg": 0.3185,
+     "p_cast_given_shadow_quartile": 0.8708,
+     "p_cast_given_lit_quartile": 0.0929,
+     "p_shadow_quartile_given_cast": 0.683
+    },
+    "tau4": {
+     "area_frac_of_image": 0.2945,
+     "area_frac_of_fg": 0.304,
+     "p_cast_given_shadow_quartile": 0.8545,
+     "p_cast_given_lit_quartile": 0.0809,
+     "p_shadow_quartile_given_cast": 0.7024
+    },
+    "tau8": {
+     "area_frac_of_image": 0.2817,
+     "area_frac_of_fg": 0.2907,
+     "p_cast_given_shadow_quartile": 0.841,
+     "p_cast_given_lit_quartile": 0.0712,
+     "p_shadow_quartile_given_cast": 0.7229
+    },
+    "tau16": {
+     "area_frac_of_image": 0.2626,
+     "area_frac_of_fg": 0.271,
+     "p_cast_given_shadow_quartile": 0.819,
+     "p_cast_given_lit_quartile": 0.0608,
+     "p_shadow_quartile_given_cast": 0.7551
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.0067,
+    "mean_K_lit_quartile": 0.1353,
+    "mean_K_mid": 0.1087,
+    "f_key_shadow_quartile": 0.1452,
+    "f_key_lit_quartile": 0.3976,
+    "key_separation_ratio_lit_over_shadow": 20.0557,
+    "frac_shadow_quartile_with_K_below_1_255": 0.8001,
+    "frac_lit_quartile_with_K_below_1_255": 0.244,
+    "auc_K_separates_quartiles": 0.8458
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.433,
+    "keyed_frac_of_fg": 0.5,
+    "hue_unkeyed_deg": 127.19,
+    "hue_keyed_deg": 129.7,
+    "hue_offset_physical_deg": 2.51,
+    "mean_Yp_unkeyed": 0.1326,
+    "mean_Yp_keyed": 0.2233,
+    "overlap_unkeyed_with_shadow_quartile": 0.5
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.0312,
+    "mean_E_lit_quartile": 0.0401,
+    "f_env_shadow_quartile": 0.6709,
+    "f_env_lit_quartile": 0.1179
+   }
+  },
+  {
+   "label": "pair04-AFTER/crop",
+   "W": 512,
+   "H": 512,
+   "crop": [
+    200,
+    480,
+    512,
+    512
+   ],
+   "m6": {
+    "sky_frac": 0,
+    "shadow_mask_frac": 0.2451,
+    "C_local_med": 0.0165,
+    "retention": 0.3468,
+    "hue_shadow_deg": 134.15,
+    "hue_lit_deg": 132.82,
+    "hue_offset_deg": 1.33,
+    "C_shadow": 5.5302,
+    "mean_Yp_shadow": 0.0815,
+    "mean_Yp_lit": 0.1795
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.1856,
+     "area_frac_of_fg": 0.1856,
+     "p_cast_given_shadow_quartile": 0.6035,
+     "p_cast_given_lit_quartile": 0.0443,
+     "p_shadow_quartile_given_cast": 0.797
+    },
+    "tau2": {
+     "area_frac_of_image": 0.1747,
+     "area_frac_of_fg": 0.1747,
+     "p_cast_given_shadow_quartile": 0.6011,
+     "p_cast_given_lit_quartile": 0.0243,
+     "p_shadow_quartile_given_cast": 0.8431
+    },
+    "tau4": {
+     "area_frac_of_image": 0.1613,
+     "area_frac_of_fg": 0.1613,
+     "p_cast_given_shadow_quartile": 0.5961,
+     "p_cast_given_lit_quartile": 0.0081,
+     "p_shadow_quartile_given_cast": 0.9058
+    },
+    "tau8": {
+     "area_frac_of_image": 0.1487,
+     "area_frac_of_fg": 0.1487,
+     "p_cast_given_shadow_quartile": 0.5845,
+     "p_cast_given_lit_quartile": 0.0008,
+     "p_shadow_quartile_given_cast": 0.9637
+    },
+    "tau16": {
+     "area_frac_of_image": 0.1369,
+     "area_frac_of_fg": 0.1369,
+     "p_cast_given_shadow_quartile": 0.558,
+     "p_cast_given_lit_quartile": 0,
+     "p_shadow_quartile_given_cast": 0.9993
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.0504,
+    "mean_K_lit_quartile": 0.1493,
+    "mean_K_mid": 0.1308,
+    "f_key_shadow_quartile": 0.6184,
+    "f_key_lit_quartile": 0.8315,
+    "key_separation_ratio_lit_over_shadow": 2.9608,
+    "frac_shadow_quartile_with_K_below_1_255": 0.4727,
+    "frac_lit_quartile_with_K_below_1_255": 0,
+    "auc_K_separates_quartiles": 0.9998
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.1291,
+    "keyed_frac_of_fg": 0.499,
+    "hue_unkeyed_deg": 130.92,
+    "hue_keyed_deg": 133.24,
+    "hue_offset_physical_deg": 2.31,
+    "mean_Yp_unkeyed": 0.0495,
+    "mean_Yp_keyed": 0.1674,
+    "overlap_unkeyed_with_shadow_quartile": 0.9999
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.028,
+    "mean_E_lit_quartile": 0.0247,
+    "f_env_shadow_quartile": 0.3431,
+    "f_env_lit_quartile": 0.1379
+   }
+  },
+  {
+   "label": "pair04-AFTER/frame",
+   "W": 1920,
+   "H": 1080,
+   "crop": null,
+   "m6": {
+    "sky_frac": 0.031,
+    "shadow_mask_frac": 0.2422,
+    "C_local_med": 0.02,
+    "retention": 0.3638,
+    "hue_shadow_deg": 130.04,
+    "hue_lit_deg": 119.84,
+    "hue_offset_deg": 10.19,
+    "C_shadow": 3.4835,
+    "mean_Yp_shadow": 0.045,
+    "mean_Yp_lit": 0.3021
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.4305,
+     "area_frac_of_fg": 0.4443,
+     "p_cast_given_shadow_quartile": 0.9612,
+     "p_cast_given_lit_quartile": 0.2842,
+     "p_shadow_quartile_given_cast": 0.5409
+    },
+    "tau2": {
+     "area_frac_of_image": 0.4155,
+     "area_frac_of_fg": 0.4288,
+     "p_cast_given_shadow_quartile": 0.9553,
+     "p_cast_given_lit_quartile": 0.2653,
+     "p_shadow_quartile_given_cast": 0.5569
+    },
+    "tau4": {
+     "area_frac_of_image": 0.4032,
+     "area_frac_of_fg": 0.4161,
+     "p_cast_given_shadow_quartile": 0.9491,
+     "p_cast_given_lit_quartile": 0.2529,
+     "p_shadow_quartile_given_cast": 0.5702
+    },
+    "tau8": {
+     "area_frac_of_image": 0.3898,
+     "area_frac_of_fg": 0.4023,
+     "p_cast_given_shadow_quartile": 0.9401,
+     "p_cast_given_lit_quartile": 0.2414,
+     "p_shadow_quartile_given_cast": 0.5842
+    },
+    "tau16": {
+     "area_frac_of_image": 0.3648,
+     "area_frac_of_fg": 0.3764,
+     "p_cast_given_shadow_quartile": 0.9166,
+     "p_cast_given_lit_quartile": 0.2207,
+     "p_shadow_quartile_given_cast": 0.6087
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.0039,
+    "mean_K_lit_quartile": 0.0678,
+    "mean_K_mid": 0.0873,
+    "f_key_shadow_quartile": 0.0868,
+    "f_key_lit_quartile": 0.2244,
+    "key_separation_ratio_lit_over_shadow": 17.3481,
+    "frac_shadow_quartile_with_K_below_1_255": 0.8692,
+    "frac_lit_quartile_with_K_below_1_255": 0.4475,
+    "auc_K_separates_quartiles": 0.7434
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.4741,
+    "keyed_frac_of_fg": 0.5,
+    "hue_unkeyed_deg": 127.29,
+    "hue_keyed_deg": 127.45,
+    "hue_offset_physical_deg": 0.17,
+    "mean_Yp_unkeyed": 0.1314,
+    "mean_Yp_keyed": 0.176,
+    "overlap_unkeyed_with_shadow_quartile": 0.4634
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.0299,
+    "mean_E_lit_quartile": 0.0715,
+    "f_env_shadow_quartile": 0.6655,
+    "f_env_lit_quartile": 0.2368
+   }
+  },
+  {
+   "label": "overcast-1300/crop",
+   "W": 512,
+   "H": 512,
+   "crop": [
+    300,
+    150,
+    512,
+    512
+   ],
+   "m6": {
+    "sky_frac": 0.0001,
+    "shadow_mask_frac": 0.2496,
+    "C_local_med": 0.0204,
+    "retention": 0.4657,
+    "hue_shadow_deg": 116.25,
+    "hue_lit_deg": 105.35,
+    "hue_offset_deg": 10.9,
+    "C_shadow": 10.501,
+    "mean_Yp_shadow": 0.1417,
+    "mean_Yp_lit": 0.3983
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.0322,
+     "area_frac_of_fg": 0.0322,
+     "p_cast_given_shadow_quartile": 0.0212,
+     "p_cast_given_lit_quartile": 0.0443,
+     "p_shadow_quartile_given_cast": 0.1646
+    },
+    "tau2": {
+     "area_frac_of_image": 0.0009,
+     "area_frac_of_fg": 0.0009,
+     "p_cast_given_shadow_quartile": 0,
+     "p_cast_given_lit_quartile": 0.003,
+     "p_shadow_quartile_given_cast": 0.0134
+    },
+    "tau4": {
+     "area_frac_of_image": 0,
+     "area_frac_of_fg": 0,
+     "p_cast_given_shadow_quartile": 0,
+     "p_cast_given_lit_quartile": 0,
+     "p_shadow_quartile_given_cast": 0
+    },
+    "tau8": {
+     "area_frac_of_image": 0,
+     "area_frac_of_fg": 0,
+     "p_cast_given_shadow_quartile": 0,
+     "p_cast_given_lit_quartile": 0,
+     "p_shadow_quartile_given_cast": 0
+    },
+    "tau16": {
+     "area_frac_of_image": 0,
+     "area_frac_of_fg": 0,
+     "p_cast_given_shadow_quartile": 0,
+     "p_cast_given_lit_quartile": 0,
+     "p_shadow_quartile_given_cast": 0
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.0033,
+    "mean_K_lit_quartile": 0.0004,
+    "mean_K_mid": 0.0026,
+    "f_key_shadow_quartile": 0.023,
+    "f_key_lit_quartile": 0.001,
+    "key_separation_ratio_lit_over_shadow": 0.126,
+    "frac_shadow_quartile_with_K_below_1_255": 0.8219,
+    "frac_lit_quartile_with_K_below_1_255": 0.9536,
+    "auc_K_separates_quartiles": 0.1404
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.3795,
+    "keyed_frac_of_fg": 0.4765,
+    "hue_unkeyed_deg": 107.28,
+    "hue_keyed_deg": 115.32,
+    "hue_offset_physical_deg": 8.04,
+    "mean_Yp_unkeyed": 0.3208,
+    "mean_Yp_keyed": 0.1784,
+    "overlap_unkeyed_with_shadow_quartile": 0.0869
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.0501,
+    "mean_E_lit_quartile": 0.07,
+    "f_env_shadow_quartile": 0.3537,
+    "f_env_lit_quartile": 0.1758
+   }
+  },
+  {
+   "label": "overcast-1300/frame",
+   "W": 1920,
+   "H": 1080,
+   "crop": null,
+   "m6": {
+    "sky_frac": 0.0473,
+    "shadow_mask_frac": 0.2356,
+    "C_local_med": 0.0219,
+    "retention": 0.5961,
+    "hue_shadow_deg": 115.62,
+    "hue_lit_deg": 108.1,
+    "hue_offset_deg": 7.52,
+    "C_shadow": 7.8804,
+    "mean_Yp_shadow": 0.0994,
+    "mean_Yp_lit": 0.4528
+   },
+   "cast_shadow": {
+    "tau1": {
+     "area_frac_of_image": 0.0589,
+     "area_frac_of_fg": 0.0618,
+     "p_cast_given_shadow_quartile": 0.0968,
+     "p_cast_given_lit_quartile": 0.0267,
+     "p_shadow_quartile_given_cast": 0.3875
+    },
+    "tau2": {
+     "area_frac_of_image": 0.013,
+     "area_frac_of_fg": 0.0136,
+     "p_cast_given_shadow_quartile": 0.0198,
+     "p_cast_given_lit_quartile": 0.0043,
+     "p_shadow_quartile_given_cast": 0.3596
+    },
+    "tau4": {
+     "area_frac_of_image": 0.0057,
+     "area_frac_of_fg": 0.0059,
+     "p_cast_given_shadow_quartile": 0.0097,
+     "p_cast_given_lit_quartile": 0.0008,
+     "p_shadow_quartile_given_cast": 0.4041
+    },
+    "tau8": {
+     "area_frac_of_image": 0.003,
+     "area_frac_of_fg": 0.0031,
+     "p_cast_given_shadow_quartile": 0.0057,
+     "p_cast_given_lit_quartile": 0.0003,
+     "p_shadow_quartile_given_cast": 0.4509
+    },
+    "tau16": {
+     "area_frac_of_image": 0.0016,
+     "area_frac_of_fg": 0.0016,
+     "p_cast_given_shadow_quartile": 0.0024,
+     "p_cast_given_lit_quartile": 0.0001,
+     "p_shadow_quartile_given_cast": 0.3574
+    }
+   },
+   "key_attribution": {
+    "what_it_is": "K = Yp(base) - Yp(key_off), the direct key contribution per pixel, measured in the same process as the base (HAZARDS s12/s22).",
+    "mean_K_shadow_quartile": 0.0013,
+    "mean_K_lit_quartile": 0.002,
+    "mean_K_mid": 0.0031,
+    "f_key_shadow_quartile": 0.0134,
+    "f_key_lit_quartile": 0.0045,
+    "key_separation_ratio_lit_over_shadow": 1.5236,
+    "frac_shadow_quartile_with_K_below_1_255": 0.8787,
+    "frac_lit_quartile_with_K_below_1_255": 0.846,
+    "auc_K_separates_quartiles": 0.391
+   },
+   "physical_split": {
+    "what_it_is": "A lit/shadow split derived from the KEY ABLATION rather than from a luminance percentile: `unkeyed` = K < 25% of the foreground median K, `keyed` = K > median. This is the split RI-VIS04 s2 actually describes.",
+    "unkeyed_frac_of_fg": 0.4087,
+    "keyed_frac_of_fg": 0.4786,
+    "hue_unkeyed_deg": 105.73,
+    "hue_keyed_deg": 112.79,
+    "hue_offset_physical_deg": 7.06,
+    "mean_Yp_unkeyed": 0.2938,
+    "mean_Yp_keyed": 0.1769,
+    "overlap_unkeyed_with_shadow_quartile": 0.2325
+   },
+   "env_attribution": {
+    "mean_E_shadow_quartile": 0.0544,
+    "mean_E_lit_quartile": 0.0651,
+    "f_env_shadow_quartile": 0.5473,
+    "f_env_lit_quartile": 0.1438
+   }
+  }
+ ]
+}
