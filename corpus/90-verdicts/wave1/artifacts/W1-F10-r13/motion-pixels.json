@@ -1,0 +1,59 @@
+{
+  "tool": "tools/visual/f10-r12-motion-pixels.mjs",
+  "dir": "/home/user/elder-souls-claude/corpus/90-verdicts/wave1/artifacts/W1-F10-r13/look",
+  "threshold_channel_delta": 1,
+  "what_this_is": "ONE FIXED CAMERA, frames at increasing sim-frame offsets. The camera pose is identical across the pair by construction, so any changed pixel is the scene.",
+  "no_appearance_claim": "SwiftShader. W1-30-EVIDENCE §4 admits geometry/composition/determinism and refuses appearance; this is a geometry statement.",
+  "CONTROL_frame_against_itself": {
+    "pixels": 2073600,
+    "changed": 0,
+    "changed_pct": 0,
+    "mean_abs_delta": 0,
+    "worst_channel_delta": 0
+  },
+  "pairs": [
+    {
+      "a": "motion-t000.png",
+      "b": "motion-t024.png",
+      "pixels": 2073600,
+      "changed": 32175,
+      "changed_pct": 1.5516,
+      "mean_abs_delta": 0.2653,
+      "worst_channel_delta": 98
+    },
+    {
+      "a": "motion-t000.png",
+      "b": "motion-t048.png",
+      "pixels": 2073600,
+      "changed": 35747,
+      "changed_pct": 1.7239,
+      "mean_abs_delta": 0.2861,
+      "worst_channel_delta": 88
+    }
+  ],
+  "consecutive": [
+    {
+      "a": "motion-t000.png",
+      "b": "motion-t024.png",
+      "pixels": 2073600,
+      "changed": 32175,
+      "changed_pct": 1.5516,
+      "mean_abs_delta": 0.2653,
+      "worst_channel_delta": 98
+    },
+    {
+      "a": "motion-t024.png",
+      "b": "motion-t048.png",
+      "pixels": 2073600,
+      "changed": 26414,
+      "changed_pct": 1.2738,
+      "mean_abs_delta": 0.2039,
+      "worst_channel_delta": 98
+    }
+  ],
+  "CONTROL_ok": true,
+  "pass": true,
+  "READ_THIS_BEFORE_THE_NUMBERS__F10_r13": "**This tool's `CONTROL_frame_against_itself` is VOID and I am not offering it.** `HAZARDS §30`: `f10-r12-motion-pixels.mjs:104` computes `diff(imgs[0].img, imgs[0].img)` — the same decoded buffer twice — so its 0 is arithmetic and would read 0 on a corrupted decode, a non-deterministic rasteriser or a camera that moved. **The pair numbers below are sound and the control line above them is decoration.** A real determinism control is two INDEPENDENT renders and encodes of the same sim frame; the r12 critic shot one (md5 identical twice, 0 of 2,073,600 changed) and I did not re-shoot it.",
+  "what_f10_r13_claims_from_this": "Only that the crowd's motion still reaches the screen on this tree: **1.55% of the frame changes over 24 sim frames and 1.72% over 48**, from one fixed camera. It is NOT `RI-VIS10` C3 (b2-iii), which additionally requires >= 60% of those changed pixels to fall inside the drawn NPCs' own screen-space boxes at >= 3x enrichment — that arm needs bone-projected boxes, it is carried from the r12 critic's session, and this whole-frame count is strictly weaker than it.",
+  "and_the_honest_look": "I opened `motion-t000.png` and `motion-t048.png` side by side. **I cannot see the breathing.** At 0.67-1.53 degrees of bone rotation per person per second that is the expected answer and it matches the r12 critic's own note that a reader expecting a visible weight-shift will be disappointed by the frames. What the two frames DO show at a glance is the thing this round added: the stooped figure at the right of both, with the back rounded and the head carried forward of the shoulder line."
+}
