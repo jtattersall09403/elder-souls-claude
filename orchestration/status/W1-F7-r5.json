@@ -46,6 +46,16 @@
       "own_mask_range_over_those_nine_identical_captures": { "threshold 6": "57.00%", "threshold 10": "33.68%", "threshold 16": "0.26%" },
       "ruling": "**THRESHOLD 10 IS NOT STABLE. THRESHOLD 16 IS.** The r4 critic wrote *'threshold 10 is the only stable threshold'* and set the round-5 acceptance at it. That conclusion rests on a PIN -> PIN2 back-to-back replicate, which measures drift over ONE capture interval. Measured over the interval the arms actually span, the same unchanged shader's own mask moves **33.68%** at threshold 10 and **0.26%** at threshold 16 — a 130x difference. **So I did not publish a threshold-10 headline row either.** Every headline number in this round is threshold 16, with the 0.26% band beside it.",
       "and_the_ordinal_signature_is_visible_in_the_table_and_vanishes_at_16": "At threshold 6 the arms' `own_mask_delta_pct` climbs 34.34 -> 52.95 -> 56.97 -> 58.23 -> 58.64 -> 58.80 -> 58.92 -> 59.05 in capture order, with the arm that changes the water LEAST (`no-shorefade`) reading the LARGEST value because it is captured last — HAZARDS §25a's exact signature, reproduced. At threshold 10 the same climb runs -0.51 -> 12.00 -> 24.51 -> 29.30 -> 31.12 -> 31.94 -> 32.33 -> 32.90. **At threshold 16 the same eight arms read -0.52, -0.52, -0.55, -0.51, -0.54, -0.69, -1.12, -0.27 — flat, no trend, no ordinal signature at all.**",
+      "CONSOLIDATED_ACROSS_EVERY_RUN_IN_THIS_ROUND_because_one_pose_is_not_an_answer": {
+        "method": "`own_mask_pct_range` = the spread of the UNCHANGED baseline arm's own water mask across all its interleaved captures in that run. Each row is a different pose and/or a different process.",
+        "rows": [
+          { "run": "dm-b225-sweep", "pose": "edge-b225", "baseline_captures": 9, "thr6": "57.00%", "thr10": "33.68%", "thr16": "0.26%" },
+          { "run": "dm-b135-verify", "pose": "edge-b135", "baseline_captures": 6, "thr6": "(not run)", "thr10": "(see file)", "thr16": "0.54%" },
+          { "run": "dm-b225-reverse", "pose": "edge-b225", "baseline_captures": 4, "thr16": "0.14%" },
+          { "run": "dm-b045-b315", "pose": "edge-b045", "baseline_captures": 4, "thr10": "55.75%", "thr16": "0.33%" }
+        ],
+        "ruling": "**Threshold 10's unchanged-arm mask drifts 33.68% at one pose and 55.75% at another. Threshold 16's drifts 0.14%, 0.26%, 0.33% and 0.54% across four runs, two poses and four processes.** That is a ~100x to ~170x difference and it reproduces everywhere I looked. Threshold 16 is the stable threshold on this scene and threshold 10 is not."
+      },
       "the_drift_band_i_publish_beside_every_number_at_threshold_16": {
         "own_mask": "0.26% over 9 identical captures",
         "mean_luma": "1.636 (the baseline darkens 68.6 -> 67.0 across the run, ~2.4%)",
