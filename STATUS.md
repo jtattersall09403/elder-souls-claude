@@ -123,11 +123,12 @@ file order; the new code is invariant in all 500.
   NPC had shoulder and hip tilt of **exactly 0.000°** — nobody put their weight on one leg — and over
   sixty frames not one person moved a single joint. Now **392 of 408 stand differently**, each seeded
   from their own identity so the same person always stands the same way, and every townsperson
-  breathes, staggered so the crowd doesn't inhale in unison. Verified independently in the running
-  game, replicated across three sessions, and shown in pixels: three consecutive frames differ by
-  42,186, 30,847 and 32,872 pixels against a control of exactly zero.
-  **It is photographed at last** — nine frames, five angles, two motion offsets, the first pictures of
-  this work in eleven rounds.
+  breathes, staggered so the crowd doesn't inhale in unison, verified independently and replicated
+  across three sessions. **Be calibrated about what that means: you will not see it.** The builder
+  opened two frames 48 steps apart and said plainly *"I cannot see the breathing"* — at under 1.5° of
+  joint movement per person per second, that is the predicted answer. It stops them being statues; it
+  is not something you notice. **The body variety below is the part you would.**
+  It is photographed at last, eleven rounds in.
 - **And the crowd was still fourteen people. It is now seventy-two.** For 408 townspeople the game was
   drawing **14 distinct bodies** — one body per 29 people, with 93 identical pairs standing within 15
   metres of each other. Now **72**, one per 5.7, built from a new age/posture axis, twelve new body
