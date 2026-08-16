@@ -197,7 +197,7 @@ mine, three carried from r10 and declared as carried), so the twelve-census floo
 | E5 | fail | saxhleel and dunmer draw no body another Helstrom race does not |
 
 **A correction the round's file needs:** it says *"C2 is the check RI-VIS10's own scoring names as one
-of the four whose failure keeps a piece out of the 7-8 band."* Read this turn, line 340:
+of the four whose failure keeps a piece out of the 7-8 band."* Read this turn, RI-VIS10's scoring table (line 385, after my own amendment shifted it down):
 `| 7–8 | 2–4 failing, none of them B1, B3, D2 or E1 |`. **C2 is not one of the four. E1 is** — which the
 round itself says correctly two entries later. A slip, but it argued for a piece of work on a premise
 that is not in the item.
