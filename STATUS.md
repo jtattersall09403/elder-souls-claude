@@ -14,8 +14,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   previous rounds pushed it warmer.
 - **Judging the crowd** — 408 people used to share one pose; now 392 stand differently, and nobody has
   managed to photograph it.
-- **Judging the water, round three** — the two missing pieces are built, and the depth colouring was
-  running backwards.
+- **The water, round four** — the fade works; it just does nothing in the one region we kept testing
+  it in.
 - **Judging the container screen** — round seven closed the density regression and found a third
   defect nobody had reported.
 
@@ -44,8 +44,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   pixels on 9 of 10 rows, and 8 of 19 journal entries laid out past the panel onto the world. Both are
   now **0**. The columns had been sized as *fractions* of the row, which was right at the old wide
   panel and collided at the new narrow one, because font sizes are fixed pixels.
-- **The menus were judged independently and FAILED at 2 of 10 — twice — and round seven has now closed
-  the worst of it.** The reflow work was confirmed by the judge: level-up's rows read at both sizes and
+- **The menus were judged independently and FAILED at 2 of 10 — three times — though each round closes
+  real defects.** The reflow work was confirmed by the judge: level-up's rows read at both sizes and
   the journal runs **0 of 19** blocks off the page. The container was the failure: its description
   **declared 137 characters and drew 100** — ten words gone with no "…" — and **all seven rows declared
   a gold price and none drew one**. Both were fixed, and the fix then broke the weight column (`11.5` →
@@ -53,10 +53,10 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   the density regression is not just repaired but better than before it broke, and a third defect
   nobody had reported is fixed** — the item's condition was being drawn 24 units outside its own box
   and clipped away entirely on every conditioned item.
-  **Two of the checks meant to catch this could not fail.** One read the text the screen *declared*
-  rather than what it *drew*, so it passed no matter what; another was written as a literal `true`.
-  Both now assert real published numbers, and both were proven to go red on a deliberately broken row
-  first.
+  **Three of the checks meant to catch this could not fail.** One read the text the screen *declared*
+  rather than what it *drew*; one was written as a literal `true`; and the legibility pass calls the
+  container clean **while two headers are printed through the first row**, because it only looks inside
+  one row band. A judge found that last one by cropping the picture at 2× and looking.
 - **⚠ A measurement scare, and the answer was the opposite of what I told you.** I said a filed
   verdict's numbers wouldn't reproduce and to distrust the screen scores. They reproduce **exactly**.
   The four "isolated" copies compared had all quietly measured **the same live tree** — the tools work
@@ -70,12 +70,13 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   the renderer for the first time in this project**. And the reason depth looked absent is better than
   that — it was *present, unlabelled and inverted*: the old body colour leaned on a term that gets
   **brighter** the deeper the water.
-  **The first water result a dimmer switch cannot fake.** Every earlier F7 number could be reproduced by
-  simply darkening the picture; this one can't — as murkiness varies the band where water meets land
-  widens 5 → 19 pixels in order, and the fake control moves it *the wrong way*.
-  **Two things against it, both reported by the builder against itself:** in the one region you
-  actually stand in the water is opaque within half a metre of the bank, so the depth colouring is
-  measurably **inert there**; and round two's eye-level shoreline regression is **not repaired**.
+  **The first water result a dimmer switch cannot fake** — a matched-brightness control reproduces 118%
+  of the luma change and **none** of the widening.
+  **And the judge found why it looked like nothing.** In a second region it is obvious — the band where
+  water meets land goes **1 pixel to 15** — while in the region three rounds kept testing, the water is
+  **drowned**: no real bank exists there at all, and the three "shoreline close-ups" everyone had been
+  chasing turn out to contain no shoreline. So the fade is real and the test site was wrong. Round four
+  is making the fade work in metres rather than in murkiness, so it survives where you actually stand.
   **Still true: nobody knows what draws the marsh stripes.** Switch the reflection off entirely and 76%
   of them remain; two further explanations were proposed and killed by the same test.
 - **The container screen prints the word `undefined`** as its title. Being fixed.
@@ -105,9 +106,8 @@ roughly two hours of work has to be re-derived rather than trusted. Same four jo
   eye entirely, with two armour sets losing it from *every* angle, because the head was shrunk without
   shrinking what sits on it and the heights were hand-typed so the band drew straight through the eye.
   Now 0 of 96.
-- **The player's own eye was the worst in the game** — 2.16× the brightness of their face, affecting
-  the player and **260 of 408** NPC records. Now 0.847× — but see below: the brightness was the only
-  thing fixed.
+- **The player's own eye was the worst in the game** — 2.16× the brightness of their face, on the
+  player and **260 of 408** NPC records. Now 0.847×.
 - **The body is photographed on real hardware and the change is visible.** Eight angles, before and
   after, on an RTX A4500 — the picture the last four judgements were written against. The waist reads
   at player distance.

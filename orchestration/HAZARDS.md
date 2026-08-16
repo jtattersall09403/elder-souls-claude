@@ -66,6 +66,36 @@ sabotage both and it is lost, exactly as the old recipe loses it. The first vers
 sabotaged only the base, watched it pass, and would have shipped calling that a green light. That is
 RULES rule 6's fourth shape, and it is why the arms are four and not two.
 
+## 25. A MASK DERIVED PER ARM LETS THE THING UNDER TEST CHOOSE THE PIXELS IT IS SCORED ON
+
+**Found 2026-08-16 by the F7 r3 critic, which called it the most reusable thing in its round and did
+not have room to write it up. Writing it here because it is not about water.**
+
+Any comparison that says *"measure X over the region where Y"* has to build the region somehow. If it
+builds it **separately for each arm**, then an arm that changes `Y` **changes its own denominator, its
+own boundary, and every distance measured from that boundary.** The result is not a comparison; each
+arm is scored on a different set of pixels.
+
+**Concretely:** `f7-r3-sweep.mjs` derives a water mask per arm, and round 3 was the first F7 round to
+touch water **alpha** — so the fix moved its own mask, and `gradient_width_px` is a distance transform
+*of that mask*. Measured consequences on **one unchanged frame pair**, per-arm mask against a single
+pinned mask:
+
+- a `FresnelDelta` **sign flip** — `+0.148 → −0.145` becomes `+0.148 → +0.161`
+- a **spurious `ShoreDelta` pass** — `0.024 → 0.093` becomes `0.024 → 0.021`
+
+**It cuts both ways**, which is why it is not detectable by whether the answer flatters you. Here the
+confound happened to have the *opposite* sign to the headline, so the k-ordering survived re-running
+every arm over one pinned mask at thresholds 4/6/10 — but the **width monotonicity did not**, and that
+half of the headline was withdrawn.
+
+**The rule: pin the mask.** Derive it once, from one arm or from geometry, and score **both** arms
+through it. If the mask must move, that is a finding to report, not a nuisance to normalise away —
+and say which arm it came from. This is **S63's family in the spatial domain**: never normalise, mask
+or bound by a quantity the fix is expected to change. The same trap waits for any AO/occlusion mask, any
+"lit subset" (S60's clause (a) repair is derived from a shadow-map ablation for exactly this reason),
+any silhouette or coverage measure, and any density metric scoped to a panel the build may resize.
+
 ## 24. `RI-VIS04` §3-D2's shadow ablation is ~10× cheaper with a uniform — and the BASE frame you subtract matters more than which form you use
 
 **Claimed by the `F4` round-2 builder, re-derived independently by its critic, 2026-08-16, from that
