@@ -660,11 +660,19 @@ shore_contrast_retained_pct    = 100 × span_water_minus_hidden(arm)
 
 **The numbers that license this clause, all derived 2026-08-16, no figure inherited.**
 
-- **The drift run S67 said nobody had done.** Over **33 interleaved captures of one unchanged arm**,
-  across 6 runs, 4 poses, 2 regions, 5 commits and 2 processes, `shore_contrast_retained_pct` drifts
-  **0.31 – 1.36 percentage points** (thresholds 6/10/16). Tool: `tools/visual/f7-r6-offline.mjs
-  --mode spanctl`, offline over banked frames, whose re-implementation reproduces `sweep.json`'s own
+- **The drift run S67 said nobody had done.** `shore_contrast_retained_pct` drifts **0.19 – 1.36
+  percentage points** on one unchanged arm at thresholds 6/10/16, over **46 interleaved baseline
+  captures** in **2 regions** and **6 pose-runs**. Tool: `tools/visual/f7-r6-offline.mjs --mode
+  spanctl`, offline over banked frames, whose re-implementation reproduces `sweep.json`'s own
   published `span` on **60 of 60** rows.
+  **⚠ AND THE SAMPLE IS SMALLER THAN THE ROW COUNT, WHICH ITS AUTHOR FOUND AND IS SAYING.** Of the
+  33 rows in the F7 r5 artifacts, **10 are byte-identical duplicates of other rows** — `md5sum`
+  over `dm-b225-sweep` vs `dm-b225-reverse` at ordinals 0/2/4/6, and `dm-b135-verify` vs
+  `dm-b135-null` at 0/2/4/6/8/10, match exactly. **This capture pipeline is byte-deterministic at
+  fixed ordinal, seed, pose and world**, so *"five commits and two processes"* adds reproducibility
+  and adds **no independent samples**. 23 distinct there, 23 more from the r6 runs (unchecked for
+  duplication). **The consequence for anyone using this clause: the published band is a BIAS BOUND,
+  not a standard deviation, and replication cannot shrink it.**
 - **It survives the matched-luminance null the width failed.** At `edge-b135` a brightness-only arm
   matched to within **0.41 luma** of the arm under test retains **58.22%**; the arm retains
   **27.80%** — a 30.4-point separation against a 0.78-point band. On the same pair the retired width
