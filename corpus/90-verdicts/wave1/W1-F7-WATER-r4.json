@@ -1,0 +1,778 @@
+{
+  "schema_version": 1,
+  "piece_id": "W1-F7-WATER",
+  "piece_title": "F7 — the water surface, round 4: the shore band in metres",
+  "roadmap_item": "F7",
+  "subsystem_paths": [
+    "world.water.marsh",
+    "render.fidelity.water"
+  ],
+  "wave": 1,
+  "critic": {
+    "run_id": "crit-w1-f7-water-r4",
+    "role": "critic.visual.water",
+    "model": "claude-opus-5",
+    "conflict_of_interest": false,
+    "saw_builder_notes_before_measurement": true,
+    "note": "I built none of this. My brief quoted the build's claims up front, which departs from CRITIC-DOCTRINE §8's ordering; recorded rather than hidden. My brief also instructed me to inherit no number from it, and I did not: the shoreline census was re-derived in my own code against WorldField without importing the build's tool; the blind census was re-derived with my own greps; the sort arithmetic was re-done from the banked luma; and every table in `artifacts/W1-F7-WATER-r4-critic/critic-measurements.json` names the command that produced it. Where I quote a figure from the build's banked artifacts I say it came from there.",
+    "finished_at": "2026-08-16T04:10:00Z"
+  },
+  "build": {
+    "status_file": "orchestration/status/W1-F7-r4.json",
+    "branch": "codex/wave1-build-experiment",
+    "commit_sha": "17e6fc02 (the shader change) with the branch repair at 2449637a; the build's own sweep.json files carry commits 6adb9bb9, f52c4f87, 3221f40e, 3245054e, 5ef7344b, 89dadae5, eb22df2c because it banked between runs. My own run is at HEAD 13949c4687.",
+    "file_changed": "game/src/render/water.js",
+    "the_change": "A new uniform `uWaterShoreBandM` (default 1.20 m) and three lines in the fragment stage: `esBandM = 1 - smoothstep(0, max(uWaterShoreBandM,1e-4), esDepthM)`, then `esShoreT = 1 - (1-esTrans)*(1-esBandM)`, then the existing alpha line driven by `esShoreT` instead of `esTrans`. `customProgramCacheKey` v17 -> v18. Round 3's depth colour and round 2's Schlick weight are untouched.",
+    "harness_commands": [
+      {
+        "cmd": "node corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-sweep.mjs --out corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/bandsweep-b135 --site vista-deep-marshes --mode arms --poses edge-b135 --arms prefix,r3,band-0.10,band-0.20,band-0.30,band-0.45,band-0.60,fixed --thresholds 6,10",
+        "seed": 20260814,
+        "exit_code": 0,
+        "note": "critic-sweep.mjs is a copy of the build's tools/visual/f7-r4-sweep.mjs whose ONLY functional change is four extra uniform arms (0.10/0.20/0.30/0.45 m) plus two relative-path fixes for its new location. `diff` against the build's tool is in the commit and is 14 lines."
+      },
+      {
+        "cmd": "node <scratch>/critic-census.mjs — my own re-derivation of the shoreline census against game/src/world/field.js's WorldField, reproducing province.js:1531-1562. Does not import the build's census tool.",
+        "exit_code": 0
+      },
+      {
+        "cmd": "node <scratch>/presence.mjs and presence2.mjs — the water-presence control, offline, over the build's own banked frames and over mine.",
+        "exit_code": 0
+      },
+      {
+        "cmd": "grep -rl 'blind_pair: yes' corpus/ --include=*.md | grep -E '/RI-[^/]*\\.md$' | wc -l  ->  81 ; grep -rEn '\"blind_status\" *: *\"run\"' corpus/90-verdicts/ | wc -l  ->  0",
+        "exit_code": 0
+      },
+      {
+        "cmd": "node tools/contention.mjs (before each browser: GO at 1.01/core; 4.53/core when I killed my second run)",
+        "exit_code": 0
+      }
+    ],
+    "builders_own_ruling": "KEEP the mechanism, do not claim F7. The build declined its own acceptance, reported that two of five poses regress, that the water is 8-14% darker at every pose, and that its only positive result is contradicted by its own second instrument. It named the counter-position explicitly (set the default to 1e-4)."
+  },
+  "bifurcation": {
+    "axis": "both-separately",
+    "fidelity": "Judged against modern references only: `RI-VIS04` §9's MIN BAR and TELL, `RI-WLD10` §10's fidelity clause, `RI-VIS03` M12/M12a. Every pixel number below is on this side.",
+    "art_direction": "`RI-WLD10` §10.1 — 'water is opaque before it is reflective' — is cited on the art-direction side, judged against Morrowind/`RI-WLD05` conventions and against the province's own declared `k` table, not against a modern plate. It is the clause the shipped alpha term contradicts.",
+    "declared_before_citation": true
+  },
+  "the_headline": "The mechanism the r3 verdict asked for is genuinely built — `esBandM` contains no `k`, which three lines of shader settle without measurement. But at the shipped 1.20 m the term is non-zero over 65.1% of the Deep Marshes water in frame and 98.6% of the Western Rootlands water in frame, so it is a transparency multiplier over the water body rather than a shoreline fade — ONE cause for both of the symptoms the build reported as two. And it is tunable, against the build's own conclusion: swept at the pose carrying its only positive result, `gradient_width_px` is FLAT AT 34 px from 0.10 m to 1.20 m while `presence` falls monotonically from 50.6% to 40.7%. The shipped constant is dominated by one twelve times smaller.",
+  "job_1_the_census": {
+    "asked": "Verify the census independently. If it holds, three rounds of F7 reasoning rest on a mis-sited camera.",
+    "ruling": "CONFIRMED to the digit, in my own code, without importing the build's tool. vista-deep-marshes within 120 m: 121 water cells, 47 waterline (38.84%), nearest 17.7 m, q-saturation 0.2416. The two seas: Marauder's Coast 0.9248 / 4 waterline / nearest 81.0 m; Crimson Coast 0.9706 / 4 / 60.5 m. The Deep Marshes is not shoreless; what was true is a POSE fact about round 3's 4.5-7 m close-ups.",
+    "and_it_is_wrong_in_the_CORPUS_not_only_in_a_status_file": "`RI-VIS03` §M12a clause 4 states as a worked example that 'the Deep Marshes is WCI 0.86; three rounds of F7 shot every frame there and not one frame contains a shoreline.' Every future critic inherits it. Amended in place under CRITIC-DOCTRINE §1.3 — rule untouched, no threshold relaxed, only the false example corrected, exactly as ARBITRATION S60, S63 and S65 each had to correct their own narrations."
+  },
+  "job_2_the_acceptance_and_the_ruling_the_build_asked_me_to_make": {
+    "the_acceptance_fails": "Confirmed. The r3 remedy's clause is `gradient_width_px >= 12` at a declared `water_edge` pose in the Deep Marshes over a pinned mask; M12a clause 3 makes a band met only at the worst pose. Worst pose is 1 px. It fails at every threshold and in both regions.",
+    "the_water_presence_control_which_nobody_had_run": {
+      "what": "Every artifact dir carries a `--water-hidden` frame (all 93 water meshes hidden) and no round has scored it. presence = (L[arm] - L[hidden]) / (L[prefix] - L[hidden]) over the pinned mask.",
+      "worst_pose_for_the_shipped_arm_pct": 41.2,
+      "by_pose_thr6_pct": {
+        "deep-marshes edge-b135": {
+          "prefix": 100.0,
+          "r3": 59.5,
+          "fixed": 41.2
+        },
+        "deep-marshes edge-b045": {
+          "prefix": 100.0,
+          "r3": 99.3,
+          "fixed": 94.5
+        },
+        "deep-marshes edge-b225": {
+          "prefix": 100.0,
+          "r3": 99.5,
+          "fixed": 82.3
+        },
+        "deep-marshes edge-b315": {
+          "prefix": 100.0,
+          "r3": 100.6,
+          "fixed": 86.5
+        },
+        "western-rootlands edge-b225": {
+          "prefix": 100.0,
+          "r3": 97.2,
+          "fixed": 69.3
+        }
+      },
+      "threshold_independence": "41.1 / 41.2 / 41.4 at thresholds 4 / 6 / 10 — unlike `gradient_width_px`, this measure does not depend on the threshold.",
+      "the_decomposition_the_round_had_the_arms_for": "At edge-b135 the depth COLOUR alone (`no-shorefade`) leaves 89.4%. Round 3's k-gated alpha takes it to 59.5%; round 4's band to 41.2%. Of 58.8 points lost, 10.6 are colour and 48.2 are the shoreline ALPHA term. The build's defence that 'the colour half is deliberately untouched' does not reach the cost."
+    },
+    "why_the_band_is_not_a_shoreline_band": {
+      "method": "esDepthM = clamp((q-0.43)/0.57,0,1)*1.35 is the exact inverse of province.js's q, so a wet corner's esDepthM IS its depth in metres and esBandM can be evaluated offline over the same WorldField.",
+      "at_the_shipped_1_20_m": {
+        "deep-marshes": {
+          "median_depth_m": 0.824,
+          "untouched_pct": 34.9,
+          "in_transition_pct": 61.7,
+          "full_fade_pct": 3.3
+        },
+        "western-rootlands": {
+          "median_depth_m": 0.375,
+          "untouched_pct": 1.4,
+          "in_transition_pct": 84.3,
+          "full_fade_pct": 14.3
+        }
+      },
+      "ruling": "The constant sits ABOVE the median water depth in both regions. RI-VIS04 §9's MIN BAR component is a SHORELINE depth fade; a term acting on 98.6% of the water in frame is not one. This is also why the Western Rootlands width went 5 -> 1: a fade applied uniformly has no edge to measure.",
+      "how_the_constant_was_chosen": "water.js's own comment and the status justify 1.20 m because '71 of 121 water cells carry a corner shallower than 1.20 m, so it spans effectively the whole graded population'. Maximal coverage is the goal of a depth tint. A shoreline band wants MINIMAL coverage. The selection criterion is the inverse of the requirement."
+    },
+    "the_sweep_the_round_never_ran": {
+      "why_the_builds_sweep_could_not_settle_it": "It covered 0.60 / 1.20 / 1.35 — all above the median wet-corner depth in frame, i.e. entirely inside the broad regime.",
+      "mine_at_edge_b135_threshold_10": [
+        {
+          "arm": "prefix",
+          "band_m": null,
+          "width_px": 3,
+          "mean_luma": 67.939,
+          "presence_pct": 100.0
+        },
+        {
+          "arm": "r3",
+          "band_m": 0.0001,
+          "width_px": 1,
+          "mean_luma": 52.07,
+          "presence_pct": 59.7
+        },
+        {
+          "arm": "band-0.10",
+          "band_m": 0.1,
+          "width_px": 34,
+          "mean_luma": 48.464,
+          "presence_pct": 50.6
+        },
+        {
+          "arm": "band-0.20",
+          "band_m": 0.2,
+          "width_px": 34,
+          "mean_luma": 47.677,
+          "presence_pct": 48.6
+        },
+        {
+          "arm": "band-0.30",
+          "band_m": 0.3,
+          "width_px": 34,
+          "mean_luma": 47.152,
+          "presence_pct": 47.2
+        },
+        {
+          "arm": "band-0.45",
+          "band_m": 0.45,
+          "width_px": 34,
+          "mean_luma": 46.523,
+          "presence_pct": 45.6
+        },
+        {
+          "arm": "band-0.60",
+          "band_m": 0.6,
+          "width_px": 34,
+          "mean_luma": 45.977,
+          "presence_pct": 44.2
+        },
+        {
+          "arm": "fixed (SHIPPED)",
+          "band_m": 1.2,
+          "width_px": 34,
+          "mean_luma": 44.596,
+          "presence_pct": 40.7
+        }
+      ],
+      "ruling": "THE WIDTH IS FLAT AT 34 px ACROSS A 12x RANGE OF THE CONSTANT AND ONLY THE DARKENING MOVES. 'No band constant rescues it, so it is not a tuning problem' is false as stated. What is true is narrower: the width is a STEP function of whether a band exists at all, not a function of its size — and beyond existence the constant buys nothing but absence.",
+      "what_i_did_NOT_establish": "I ran this at edge-b135 only. The build's failing pose is edge-b225, where I did not test below 0.60. Nobody should read 'a small band rescues edge-b225' into this table."
+    },
+    "MY_RULING": "KEEP the mechanism. REJECT the shipped default. Set `uWaterShoreBandM` to 0.10 m — not 1.20 and not 1e-4. The build framed the choice as keep-at-1.20 versus revert-to-1e-4; on the numbers both are wrong, because 1.20 is dominated on the build's own instrument by a constant that holds the entire width and returns ten points of presence. It is one number and exactly as reversible as the build's own."
+  },
+  "job_3_the_transparency_sort": {
+    "ruling": "CONFIRMED, both halves, and it is the clean result of the round.",
+    "depthWrite": "FALSE for the whole water family, structurally: game/src/render/visual-foundation.js:689, `depthWrite: options.depthWrite ?? family!=='water'`, and on all four live materials in the banked gpu_state_before. The r3 status file's claim that round 3 'lowered alpha on a material with depthWrite on' is corrected.",
+    "the_sort_arithmetic_re_done_by_me": {
+      "strip": "44.362 -> 42.517 = -1.845 (-4.16%)",
+      "plane_only": "66.945 -> 44.714 = -22.231 (-33.21%)",
+      "land_leak": "76.598 -> 76.030 = -0.568 (-0.74%), inside the 1.18% pin replicate",
+      "reading": "the strip moves 8.0x less, as a fraction, than the water it sits on. The r3 build's overturn condition #3 does NOT fire."
+    }
+  },
+  "job_4_the_two_instrument_facts": {
+    "the_HUD_label": "CONFIRMED, and visibly at 4 of 4 Deep Marshes poses. Banked stand_verification: teleport_offset_m 0.00, running-field regionAt = deep-marshes at both the deck point and the player, hud_region_name 'The Deep Marshes'; my offline WorldField agrees at (3123.5, 3715). The label DRAWN in the frame reads `western-rootlands` in every one of edge-b045/b135/b225/b315. The field is right and the drawn label is stale. Three rounds of F7 evidence have been doubted over it and that doubt is withdrawn.",
+    "HAZARDS_25_is_NOT_measured_by_this_round": {
+      "ruling": "REFUTED. `own_mask_delta_pct` rises monotonically with CAPTURE ORDINAL in all six runs I have — the build's five and my own eight-arm run.",
+      "the_falsifier": "`no-shorefade` sets uWaterShoreFade = 0, so its water alpha is IDENTICAL to the pin arm's and of every arm it should move the mask LEAST. It moves it MOST (+35.67% at thr10, +75.67% at thr6) and it is captured last. In my own run the delta rises monotonically across all eight ordinals, including between two bands 0.10 m apart (+16.10 -> +28.71).",
+      "consequence": "'The fix moves its own mask +23.24% where the pin's replicate is -1.13% — a measured 20x effect' is drift accumulating with capture order, not an arm choosing its pixels. HAZARDS §25 remains TRUE as a hazard on the r3 critic's original frame-pair evidence (a FresnelDelta sign flip and a spurious ShoreDelta pass); round 4's band must not be quoted as its measurement.",
+      "what_would_settle_it": "One run at the same pose with the arm order reversed. I launched exactly that and killed it by PID when contention read 4.53 per core against a ceiling of 4.0. OWED."
+    },
+    "threshold_6_is_unstable_and_the_round_says_it_is_stable": {
+      "prefix_is_the_mask_arm_so_its_own_delta_is_the_instrument_re_measuring_nothing": {
+        "thr6": {
+          "edge-b045": 61.75,
+          "edge-b135": 51.07,
+          "edge-b225": 33.56,
+          "edge-b315": -0.03,
+          "wr edge-b225": 19.87
+        },
+        "thr10": {
+          "edge-b045": 0.01,
+          "edge-b135": -1.66,
+          "edge-b225": -0.52,
+          "edge-b315": 0.2
+        }
+      },
+      "published_back_to_back_replicate_thr6": {
+        "edge-b045": 5.73,
+        "edge-b135": 1.18,
+        "edge-b225": 1.33,
+        "edge-b315": 0.12,
+        "wr edge-b225": 2.15
+      },
+      "why": "The replicate is taken PIN -> PIN2 back to back; the arms are measured across shader round-trips. So the published band understates the instability by 10x to 50x. Threshold 10 is the only stable threshold on this scene and EVERY headline row in the status file is a threshold-6 row.",
+      "re_read_at_threshold_10_closed_width_prefix_r3_fixed": {
+        "edge-b045": [
+          20,
+          20,
+          20
+        ],
+        "edge-b135": [
+          5,
+          1,
+          33
+        ],
+        "edge-b225": [
+          2,
+          2,
+          1
+        ],
+        "edge-b315": [
+          5,
+          6,
+          5
+        ],
+        "western-rootlands edge-b225": "not run at thr10"
+      },
+      "consequence": "The status's second 'improvement', edge-b045 15 -> 17, exists only at threshold 6, at the pose whose mask arm drifts +61.75%. At threshold 10 that pose reads 20 / 20 / 20 — no change at all."
+    },
+    "the_builds_own_overturn_condition_on_the_morphological_closing": "DOES NOT FIRE, AND THE OPPOSITE IS TRUE. Run at the same pose in a second process, the CLOSED width reproduces on every arm (build 5/1/33, mine 3/1/34). `shore_raw` — the figure the build offers as the honest r3-comparable one — moved 1 -> 33 on an UNCHANGED arm between two runs, which is the size of the entire headline effect. The raw distance transform is the unreliable half."
+  },
+  "job_5_what_it_owes": {
+    "confirmed_owed": [
+      "the S52 matched-luminance null (`null_calibration: null` in the artifacts — there is no null row and no claim in this round is protected by one)",
+      "three more Western Rootlands bearings (M12a clause 1 fails closed there at 1 of 4)",
+      "TemporalVar, a fifth round",
+      "RI-VIS04 §8's supersample test, without which a passing NormalEnergy cannot be told from the dither stipple"
+    ],
+    "the_frame_time_figures_are_not_in_the_banked_evidence": "`dm-perf/sweep.json` carries `perf: {}` and grepping the whole artifact tree for 3703 or 5605 returns nothing. The CONCLUSION is independently supported and I confirm it from source — game/src/engine.js:9379-9381 puts renderCpuMs in `_unmeasurable`, 'this container is SwiftShader; a wall-clock render time here is a fact about the software rasteriser, not the game' — but the numbers published to prove it cannot be verified. HAZARDS §18's shape.",
+    "its_two_self_reported_failures": "The water.js template-literal break is real, cost the whole branch its browser tooling, and is written up as HAZARDS §26; I re-ran the check it prescribes and the literal is whole. The blind-census error it caught in itself is the more interesting one, because it caught it by RUNNING THE COMMAND instead of quoting the r3 verdict.",
+    "my_own_derivation_of_the_blind_census": "81 reference items declare blind_pair: yes (`grep -rl 'blind_pair: yes' corpus/ --include=*.md | grep -E '/RI-[^/]*\\.md$' | wc -l`). The strict field form `grep -rEn '\"blind_status\" *: *\"run\"' corpus/90-verdicts/` returns 0. Enumerating every wave-1 verdict's blind_comparisons[].status, the only `done` rows are the ten in W1-VISUAL-BLIND-PROTOCOL-A-r1/r2. 81 items; Protocol A is the entire blind-judgement history of this project."
+  },
+  "an_internal_contradiction_in_the_status_file": "`pose_set_completeness` says the Deep Marshes set is 4 of 4 and M12a clause 1 satisfied; `method_deviations[2]` says only 3 are valid and clause 1 is satisfied in neither region. On the artifacts the first is right — all four bearings have non-void rows with `water_edge_verified.on_screen` true, taken through the corrected protocol. It changes no outcome (the worst pose fails either way) but a critic reading the deviations alone would void the whole pose set.",
+  "reference_items": [
+    {
+      "id": "RI-WLD10",
+      "path": "corpus/50-world/RI-WLD10-the-water-model.md",
+      "side": "morrowind",
+      "kind": "number",
+      "blind_pair": "yes",
+      "native_scale": "0-10 per the item's own ## Scoring",
+      "native_score": 2,
+      "native_max": 10,
+      "score_0_10": 2,
+      "measured": "partial",
+      "native_verdict": "DOWN FROM 3. §8's per-region model still reaches the shader and the region k values are live and distinct (4.5 / 3.2 / 1.9 / 2.0 read off four materials in the banked gpu_state). But §10.1's art-direction clause — 'water is opaque before it is reflective' — is CONTRADICTED for the first time with a number: the shipped shoreline term multiplies diffuseColor.a down to 0.42x wherever it saturates, and it is non-zero over 65.1% of the Deep Marshes water in frame and 98.6% of the Western Rootlands water in frame. Against the water-hidden reference the shipped arm leaves 41.2% of round 2's visible water at the worst pose. §10's fidelity clause names a depth-fade AGAINST THE DEPTH BUFFER; there is still no depth-buffer read (grep 0, deliberately). M56 §5's blind pair is 0, fail-closed and UNRUN, which caps this item whatever else passes. The finding applies to round 3 as well as round 4 — round 3 already sat at 59.5% presence and no round had measured it.",
+      "checks": [
+        {
+          "id": "§10.1 water is opaque before it is reflective",
+          "result": "fail",
+          "value": "the shore term reduces alpha over 65.1% (Deep Marshes) / 98.6% (Western Rootlands) of the water in frame; worst-pose presence against the water-hidden frame 41.2%",
+          "threshold": "opacity is the region's own k, not a global transparency multiplier",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json"
+          ]
+        },
+        {
+          "id": "§10 fidelity — shoreline blend with no hard intersection line (depth-fade against the depth buffer)",
+          "result": "fail",
+          "value": "no depth-buffer read exists; the fade is inverted from a per-vertex quantity on a 12.5 m lattice clamped at 1.35 m",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json"
+          ]
+        },
+        {
+          "id": "§8 the per-region water profile reaches the shader",
+          "result": "pass",
+          "value": "four distinct k live: deep-marshes 4.5, eastern-rootlands 3.2, western-rootlands 1.9, unresolved fallback 2.0",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json"
+          ]
+        },
+        {
+          "id": "M56 §5 blind pair",
+          "result": "fail",
+          "value": "NOT RUN. blind_status: not_possible, scored 0 fail-closed, never 'unknown'. See blind_comparisons.",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "water that reads as absent rather than as water — new this round and now measured"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-sort/"
+      ]
+    },
+    {
+      "id": "RI-VIS04",
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "side": "modern-fidelity",
+      "kind": "number",
+      "blind_pair": "yes",
+      "native_scale": "0-10 per the item's own ## Scoring",
+      "native_score": 4,
+      "native_max": 10,
+      "score_0_10": 4,
+      "measured": "partial",
+      "native_verdict": "DOWN FROM 5. §9's MIN BAR is 'planar reflection at half-res + depth-based colour + two-layer animated normals + shoreline depth fade'. The first three are present. The fourth is present as a MECHANISM and mis-scaled into something else: at the shipped constant it acts over most of the water body rather than at the waterline, which is the difference between a shoreline fade and a transparency multiplier. Nothing was ADDED this round. §9's HAVE still names a depth-buffer read, refraction with correct TIR at grazing angles, velocity-driven foam and a scum/duckweed layer — none exist. §8's supersample test is a fifth round unrun, so NormalEnergy's pass cannot be told from the dither stipple.",
+      "checks": [
+        {
+          "id": "§9 MIN BAR — shoreline depth fade",
+          "result": "fail",
+          "value": "mechanism present, no k in its width (verified by reading water.js:299-301); but non-zero over 65.1% / 98.6% of the water in frame at the shipped 1.20 m",
+          "hard_fail": false,
+          "evidence": [
+            "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json"
+          ]
+        },
+        {
+          "id": "§9 MIN BAR — depth-based colour",
+          "result": "pass",
+          "value": "present and acting; `no-shorefade` moves presence to 89.4% at edge-b135",
+          "hard_fail": false
+        },
+        {
+          "id": "§9 MIN BAR — planar reflection at half-res + two-layer animated normals",
+          "result": "pass",
+          "value": "carried from rounds 1-2, untouched",
+          "hard_fail": false
+        },
+        {
+          "id": "§9 TELL — a hard geometric line where the water plane intersects the terrain",
+          "result": "partial",
+          "value": "softened at edge-b135 (width 1 -> 33 at the stable threshold) and unchanged or 1 px worse at the other three Deep Marshes bearings; at edge-b045 20/20/20 at threshold 10",
+          "hard_fail": false
+        },
+        {
+          "id": "§8 supersample test (NYQ_ratio collapse under 2x downsample)",
+          "result": "fail",
+          "value": "not run, a fifth round. 0 fail-closed, NOT demonstrated absent.",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "the same colour and brightness everywhere — the shipped term pushes toward uniformity rather than away from it"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/bandsweep-b135/",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json"
+      ]
+    },
+    {
+      "id": "RI-VIS03",
+      "path": "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md",
+      "side": "modern-fidelity",
+      "kind": "number",
+      "blind_pair": "no",
+      "native_scale": "0-10 per the item's own ## Scoring",
+      "native_score": 2,
+      "native_max": 10,
+      "score_0_10": 2,
+      "measured": "partial",
+      "native_verdict": "DOWN FROM 3. M12 two-or-more sub-metrics fail at the `water_edge` shot — FresnelDelta worst pose 0.03085 against 0.05, ShoreDelta worst pose 0.00610 against 0.03 — which is the item's own cap at 3. Below that cap because the threshold the round measured at is not stable: the MASK ARM's own re-measurement drifts +61.75 / +51.07 / +33.56 / +19.87% at four of five poses at threshold 6, against a published replicate of +5.73 / +1.18 / +1.33 / +2.15%, so most published rows are unreadable rather than merely failing. M12a clause 1 fails closed in the Western Rootlands (1 of 4 bearings). And clause 4's own worked example is factually wrong and is corrected in place by this verdict. The round DID satisfy M12a's pinned-mask requirement and clause 4's on-screen verification (4 of 4 targets `in_front` and `on_screen`), which is the first time in this piece's history.",
+      "checks": [
+        {
+          "id": "M12 FresnelDelta",
+          "result": "fail",
+          "value": "worst pose 0.03085 (edge-b045)",
+          "threshold": ">= 0.05",
+          "hard_fail": false
+        },
+        {
+          "id": "M12 ShoreDelta",
+          "result": "fail",
+          "value": "worst pose 0.00610 (edge-b225)",
+          "threshold": ">= 0.03",
+          "hard_fail": false
+        },
+        {
+          "id": "M12 NormalEnergy",
+          "result": "pass",
+          "value": "every row in [0.0644, 0.43369]",
+          "threshold": ">= 0.035",
+          "hard_fail": false,
+          "note": "confounded by the dither stipple; §8's supersample test would separate them and was not run"
+        },
+        {
+          "id": "M12 TemporalVar",
+          "result": "fail",
+          "value": "not measured, a fifth round. 0 fail-closed.",
+          "threshold": ">= 0.002",
+          "hard_fail": false
+        },
+        {
+          "id": "M12 two-or-more fail at water_edge -> capped at 3",
+          "result": "fail",
+          "value": "two fail (FresnelDelta, ShoreDelta)",
+          "hard_fail": false
+        },
+        {
+          "id": "M12a clause 1 — >= 4 declared bearings >= 90 deg apart",
+          "result": "partial",
+          "value": "Deep Marshes 4 of 4 (satisfied); Western Rootlands 1 of 4 (fails closed)",
+          "hard_fail": false
+        },
+        {
+          "id": "M12a clause 4 — a water_edge pose with a REAL boundary, verified",
+          "result": "pass",
+          "value": "all declared targets verified in_front and on_screen via engine.projectPoint; targets derived from the field before any capture",
+          "hard_fail": false
+        },
+        {
+          "id": "M12a closing paragraph — both arms scored over ONE pinned mask, and the verdict says which arm",
+          "result": "pass",
+          "value": "pinned from `prefix`; the pin's own replicate published for the first time",
+          "hard_fail": false
+        },
+        {
+          "id": "the instrument's own stability at the threshold used",
+          "result": "fail",
+          "value": "mask arm drifts +19.87% to +61.75% at threshold 6 at four of five poses with nothing changed",
+          "hard_fail": false
+        }
+      ],
+      "hard_fails": [],
+      "how_we_lose_hits": [
+        "a statistic quoted at the threshold where it is unstable"
+      ],
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-edge2/",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-b045/",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/wr-edge/"
+      ]
+    }
+  ],
+  "blind_comparisons": [
+    {
+      "check": "RI-WLD10 M56 §5 — interleave our water shots with Morrowind water shots and ask a fresh judge to rank them",
+      "ref_item": "RI-WLD10",
+      "status": "not_possible",
+      "not_possible_reason": "RI-WLD10 declares blind_pair: yes and M56 §5 needs a FRESH judge with no project context. I have opened both arms attributed and am disqualified by construction; and a critic cannot spawn one — create_session raises an approval prompt, CLAUDE.md rule 0 forbids acting on one, and a subagent cannot spawn subagents. Rule 0e puts it with the ORCHESTRATOR. Recorded, failed closed at 0. THE ORCHESTRATOR OWES THIS GATE — and my brief records that a pack-builder for a different item is running now, so the debt is moving rather than static.",
+      "the_census_re_derived_by_me": "81 reference items declare blind_pair: yes (files containing the string: 106; restricted to RI-*.md: 81). The strict field form returns 0. Enumerating every wave-1 verdict's blind_comparisons[].status, the only `done` rows are the ten in W1-VISUAL-BLIND-PROTOCOL-A-r1/r2.",
+      "would_it_have_changed_the_verdict": "It could only have lowered RI-WLD10, never raised it — the item is already at 2 for measured reasons. But it is the ONE instrument that could settle the question neither the build nor I can: whether a 34 px luma ramp across a surface that reads as dark bed is worth 59 points of water presence to anybody. That is a look question and it is exactly what the unrun gate is for. On my evidence I would expect round 2 to win at edge-b135 against both later arms."
+    }
+  ],
+  "bar_findings": [
+    {
+      "item": "RI-VIS03",
+      "section": "§M12a clause 4",
+      "kind": "provenance_correction",
+      "what": "The clause asserts as a worked example: 'The Deep Marshes is WCI 0.86; three rounds of F7 shot every frame there and not one frame contains a shoreline.' Measured against the same WorldField the engine builds: 47 of 121 water cells within 120 m of the vista-deep-marshes stand are waterline cells, the nearest at 17.7 m, and 75.8% of wet corners carry a live depth gradient. The claim is false and it is in the BAR, where every future critic inherits it.",
+      "action": "Amended in place under CRITIC-DOCTRINE §1.3. The rule — a water_edge pose with a real boundary, and a WCI rule for regions that have none — is untouched, and no threshold is relaxed. Only the false worked example is corrected, and the correct instrument (a field census before any capture) is named in its place. This is the same act ARBITRATION S60, S63 and S65 each had to perform on their own narrations.",
+      "it_may_never_be_the_reason_a_build_passes": true
+    }
+  ],
+  "score": {
+    "overall_0_10": 2,
+    "pass_threshold": 7,
+    "aggregation": "min",
+    "band_label": "min over the three items this piece can move: RI-WLD10 2, RI-VIS04 4, RI-VIS03 2. DOWN FROM 3. It falls because the delivered state of the game is worse where a player starts: the shipped arm leaves 41.2% of round 2's visible water at the worst pose, is 8-14% darker at every pose measured, and contradicts RI-WLD10 §10.1's opacity clause over 65-99% of the water in frame — a defect that applies to round 3 as well and that no round had measured. It is NOT lowered for the build's honesty, which is the best thing in the round: three of my findings only exist because it banked the arms that falsify it.",
+    "confidence": "high on the census (re-derived in my own code, matches to the digit), on the presence control (threshold-independent across 4/6/10, and visible in the frames), on the band-distribution arithmetic (offline, deterministic) and on the sort test (arithmetic on banked numbers). High on the ordinal confound, because `no-shorefade` is a falsifier rather than a correlation. MEDIUM on the band sweep, because it is one pose in one process with no S52 null under it — the same weakness I am charging the build with, and I say so. LOW on anything about motion: I have stills from five bearings and no motion sequence."
+  },
+  "status": "FAIL",
+  "status_reasons": [
+    "below_threshold",
+    "hard_fail:RI-VIS03/M12-two-or-more-at-water_edge",
+    "blind_gate_not_run"
+  ],
+  "the_builders_ruling": {
+    "it_said": "KEEP the mechanism, do not claim F7; a critic weighting 'the starting region's water reads as more absent' above 'the mechanism is now correct' should set the default to 1e-4.",
+    "my_ruling": "KEEP the mechanism. REJECT the shipped default. SET IT TO 0.10 m — neither of the two options offered. The build's pair is false because it assumes the constant is not the variable: swept, the width is flat at 34 px from 0.10 m to 1.20 m and only the darkening moves, so 1.20 m is dominated on the build's own instrument.",
+    "and_it_was_right_about_the_bigger_thing": "It declined its own acceptance, published the fourth bearing that turned its FresnelDelta row from an apparent pass into a fail, kept a void run on disk labelled void, wrote up the branch-wide defect it caused as a hazard for everyone else, and caught its own inherited census error by running the command rather than quoting the verdict. A round that had graded itself would have shipped '1 px -> 34 px'."
+  },
+  "biggest_gap": {
+    "gap_id": "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank",
+    "subsystem_path": "render.fidelity.water",
+    "severity": "blocking",
+    "what": "`uWaterShoreBandM`'s default of 1.20 m exceeds the median water depth in both measured regions (Deep Marshes 0.824 m, Western Rootlands 0.375 m), so the term is non-zero over 65.1% and 98.6% of the water in frame respectively. It therefore acts as a depth-driven transparency multiplier over the water body rather than as a shoreline fade — which produces BOTH of the round's reported symptoms from one cause: a fade applied nearly everywhere has almost no edge (no gradient), and it lowers alpha nearly everywhere (the water reads as absent, worst-pose presence 41.2%).",
+    "why_it_matters": "RI-VIS04 §9's MIN BAR component is a SHORELINE depth fade and this is not one. RI-WLD10 §10.1 — 'water is opaque before it is reflective' — is contradicted by a term that drops diffuseColor.a to 0.42x over most of the surface. And the Deep Marshes is the starting region and the first water anybody sees, so the cost lands exactly where the owner would look first.",
+    "evidence": [
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/bandsweep-b135/",
+      "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-edge2/"
+    ],
+    "remedy": {
+      "action": "In game/src/render/water.js, F7's own file, in this order. (a) Set `uWaterShoreBandM`'s default to 0.10 m — measured to hold the full 34 px width at edge-b135 while returning ten points of presence over the shipped constant. (b) Re-sweep 0.10 / 0.20 / 0.30 at edge-b225 and in the Western Rootlands, because the failing pose was never tested below 0.60 m by anybody. (c) Report `presence` against the `water-hidden` frame on every row — the control already exists in every capture and has never been scored.",
+      "acceptance": "gradient_width_px >= 12 at the WORST pose of a complete 4-bearing declared set in the Deep Marshes, measured at THRESHOLD 10 (the only threshold whose mask arm is stable here: drift +0.01 / -1.66 / -0.52 / +0.20% against +61.75 / +51.07 / +33.56 / -0.03% at threshold 6); AND presence >= 90% at every pose in BOTH regions against the water-hidden frame taken in the same process (the shipped arm reads 41.2% at its worst pose); AND the band leaves >= 60% of wet corners untouched in BOTH regions, measured offline against the WorldField (the shipped 1.20 m leaves 34.9% in the Deep Marshes and 1.4% in the Western Rootlands); AND the arms run in BOTH orders at one pose so own_mask_delta_pct can be attributed to the arm rather than to capture ordinal. Per S64, a pose whose declared target has every wet corner beyond the band (edge-b045's are 1.433-1.492 m) scores `inapplicable` and must name the absence, never pass.",
+      "targets": [
+        "game/src/render/water.js",
+        "tools/visual/f7-r4-sweep.mjs"
+      ],
+      "acceptance_clause_provenance": {
+        "improving": "gradient_width_px >= 12 at the WORST pose of a complete 4-bearing declared set in the Deep Marshes, measured at THRESHOLD 10 — the only threshold whose mask arm is stable on this scene (measured drift +0.01 / -1.66 / -0.52 / +0.20% against +61.75 / +51.07 / +33.56 / -0.03% at threshold 6).",
+        "preserving_1": "presence >= 90% at every pose in both regions, against the `water-hidden` frame taken in the same process. This is what stops the width being bought by deleting the water, which is the mechanism S59 exists to catch and which round 4 hit at 41.2%.",
+        "preserving_2": "the band's coverage, measured offline against the WorldField, leaves >= 60% of wet corners untouched in BOTH regions — the clause that keeps a shoreline term shore-local.",
+        "attribution": "the arms run in BOTH orders at one pose, so `own_mask_delta_pct` can be attributed to the arm rather than to the capture ordinal. Without it that number is not evidence of anything.",
+        "domain_note_S60": "the width clause is only valid where a band could act — a pose whose declared target has every wet corner beyond the band (as edge-b045's do, at 1.433-1.492 m) scores `inapplicable` per S64 and must name the absence, not pass."
+      }
+    }
+  },
+  "gap_closure": [
+    {
+      "gap_id": "GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k",
+      "status": "partially-closed",
+      "measured_value": "The MECHANISM defect is closed and verifiable by reading three lines: esBandM contains no k, so the fade's width is no longer a function of extinction. The EFFECT the gap was about is not closed: the acceptance clause fails at 1 px against 12, and at the only stable threshold the four Deep Marshes bearings read 20/20/20, 5/1/33, 2/2/1, 5/6/5.",
+      "closed_by_builder_of_fix": false,
+      "note": "The gap's own remedy clause (a) — 'a shore band in metres, mixed with rather than replaced by the transmittance term' — is delivered exactly as written. Clause (b), >= 2 regions, is delivered. Clause (c), one frame-time reading, is unobtainable and now has the source declaration to prove it. Clause (d), the supersample test, is not run.",
+      "evidence": [
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/bandsweep-b135/",
+        "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-edge2/"
+      ]
+    }
+  ],
+  "secondary_observations": [
+    "NOT work for the next builder. Carried per ARBITRATION S64: the banked gpu_state_before at the Deep Marshes stand reports 46 wet-bank strips and exactly one distinct strip mesh, `water:shoreline:eastern-rootlands`. There is no `water:shoreline:deep-marshes` mesh anywhere in the resident scene, against 47 waterline cells within 120 m. It is game/src/world/province.js's file, claimed by another piece. Named as a candidate defect and not absorbed.",
+    "The dither stipple is the dominant texture of our water at eye level, on every arm, at every pose I opened, in both regions. Four critics have now named it and nobody has written its reference item, including me. It contaminates NormalEnergy, the one M12 sub-metric that passes.",
+    "The HUD's drawn region label is stale where the running field is correct. Not F7's file. Three rounds of F7 evidence were doubted over it."
+  ],
+  "arbitration_questions": [],
+  "what_i_could_not_do": [
+    "NO MOTION. I judged 5 bearings x 3-8 arms of stills from two regions plus the water-hidden control — many angles, but the owner's 2026-08-14 directive is explicit that stills are not enough, and every instrument in this piece freezes uWaterPhase by design. TemporalVar being a fifth round unmeasured is the same hole. My look judgements are therefore weaker than the directive requires and I am not pretending otherwise.",
+    "NO ORDER-REVERSED MASK CONTROL. I launched it (`--arms fixed,no-shorefade,r3,prefix`) and killed it by PID when `node tools/contention.mjs` read 4.53 per core against a ceiling of 4.0 with four sibling browsers up. The ordinal confound is established by a falsifier rather than by that control, which is weaker than running it. OWED.",
+    "NO SWEEP BELOW 0.60 m AT edge-b225, the pose the acceptance actually fails at. My sweep is at edge-b135. So I have NOT shown that a small band rescues the failing pose, only that at the pose carrying the round's positive result the constant is dominated.",
+    "NO S52 MATCHED-LUMINANCE NULL OF MY OWN. My band-0.10 result is unprotected by a matched-luminance control in exactly the way I am charging the build's result with being unprotected. A constant transmittance tuned to reproduce band-0.10's luma might reproduce its width; nobody has tried.",
+    "NO BLIND PAIR. blind_status: not_possible, 0, fail-closed. A critic cannot spawn a fresh judge (rule 0e). THE ORCHESTRATOR OWES IT.",
+    "I DID NOT VERIFY THE WESTERN ROOTLANDS AT THRESHOLD 10. The build ran that region at threshold 6 only, and threshold 6 is the unstable one. So the 5 -> 1 regression I quote from it is on the unstable threshold and I could not re-take it.",
+    "I DID NOT WRITE THE DITHER-STIPPLE REFERENCE ITEM. Fourth round running that somebody names it and nobody writes it, and my reason is the same as the build's: I spent the budget on the fade."
+  ],
+  "artifacts": [
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-measurements.json",
+      "kind": "report",
+      "produced_by": "my own scripts, each named inside the file",
+      "seed": 20260814,
+      "resolution": "960x540 for the pixel blocks; offline for the field blocks",
+      "camera_pose": "per block; the pixel blocks are at the four declared Deep Marshes bearings 45/135/225/315 and Western Rootlands 225 from the vista stands, time 13, clear",
+      "source": "mine"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/bandsweep-b135/",
+      "kind": "report",
+      "produced_by": "node corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-sweep.mjs --out corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/bandsweep-b135 --site vista-deep-marshes --mode arms --poses edge-b135 --arms prefix,r3,band-0.10,band-0.20,band-0.30,band-0.45,band-0.60,fixed --thresholds 6,10",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "vista-deep-marshes (3123.5, 3715), water_edge bearing 135 deg, target cell 29.4 m, time 13, clear, uWaterPhase frozen at 11.0",
+      "source": "mine"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4-critic/critic-sweep.mjs",
+      "kind": "report",
+      "produced_by": "cp of tools/visual/f7-r4-sweep.mjs plus four extra uniform arms and two relative-path fixes; the full diff is 14 lines and is in the commit",
+      "source": "mine, derived from the build's"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-edge2/",
+      "kind": "report",
+      "produced_by": "node tools/visual/f7-r4-sweep.mjs --site vista-deep-marshes --mode arms --poses edge-b135",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "vista-deep-marshes, water_edge bearing 135 deg",
+      "source": "the build's, re-read by me"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-sort/",
+      "kind": "report",
+      "produced_by": "node tools/visual/f7-r4-sweep.mjs --mode sort --poses edge-b135",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "vista-deep-marshes, water_edge bearing 135 deg",
+      "source": "the build's, arithmetic re-done by me"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/dm-b045/",
+      "kind": "report",
+      "produced_by": "node tools/visual/f7-r4-sweep.mjs --poses edge-b045",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "vista-deep-marshes, water_edge bearing 45 deg",
+      "source": "the build's, re-read by me"
+    },
+    {
+      "path": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r4/wr-edge/",
+      "kind": "report",
+      "produced_by": "node tools/visual/f7-r4-sweep.mjs --site vista-western-rootlands --poses edge-b225",
+      "seed": 20260814,
+      "resolution": "960x540",
+      "camera_pose": "vista-western-rootlands (1727, 4716), water_edge bearing 225 deg",
+      "source": "the build's, re-read by me"
+    }
+  ],
+  "source_reads": [
+    {
+      "path": "game/src/render/water.js",
+      "purpose": "diagnose-after-demonstrating",
+      "lines": "19-32, 96-130, 152-160, 256-314",
+      "why": "to locate the mechanism under test and confirm the fade's width contains no k — NOT to score any dimension"
+    },
+    {
+      "path": "game/src/world/province.js",
+      "purpose": "locate-harness",
+      "lines": "1520-1600",
+      "why": "to reproduce the water-mesh cell arithmetic offline so the census is mine and not the build's"
+    },
+    {
+      "path": "game/src/render/visual-foundation.js",
+      "purpose": "diagnose-after-demonstrating",
+      "lines": "680-700",
+      "why": "to settle the depthWrite question at source rather than only from a runtime dump"
+    },
+    {
+      "path": "game/src/engine.js",
+      "purpose": "diagnose-after-demonstrating",
+      "lines": "9375-9390",
+      "why": "to check the frame-time conclusion against the engine's own declaration"
+    },
+    {
+      "path": "game/src/world/field.js",
+      "purpose": "locate-harness",
+      "lines": "whole module as a dependency",
+      "why": "imported by my own census script"
+    },
+    {
+      "path": "tools/visual/f7-r4-sweep.mjs",
+      "purpose": "locate-harness",
+      "lines": "60-230, 290-320, 350-470, 530-660",
+      "why": "to read the instrument I was judging results from, and to copy it"
+    },
+    {
+      "path": "tools/visual/f7-r4-shoreline-census.mjs",
+      "purpose": "locate-harness",
+      "lines": "whole file",
+      "why": "to check that its arithmetic matches province.js before I compared my own to it"
+    },
+    {
+      "path": "corpus/70-visual/RI-VIS03-fidelity-image-metrics.md",
+      "purpose": "quote-written-content",
+      "lines": "M12 and §M12a",
+      "why": "the bar"
+    },
+    {
+      "path": "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md",
+      "purpose": "quote-written-content",
+      "lines": "§8, §9",
+      "why": "the bar"
+    },
+    {
+      "path": "corpus/50-world/RI-WLD10-the-water-model.md",
+      "purpose": "quote-written-content",
+      "lines": "§8, §9, §10",
+      "why": "the bar"
+    },
+    {
+      "path": "corpus/00-doctrine/ARBITRATION.md",
+      "purpose": "quote-written-content",
+      "lines": "S52, S59, S60, S61, S63, S64, S65, S66",
+      "why": "the rulings that bind acceptance criteria"
+    },
+    {
+      "path": "orchestration/HAZARDS.md",
+      "purpose": "quote-written-content",
+      "lines": "§10, §13, §17, §18, §22, §23, §25, §26",
+      "why": "instrument hazards"
+    },
+    {
+      "path": "corpus/00-doctrine/CRITIC-DOCTRINE.md",
+      "purpose": "quote-written-content",
+      "lines": "§1, §1.1, §1.3",
+      "why": "to confirm §1.3 permits correcting a bar's false worked example"
+    }
+  ],
+  "method_deviations": [
+    "I MODIFIED THE BUILD'S INSTRUMENT rather than writing my own from scratch. `critic-sweep.mjs` is a copy of `tools/visual/f7-r4-sweep.mjs` with four extra uniform arms and two path fixes — a 14-line diff, banked, and the build's file is untouched. This is weaker than an independent instrument and it is why my band sweep inherits every one of the instrument's own defects, including the threshold-6 instability I am charging it with. I ran mine at thresholds 6 AND 10 and quote the threshold-10 rows.",
+    "I RAN A BROWSER WHILE `node tools/contention.mjs` LATER READ 4.53 PER CORE against a ceiling of 4.0. It read GO at 1.01 when I launched the first run. When it went over I killed my SECOND run by PID (HAZARDS §10) rather than pkill, and lost the order-reversed control with it. Reported rather than hidden.",
+    "MY BRIEF QUOTED THE BUILD'S NUMBERS UP FRONT, which departs from CRITIC-DOCTRINE §8's ordering. Recorded. I re-derived rather than inherited: the census in my own code, the blind count with my own greps, the sort arithmetic from the banked luma, and everything in blocks B-E from files I opened this turn.",
+    "I AMENDED A REFERENCE ITEM (RI-VIS03 §M12a clause 4). It is a factual correction to a worked example under CRITIC-DOCTRINE §1.3, it relaxes no threshold, and per §1.3 it may be the reason a build fails and may never be the reason one passes. It is not the reason for any score here."
+  ],
+  "self_audit": {
+    "did_i_inherit_any_number": "No. Every figure was produced this turn by a command I ran, a run I launched, or a banked artifact I opened and re-derived from. Where I quote a figure from the build's artifacts I say so. My brief handed me several figures (47/121, 17.7 m, -1.845 on 44.362, +23.24%, 81 items) and told me to inherit none: the first four I re-derived and they hold; the fifth I re-derived with my own command and it holds; and the +23.24% I re-derived AND FOUND TO BE CONFOUNDED, which is the one that mattered.",
+    "did_i_grade_source_code": "No. The only source-derived claim I score on is that `esBandM` contains no `k`, which is a claim about what the mechanism IS, not about what it achieves — and every claim about what it achieves is from pixels or from the world field. `depthWrite` is confirmed at source AND on four live materials.",
+    "did_i_name_exactly_one_gap": true,
+    "blind_done_where_required": false,
+    "blind_note": "not_possible, fail-closed at 0, and the orchestrator owes it.",
+    "did_i_run_the_items_own_comparison_method": "Partially. RI-VIS03 M12/M12a's method is run in full at the poses measured. RI-WLD10's M56 §5 needs a fresh judge and could not run. RI-VIS04 §8's supersample test was not run by anybody.",
+    "what_would_make_this_verdict_wrong": [
+      "If `presence` is the wrong measure. It is a ratio of masked mean luma differences against a water-hidden frame, so it assumes the water's contribution is monotone in luma. In a marsh whose bed is darker than the water that holds, and the arms bracket it (prefix 100%, hidden 0%). But an arm that made water DARKER for a good reason would score low on it, and I have not built a control that distinguishes 'correctly darker' from 'absent'. THAT CONTROL IS THE BLIND PAIR, and it has not run.",
+      "If the band sweep's flatness is an artefact of one pose. It is one pose in one process. Three of the four Deep Marshes bearings behave differently from edge-b135 on every measure in this round, and I did not sweep any of them.",
+      "If my ordinal reading is wrong because `no-shorefade` is not the arm I think it is. It sets uWaterShoreFade = 0, which zeroes the alpha term; if the round-4 code path changes alpha by some other route the falsifier fails. I read the three shader lines and it does not.",
+      "If threshold 10 is stable only by luck at these five poses. Four poses is a small sample for an instrument claim, and I did not replicate it.",
+      "If lowering the score from 3 to 2 double-counts a defect that was present at round 3. The §10.1 opacity finding DOES apply to round 3 (presence 59.5%) and no round had measured it. I score the state of the game, and the state is worse than round 3's; but a reader who thinks the score should track the round's own delta rather than the state would leave it at 3, and that reading is defensible."
+    ],
+    "judged_output_not_source": true,
+    "ran_every_assigned_method": false,
+    "named_exactly_one_gap": true,
+    "remedy_is_buildable": true,
+    "no_banned_reasoning_used": true,
+    "escalation_ladder_used_if_gap_seemed_small": true,
+    "note": "ran_every_assigned_method is false: RI-WLD10 M56 §5 needs a fresh judge and cannot run from a critic (rule 0e); RI-VIS04 §8's supersample test was not run by anybody. blind_done_where_required is false and fails closed at 0.",
+    "self_audit_note": "blind_done_where_required is FALSE: RI-WLD10 M56 §5 needs a fresh judge and a critic cannot spawn one (CLAUDE.md rule 0e); recorded not_possible, scored 0, fails closed, and the ORCHESTRATOR OWES IT. ran_every_assigned_method is FALSE: RI-VIS04 §8's supersample test was not run by anybody, and the Western Rootlands set is 1 of 4 bearings. This verdict is therefore provisional on those two gates in exactly the way every F7 verdict before it has been, and I have not let either absence read as a pass."
+  },
+  "notes": "The most useful thing in this round for anybody who is not working on water: `own_mask_delta_pct` looked like a clean 20x effect and is a capture-order artefact, and it was only detectable because the build banked an arm (`no-shorefade`) whose alpha is identical to the pin's. An instrument's own null arm, captured LAST, is the cheapest ordinal control there is — and no measurement sequence in this project currently runs one.",
+  "arbitration": {
+    "ar1": {
+      "status": "pass",
+      "note": "AR-1 (does the artefact exist and run as claimed): the shader change is present verbatim in game/src/render/water.js, the tool refuses to measure unless it is, and I re-ran the build's own instrument against a live browser at the declared stand and got rows back. Nothing here is a picture of a feature.",
+      "checks": [
+        {
+          "id": "A1",
+          "result": "pass",
+          "value": "the r4 shore-band block is verbatim in water.js and head_expression_asserted reports all six expressions true in every banked run"
+        },
+        {
+          "id": "A2",
+          "result": "pass",
+          "value": "the uniform reaches the fragment: uWaterShoreBandM read live off four materials at 1.2, and eight arms differing only in that uniform produce eight different mean luma values"
+        },
+        {
+          "id": "A3",
+          "result": "pass",
+          "value": "the ablation is exact — at 1e-4 the arm agrees with an independent SHADER arm restoring round 3's alpha line to within the capture drift"
+        }
+      ]
+    },
+    "ar2": {
+      "status": "pass",
+      "note": "AR-2 (is the evidence the evidence it claims to be): the pinned mask is derived once from a named arm and applied to every arm; the declared pose set is derived from the world field before capture and each target verified on screen; and the two places the evidence does NOT support its claim are named — threshold 6's instability and the missing perf rows.",
+      "checks": [
+        {
+          "id": "B1",
+          "result": "pass",
+          "value": "one mask per pose, from `prefix`, named in the verdict"
+        },
+        {
+          "id": "B2",
+          "result": "pass",
+          "value": "all declared targets verified in_front and on_screen via engine.projectPoint"
+        },
+        {
+          "id": "B3",
+          "result": "fail",
+          "value": "the frame-time figures the status publishes are absent from the banked artifacts (perf: {}); reported rather than repeated"
+        },
+        {
+          "id": "B4",
+          "result": "fail",
+          "value": "own_mask_delta_pct is confounded with capture ordinal; the falsifier is the no-shorefade arm"
+        }
+      ]
+    }
+  }
+}
