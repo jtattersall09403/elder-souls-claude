@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-16T03:25:22.592Z",
+ "generated": "2026-08-16T03:27:38.691Z",
  "baseline_commit": "dd222b7951a6d0564c992bb6d39b783f0f293188",
  "method": "Inventory derived by fs walk + generated ledgers. Mapping authored by the audit agent after reading every RI title/front-matter, every plan heading, and every open gap record.",
  "inventory_counts": {
@@ -33,13 +33,14 @@
    "never_judged": [],
    "open_gaps": [
     "GAP-W1-combat-exemplar-has-no-danger",
+    "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar",
     "GAP-W1-platform-prng-never-drawn",
     "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
     "GAP-W1-ui-detectors-that-cannot-see",
     "GAP-W1-walkpath-absorbs-teleports"
    ],
-   "n_open_gaps": 5,
-   "blocking_gaps": 4,
+   "n_open_gaps": 6,
+   "blocking_gaps": 5,
    "plans": [
     "W1-00"
    ],
@@ -265,11 +266,12 @@
    "never_judged": [],
    "open_gaps": [
     "GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour",
+    "GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero",
     "GAP-W1-height-fog-credit-unanchored",
     "GAP-W1-visual-fix-not-reaching-blind-frames"
    ],
-   "n_open_gaps": 3,
-   "blocking_gaps": 2,
+   "n_open_gaps": 4,
+   "blocking_gaps": 3,
    "plans": [
     "W1-30",
     "W1-30B",
@@ -335,10 +337,13 @@
    "never_judged": [],
    "open_gaps": [
     "GAP-W1-03-water-surface-undrawn-and-frozen",
+    "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank",
+    "GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k",
+    "GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader",
     "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence"
    ],
-   "n_open_gaps": 2,
-   "blocking_gaps": 2,
+   "n_open_gaps": 5,
+   "blocking_gaps": 5,
    "plans": [
     "W1-03",
     "W1-30",
@@ -1496,6 +1501,8 @@
    "n_ref_items": 7,
    "never_judged": [],
    "open_gaps": [
+    "GAP-W1-container-headers-print-across-the-first-row",
+    "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar",
     "GAP-W1-map-fix-drops-the-journal-from-the-page-walk",
     "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
     "GAP-W1-T4-container-row-and-band-are-smaller-than-what-they-carry",
@@ -1507,8 +1514,8 @@
     "GAP-W1-ui-map-outside-the-ar2-detectors",
     "GAP-W1-ui-panel-is-a-fixed-box-and-five-screens-are-empty-inside-it"
    ],
-   "n_open_gaps": 10,
-   "blocking_gaps": 9,
+   "n_open_gaps": 12,
+   "blocking_gaps": 11,
    "plans": [
     "W1-21",
     "W1-HUD-TOAST"
@@ -5523,8 +5530,10 @@
    "severity": "blocking",
    "path": "ui.menu.inventory",
    "what": "The container's two side headers are drawn on top of the first row of their own lists. Measured off the build's own declared rects at 1920x1080: `container.mine",
-   "covered_by": [],
-   "bucket": "UNMAPPED"
+   "covered_by": [
+    "T4"
+   ],
+   "bucket": "build"
   },
   {
    "id": "GAP-W1-creation-is-an-api-not-a-scene",
@@ -5643,32 +5652,40 @@
    "severity": "blocking",
    "path": "render.fidelity.ibl",
    "what": "TWO ROUNDS HAVE TUNED THE AMBIENT AND NEITHER HAS TUNED THE KEY'S HUE, BECAUSE BOTH TOOK ROUND 1'S REMEDY TO MEAN 'WARM' AND WARM IS THE WRONG SIGN. `noon-marsh",
-   "covered_by": [],
-   "bucket": "UNMAPPED"
+   "covered_by": [
+    "F4"
+   ],
+   "bucket": "build"
   },
   {
    "id": "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank",
    "severity": "blocking",
    "path": "render.fidelity.water",
    "what": "`uWaterShoreBandM`'s default of 1.20 m exceeds the median water depth in both measured regions (Deep Marshes 0.824 m, Western Rootlands 0.375 m), so the term is",
-   "covered_by": [],
-   "bucket": "UNMAPPED"
+   "covered_by": [
+    "F7"
+   ],
+   "bucket": "build"
   },
   {
    "id": "GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k",
    "severity": "blocking",
    "path": "visual.renderer.water",
    "what": "**The shoreline fade's width is a function of EXTINCTION, so it vanishes in exactly the region that needs it most.** The fade is gated on `esTrans = exp(-k*esPa",
-   "covered_by": [],
-   "bucket": "UNMAPPED"
+   "covered_by": [
+    "F7"
+   ],
+   "bucket": "build"
   },
   {
    "id": "GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader",
    "severity": "blocking",
    "path": "visual.renderer.water",
    "what": "`RI-VIS04` §9's MIN BAR is 'planar reflection at half-res + depth-based colour + two-layer animated normals + shoreline depth fade'. **Depth-based colour and sh",
-   "covered_by": [],
-   "bucket": "UNMAPPED"
+   "covered_by": [
+    "F7"
+   ],
+   "bucket": "build"
   },
   {
    "id": "GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence",
@@ -5756,8 +5773,11 @@
    "severity": "blocking",
    "path": "ui.style.diegesis",
    "what": "`tools/ui/t4-r5-legibility.mjs`'s OVERLAP leg — the S58 legibility pass without which no density figure counts — reports 6 findings across level-up and the shee",
-   "covered_by": [],
-   "bucket": "UNMAPPED"
+   "covered_by": [
+    "T4",
+    "I1"
+   ],
+   "bucket": "build"
   },
   {
    "id": "GAP-W1-library-martial-single-hand-fingerprint",
@@ -6279,24 +6299,10 @@
  ],
  "uncovered": {
   "reference_items": [],
-  "open_gaps": [
-   "GAP-W1-container-headers-print-across-the-first-row",
-   "GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero",
-   "GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank",
-   "GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k",
-   "GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader",
-   "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar"
-  ],
+  "open_gaps": [],
   "plans": []
  },
- "mapping_problems": [
-  "gap GAP-W1-container-headers-print-across-the-first-row has no mapping entry",
-  "gap GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero has no mapping entry",
-  "gap GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank has no mapping entry",
-  "gap GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k has no mapping entry",
-  "gap GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader has no mapping entry",
-  "gap GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar has no mapping entry"
- ],
+ "mapping_problems": [],
  "old_roadmap_backcheck": {
   "note": "Against orchestration/ROADMAP.md as it stood at baseline commit dd222b79. Now condemned; kept because it names what a memory-written roadmap misses.",
   "proposed_items_with_no_old_home": [
@@ -6310,6 +6316,7 @@
     ],
     "open_gaps": [
      "GAP-W1-combat-exemplar-has-no-danger",
+     "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar",
      "GAP-W1-platform-prng-never-drawn",
      "GAP-W1-rendered-text-accessor-blind-to-the-hud-surface",
      "GAP-W1-ui-detectors-that-cannot-see",
@@ -6565,6 +6572,7 @@
    "GAP-W1-combat-exemplar-has-no-danger",
    "GAP-W1-consumption-sweep-tripwire-is-a-name-grep",
    "GAP-W1-creation-is-an-api-not-a-scene",
+   "GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar",
    "GAP-W1-m6-pan-correlation-passes-the-panner-it-was-built-to-catch",
    "GAP-W1-mainquest-topic-bootstrap",
    "GAP-W1-platform-prng-never-drawn",

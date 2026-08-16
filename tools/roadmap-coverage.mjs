@@ -364,6 +364,13 @@ const GAP_MAP = {
   // REWARDED the regression (Ruling S58). Sizing the box was right; nothing reflowed inside it.
   'GAP-W1-ui-boxes-were-shrunk-without-re-pitching-what-is-inside-them': ['T4'],
   'GAP-W1-ui-container-clips-its-own-declared-text': ['T4'],
+  // Gaps filed 2026-08-15/16 by the T4, F4 and F7 rounds and their critics.
+  'GAP-W1-container-headers-print-across-the-first-row': ['T4'],
+  'GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar': ['T4', 'I1'],
+  'GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero': ['F4'],
+  'GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader': ['F7'],
+  'GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k': ['F7'],
+  'GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank': ['F7'],
   // T4 round 6. The successor to the row above: round 6 cleared the silent clip and paid for it by
   // re-pitching every column 27% narrower, which truncates the WEIGHT column and costs 0.0079 of
   // RI-UIX09 D2 — taking the container from 0.1538 (a pass) to 0.1459 (DN4 hard fail). Attributed

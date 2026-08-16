@@ -2,13 +2,13 @@
 
 > **GENERATED.** Regenerate with `node tools/roadmap-coverage.mjs`.
 > Canonical data: `orchestration/status/ROADMAP-COVERAGE-AUDIT.coverage.json`. Narrative: `reports/roadmap-audit/AUDIT.md`.
-> Generated 2026-08-16T03:25:22.592Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
+> Generated 2026-08-16T03:27:38.691Z against baseline `dd222b7951a6d0564c992bb6d39b783f0f293188`.
 
 | inventory | n | uncovered |
 |---|---:|---:|
 | reference items (`corpus/**/RI-*.md`) | 152 | 0 |
 | plans (`orchestration/plans/*`) | 49 | 0 |
-| open gaps (`GAP-LEDGER.json`) | 100 | 6 |
+| open gaps (`GAP-LEDGER.json`) | 100 | 0 |
 | proposed roadmap items | 69 | — |
 
 ## Proposed items
@@ -17,7 +17,7 @@
 
 | id | item | ref items | never judged | open gaps (blocking) | plans | state | old roadmap |
 |---|---|---|---|---|---|---|---|
-| `I1` | The harness and determinism | RI-CMB07 RI-MTH01 RI-MTH02 | — | 5 (4) | W1-00 | built_below_bar | **none** |
+| `I1` | The harness and determinism | RI-CMB07 RI-MTH01 RI-MTH02 | — | 6 (5) | W1-00 | built_below_bar | **none** |
 | `I2` | Capture and the Deck | RI-MTH04 RI-MTH06 | RI-MTH06 | 2 (1) | W1-30-EVIDENCE W1-30V | built_below_bar | V17 |
 | `I4` | Consumption as a gate | RI-MTH07 | — | 5 (3) | BUILDER-EXECUTION-CONTRACT | built_below_bar | **none** |
 | `I5` | The corpus audited and extended | RI-VIS02 RI-VIS09 RI-VIS10 RI-MTH05 RI-MTH06 | RI-VIS09 RI-MTH05 RI-MTH06 | 0 (0) | — | built_below_bar | F3 |
@@ -31,10 +31,10 @@
 | `F1` | Materials and surface response | — | — | 3 (2) | W1-30 W1-30C W1-30S | planned_unjudged | V1 |
 | `F2` | Shadow, contact and ambient occlusion | RI-VIS03 RI-VIS04 | — | 1 (1) | W1-30 W1-30A W1-30B W1-30S | built_below_bar | V2 |
 | `F3` | Ambient and bounce fill | RI-VIS03 RI-VIS04 | — | 2 (2) | W1-30 W1-30B W1-30S | built_below_bar | V3 |
-| `F4` | Light, sky and atmosphere | RI-VIS04 | — | 3 (2) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
+| `F4` | Light, sky and atmosphere | RI-VIS04 | — | 4 (3) | W1-30 W1-30B W1-30S | built_below_bar | V4/V12 |
 | `F5` | The frame pipeline | RI-VIS04 | — | 0 (0) | W1-30 W1-30A W1-30S | at_bar | V5 |
 | `F6` | Terrain and vegetation surfaces | RI-WLD15 RI-WLD16 | RI-WLD15 RI-WLD16 | 0 (0) | W1-30 W1-30F | planned_unjudged | V9/V10 |
-| `F7` | The water surface | RI-WLD10 | — | 2 (2) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
+| `F7` | The water surface | RI-WLD10 | — | 5 (5) | W1-03 W1-30 W1-30H | built_below_bar | V11 |
 | `F8` | The building kit and settlement silhouette | RI-WLD14 | — | 1 (1) | W1-30-LIBRARY W1-30 W1-30E | built_below_bar | V8 |
 | `F9` | Interiors and practical light | RI-STL01 | — | 1 (1) | W1-30 W1-30G | built_below_bar | partial:V4 |
 | `F10` | Characters and creatures | RI-CAM07 RI-VIS08 RI-VIS10 | — | 7 (2) | W1-24 W1-30-LIBRARY W1-30 W1-30D | built_below_bar | V6 |
@@ -42,7 +42,7 @@
 | `F12` | VFX and particles | RI-MAG05 | — | 1 (0) | W1-30 W1-30H | built_below_bar | V13 |
 | `F13` | Art direction and region identity | RI-WLD04 RI-VIS05 RI-VIS07 RI-UIX06 | RI-VIS05 | 1 (1) | W1-30 W1-30K | built_below_bar | V15 |
 | `F14` | Performance, LOD and budgets | RI-PLT01 | — | 0 (0) | W1-30 | built_below_bar | V16 |
-| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 RI-UIX10 | — | 10 (9) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
+| `T4` | The Morrowind screens | RI-UIX03 RI-UIX04 RI-UIX06 RI-UIX07 RI-UIX08 RI-UIX09 RI-UIX10 | — | 12 (11) | W1-21 W1-HUD-TOAST | built_below_bar | partial:V14 |
 
 ### Ring 2 — The body, the camera and the fight — Souls owns everything in here.
 
@@ -308,7 +308,7 @@
 | `GAP-W1-character-surface-is-assembled-from-primitives-not-built` | blocking | `render.art.character` | F10 |
 | `GAP-W1-combat-exemplar-has-no-danger` | blocking | `combat.frames.timing` | G7 I1 |
 | `GAP-W1-consumption-sweep-tripwire-is-a-name-grep` | major | `combat.camera.behaviour` | I4 |
-| `GAP-W1-container-headers-print-across-the-first-row` | blocking | `ui.menu.inventory` |  |
+| `GAP-W1-container-headers-print-across-the-first-row` | blocking | `ui.menu.inventory` | T4 |
 | `GAP-W1-creation-is-an-api-not-a-scene` | blocking | `journey.chargen.diegesis` | C1 |
 | `GAP-W1-crime-enforcement-is-a-free-win` | blocking | `crime.guard.response` | C8 |
 | `GAP-W1-deploy-instruments-point-at-the-tester-not-the-player` | major | `platform.load.ttfp` | T3 |
@@ -320,10 +320,10 @@
 | `GAP-W1-F10-the-crowd-stands-392-ways-and-not-one-of-them-ever-moves` | major | `render.art.character` | F10 |
 | `GAP-W1-F10-the-stance-reaches-one-character-and-the-crowd-is-408-identical-mannequins` | major | `render.art.character` | F10 |
 | `GAP-W1-f4-shadows-have-no-light-in-them-and-the-key-has-no-colour` | blocking | `render.fidelity.ibl` | F4 F3 |
-| `GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero` | blocking | `render.fidelity.ibl` |  |
-| `GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank` | blocking | `render.fidelity.water` |  |
-| `GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k` | blocking | `visual.renderer.water` |  |
-| `GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader` | blocking | `visual.renderer.water` |  |
+| `GAP-W1-f4-the-key-has-no-hue-and-the-field-that-would-give-it-one-is-set-to-zero` | blocking | `render.fidelity.ibl` | F4 |
+| `GAP-W1-f7-shore-band-scaled-to-the-water-body-not-the-bank` | blocking | `render.fidelity.water` | F7 |
+| `GAP-W1-F7-the-shoreline-fade-cannot-act-at-the-provinces-own-starting-k` | blocking | `visual.renderer.water` | F7 |
+| `GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader` | blocking | `visual.renderer.water` | F7 |
 | `GAP-W1-F7-water-is-a-25-percent-mirror-at-normal-incidence` | blocking | `visual.renderer.water` | F7 |
 | `GAP-W1-faction-ladders-are-bricked-up-at-rank-5` | blocking | `quests.faction.rankgating` | P7 |
 | `GAP-W1-faction-ladders-are-doors-onto-empty-corridors` | blocking | `quests.faction.escalation` | P7 P8 |
@@ -332,7 +332,7 @@
 | `GAP-W1-input-calibration-outlives-its-pad-on-disconnect` | major | `input.gamepad.lifecycle` | T2 |
 | `GAP-W1-input-discoverability-unmeasured` | major | `input.discoverability` | T2 |
 | `GAP-W1-interior-door-draws-nothing` | blocking | `world.interior.named` | W5 |
-| `GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar` | blocking | `ui.style.diegesis` |  |
+| `GAP-W1-legibility-overlap-leg-is-defeated-by-the-gauge-bar` | blocking | `ui.style.diegesis` | T4 I1 |
 | `GAP-W1-library-martial-single-hand-fingerprint` | major | `lore.register` | P5 P4 |
 | `GAP-W1-LIBRARY-the-library-has-no-reader-on-the-world-side` | critical | `ui.readables` | P4 |
 | `GAP-W1-library-unreachable-contradiction-pairs` | blocking | `?` | P4 P5 |
