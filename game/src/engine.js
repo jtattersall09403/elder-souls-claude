@@ -33,6 +33,11 @@ import { UISystem, OPENABLE } from './ui/system.js';
 import { combatMeta, combatFrame } from './combat/trace.js';
 import { mirror } from './sim/combat-bridge.js';
 import { makeRecord } from './sim/record.js';
+// W1-DIALOGUE-AUTHORING-LEAK / defect 2 (T4, content). See fold-books.js's header for the
+// mechanism: `books/manifest.json` is a title-only catalog, shaped like every other book file,
+// and the old inline fold let it silently overwrite 24 real books' text depending on load
+// order alone. `foldBooks` fixes that in one place, load-order-independent.
+import { foldBooks } from './data/fold-books.js';
 // UNBLOCK, not my piece. `engine.js:375` constructs `SoulsSystem` and the import for it had not
 // landed, so `Engine._boot()` threw `ReferenceError: SoulsSystem is not defined` and NOTHING in
 // the tree booted — boot-check, every probe, every capture. Third time this shape has stopped
@@ -4564,11 +4569,12 @@ export class Engine {
     for (const group of Object.values(this.data.items || {})) {
       for (const it of (group.items || [])) items.set(it.id, it);
     }
-    const books = new Map();
-    for (const doc of Object.values(this.data.books || {})) {
-      if (Array.isArray(doc.books)) for (const b of doc.books) books.set(b.id, b);
-      else if (doc.id) books.set(doc.id, doc);
-    }
+    // W1-DIALOGUE-AUTHORING-LEAK / defect 2: was an inline unconditional-overwrite fold, which
+    // let `books/manifest.json`'s 162 title-only catalog stubs blot out real book text whenever
+    // the catalog happened to load after the real file (it does, for 24 books — see
+    // `fold-books.js`'s header for the mechanism). `foldBooks` is the fixed, load-order-safe
+    // version, and it is the SAME function `tools/books/check-book-fold.mjs` exercises.
+    const books = foldBooks(this.data.books);
     const attrs = (this.data.progression && this.data.progression.attributes
       && this.data.progression.attributes.attributes) || [];
     const skills = (this.data.progression && this.data.progression.skills

@@ -1,0 +1,86 @@
+{
+  "task_id": "W1-DIALOGUE-AUTHORING-LEAK",
+  "roadmap_items": ["P1 (dialogue and topics, defect 1)", "T4/content (books, defect 2)"],
+  "status": "fixed, unjudged — a fresh critic follows, this piece did not grade itself",
+  "date": "2026-08-16",
+  "headline": "Both defects had exactly one authored source each, not the volume either report implied: defect 1 is ONE leaked stance fragment (5 shipped lines, not a pattern repeated across the corpus); defect 2 corrupts 24 books (not 162 — 162 is the manifest's own entry count, a different number from the defect surface). Both fixed at the source, both proven through the real world-side consumer, both regression-checked in both directions (fails pre-fix, passes post-fix) without a browser.",
+
+  "what_i_could_not_do": [
+    "No browser was used anywhere in this piece — the box is over its HAZARDS §29 contention ceiling and this was text/data work throughout, so `tools/contention.mjs` was never invoked and no screenshot or motion capture of either fix exists. I verified both fixes by calling the ACTUAL world-side consumer functions (`greetingFor()` from game/src/character/converse.js; `foldBooks()` from the new game/src/data/fold-books.js) directly in Node against the real shipped data files — a stronger, reproducible, CI-checkable property than a single screenshot, but it does not confirm pixels: font rendering, line-wrap of the new greeting text, and the-sap-and-the-ledger's page-break layout were never looked at. A critic with browser access should still orbit Corvus Aldeyn (blackwood-company-factor, Lilmoth) for the greeting and open the-sap-and-the-ledger for the book, per the character/visual-claim directive.",
+    "Found in passing, NOT fixed, out of scope for this brief: book id 'the-drowned-ford' (game/data/books/the-drowned-ford.json) has real text but is not listed in game/data/books/manifest.json's catalog at all — an uncatalogued book, not a text-corruption defect (nothing overwrites it), distinct from the 24 fixed here. Flagged so it is not lost.",
+    "Did not extend the load-order-independence fix to the other three places engine.js folds `Object.values(this.data.books)` (`_opacityWorldIndex` line ~2882, `_canonWorldIndex` line ~2941, `_bookKnowledgeIndex` line ~5516). Read all three: the first two only collect a Set of ids (order-independent by construction, unaffected). The third only writes an index entry when `b.knowledge_key` is present, and manifest's stub entries have no `knowledge_key`, so it was ALREADY safe by accident (verified by reading, not assumed) — refactoring it to also call `foldBooks()` would be a consistency cleanup, not a fix, and I left it alone to keep engine.js's diff minimal: `node tools/ownership.mjs --for game/src/engine.js` shows 13 live pieces touching that file right now.",
+    "Did not run `tools/harness/w1-library-skillbooks.mjs` (browser-based skill-book grant probe) to confirm skill-book grants still work post-fix. `foldBooks()` changes WHICH record wins a collision, never any field of the winning record, so this should be a no-op for that probe — not confirmed by running it.",
+    "The authoring-leak static scan (`tools/dialogue/check-authoring-leaks.mjs`) is scoped to `game/data/dialogue/**` and `game/data/books/**` (where NPC speech and readable text actually live). A broader one-off regex pass also covered `game/data/npcs/**`, `game/data/quests/**`, `game/data/factions/**`, `game/data/lore/**`, `game/data/world/readables/**` (43 raw hits, every one individually read and confirmed a false positive — design notes, quest-meta fields, or legitimate in-fiction prose), but that broader sweep was not re-run through the check script's final, narrower PATTERNS list, so it is not a standing regression guard the way the dialogue/books scan is."
+  ],
+
+  "defect_1_dialogue_authoring_leak": {
+    "roadmap_item": "P1",
+    "reported_unverified_counts": { "say_it_in_one_line": 5, "local_useful": 25 },
+    "derived_counts": {
+      "say_it_in_one_line_occurrences_pre_fix": "5 — confirmed by grep -c, matches the reported (unverified) number exactly",
+      "local_useful_occurrences": "25 — confirmed by grep -c, but this is NOT a defect: 'Local. Useful.' is the legitimate, authored ADDRESS fragment for (RG-BWC, saxhleel) in tools/dialogue/gen-greetings.mjs's ADDRESS table (line 106) — what a Blackwood Company speaker calls an Argonian player. It appears once per line across all 5 disposition bands x 5 lines = 25, by design, the same as every other race's address fragment. Verified this is not the defect class: it never matched any pattern in the writer's-instruction blocklist and reads as in-world commentary ('you are local, you are useful [to us]'), consistent with the other 4 races' address fragments in the same table.",
+      "distinct_authored_source_locations_of_the_actual_leak": 1,
+      "full_list_of_leak_locations": [
+        "tools/dialogue/gen-greetings.mjs STANCE['RG-BWC'].cold[3] (was the literal string 'Say it in one line.') — expands via buildPools() combinatorics into exactly 5 shipped lines, one per player_race_class, in game/data/dialogue/greetings.json .pools[180..184].lines[3]"
+      ]
+    },
+    "how_the_full_search_was_done": "Two passes, not one. (1) A broad regex scan (20+ patterns: authoring briefs, placeholders, todo/fixme markers, template brackets, character/word-limit language, 'stay in character', 'as an ai', etc.) over every string value under every 'lines'/'text'/'x'/'greeting'/'a' key in game/data/dialogue/** and game/data/books/**, plus a wider ad-hoc sweep of game/data/npcs/**, game/data/quests/**, game/data/factions/**, game/data/lore/**. Raw hit count: 43. Every hit individually read; 42 were false positives (design/provenance notes like '_note'/'order_note'/'corpus_item', quest 'notes'/'consequence'/'outcome' fields — none of which are rendered to the player — and one genuine false positive inside actual book prose: the-short-measures.json books[6].text contains 'asked him to say in one line what the working papers were for', which is a character being characterised, not a leak). (2) Read the FULL authored source of gen-greetings.mjs (all 300 STANCE lines, all 60 ADDRESS lines) by eye, since that is where a future leak would actually be introduced, not just its 5x-per-fragment combinatorial expansion. Found exactly one contaminated fragment.",
+    "fix": "STANCE['RG-BWC'].cold[3] replaced with 'The writ says nothing about talk.' — reuses the 'writ' motif this reaction group already establishes elsewhere (game/data/npcs/mainline.json's blackwood-company-camp greeting: 'Our writ is out of Leyawiin and it says nothing about the Stone Wastes.'), so the new line is specific to the Blackwood Company rather than a generic filler ('Morrowind wins outside the fight' — CLAUDE.md). game/data/dialogue/greetings.json regenerated via `node tools/dialogue/gen-greetings.mjs` (also verified `--check` reports 'up to date: 300 cells, 1500 lines, 1400 distinct' afterward).",
+    "consumption_gate_ri_mth07": {
+      "consumer_named": "greetingFor() in game/src/character/converse.js:63 — chosen by (reaction_group, live disposition band, player_race_class), deterministic per (npcId, greet-count)",
+      "live_npc_named": "blackwood-company-factor (Corvus Aldeyn), game/data/npcs/mainline.json — reaction_group RG-BWC, disposition 25, which is RI-CHR02 §4c's 'cold' band [10,29], the exact cell the leak lived in",
+      "perturbation_and_result": "tools/dialogue/check-greeting-consumer.mjs calls greetingFor() for this real NPC across a 20-slot greet-count sweep. Post-fix: 5 distinct lines spoken, none containing the leak, one containing 'The writ says nothing about talk. You can read a contract. Sit down.' (imperial player). Pre-fix (re-derived live from `git show HEAD:tools/dialogue/gen-greetings.mjs`, run through the SAME consumer): the leak IS reproduced. Both runs captured in the script's own output; exit 0."
+    },
+    "standing_check": {
+      "file": "tools/dialogue/check-authoring-leaks.mjs",
+      "what_it_does": "Scans (a) gen-greetings.mjs's buildPools() output directly and (b) every 'lines'/'text'/'x'/'greeting'/'a' string under game/data/dialogue/** and game/data/books/** against a 15-pattern writer's-instruction blocklist.",
+      "self_test": "--self-test re-checks the known leaked string against the live pattern list and exits 3 if it would ever stop matching (vacuity guard).",
+      "proven_both_directions": {
+        "pre_fix_run_via_git_stash": "authored-source scan: 5 hit(s); shipped-data scan: 5 hit(s); FAIL, exit 1 (10 total)",
+        "post_fix_run": "authored-source scan: 0 hit(s); shipped-data scan: 0 hit(s); PASS, exit 0",
+        "method": "git stash push -- tools/dialogue/gen-greetings.mjs game/data/dialogue/greetings.json (reverts to pre-fix HEAD, which the check-authoring-leaks.mjs script itself regenerates greetings.json from via its own import side-effect) -> ran check -> confirmed FAIL -> git stash pop -> confirmed PASS again"
+      }
+    }
+  },
+
+  "defect_2_books_render_undefined": {
+    "roadmap_item": "T4 / content",
+    "reported_unverified_number": "162 entries with 0 carrying a text field",
+    "derived_numbers": {
+      "manifest_entries": "162, 0 with a text field — python3 json check, matches the report exactly. This is the manifest's OWN size, not the defect's blast radius.",
+      "true_defect_count_books_that_render_undefined": 24,
+      "how_derived": "Simulated the exact fold Engine._buildUI() ran (before this fix) over the real 26 game/data/books/*.json files in the real order game/data/index.json lists them (manifest.json is #5 of 26 — grep -n '\"path\": \"books/' game/data/index.json | nl). 24 book ids that have real text in an earlier-loading file (a-progress-through-the-southern-marsh.json: 3, deep-time.json: 8, foundational.json: 7, interface-readables.json: 6) get permanently overwritten by manifest.json's title-only stub for the same id, because no file loading after manifest.json (indices 6-26) redeclares those same ids. Cross-checked: manifest's 162 ids are EXACTLY the union of real book ids across the other 25 files (0 manifest ids missing a real source; 0 real ids absent from manifest) — manifest really is a pure catalog by design, the bug is that the loader could not tell a catalog entry from a content entry.",
+      "one_confirmed_live_from_the_brief": "the-sap-and-the-ledger (foundational.json) — verified: foldBooks() over real data now returns its full 4783-character authored text (starts 'Being an Attempt at an Honest Accounting of the Argonian Soul...') instead of undefined.",
+      "render_path_traced": "game/src/ui/system.js#_bookModel -> game/src/ui/screens/text.js#bookPagination(b.text, S) -> wrap(text, ...); an undefined `text` is what turns into the literal word 'undefined' on the page, matching the exact reported symptom."
+    },
+    "mechanism_verified_as_load_order_not_missing_field": "Confirmed it is a LOAD-ORDER collision, not a missing-field defect in the manifest: manifest.json is intentionally shaped as a catalog ({id, title} only) and every one of its 162 ids has a real text-bearing counterpart elsewhere in the corpus. The defect is that Engine._buildUI()'s old fold treated every books/*.json document as equally authoritative and let whichever loaded LAST win unconditionally, with no distinction between a catalog stub and real content.",
+    "fix": "Extracted the fold into game/src/data/fold-books.js#foldBooks(dataBooks) — pure, no DOM, load-order-independent: a textless entry can never overwrite an entry that already has text, regardless of which file loaded when. game/src/engine.js's _buildUI() (was inline at line ~4567) now imports and calls this shared function instead of the old unconditional-overwrite loop.",
+    "standing_check": {
+      "file": "tools/books/check-book-fold.mjs",
+      "what_it_does": "Imports the REAL foldBooks() (the exact function the game calls, not a reimplementation), loads the real 26 books/*.json files in the real index.json order, and asserts every resulting book has a non-empty text field.",
+      "self_test": "--self-test also runs the OLD unconditional-overwrite fold (kept verbatim as a permanent negative control) over the SAME real data.",
+      "proven_both_directions_numbers": {
+        "naive_old_fold_arm": "24 book(s) with no text (lists all 24 ids) — reproduces the defect on real current data",
+        "fixed_new_fold_arm": "0 book(s) with no text, out of 163 distinct book ids checked — PASS",
+        "exit_code": 0
+      }
+    }
+  },
+
+  "files_changed": [
+    "tools/dialogue/gen-greetings.mjs — one-string fix (STANCE['RG-BWC'].cold[3]) plus a doc comment explaining the leak and pointing at the standing check",
+    "game/data/dialogue/greetings.json — regenerated output (300 cells, 1500 lines, 1400 distinct — unchanged shape, 5 lines' content changed)",
+    "game/src/data/fold-books.js — NEW. Pure foldBooks() function, the fix for defect 2, with the mechanism written into its header (read the repo, cite the command, per CLAUDE.md rule 0b)",
+    "game/src/engine.js — _buildUI() now calls foldBooks() instead of its old inline fold; one new import line",
+    "tools/dialogue/check-authoring-leaks.mjs — NEW standing check for defect 1's class of bug",
+    "tools/dialogue/check-greeting-consumer.mjs — NEW RI-MTH07 consumption-gate proof/check for defect 1",
+    "tools/books/check-book-fold.mjs — NEW standing check + consumption-gate proof for defect 2"
+  ],
+
+  "guards_honoured": {
+    "did_not_delete_the_leaked_lines": "Replaced with a real, place-specific line rather than removing the stance or leaving an empty slot — RG-BWC/cold still has 5 distinct stances.",
+    "consumption_gate_ri_mth07": "Both fixes named their world-side consumer, perturbed the data (git stash before/after for defect 1; naive-vs-fixed fold arms for defect 2), and showed a spoken/drawn thing change through the real consumer function, not a data-only diff."
+  },
+
+  "not_graded_by_self": "This status file makes no PASS/FAIL claim about the piece as a whole. A fresh critic follows, per standing instructions."
+}

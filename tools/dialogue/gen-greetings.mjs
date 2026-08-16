@@ -193,8 +193,14 @@ const STANCE = {
     friendly: ['The House knows your name and spells it right.', 'Come to the factor house at Helstrom. Ask for the back room.', 'Wine, and the good chair, and no counting.', 'Whatever you want off this wagon, name it.', 'You are a friend of the House. We do not spend that phrase often.'],
   },
   'RG-BWC': {
+    // W1-DIALOGUE-AUTHORING-LEAK: the fourth `cold` stance below used to read 'Say it in one
+    // line.' — an authoring instruction to the writer, shipping as if a Blackwood Company
+    // mercenary said it to the player. Replaced with an in-world line that reuses the writ
+    // motif this reaction group already establishes elsewhere (`blackwood-company-camp`'s
+    // greeting in `game/data/npcs/mainline.json`: "Our writ is out of Leyawiin and it says
+    // nothing about the Stone Wastes."). See CHECK_PATTERNS below — it would have caught this.
     hostile: ["The Company's got your description. It is not flattering.", 'You cost us a contract! That gets settled.', "Nothing here's for sale to you.", 'Walk on.', "We do not hire, we do not talk, and we do not say it twice."],
-    cold: ['Contract business only.', "The Company is not recruiting today.", 'Take it to the factor.', 'Say it in one line.', "We are working."],
+    cold: ['Contract business only.', "The Company is not recruiting today.", 'Take it to the factor.', 'The writ says nothing about talk.', "We are working."],
     neutral: ["Company business. What's yours?", "We're hiring for the north road. Can you hold a line?", 'Ask. But the terms are the terms.', 'You look like work. Are you work?', 'Say what you want.'],
     warm: ["Sit with us. Pay talk's better sitting.", "The Company can use you, and it'll say so plainly.", 'Ask about the contract. Ask about the pay clause first.', "There's stew. It's Company stew, so lower your expectations.", "You haven't lied to us yet."],
     friendly: ["You're on the books whether you signed or not.", 'Anything the Company knows about this stretch, you can have.', "Full share. And there'll be no argument about it.", "We told the factor about you and he wrote it down. That's how they say thank you.", 'Whatever you need, and no paper.'],
