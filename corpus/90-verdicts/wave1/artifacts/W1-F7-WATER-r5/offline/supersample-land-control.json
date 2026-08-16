@@ -1,0 +1,102 @@
+{
+  "tool": "f7-r5-offline",
+  "mode": "supersample",
+  "generated": "2026-08-16T04:02:29.017Z",
+  "thresholds": [
+    4,
+    6,
+    10,
+    16
+  ],
+  "results": [
+    {
+      "dir": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r5/dm-supersample",
+      "arms": {
+        "fixed": {
+          "water": {
+            "native_1x": {
+              "adj": 6.0105,
+              "two": 6.4162,
+              "ratio": 0.9368,
+              "px": 228338
+            },
+            "supersampled_2x": {
+              "adj": 3.9041,
+              "two": 4.758,
+              "ratio": 0.8205,
+              "px": 229090
+            },
+            "hf_survival_pct": 64.95,
+            "mask_px": {
+              "native": 233831,
+              "supersampled": 234082
+            }
+          },
+          "land_control": {
+            "native_1x": {
+              "adj": 9.3542,
+              "two": 12.7049,
+              "ratio": 0.7363,
+              "px": 142133
+            },
+            "supersampled_2x": {
+              "adj": 7.9297,
+              "two": 11.4564,
+              "ratio": 0.6922,
+              "px": 233147
+            },
+            "hf_survival_pct": 84.77,
+            "mask_px": {
+              "native": 193055,
+              "supersampled": 253054
+            }
+          },
+          "water_minus_land_survival_pp": -19.82,
+          "how_to_read": "RI-VIS11 §3. If the land control loses the same fraction, the water figure is a property of the capture rather than of the water shader, and `water_minus_land_survival_pp` is the part that is actually about the water."
+        },
+        "prefix": {
+          "water": {
+            "native_1x": {
+              "adj": 7.2481,
+              "two": 7.9117,
+              "ratio": 0.9161,
+              "px": 238989
+            },
+            "supersampled_2x": {
+              "adj": 4.6397,
+              "two": 5.7988,
+              "ratio": 0.8001,
+              "px": 239727
+            },
+            "hf_survival_pct": 64.01,
+            "mask_px": {
+              "native": 247391,
+              "supersampled": 245579
+            }
+          },
+          "land_control": {
+            "native_1x": {
+              "adj": 9.602,
+              "two": 12.8111,
+              "ratio": 0.7495,
+              "px": 234884
+            },
+            "supersampled_2x": {
+              "adj": 8.2432,
+              "two": 11.9043,
+              "ratio": 0.6925,
+              "px": 240187
+            },
+            "hf_survival_pct": 85.85,
+            "mask_px": {
+              "native": 248526,
+              "supersampled": 249594
+            }
+          },
+          "water_minus_land_survival_pp": -21.84,
+          "how_to_read": "RI-VIS11 §3. If the land control loses the same fraction, the water figure is a property of the capture rather than of the water shader, and `water_minus_land_survival_pp` is the part that is actually about the water."
+        }
+      }
+    }
+  ]
+}

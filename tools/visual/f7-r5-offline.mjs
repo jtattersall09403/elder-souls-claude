@@ -242,9 +242,67 @@ function temporalForDir(dir) {
   return out;
 }
 
+/* ------------------------------------------------------------- supersample + LAND CONTROL ----
+ * `RI-VIS11` §3 says in as many words: "The land control is required on every row … A water figure
+ * published without its land control is inadmissible here." My OWN in-browser supersample mode
+ * computes water-mask figures only, so the first measurement I took against my own bar did not
+ * satisfy it. Rather than quietly publish it anyway or weaken the clause, this recomputes both
+ * halves from the banked frames — the same 1x and 2x captures, plus the land population the water
+ * shader never touches — so the row is admissible under the item as written.
+ *
+ * Why a land control matters here specifically: high-frequency survival is a property of a REGION
+ * OF SCREEN (distance, geometry density, foliage) at least as much as of a shader. If the land
+ * loses the same fraction to supersampling, the water's loss says nothing about the water. */
+function supersampleForDir(dir) {
+  const fdir = path.join(dir, 'frames');
+  const files = fs.readdirSync(fdir);
+  const arms = [...new Set(files.filter((f) => /^ss-1x--/.test(f)).map((f) => f.replace(/^ss-1x--/, '').replace(/\.png$/, '')))];
+  const down2 = (png) => {
+    const W = png.width >> 1, H = png.height >> 1;
+    const o = { width: W, height: H, data: Buffer.alloc(W * H * 4) };
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) for (let c = 0; c < 4; c++) {
+      const a = png.data[((2 * y) * png.width + 2 * x) * 4 + c], b = png.data[((2 * y) * png.width + 2 * x + 1) * 4 + c];
+      const d = png.data[((2 * y + 1) * png.width + 2 * x) * 4 + c], e = png.data[((2 * y + 1) * png.width + 2 * x + 1) * 4 + c];
+      o.data[(y * W + x) * 4 + c] = Math.round((a + b + d + e) / 4);
+    }
+    return o;
+  };
+  const hfOver = (png, m) => {
+    const y = luma(png), W = png.width, H = png.height; let a = 0, na = 0, b = 0, nb = 0;
+    for (let r = 0; r < H; r++) for (let c = 0; c < W - 2; c++) {
+      const i = r * W + c;
+      if (m[i] && m[i + 1]) { a += Math.abs(y[i] - y[i + 1]); na++; }
+      if (m[i] && m[i + 2]) { b += Math.abs(y[i] - y[i + 2]); nb++; }
+    }
+    return na && nb ? { adj: +(a / na).toFixed(4), two: +(b / nb).toFixed(4), ratio: +((a / na) / (b / nb)).toFixed(4), px: na } : null;
+  };
+  const out = { dir: path.relative(REPO, dir), arms: {} };
+  for (const arm of arms) {
+    const p1 = read(path.join(fdir, `ss-1x--${arm}.png`)), h1 = read(path.join(fdir, `ss-1x-hidden--${arm}.png`));
+    const h2 = read(path.join(fdir, `ss-2x-hidden--${arm}.png`));
+    const p2dPath = path.join(fdir, `ss-2x-downsampled--${arm}.png`);
+    if (!fs.existsSync(p2dPath)) { out.arms[arm] = { skipped: 'no downsampled 2x frame banked' }; continue; }
+    const p2d = read(p2dPath), h2d = down2(h2);
+    const mk = (a, b, thr) => { const N = a.width * a.height, m = new Uint8Array(N); let n = 0; for (let i = 0, p = 0; i < N; i++, p += 4) { const d = Math.abs(a.data[p] - b.data[p]) + Math.abs(a.data[p + 1] - b.data[p + 1]) + Math.abs(a.data[p + 2] - b.data[p + 2]); if (d > thr) { m[i] = 1; n++; } } return { m, n }; };
+    const lm = (a, b) => { const N = a.width * a.height, m = new Uint8Array(N); let n = 0; for (let i = 0, p = 0; i < N; i++, p += 4) { const d = Math.abs(a.data[p] - b.data[p]) + Math.abs(a.data[p + 1] - b.data[p + 1]) + Math.abs(a.data[p + 2] - b.data[p + 2]); if (d <= 2) { m[i] = 1; n++; } } return { m, n }; };
+    const w1 = mk(p1, h1, 10), w2 = mk(p2d, h2d, 10);
+    const l1 = lm(p1, h1), l2 = lm(p2d, h2d);
+    const wa = hfOver(p1, w1.m), wb = hfOver(p2d, w2.m), la = hfOver(p1, l1.m), lb = hfOver(p2d, l2.m);
+    const surv = (a, b) => (a && b ? +(100 * b.adj / a.adj).toFixed(2) : null);
+    out.arms[arm] = {
+      water: { native_1x: wa, supersampled_2x: wb, hf_survival_pct: surv(wa, wb), mask_px: { native: w1.n, supersampled: w2.n } },
+      land_control: { native_1x: la, supersampled_2x: lb, hf_survival_pct: surv(la, lb), mask_px: { native: l1.n, supersampled: l2.n } },
+      water_minus_land_survival_pp: (surv(wa, wb) !== null && surv(la, lb) !== null) ? +(surv(wa, wb) - surv(la, lb)).toFixed(2) : null,
+      how_to_read: 'RI-VIS11 §3. If the land control loses the same fraction, the water figure is a property of the capture rather than of the water shader, and `water_minus_land_survival_pp` is the part that is actually about the water.',
+    };
+  }
+  return out;
+}
+
 const results = dirs.map((d) => (MODE === 'stipple' ? stippleForDir(path.resolve(REPO, d))
   : MODE === 'temporal' ? temporalForDir(path.resolve(REPO, d))
-    : presenceForDir(path.resolve(REPO, d))));
+    : MODE === 'supersample' ? supersampleForDir(path.resolve(REPO, d))
+      : presenceForDir(path.resolve(REPO, d))));
 const payload = { tool: 'f7-r5-offline', mode: MODE, generated: new Date().toISOString(), thresholds: THRESHOLDS, results };
 if (args.out) { fs.mkdirSync(path.dirname(path.resolve(REPO, String(args.out))), { recursive: true }); fs.writeFileSync(path.resolve(REPO, String(args.out)), JSON.stringify(payload, null, 2)); }
 console.log(JSON.stringify(payload, null, 2));
