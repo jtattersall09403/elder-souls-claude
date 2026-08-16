@@ -1,0 +1,233 @@
+{
+  "task_id": "W1-F7-r3",
+  "title": "F7 — the water surface, round 3. The two RI-VIS04 §9 MIN BAR components the r2 verdict measured as absent from the shader: depth-based colour, and a shoreline depth fade.",
+  "roadmap_item": "F7",
+  "state": "delivered-awaiting-critic",
+  "verdict_this_answers": "corpus/90-verdicts/wave1/W1-F7-WATER-r2.json (FAIL at 2, 'keep the change'). Its `biggest_gap` is my bar: GAP-W1-F7-two-of-four-min-bar-components-are-absent-from-the-water-shader, remedy (a) depth-based colour and (b) shoreline depth fade, both in game/src/render/water.js.",
+  "branch": "codex/wave1-build-experiment",
+  "commit_at_filing": "494871dd6168ec6bf7b6c91cd306d80cb3ce8e40",
+
+  "what_i_could_not_do": [
+    "I DID NOT ADD A DEPTH-BUFFER READ, AND THE BAR'S PARENTHETICAL NAMES ONE. `RI-WLD10` §10's fidelity clause is 'shoreline blend with no hard intersection line (depth-fade against the depth buffer)'. What I built is a depth fade against the water column depth carried in province.js's PER-VERTEX colour, not against the scene depth buffer. The critic's own detector still returns 0 — `grep -c 'depthTexture\\|tDepth\\|depthFade' game/src/render/water.js` = 0, run this turn — and I deliberately kept those three identifiers out of the file's comments so the detector cannot be satisfied by prose. WHY: a depth-buffer read needs a depth prepass, i.e. a render-target and a render call, and `renderer.js`, `visual-foundation.js`, `province.js` and `spell-vfx.js` are ALL declared live by `W1-30-builder-20260812` (`node tools/ownership.mjs --for` each, run this turn). `water.js` is a material module; three.js forbids a nested scene render from inside a draw, so this file cannot do a prepass by itself. A critic should score the OUTCOME clauses and record the MECHANISM gap separately — they are not the same finding.",
+
+    "THE DEPTH-BASED COLOUR COMPONENT IS MEASURABLY INERT IN THE REGION WE MEASURE, AND I CAN PROVE IT AGAINST MYSELF. At the top-down pose the `no-shorefade` arm (uWaterShoreFade = 0, so the colour half acts alone) reads mean_luma 70.418 against the round-2 arm's 70.428 — a 0.014% difference, INSIDE the run's own 0.013% drift floor. The whole of the fixed arm's 1.93% luma fall comes from the shoreline ALPHA half (fixed 69.066). This is by construction, not by accident: esDeepCol is written so that at q = 1 it evaluates to exactly the old expression, and in the Deep Marshes at k = 4.5 (0.67 m visibility) almost every water fragment is past 1.35 m of column and therefore at q = 1. The colour component only shows up when k is lower — see `the_k_response`. So `RI-VIS04` §9's 'depth-based colour' is now PRESENT and DEMONSTRABLY DRIVEN BY THE REGION'S k, and in this one region it is nearly invisible. Both halves of that sentence are true and a critic should not accept only the first.",
+
+    "MY THREE SHORELINE CLOSE-UPS ARE NOT SHORELINE CLOSE-UPS. I finally took the shot two builders and two critics had each named and not taken — and having opened the frames, the poses I chose put the camera over open deep marsh with reed clumps, not over a water/land boundary. `frames/shore-close-a-{prefix,fixed}-o{0,1}.png` are visually indistinguishable, which is exactly what the algebra predicts for deep water, and they are therefore NOT evidence about the shoreline. `shore-close-c` is the only one of the three with a real bank in it. The shot still has not properly been taken, and I am recording that rather than letting three frames stand in for it.",
+
+    "THE GRADIENT WIDTH DOES NOT MOVE AT EYE LEVEL OR AT THE VISTA. Nine poses, both arms: the 10%-90% waterline transition reads 1 px on both arms at all four eye-level bearings, at the deck vista and at two of three close-ups; 2 px on both arms at shore-close-c; and 4 -> 5 px at top-down. In the Deep Marshes a physically correct fade at k = 4.5 is complete within about half a metre of depth, and province.js's water lattice is 12.5 m, so there is no geometry to spread the fade across. The mechanism is not failing — the k = 4.5 arm is the one region of thirteen where it has least to do, and the k-substitution arms (width 5 -> 7 -> 13 -> 19 as k falls 4.5 -> 2.6 -> 1.4 -> 0.35) show it working. But 'no hard intersection line' is NOT demonstrated at the pose a player occupies, and I am not claiming it.",
+
+    "I MEASURED ONE REGION AT ONE TIDE STATE, exactly as both prior rounds did — the Deep Marshes, time 13, clear, seed 20260814. The `k-*` arms SUBSTITUTE another region's k into the Deep Marshes' own material at the same pose. That proves k reaches the pixels and quantifies what a k difference buys; it is NOT the two-region comparison the r2 verdict's proposed acceptance asks for ('two regions whose water.json k differs by >= 2.0 must differ in measured water-body colour'). Nobody has run four regions x four tide states in three rounds and I did not either.",
+
+    "NO TIMING FIGURE — THE THIRD ROUND IN A ROW. The r2 critic flagged that a depth read 'will NOT be free and that is the first thing the next round should measure rather than assume'. My remedy adds no texture fetch at all: one exp(), one divide and about ten ALU ops per water fragment. That is an ARGUMENT, not a measurement, and I did not take a frame-time reading.",
+
+    "I DID NOT CROSS THE k ARMS WITH THE SHORE-FADE ARM. I know the alpha half carries the whole luma change at k = 4.5, and I know luma falls to 57.608 at k = 0.35 — but I did not run `k-0.35 x no-shorefade`, so I cannot say how much of the low-k darkening is colour and how much is alpha. The decomposition I can defend is the one at native k.",
+
+    "THE BLIND GATE DID NOT RUN. `RI-WLD10` declares `blind_pair: yes` and its M56 §5 has never run. Re-derived by me this turn, not inherited: `grep -rl 'blind_pair: yes' corpus/ --include=*.md | wc -l` returns **101** (the r2 verdict measured 100, the r1 verdict and my brief say 98 — it is still growing), and `grep -rln 'blind_status: *run' corpus/90-verdicts/ | wc -l` now returns **1**, where the r2 critic measured 0. A builder cannot spawn a fresh judge; CLAUDE.md rule 0e puts this with the orchestrator. `blind_status: not_possible`, 0, fail-closed.",
+
+    "M12 `NormalEnergy`, `ReflCorr` AND `TemporalVar` ARE STILL NOT MEASURED, a fourth round running. NormalEnergy and ReflCorr report unmeasurable at every one of the nine poses I took, with the same two reasons all three prior rounds recorded. TemporalVar needs >= 5 stationary frames and I spent the browser budget on the arms and the orbit. 0 fail-closed, NOT demonstrated absent.",
+
+    "I DID NOT GO AFTER THE MARSH LANES AND THEY ARE STILL THERE. The brief told me not to, and the top-down frames confirm it: `arms/frames/topdown-120-fixed-o1.png` carries the same broad diagonal bands as every previous round. Absolute lane_power moved +1.05% at top-down (prefix 0.3338 -> fixed 0.3373) against a floor arm at 0.3436, i.e. inside the run's own drift; at the deck vista my own replicate band on lane_power is **4.13 on a mean of 8.79**, so no lane number at the vista pose means anything at all. I adopted none of the three dead theories and generated no fourth.",
+
+    "MY BAND IS THREE REPLICATES AT ONE POSE. `FresnelDelta` 0.01187, `ShoreDelta` 0.00062, `mean_luma` 0.022, `gradient_width_px` 0.000, `lane_power` 4.13 — all at the deck vista, n = 3. S61 says a band is per-pose and per-scene; I have applied the vista band to other poses as an order-of-magnitude guide and said so at each use. The top-down poses have a tight drift floor (0.013% on luma) but that is a floor, not a band."
+  ],
+
+  "headline": "Both of the MIN BAR components the r2 verdict measured as absent now exist in game/src/render/water.js, out of one mechanism: Beer-Lambert extinction over the water column depth, against the REGION'S OWN k read from game/data/world/water.json. Measured off the live materials, not assumed: the Deep Marshes' material now carries uWaterK = 4.5, Eastern Rootlands 3.2, Western Rootlands 1.9 — the first time in this project's history that RI-WLD10 §8's per-region water model has reached a fragment shader. The response to k is monotonic and large at the top-down pose: mean water luma 69.066 / 68.053 / 65.853 / 57.608 and waterline gradient width 5 / 7 / 13 / 19 px as k goes 4.5 / 2.6 / 1.4 / 0.35. AND: at k = 4.5 the colour half is inert by construction, the fade is 1 px wide at every player pose, and round 2's numbers are preserved rather than improved.",
+
+  "the_change": {
+    "file": "game/src/render/water.js",
+    "files_touched_beyond_it": "none in game/ — the round-2 Schlick weight is untouched, per the r2 verdict's 'keep the change'.",
+    "one": "A per-material uniform `uWaterK`, resolved AT DRAW TIME from `object.name` (province.js names every water mesh `water:<region_id>`) against `game/data/world/water.json`, which this module fetches itself by resolving `../../data/world/water.json` against `import.meta.url` — the same resolution engine.js:11909 performs. `bindWaterRegionProfiles(doc)` is the synchronous seam for a future caller that already holds the document. NO SECOND COPY OF THE NUMBERS IS KEPT. Unresolved materials keep a documented fallback of k = 2.0 and are listed; the fallback is deliberately NOT the Deep Marshes' true value, so a plumbing failure would show up as a different number rather than hide.",
+    "two": "A varying `vEsWaterQ` carrying province.js's per-vertex water-column encoding `q = .43 + .57*clamp(depth/1.35,0,1)`, read in the VERTEX stage under `#ifdef USE_COLOR` (mats.farWater has no vertex colours and reports q = 1, i.e. deep) and assigned in `worldpos_vertex` so it cannot depend on where three orders `<color_vertex>`.",
+    "three": "The body colour becomes `mix(esDeepCol, esBedCol, exp(-k*path))` with `path = depth_m*(1 + 1/max(esView,.22))` — down through the column and back out along the view ray, so grazing water is more opaque than water seen from overhead. `esDeepCol = vec3(.038,.105,.118) + esAlbedo*.21` where `esAlbedo = diffuseColor.rgb/max(q,.43)`, i.e. the albedo with province's depth modulation divided back out.",
+    "four": "A shoreline alpha fade, `diffuseColor.a = mix(a, a*.42, esTrans*uWaterShoreFade)`, scaled by its own uniform SO IT CAN BE ABLATED SEPARATELY FROM THE COLOUR. It is, below, and it turns out to carry the entire measurable effect at native k.",
+    "five": "customProgramCacheKey v16 -> v17-f7r3-depth, so no cached program can outlive the source change.",
+    "the_defect_this_also_fixes_and_nobody_had_named": "The old expression was `vec3(.038,.105,.118)+diffuseColor.rgb*.21`, and `diffuseColor.rgb` carries province's q, WHICH RISES WITH DEPTH. So the previous shader's only depth signal was wired with the WRONG SIGN: deeper water came out brighter. It was not that depth was absent from the shader — it was present, unlabelled, and backwards. Read off province.js:1559 and water.js's old line 124, both quoted in the file.",
+    "the_preservation_property_by_construction_S59": "At q = 1 — every fragment at or beyond 1.35 m of column — esDeepCol evaluates to EXACTLY the old expression, so this change can only act where the water is shallower than 1.35 m. Round 2's eye-level gain is preserved algebraically rather than hoped for, and the measurements below confirm it: no eye-level FresnelDelta moves by more than the instrument's own band."
+  },
+
+  "instrument": {
+    "tool": "tools/visual/f7-r3-sweep.mjs, mine, new this round. The r2 tools are all declared live by other pieces (`f7-r2-sweep.mjs`, `f7-critic-look.mjs`, `f7-r2-critic-phase.mjs` — ownership run this turn), so I wrote my own rather than edit a ruler.",
+    "the_phase_confound_is_removed_not_cancelled": "The r2 critic proved this instrument is ORDINAL, not noisy: `f7-r2-sweep.mjs` never resets `uWaterPhase`, so capture order fixes the ripple phase. Its own remedy was to interleave and swap order, which cancels the drift to first order. I deleted the variable instead — `uWaterPhase.value` is replaced by a getter returning a constant, so `updateVisualFoundationFrame`'s writes are dropped and every arm at every ordinal sees the same ripple field. Confirmed frozen on 11 of 11 water materials in every run (`phase_frozen: true` on every row of `gpu_state_before`).",
+    "what_the_freeze_bought_measured_not_claimed": "Three replicates of the untouched arm at three different ordinals at the deck vista: mean_luma range **0.022** against the r2 critic's 5-replicate vista band of 2.069 (94x tighter); ShoreDelta range **0.00062** against 0.00806 (13x tighter); gradient width range **0**. What did NOT tighten: FresnelDelta range **0.01187** against the r2 critic's 0.00943, and lane_power range **4.13** on a mean of 8.79. The residual is not the water: `stepFrames` still advances the canopy, the sun and the reflection target between captures, and both of those quantities read the reflected canopy. So the freeze fixes the water phase and not the scene, and FresnelDelta's band is unchanged by it.",
+    "k_is_read_off_the_gpu": "`gpu_state_before` walks the live scene and reports `mat.userData.waterUniforms.uWaterK.value` and `mat.userData.waterRegionResolved` per water material. Every run in the artefacts prints deep-marshes = 4.5, eastern-rootlands = 3.2, western-rootlands = 1.9, and one unnamed `water` mesh still on the 2.0 fallback. That is a measurement of what reached the shader, not an assumption that it did.",
+    "arm_hygiene": "Every shader arm asserts its own substitution count and is written VACUOUS rather than reported as a negative result if it matched nothing. All 30 shader-arm applications in this round's three runs reported >= 5 edits; none is VACUOUS. The tool refuses to measure at all unless the round-3 depth block is verbatim in water.js (`head_expression_asserted.r3_depth_block`), and it also asserts `critic_grep_still_zero`.",
+    "the_new_measure_and_why": "`gradient_width_px` — the 10%-90% rise distance of mean luma against distance-from-land inside the water mask. The r2 critic filed that M12's `ShoreDelta` scores `RI-VIS04` §9's OWN NAMED TELL high (a hard line maximises it, a correct fade minimises it) and named a gradient-width companion as the fix. This is that companion. Both numbers are printed side by side at every pose and I did not tune toward either. ITS FIRST VERSION WAS WRONG AND I CAUGHT IT IN THE BAND RUN BEFORE ANY ARM WAS MEASURED: it anchored the open-water end on the LAST distance bin, and the deck vista's profile rises to a plateau and then drifts back down, so the last bin sat level with d = 3 and the width collapsed to 1 px whatever the arm did. It now anchors on the median of the 24-48 px bins. The fix is in the file with the reason."
+  },
+
+  "every_number_the_instruments_emitted": {
+    "note": "S59 and the r2 verdict both turn on a round reporting the numbers that moved its way. This block is every figure the tool emits, including the ones that move against me and the ones that do not move at all. Sources: artifacts/W1-F7-WATER-r3/{band,arms,look}/sweep.json.",
+
+    "the_band_deck_vista_3_replicates_phase_frozen": {
+      "FresnelDelta": "min 0.00664 max 0.01851 range 0.01187 sd 0.00609",
+      "ShoreDelta": "min 0.01016 max 0.01078 range 0.00062 sd 0.00031",
+      "mean_luma": "min 72.526 max 72.548 range 0.022 sd 0.0124",
+      "gradient_width_px": "1, 1, 1 — range 0",
+      "lane_power": "min 6.9683 max 11.099 range 4.1307 sd 2.1066 — THE VISTA LANE NUMBER IS UNUSABLE AND NOTHING SHOULD BE QUOTED FROM IT"
+    },
+
+    "eight_arms_at_topdown_120_one_process_drift_floor_0_013_pct": {
+      "prefix_round_2_shader": "FD -0.00656, SD 0.04617, luma 70.428, width 4, lane_power 0.3338, aniso 1.94",
+      "fixed_round_3": "FD -0.00049, SD 0.04930, luma 69.066, width 5, lane_power 0.3373, aniso 2.01",
+      "no_shorefade_colour_half_alone": "FD -0.00569, SD 0.04569, luma 70.418, width 3, lane_power 0.3457, aniso 2.00",
+      "null_const_trans_S52": "FD -0.00605, SD 0.04318, luma 68.933, width 3, lane_power 0.3108, aniso 1.94",
+      "k_0_35_padomaic": "FD -0.00016, SD 0.04432, luma 57.608, width 19, lane_power 0.2734, aniso 2.21",
+      "k_1_4_topal": "FD 0.00107, SD 0.05459, luma 65.853, width 13, lane_power 0.3150, aniso 2.06",
+      "k_2_6_blackwood": "FD 0.00081, SD 0.05205, luma 68.053, width 7, lane_power 0.3259, aniso 2.01",
+      "nothing_restore_control_captured_last": "FD -0.00042, SD 0.04938, luma 69.057, width 5, lane_power 0.3436, aniso 2.03 — against the fixed arm that is 0.013% of drift on luma and 1.8% on lane_power, so every row above is readable"
+    },
+
+    "eight_arms_at_the_deck_vista_one_process": {
+      "prefix_round_2_shader": "FD 0.01661, SD 0.00808, luma 72.680, width 1, lane_power 6.8998, aniso 3.86",
+      "fixed_round_3": "FD 0.01311, SD 0.00986, luma 72.550, width 1, lane_power 7.6443, aniso 4.03",
+      "no_shorefade": "FD 0.02477, SD 0.00856, luma 72.856, width 1",
+      "null_const_trans_S52": "FD 0.03804, SD 0.00309, luma 71.045, width 1, lane_power 12.0319, aniso 5.21",
+      "k_0_35_padomaic": "FD 0.03934, SD 0.00400, luma 65.140, width 1",
+      "k_1_4_topal": "FD 0.02923, SD 0.01044, luma 71.885, width 1",
+      "k_2_6_blackwood": "FD 0.00171, SD 0.00881, luma 72.401, width 1",
+      "nothing_restore_control": "FD 0.01710, SD 0.00821, luma 72.537, width 1",
+      "read_this": "every FresnelDelta in this block, including the round-2 arm's and the untouched control's, sits inside a band of 0.01187. Nothing in this column is a result."
+    },
+
+    "both_arms_at_seven_look_poses_per_bearing_never_averaged": {
+      "method": "This is job 3's instruction taken literally: the r2 build measured one bearing and generalised, so every bearing is reported on its own line and no mean is offered. `prefix` here is the ROUND-2 shader, not round 1 — the r2 verdict kept round 2, so round 2 is the arm round 3 must beat.",
+      "shore_close_a": "FD 0.12817 -> 0.10052 | SD 0.00887 -> 0.01429 | luma 65.955 -> 65.170 | width 1 -> 1",
+      "shore_close_b": "FD 0.12057 -> 0.11346 | SD 0.01137 -> 0.01156 | luma 68.168 -> 68.250 | width 1 -> 1",
+      "shore_close_c": "FD 0.11613 -> 0.11593 | SD 0.03292 -> 0.03230 | luma 70.282 -> 70.337 | width 2 -> 2",
+      "eye_yaw000": "FD 0.09465 -> 0.09866 | SD 0.02158 -> 0.02061 | luma 69.924 -> 69.951 | width 1 -> 1",
+      "eye_yaw090": "FD 0.02666 -> 0.03382 | SD 0.01148 -> 0.01471 | luma 70.370 -> 70.649 | width 1 -> 1",
+      "eye_yaw180": "FD 0.00629 -> 0.00277 | SD 0.00304 -> 0.00047 | luma 74.248 -> 74.548 | width 1 -> 1",
+      "eye_yaw270": "FD 0.05316 -> 0.04372 | SD 0.02603 -> 0.02995 | luma 71.116 -> 71.108 | width 1 -> 1",
+      "what_that_says_about_my_own_build": "Not one FresnelDelta pair moves by more than the 0.01187 band; two move up, two move down. Round 3 does not touch the Fresnel weight and the instrument agrees. ShoreDelta rises at four of seven and falls at three, and only shore-close-c clears 0.03 — on BOTH arms. The gradient width is identical on both arms at all seven. I am not able to show a player-visible difference between round 2 and round 3 at any of these poses, and the frames agree with the numbers: I opened shore-close-a on both arms and they are indistinguishable."
+    }
+  },
+
+  "the_k_response": {
+    "what_it_is": "The r2 verdict's proposed acceptance for remedy (a) was: 'two regions whose water.json k differs by >= 2.0 must differ in measured water-body colour by a stated margin at the same pose and tide; and the Deep Marshes' rendered colour must be consistent with k = 4.5.' I cannot photograph two regions at one pose. What I CAN do is substitute another region's declared k into the same material at the same pose and tide, which isolates k as the only changed variable — a cleaner experiment for the question 'does k reach the pixels', and a weaker one for the question 'do two regions look different'.",
+    "top_down_120_mean_water_luma_against_k": "k 4.5 -> 69.066 | k 2.6 -> 68.053 | k 1.4 -> 65.853 | k 0.35 -> 57.608. Monotonic. Against a drift floor of 0.013% (0.009 of luma), the deltas from native are 1.013 (dK 1.9), 3.213 (dK 3.1) and 11.458 (dK 4.15) — 113x, 357x and 1273x the floor.",
+    "top_down_120_waterline_gradient_width_against_k": "k 4.5 -> 5 px | k 2.6 -> 7 | k 1.4 -> 13 | k 0.35 -> 19, against the round-2 arm's 4 and a replicate range of 0. Also monotonic, and this is the shoreline half of the MIN BAR responding to the region's own optical model.",
+    "the_deck_vista_agrees_on_colour_and_not_on_width": "luma k 4.5 -> 72.550 | 2.6 -> 72.401 | 1.4 -> 71.885 | 0.35 -> 65.140, monotonic; width is 1 px at every k. The vista is 26 m out and its waterline is a few pixels long, so there is nothing for a width to spread across.",
+    "why_this_is_the_strongest_thing_in_the_round": "It is the first F7 measurement that ARBITRATION S52's null control cannot fake. `null-const-trans` replaces the transmittance with a CONSTANT — the same average lift of the body colour, with no depth dependence and no k dependence at all. At top-down it reproduces the luma change almost exactly (68.933 against fixed's 69.066, prefix's 70.428), so mean_luma remains a brightness proxy exactly as S52 says. It does NOT reproduce the width response: it moves width 4 -> 3, DOWNWARD, where the real arm moves 4 -> 5 and the k series runs to 19. And it has no k ordering at all, because it has no k. So `gradient_width_px` and the k-ordering of the colour are admissible where `mean_luma`, `x_rms`, `lane_power`, `lane_power_normalised`, `lane_aniso` and `band_contrast` are not.",
+    "and_what_it_does_not_establish": "It does not establish that the Deep Marshes' rendered colour is 'consistent with k = 4.5' in any absolute sense. I have no reference photometry for 0.67 m visibility water and I did not invent one. What is established is that the shader now consumes k, that the consumption is monotonic and large, and that a null control with no k reproduces none of it."
+  },
+
+  "job_2_the_metric_that_scores_its_own_bar_backwards": {
+    "what_i_was_told": "M12's `ShoreDelta` scores `RI-VIS04` §9's named TELL HIGH — a hard intersection line maximises it, a correct fade minimises it. Say what I measure it at, do not tune toward it, and if the fade drives it down, report both and let the critic rule.",
+    "what_i_measured": "ShoreDelta ROSE at six of nine poses and fell at three. Top-down 0.04617 -> 0.04930 (5.0x the vista band of 0.00062, though that band is not this pose's). Deck vista 0.00808 -> 0.00986. Eye level: yaw000 0.02158 -> 0.02061, yaw090 0.01148 -> 0.01471, yaw180 0.00304 -> 0.00047, yaw270 0.02603 -> 0.02995. Close-ups: a 0.00887 -> 0.01429, b 0.01137 -> 0.01156, c 0.03292 -> 0.03230.",
+    "so_the_predicted_conflict_did_not_fire": "I expected the fade to push ShoreDelta DOWN and to have to argue the bar was wrong. It did not. It went up more often than down, and the reason is visible in the mechanism: my fade makes shallow water take the BED colour, which in this scene is BRIGHTER than the deep water, so near-shore luma rises and the absolute difference against open water rises with it. `ShoreDelta` cannot tell that apart from a hard line — that is still exactly the r2 critic's finding — it just happens to point the same way as the fix this time. A metric that agrees with you by coincidence is not evidence, and I am not quoting the rise as a result.",
+    "what_i_would_put_in_front_of_the_arbiter": "Pair them, as the r2 critic proposed: ShoreDelta AND gradient width, both reported, neither alone. This round is the first evidence that the pair separates things the single number cannot — the S52 null moves ShoreDelta (0.04617 -> 0.04318, i.e. down) and width (4 -> 3, also down) TOGETHER and in the wrong direction, while the real arm moves them in opposite directions at some poses. I did not write it into the corpus; that is not a builder's call.",
+    "the_regression_the_r2_preservation_clause_caught_is_NOT_repaired": "The r2 verdict found ShoreDelta failing >= 0.03 at all four eye-level bearings. On my four bearings it fails on BOTH arms at all four (0.00047-0.02995 against 0.03). Round 3 did not fix it. Where it passes — top-down and shore-close-c — it passed on the round-2 arm too."
+  },
+
+  "job_3_what_round_2_bought_and_its_limit": {
+    "what_i_was_told": "The eye-level improvement is real but bearing-dependent; the r2 build measured one bearing and generalised. Shoot multiple bearings myself, both arms, in motion, and report per-bearing.",
+    "what_i_can_and_cannot_answer": "I can report per-bearing, and I have, at four bearings 90 degrees apart plus three close-ups — nine poses in all, both arms, every one with a per-pose water mask captured at that pose. What I CANNOT do is re-litigate round 1 vs round 2: my `prefix` arm is the ROUND-2 shader, because the r2 verdict ruled 'keep the change' and round 2 is therefore the baseline round 3 must beat. Reproducing the r1-vs-r2 orbit was not my job and would have cost the browser budget the two missing MIN BAR components needed.",
+    "the_bearing_dependence_is_confirmed_from_a_different_direction": "The r2 critic's point was that the same luminance change buys a lot at yaw090 and almost nothing at yaw000, because the removed term mirrors the CANOPY and the cost is proportional to how much reflected trunk a bearing puts in the near field. My four bearings show the same underlying asymmetry in the instrument: FresnelDelta on the round-2 arm reads 0.09465 at yaw000, 0.02666 at yaw090, 0.00629 at yaw180 and 0.05316 at yaw270 — a 15x spread across four bearings of ONE arm. Any clause of the form 'FresnelDelta >= 0.05 at a water_edge shot' is therefore satisfied or failed by CHOICE OF BEARING more than by any shader.",
+    "and_a_finding_that_belongs_to_the_bar_not_to_me": "At the three shoreline close-ups FresnelDelta reads 0.12817 / 0.12057 / 0.11613 on the ROUND-2 arm — two to three times the >= 0.05 band that round 2 was failed on by 0.004. The r2 acceptance clause (b) is comfortably PASSED at close low poses, on the arm that was judged to fail it, purely because a close low camera puts a much wider angular range of water in the frame than a 26 m vista does. That is not a round-3 win and I am not claiming it as one. It says the clause was being evaluated at a pose where the instrument sits near zero, and it is a stronger version of the same complaint the r2 critic made about clause (b) being scored at 'the one pose where the instrument sits near zero and is phase-sensitive'."
+  },
+
+  "what_i_looked_at_and_what_i_saw": {
+    "method": "CLAUDE.md's standing directive — a still from one angle is how the transparency defect got declared fixed while broken. I opened PNGs on both arms before writing any of the readings above, and I am reporting what I saw including where it disagrees with what I hoped.",
+    "shore_close_a_both_arms": "INDISTINGUISHABLE. Player wading in open marsh, reed clumps, trunks behind; the water reads the same deep teal on both. This is the pose I had expected to carry the round and it carries nothing, because there is no shoreline in it and the water is past 1.35 m everywhere. Frames: look/frames/shore-close-a-prefix-o0.png and shore-close-a-fixed-o1.png.",
+    "topdown_120_fixed": "THE MARSH LANES ARE STILL THERE, unchanged, broad diagonal bands at roughly -45 degrees across the whole frame. My change did not target them and did not move them. Frame: arms/frames/topdown-120-fixed-o1.png.",
+    "topdown_120_at_k_0_35": "THE MECHANISM IS VISIBLE HERE AND ONLY HERE. Against the native k = 4.5 frame the water is markedly darker overall, the shallow rims around every vegetation clump read softer and the bed structure comes through the surface instead of being hidden by it. This is what a depth-based colour looks like when the region's optics give it room to act. Frame: arms/frames/topdown-120-k-0.35-padomaic-o4.png.",
+    "something_i_did_not_go_looking_for": "Every close frame carries heavy dither stipple across the water — visible dotted patterning on the transparent surface, most obvious around the reed clumps and the player's legs. It is on BOTH arms, so it is not mine, and no reference item I read names it. Recording it because two rounds of people have photographed this water and none has written it down."
+  },
+
+  "the_ruling_i_made_and_what_would_overturn_it": {
+    "decision": "KEEP the change and hand it to a critic as a PARTIAL delivery. I am not claiming F7.",
+    "why": [
+      "It closes the r2 verdict's `biggest_gap` on its own terms: both named components exist in the file the verdict said they should exist in, and the region's k reaches a fragment for the first time — measured off the live materials, not asserted.",
+      "It cannot make anything worse where it does not act, and it provably does not act above 1.35 m of column: esDeepCol is algebraically identical to the old expression at q = 1, and the `no-shorefade` arm confirms the colour half moves top-down luma by 0.014% — inside drift.",
+      "The one measurement that S52's null control cannot reproduce — the gradient width, and the ordering of both width and colour against k — moves the way the bar wants and the null moves it the other way.",
+      "The previous depth wiring was backwards (deeper water brighter). Even if every clause above were scored 0, removing an inverted depth term is right."
+    ],
+    "what_would_overturn_it": [
+      "A pose where the fade is visible AND worse — a smeared or banded shoreline caused by the 12.5 m lattice interpolating depth across a cell. I did not find one, but I also could not find a pose where it is visible at all in this region, so I have not looked where it would hurt.",
+      "A frame-time measurement showing the exp() and divide cost anything real. I did not take one.",
+      "Evidence that the alpha fade breaks transparency sorting somewhere — it lowers `diffuseColor.a` on a material that is already `transparent: true` with `depthWrite` on. I saw no artefact in nine poses but I did not test it against another transparent layer, and province.js's wet-bank strip is exactly such a layer.",
+      "A region other than the Deep Marshes reading wrong. Western Rootlands resolves to k = 1.9 and Eastern Rootlands to 3.2 in my runs, but I photographed neither.",
+      "A blind pair (RI-WLD10 M56 §5) ranking round 2 above round 3. It has never been run and only the orchestrator can run it."
+    ]
+  },
+
+  "controls": {
+    "floor": "`nothing-restore-control`, untouched, captured LAST in every arm batch. Top-down: luma 69.057 vs the fixed arm's 69.066 (0.013%), lane_power 0.3436 vs 0.3373 (1.8%), width 5 vs 5. Deck vista: luma 72.537 vs 72.550 (0.018%). Drift is measured, not assumed.",
+    "null_control_S52": "`null-const-trans` — the transmittance replaced by a CONSTANT 0.08, so the body colour gets the same average lift toward the bed tint with NO depth dependence and NO k dependence. It reproduces the luma change (68.933 vs fixed 69.066 vs prefix 70.428 at top-down) and fails to reproduce the width response and the k ordering. That is the point of it and it is a finding, not a pass.",
+    "isolation_control": "`no-shorefade` — uWaterShoreFade = 0, colour half alone, no recompile. It is what proves the colour half is inert at k = 4.5, and it is the arm that most damages my own headline.",
+    "arm_liveness": "every shader arm reports its substitution count and is marked VACUOUS rather than reported if it matched nothing; 30 of 30 applications reported >= 5 edits.",
+    "instrument_liveness": "the tool refuses to run at all unless the round-3 depth block is verbatim in water.js, and it asserts that the critic's own depth-buffer grep still returns 0 so nobody can mistake this mechanism for the one the bar's parenthetical names.",
+    "what_is_missing_from_this_list": "a positive control. The r2 tools rode a `surface-hidden` arm in every batch to show the metric can go red before any arm row is read; I did not carry one, because my mask is DERIVED from the water-hidden frame at each pose, so hiding the water is already how the mask is built and it cannot double as an independent arm. That is an explanation, not an excuse: a critic should treat every row here as un-positive-controlled."
+  },
+
+  "inherited_findings_i_can_confirm_or_correct": {
+    "hud_region_label_is_stuck": "CONFIRMED AGAIN, FOURTH ROUND. Every frame reads `western-rootlands` bottom-left while the material resolving under the camera is `water:deep-marshes` at k = 4.5. Still owned by nobody.",
+    "the_instrument_is_ordinal_not_noisy": "CONFIRMED AND EXTENDED. Freezing the phase collapses the luma band 94x and the ShoreDelta band 13x, which is only possible if the r2 critic's diagnosis was right. But FresnelDelta's band does NOT collapse (0.01187 against its 0.00943), so the phase was never FresnelDelta's problem — the reflected canopy moving between captures is.",
+    "shoredelta_is_the_wrong_shape": "CONFIRMED IN A WAY THE r2 CRITIC COULD NOT TEST: the S52 null control moves ShoreDelta and the gradient width in the SAME direction (both down) while the real arm moves them in opposite directions at four of nine poses. A measure that a dimmer moves is not a preservation clause.",
+    "province_js_lattice": "READ, NOT CLAIMED, NOT EDITED. Its 12.5 m water lattice is now the binding constraint on the feature I built rather than an adjacent defect: the fade cannot be finer than the lattice it is interpolated across. `node tools/ownership.mjs --for game/src/world/province.js` run this turn still returns W1-30-builder-20260812.",
+    "esSky_is_dead_code": "STILL TRUE, STILL LEFT ALONE. `grep -c esSky game/src/render/water.js` returns 1."
+  },
+
+  "next_step": "Dispatch a fresh critic. Cheapest reproduction: `node tools/visual/f7-r3-sweep.mjs --out <dir> --mode arms --poses topdown-120` gives all eight arms including the k series and both controls in one process at the pose with the tight floor; `--mode band --poses c-vista-11-d26 --reps 5` re-measures the band. The three questions I could not settle are (1) whether a depth-based colour and a shoreline fade can be judged at all in the ONE region of thirteen where k = 4.5 makes them nearly invisible — `RI-WLD10` §8's own table says Crimson Coast, Marauder's Coast and the two Rootlands are where water fidelity is visible, and three rounds of F7 have all been shot in the Deep Marshes; (2) whether `RI-WLD10` §10's parenthetical '(depth-fade against the depth buffer)' is a required MECHANISM or a described one, because the mechanism needs renderer.js and the outcome does not; and (3) whether the r2 acceptance clause (b) means anything, given that its instrument spans 15x across four bearings of a single arm and reads 0.116 at a close pose against the 0.05 it failed by 0.004 at a vista.",
+
+  "declared_overlap": {
+    "game/src/render/water.js": "`node tools/ownership.mjs --for game/src/render/water.js`, run this turn, returns `nobody live has declared this file`. Claimed and edited. I am the successor round to W1-F7-r2 on the same roadmap item.",
+    "tools/visual/f7-r3-sweep.mjs": "new, mine, claimed.",
+    "game/src/world/province.js, game/src/render/renderer.js, game/src/render/visual-foundation.js, game/src/render/spell-vfx.js": "ownership run this turn for all four: each returns `W1-30-builder-20260812 [builder-native-gpu-remediation-in-progress]`. READ, NOT CLAIMED, NOT EDITED. The whole shape of this round's remedy — vertex-carried depth instead of a depth prepass — is a consequence of that.",
+    "tools/visual/f7-r2-sweep.mjs, f7-critic-look.mjs, f7-r2-critic-phase.mjs": "ownership run this turn: all three are declared live by other pieces. READ for method, NOT EDITED. A builder must not touch the ruler; I wrote my own and said where its absolute values are not comparable to theirs."
+  },
+
+  "files_touched": [
+    "game/src/render/water.js",
+    "tools/visual/f7-r3-sweep.mjs",
+    "orchestration/status/W1-F7-r3.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3/"
+  ],
+  "files_claimed": [
+    "game/src/render/water.js",
+    "tools/visual/f7-r3-sweep.mjs",
+    "orchestration/status/W1-F7-r3.json",
+    "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3/"
+  ],
+  "artifacts": "corpus/90-verdicts/wave1/artifacts/W1-F7-WATER-r3/ — band/ the 3-replicate phase-frozen band; arms/ eight arms at the deck vista and top-down 120 with the k series and both controls; look/ both arms at four eye-level bearings and three shoreline close-ups. Every run's sweep.json carries its own commit, its `head_expression_asserted` block and its `gpu_state_before` showing what k reached which material.",
+
+  "self_audit": {
+    "did_i_inherit_any_number": "No number in this file comes from the brief, from the r2 status file or from the r2 verdict except where it is explicitly labelled as theirs. Every figure above was produced this turn by tools/visual/f7-r3-sweep.mjs or by a command named in `source_reads`. Two figures I was handed and re-derived rather than repeated: the blind_pair census (my brief and the r1 verdict say 98, the r2 verdict says 100, I measure **101**) and the blind_status count (the r2 critic measured 0, I measure **1**).",
+    "the_tell_i_checked_myself_against": "The r2 verdict records that this piece has now produced three clean quantitative derivations from shader source that ablation then killed. So the k response is not argued from the shader — it is four arms at one pose in one process with a drift floor beside them, and the colour half's inertness is not argued either, it is the `no-shorefade` arm. Where I do reason from source — the preservation-at-q=1 property — I say it is algebra and the measurements are offered separately.",
+    "what_would_make_this_status_file_wrong": [
+      "If `vEsWaterQ` does not carry what I think it carries. I read province.js:1559 for the encoding and inverted it; I did NOT probe q off the GPU. If province's formula changes, or if some water mesh is built without vertex colours where I assume it has them, the depth in metres is wrong and every k row is measuring something else. The `#ifdef USE_COLOR` branch reports q = 1 for such a mesh, which fails safe toward the old look but would silently disable the feature.",
+      "If the k I read at draw time is not the k the fragment used. I report `uWaterK.value` from the JS uniform object, which is what three uploads — but I did not read it back out of a rendered pixel the way the r2 build read its weight probe off the GPU.",
+      "If my gradient-width estimator is measuring the wet-bank strip rather than the water. The mask is derived by hiding meshes matching /^water/, and province.js's shoreline band is a separate `wet_mud` mesh that is NOT hidden, so it is treated as LAND by my distance transform. That is arguably correct — it is not the water surface — but it means the first few pixels of my profile sit inside whatever that strip draws.",
+      "If nine poses in one region at one time of day is too narrow to say anything about a per-region model. It probably is."
+    ],
+    "am_i_grading_my_own_work": "No. Every clause above is left unscored. What I have done is state what moved, what did not, and which of my own arms damages my own headline — the `no-shorefade` row is the most important number in this file and it is the one that says the colour half does nothing here."
+  },
+
+  "source_reads": [
+    "corpus/90-verdicts/wave1/W1-F7-WATER-r2.json — in full, both pages",
+    "orchestration/status/W1-F7-r2.json — in full",
+    "CLAUDE.md — in full",
+    "corpus/70-visual/RI-VIS04-renderer-feature-checklist.md §9 — HAVE / TELL / DETECT / METRIC / MIN BAR, lines 241-271",
+    "corpus/50-world/RI-WLD10-the-water-model.md §8 (the WCI table and the 13 regions), §9 (the two seas and their k), §10 (art direction 1-6 and the fidelity clause), §11 (the water@1 data contract) — lines 269-426",
+    "corpus/00-doctrine/ARBITRATION.md — S52, S59, S60 including its 15 Aug correction, S61, S63 including its 15 Aug falsification, S64",
+    "orchestration/HAZARDS.md — the section index, and §22, §23, §13, §10, §17, §18 by heading",
+    "tools/metrics/lib/vis03.mjs — M12 in full and M12_BANDS, so I could say what FresnelDelta and ShoreDelta compute and write a companion rather than a substitute",
+    "game/src/render/water.js — before and after",
+    "game/src/world/province.js:1500-1600 — the water mesh build, the 12.5 m lattice, the q encoding at :1559, the mesh naming at :1577, the wet-bank strip",
+    "game/src/world/province.js:400-430 — regionMats, and the fact that r.water.k already reaches worldMaterial as roughness/opacity",
+    "game/src/render/visual-foundation.js:700-725 — worldMaterial's water branch and where installWaterShader is called",
+    "game/src/render/renderer.js:125, :1456-1480 — the planar reflection target and bindWaterReflection's call site",
+    "game/src/render/post/composite.js:76-88 — worldTarget.depthTexture, i.e. the depth texture that exists and cannot be read by the water pass",
+    "game/src/render/spell-vfx.js:340-420 — the depth prepass pattern I would have copied if the file were not owned",
+    "game/src/engine.js:11909-12010 — the data root and the world/water.json load, which is where this module's own fetch path comes from",
+    "game/data/world/water.json — the regions array and its per-region k",
+    "game/vendor/three/three.module.js:16850 — material.onBeforeRender is called on every draw, which is what makes draw-time region resolution possible; and color_vertex/color_pars_vertex around :334-340",
+    "commands run this turn: `node tools/ownership.mjs --for` on water.js, renderer.js, visual-foundation.js, spell-vfx.js, province.js, f7-r2-sweep.mjs, f7-critic-look.mjs, f7-r2-critic-phase.mjs, f7-r3-sweep.mjs; `node tools/contention.mjs` before each browser; `grep -c 'depthTexture\\|tDepth\\|depthFade' game/src/render/water.js` = 0; `grep -rl 'blind_pair: yes' corpus/ --include=*.md | wc -l` = 101; `grep -rln 'blind_status: *run' corpus/90-verdicts/ | wc -l` = 1; `node --check` on both edited files; `node tools/land.mjs --paths` six times"
+  ],
+
+  "method_deviations": [
+    "I banked six times in small increments rather than once at the end (HAZARDS §23 — the container has killed a fleet three times today).",
+    "I ran three browsers sequentially, never concurrently, checking `tools/contention.mjs` before each; it reported room for 3-4 more instances each time.",
+    "My lane estimator reproduces the r1/r2 shape so the rows are comparable, but its absolute values are not comparable to `f7-r2-sweep.mjs`'s, exactly as the r2 critic recorded for its own. I quote lane numbers only within my own runs and I say the vista lane band makes them meaningless there.",
+    "I did not reproduce the r1-vs-r2 comparison. My `prefix` arm is the round-2 shader because the r2 verdict kept it."
+  ]
+}
