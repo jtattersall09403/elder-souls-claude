@@ -6,16 +6,15 @@
 
 ## What the agents are working on this minute
 
-**The container restarted at 20:03 and killed all four agents mid-round.** Their unfinished work is
-preserved on a side branch and all four rounds have been restarted from it — nothing is lost, but
-roughly two hours of work has to be re-derived rather than trusted. Same four jobs, all on ring 1:
+Four agents, on ring 1. (The container restarted overnight and killed a full fleet mid-round; their
+work was quarantined on a side branch and every round restarted from it, so nothing was lost.)
 
 - **Judging the sun, round three** — the cool key was built, measured, and deliberately **not
   shipped**; the reason reframes three rounds of this work.
 - **Judging the crowd, which now breathes** — 27 of 27 townspeople move, replicated across three
   sessions, with the motion visible in pixels rather than only in numbers.
-- **The water, round four** — the fade works; it just does nothing in the one region we kept testing
-  it in.
+- **Judging the water, round four** — the fade is built in metres now; it still fails its own bar, and
+  the builder says so.
 - **Fixing two things the blind judging turned up** — the writer's own notes are shipping as NPC
   dialogue, and four books print the word `undefined`.
 
